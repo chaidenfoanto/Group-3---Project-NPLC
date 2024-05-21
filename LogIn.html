@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="LogIn.css">
+    <title>Login</title>
+</head>
+
+<body>
+
+    <div class="container" id="container">
+        <div class="form-container register">
+            <form>
+                <h1 style="text-align: right;">Register</h1>
+                <span>Silakan lengkapi form di bawah ini untuk mendaftarkan tim Anda.</span>
+                <div class="input-register">
+                    <input type="text" placeholder="Team Name">
+                    <input type="text" placeholder="School Name">
+                    <input type="text" placeholder="Player 1">
+                    <input type="file" id="photo" name="photo">
+                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <input type="text" placeholder="Player 2">
+                    <input type="file" id="photo" name="photo">
+                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <input type="text" placeholder="Player 3">
+                    <input type="file" id="photo" name="photo">
+                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <input type="text" placeholder="Nama Guru Pendamping">
+                    <input type="text" placeholder="No. Whatsaap Perwakilan">
+                    <input type="text" placeholder="Category">
+                    <input type="file" id="photo" name="Bukti Pembayaran">
+                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <button>Register</button>
+                </div>
+            </form>
+        </div>
+        <div class="form-container log-in">
+            <form>
+                <h1>Log In</h1>
+                <span>Silahkan masukkan username dan password.</span>
+                <input type="text" placeholder="Username">
+                <input type="password" placeholder="Password">
+                <a href="#">Forget Your Password?</a>
+                <button>Log In</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Selamat datang Players!</h1>
+                    <p>Siapkan dirimu untuk tantangan terbesar dalam logika dan pemrograman! 
+                    Bergabunglah di lomba 11th National Programming & Logic Competition sekarang!</p>
+                    <p>Tunjukkan kemampuanmu, temukan inspirasimu, dan jadilah bagian dari komunitas coder yang hebat! 
+                    Mari bersama-sama menciptakan masa depan teknologi yang lebih cerah dan menyenangkan!</p>
+                    <button class="hidden" id="login">Log In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Selamat datang Players!</h1>
+                    <p>Siapkan dirimu untuk tantangan terbesar dalam logika dan pemrograman! 
+                    Bergabunglah di lomba 11th National Programming & Logic Competition sekarang!</p>
+                    <p>Tunjukkan kemampuanmu, temukan inspirasimu, dan jadilah bagian dari komunitas coder yang hebat! 
+                    Mari bersama-sama menciptakan masa depan teknologi yang lebih cerah dan menyenangkan!</p>
+                    <button class="hidden" id="register">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Login.js"></script>
+</body>
+
+</html>
