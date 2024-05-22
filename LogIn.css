@@ -289,3 +289,11 @@ h1 {
 .popup-overlay.active {
     visibility: visible;
 }
+
+.error-message {
+    display: none; /* Mulai dengan menyembunyikan pesan validasi */
+    color: red;
+    font-size: 12px;
+    padding-top: 2px; /* Mengurangi jarak antara pesan dan input */
+}
+

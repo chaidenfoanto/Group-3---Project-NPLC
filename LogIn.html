@@ -14,23 +14,35 @@
                 <h1 style="text-align: right;">Register</h1>
                 <span>Silakan lengkapi form di bawah ini untuk mendaftarkan tim Anda.</span>
                 <div class="input-register">
-                    <input type="text" placeholder="Team Name">
-                    <input type="text" placeholder="School Name">
-                    <input type="text" placeholder="Player 1">
+                    <input type="text" placeholder="Team Name" id="teamName">
+                    <span class="error-message" id="teamNameError"></span>
+                    <input type="text" placeholder="School Name" id="schoolName">
+                    <span class="error-message" id="schoolNameError"></span>
+                    <input type="text" placeholder="Player 1" id="player1">
+                    <span class="error-message" id="player1Error"></span>
                     <input type="file" id="photo1" name="photo1">
-                    <img id="photoPreview1" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <input type="text" placeholder="Player 2">
+                    <span class="error-message" id="photo1Error"></span>
+                    <img id="photo1Preview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
+                    <input type="text" placeholder="Player 2" id="player2">
+                    <span class="error-message" id="player2Error"></span>
                     <input type="file" id="photo2" name="photo2">
-                    <img id="photoPreview2" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <input type="text" placeholder="Player 3">
+                    <span class="error-message" id="photo2Error"></span>
+                    <img id="photo2Preview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
+                    <input type="text" placeholder="Player 3" id="player3">
+                    <span class="error-message" id="player3Error"></span>
                     <input type="file" id="photo3" name="photo3">
-                    <img id="photoPreview3" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <input type="text" placeholder="Nama Guru Pendamping">
-                    <input type="text" placeholder="No. Whatsaap Perwakilan">
-                    <input type="text" placeholder="Category">
+                    <span class="error-message" id="photo3Error"></span>
+                    <img id="photo3Preview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
+                    <input type="text" placeholder="Nama Guru Pendamping" id="guruPendamping">
+                    <span class="error-message" id="guruPendampingError"></span>
+                    <input type="text" placeholder="No. Whatsapp Perwakilan" id="whatsapp">
+                    <span class="error-message" id="whatsappError"></span>
+                    <input type="text" placeholder="Category" id="category">
+                    <span class="error-message" id="categoryError"></span>
                     <input type="file" id="paymentProof" name="paymentProof">
+                    <span class="error-message" id="paymentProofError"></span>
                     <img id="paymentProofPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <button>Register</button>
+                    <button type="submit">Register</button>
                 </div>
             </form>
         </div>
@@ -71,5 +83,6 @@
     </div>
     <div class="popup-overlay" id="popup-overlay"></div>
     <script src="Login.js"></script>
+    <script src="LoginValidation.js"></script>
 </body>
 </html>
