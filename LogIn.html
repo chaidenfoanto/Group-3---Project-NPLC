@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +7,7 @@
     <link rel="stylesheet" href="LogIn.css">
     <title>Login</title>
 </head>
-
 <body>
-
     <div class="container" id="container">
         <div class="form-container register">
             <form>
@@ -20,19 +17,19 @@
                     <input type="text" placeholder="Team Name">
                     <input type="text" placeholder="School Name">
                     <input type="text" placeholder="Player 1">
-                    <input type="file" id="photo" name="photo">
-                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <input type="file" id="photo1" name="photo1">
+                    <img id="photoPreview1" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
                     <input type="text" placeholder="Player 2">
-                    <input type="file" id="photo" name="photo">
-                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <input type="file" id="photo2" name="photo2">
+                    <img id="photoPreview2" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
                     <input type="text" placeholder="Player 3">
-                    <input type="file" id="photo" name="photo">
-                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <input type="file" id="photo3" name="photo3">
+                    <img id="photoPreview3" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
                     <input type="text" placeholder="Nama Guru Pendamping">
                     <input type="text" placeholder="No. Whatsaap Perwakilan">
                     <input type="text" placeholder="Category">
-                    <input type="file" id="photo" name="Bukti Pembayaran">
-                    <img id="photoPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;"> 
+                    <input type="file" id="paymentProof" name="paymentProof">
+                    <img id="paymentProofPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
                     <button>Register</button>
                 </div>
             </form>
@@ -43,8 +40,8 @@
                 <span>Silahkan masukkan username dan password.</span>
                 <input type="text" placeholder="Username">
                 <input type="password" placeholder="Password">
-                <a href="#">Forget Your Password?</a>
-                <button>Log In</button>
+                <a href="#" onclick="openPopup()">Forget Your Password?</a>
+                <button>Login</button>
             </form>
         </div>
         <div class="toggle-container">
@@ -67,9 +64,12 @@
                 </div>
             </div>
         </div>
+        <div class="popup" id="popup">
+            <p>Silahkan menghubungi kakak panitia yang mendampingi untuk menanyakan passwordnya!</p>
+            <button type="button" onclick="closePopup()">Ok</button>
+        </div>
     </div>
-
+    <div class="popup-overlay" id="popup-overlay"></div>
     <script src="Login.js"></script>
 </body>
-
 </html>
