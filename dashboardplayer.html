@@ -11,119 +11,121 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="dashboardplayer.js"></script>
         
-        
-<div class="sidebar">
-    <div class="logo_details">
-        <img src="img/logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
-        <div class="logo_name">NPLC 12th</div>
-    </div>
-    <ul class="nav-list">
-      <li>
-        <i class="bx bx-search"></i>
-        <input type="text" placeholder="Search...">
-         <span class="tooltip">Search</span>
-      </li>
-      <li>
-        <a href="#">
-          <i class="fa-regular fa-clone"></i>
-          <span class="link_name">Deck Card</span>
-        </a>
-        <span class="tooltip">Deck Cards</span>
-      </li>
-      <li>
-        <a href="#">
-          <i class="fa-regular fa-circle-question"></i>
-          <span class="link_name">QnA</span>
-        </a>
-        <span class="tooltip">QnA</span>
-      </li>
-      <li class="profile">
-        <div class="profile_details">
-          <img src="profile.jpeg" alt="profile image">
-          <div class="profile_content">
-            <div class="name">Anna Jhon</div>
-            <div class="designation">Admin</div>
+    <div class = "container">
+      <div class="sidebar">
+          <div class="logo_details">
+              <img src="img/logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
+              <div class="logo_name">NPLC 12th</div>
           </div>
+          <ul class="nav-list">
+            <li>
+              <i class="bx bx-search"></i>
+              <input type="text" placeholder="Search...">
+              <span class="tooltip">Search</span>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa-regular fa-clone"></i>
+                <span class="link_name">Deck Card</span>
+              </a>
+              <span class="tooltip">Deck Cards</span>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa-regular fa-circle-question"></i>
+                <span class="link_name">QnA</span>
+              </a>
+              <span class="tooltip">QnA</span>
+            </li>
+            <li class="profile">
+              <div class="profile_details">
+                <img src="profile.jpeg" alt="profile image">
+                <div class="profile_content">
+                  <div class="name">Anna Jhon</div>
+                  <div class="designation">Admin</div>
+                </div>
+              </div>
+              <i class="bx bx-log-out" id="log_out"></i>
+            </li>
+          </ul>
         </div>
-        <i class="bx bx-log-out" id="log_out"></i>
-      </li>
-    </ul>
-  </div>
-  <div class="main-content">
-    <header>
-        <h1>Selamat datang Player!</h1>
-        <div class="points">
-            <strong>Total Points:</strong> 1000
-        </div>
-        <div class="timer">
-            <strong>⏱</strong> 00:00:00
-        </div>
-    </header>
-    <h2>List Games</h2>
-    <div class="games-list">
-        <div class="game-card">
-            <img src="img/kartu1.png" alt="Battle Curling Item" class="game-image">
-            <div class="badgeduel">DUEL</div>
-            <p><b>Battle Curling Item</b></p>
-            <p>Match 1: WIN</p>
-            <p>Match 2: LOSE</p>
-        </div>
-        <div class="game-card">
-            <img src="img/kartu1.png" alt="Blindfolded minefield" class="game-image">
-            <div class="badgeduel">DUEL</div>
-            <p><b>Blindfolded Minefield</b></p>
-            <p>Match 1: WIN</p>
-            <p>Match 2: LOSE</p>
-        </div>
-        <div class="game-card">
-            <img src="img/kartu1.png" alt="Kakuro" class="game-image">
+        <div class="main-content">
+          <header>
+              <h1>Selamat datang Player!</h1>
+              <div class="points">
+                  <p>Total Points:</p>
+                  <p class = "total">1000</p>
+              </div>
+              <div class="timer">
+                  <strong>⏱</strong> 00:00:00
+              </div>
+          </header>
+          <h2>List Games</h2>
+          <div class="games-list">
+              <div class="game-card">
+                  <img src="img/kartu1.png" alt="Battle Curling Item" class="game-image">
+                  <div class="badgeduel">DUEL</div>
+                  <p><b>Battle Curling Item</b></p>
+                  <p>Match 1: WIN</p>
+                  <p>Match 2: LOSE</p>
+              </div>
+              <div class="game-card">
+                  <img src="img/kartu1.png" alt="Blindfolded minefield" class="game-image">
+                  <div class="badgeduel">DUEL</div>
+                  <p><b>Blindfolded Minefield</b></p>
+                  <p>Match 1: WIN</p>
+                  <p>Match 2: LOSE</p>
+              </div>
+              <div class="game-card">
+                  <img src="img/kartu1.png" alt="Kakuro" class="game-image">
+                  <div class="badgesingle">SINGLE</div>
+                  <p><b>Kakuro</b></p>
+                  <p>Star: 0</p>
+                  <p>Points: 0</p>
+              </div>
+              <div class="game-card">
+                  <img src="img/kartu1.png" alt="Battle Kartu" class="game-image">
+                  <div class="badgeduel">DUEL</div>
+                  <p><b>Battle Kartu</b></p>
+                  <p>Match 1: WIN</p>
+                  <p>Match 2: LOSE</p>
+              </div>
+              <div class="game-card">
+                  <img src="img/kartu1.png" alt="Battle 24" class="game-image">
+                  <div class="badgeduel">DUEL</div>
+                  <p><b>Battle 24</b></p>
+                  <p>Match 1: WIN</p>
+                  <p>Match 2: LOSE</p>
+              </div>
+              <div class="game-card">
+                <img src="img/kartu1.png" alt="Pingpong Pass" class="game-image">
+                <div class="badgeduel">SINGLE</div>
+                <p><b>Pingpong Pass</b></p>
+                <p>Match 1: WIN</p>
+                <p>Match 2: LOSE</p>
+            </div>
+            <div class="game-card">
+              <img src="img/kartu1.png" alt="Sudoku" class="game-image">
+              <div class="badgesingle">SINGLE</div>
+              <p><b>Sudoku</b></p>
+              <p>Star: 0</p>
+              <p>Points: 0</p>
+          </div>
+          <div class="game-card">
+            <img src="img/kartu1.png" alt="Cup Stacking" class="game-image">
             <div class="badgesingle">SINGLE</div>
-            <p><b>Kakuro</b></p>
+            <p><b>Cup Stacking</b></p>
             <p>Star: 0</p>
             <p>Points: 0</p>
-        </div>
-        <div class="game-card">
-            <img src="img/kartu1.png" alt="Battle Kartu" class="game-image">
-            <div class="badgeduel">DUEL</div>
-            <p><b>Battle Kartu</b></p>
-            <p>Match 1: WIN</p>
-            <p>Match 2: LOSE</p>
-        </div>
-        <div class="game-card">
-            <img src="img/kartu1.png" alt="Battle 24" class="game-image">
-            <div class="badgeduel">DUEL</div>
-            <p><b>Battle 24</b></p>
-            <p>Match 1: WIN</p>
-            <p>Match 2: LOSE</p>
-        </div>
-        <div class="game-card">
-          <img src="img/kartu1.png" alt="Pingpong Pass" class="game-image">
-          <div class="badgeduel">SINGLE</div>
-          <p><b>Pingpong Pass</b></p>
-          <p>Match 1: WIN</p>
-          <p>Match 2: LOSE</p>
+          </div>
+          <div class="game-card">
+            <img src="img/kartu1.png" alt="Move It" class="game-image">
+            <div class="badgesingle">SINGLE</div>
+            <p><b>Move It</b></p>
+            <p>Star: 0</p>
+            <p>Points: 0</p>
+          </div>
+          </div>
       </div>
-      <div class="game-card">
-        <img src="img/kartu1.png" alt="Sudoku" class="game-image">
-        <div class="badgesingle">SINGLE</div>
-        <p><b>Sudoku</b></p>
-        <p>Star: 0</p>
-        <p>Points: 0</p>
     </div>
-    <div class="game-card">
-      <img src="img/kartu1.png" alt="Cup Stacking" class="game-image">
-      <div class="badgesingle">SINGLE</div>
-      <p><b>Cup Stacking</b></p>
-      <p>Star: 0</p>
-      <p>Points: 0</p>
-    </div>
-    <div class="game-card">
-      <img src="img/kartu1.png" alt="Move It" class="game-image">
-      <div class="badgesingle">SINGLE</div>
-      <p><b>Move It</b></p>
-      <p>Star: 0</p>
-      <p>Points: 0</p>
-    </div>
-    </div>
-</div>
 </body>
