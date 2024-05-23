@@ -48,8 +48,6 @@
         transition: all 0.5s ease ;
         }
 
-
-
         .sidebar .logo_details .logo_name{
         color:var(--color-white);
         font-size: 22px;
@@ -303,6 +301,7 @@
         left:250px;
         width: calc(100% - 250px);
         }
+
         .main-content {
             margin-left: 80px;
             padding: 20px;
@@ -355,11 +354,20 @@
             border-top-right-radius: 10px;
         }
     
-        .game-card .badge {
+        .game-card .badgesingle {
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: #ccccccc7;
+            background-color: #b4fc71c7;
+            padding: 5px 15px 5px 15px;
+            border-radius: 20px;
+        }
+
+        .game-card .badgeduel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #56aff8c7;
             padding: 5px 15px 5px 15px;
             border-radius: 20px;
         }
