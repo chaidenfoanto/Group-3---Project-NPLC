@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player's Deck Card</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="deckcardplayer.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="deckcardplayer.js"></script>
+        
+    <div class = "container">
+      <div class="sidebar">
+          <div class="logo_details">
+              <img src="img/logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
+              <div class="logo_name">NPLC 12th</div>
+          </div>
+          <ul class="nav-list">
+            <li>
+              <a href="dashboardplayer.html">
+                <i class="fa-solid fa-house"></i>
+                <span class="link_name">Home</span>
+              </a>
+              <span class="tooltip">Home</span>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa-regular fa-clone"></i>
+                <span class="link_name">Deck Card</span>
+              </a>
+              <span class="tooltip">Deck Cards</span>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa-regular fa-circle-question"></i>
+                <span class="link_name">QnA</span>
+              </a>
+              <span class="tooltip">QnA</span>
+            </li>
+            <li class="profile">
+              <div class="profile_details">
+                <i class="fa-regular fa-user"></i>
+                <div class="profile_content">
+                  <div class="name">Anna Jhon</div>
+                  <div class="designation">Admin</div>
+                </div>
+              </div>
+              <i class="bx bx-log-out" id="log_out"></i>
+            </li>
+          </ul>
+        </div>
+        <div class="main-content">
+          <header>
+              <h1>Your Deck Card</h1>
+          </header>
+          <div class="cards-list">
+              <div class="card">
+                  <img src="img/kartu1.png" alt="Double Point" class="card-image">
+                  <p><b>Double Point</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single. Jika tim berhasil mendapatkan bintang (bintang 1-3),
+                    <span class="dots">...</span>
+                    <span class="more">maka point x2. Jika tim gagal (bintang 0), maka point -30.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <table>
+                    <tr>
+                        <td>Total Owned</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Total Used</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+              </div>
+              <div class="card">
+                  <img src="img/kartu2.png" alt="Time +3" class="card-image">
+                  <p><b>Time +3</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It.
+                    <span class="dots">...</span>
+                    <span class="more">Tim mendapatkan tambahan waktu 3 Menit dari durasi normal permainan.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <table>
+                    <tr>
+                        <td>Total Owned</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Total Used</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+              </div>
+              <div class="card">
+                  <img src="img/kartu3.png" alt="Time +5" class="card-image">
+                  <p><b>Time +5</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It.
+                    <span class="dots">...</span>
+                    <span class="more">Tim mendapatkan tambahan waktu 5 Menit dari durasi normal permainan.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <table>
+                    <tr>
+                        <td>Total Owned</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Total Used</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+              </div>
+              <div class="card">
+                  <img src="img/kartu4.png" alt="Second Chance" class="card-image">
+                  <p><b>Second Chance</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single. Tim mendapatkan tambahan 1 kali
+                    <span class="dots">...</span>
+                    <span class="more">kesempatan bermain lagi. Poin yang akan diperoleh adalah poin dari permainan terakhir.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <table>
+                    <tr>
+                        <td>Total Owned</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Total Used</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+              </div>
+          </div>
+      </div>
+    </div>
+</body>
