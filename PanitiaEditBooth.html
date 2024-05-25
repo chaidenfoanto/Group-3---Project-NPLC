@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panitia Duel Dashboard</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="PanitiaEditBooth.css">
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="PanitiaEditBooth.js"></script>
+        
+    <div class="sidebar">
+        <div class="logo_details">
+            <img src="logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
+            <div class="logo_name">NPLC 12th</div>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Search...">
+                <span class="tooltip">Search</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-regular fa-clone"></i>
+                    <span class="link_name">Deck Card</span>
+                </a>
+                <span class="tooltip">Deck Cards</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <span class="link_name">QnA</span>
+                </a>
+                <span class="tooltip">QnA</span>
+            </li>
+            <li class="profile">
+                <div class="profile_details">
+                    <img src="profile.jpeg" alt="profile image">
+                    <div class="profile_content">
+                        <div class="name">Anna Jhon</div>
+                        <div class="designation">Admin</div>
+                    </div>
+                </div>
+                <i class="bx bx-log-out" id="log_out"></i>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Data Booth Games</h1>
+        </header>
+        <div class="form-container">
+            <form id="game-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nama-booth">Nama Booth</label>
+                        <input type="text" id="nama-booth" name="namaBooth">
+                    </div>
+                    <div class="form-group">
+                        <label for="penjaga-booth-1">Penjaga Booth 1</label>
+                        <select id="penjaga-booth-1" name="penjagaBooth1">
+                            <option value="">Select</option>
+                            <!-- Add options here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="penjaga-booth-2">Penjaga Booth 2</label>
+                        <select id="penjaga-booth-2" name="penjagaBooth2">
+                            <option value="">Select</option>
+                            <!-- Add options here -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cara-bermain">Cara Bermain</label>
+                    <textarea id="cara-bermain" name="caraBermain"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sop-permainan">SOP Permainan</label>
+                    <textarea id="sop-permainan" name="sopPermainan"></textarea>
+                </div>
+                <div class="form-row right-aligned">
+                    <div class="form-group">
+                        <label for="ruangan">Ruangan</label>
+                        <select id="ruangan" name="ruangan">
+                            <option value="">Select</option>
+                            <!-- Add options here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipe-game" style="margin-left: -36%;">Tipe Game</label>
+                        <select id="tipe-game" name="tipeGame">
+                            <option value="">Select</option>
+                            <!-- Add options here -->
+                        </select>
+                    </div>
+                    <button type="submit" id="simpan">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
