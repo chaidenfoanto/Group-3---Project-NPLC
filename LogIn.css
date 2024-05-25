@@ -233,15 +233,15 @@ h1 {
 }
 
 .popup {
-    width: 380px;
+    width: 80%;
     background: #2A9BDB;
     border-radius: 6px;
     position: fixed;
-    top: 45%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.1);
+    transform: translate(-50%, -50%) scale(0.8);
     text-align: center;
-    padding: 30px;
+    padding: 15px;
     color: white;
     visibility: hidden;
     transition: transform 0.4s, top 0.4s;
@@ -252,12 +252,12 @@ h1 {
 .popup p {
     font-size: 15px;
     font-weight: 600;
-    margin: 30px 0 10px;
+    margin: 20px 0;
 }
 
 .popup button {
-    width: 100%;
-    margin-top: 50px;
+    width: 50%;
+    margin-top: 20px;
     padding: 10px 0;
     background: white;
     color: #2A9BDB;
@@ -296,4 +296,3 @@ h1 {
     font-size: 12px;
     padding-top: 2px; /* Mengurangi jarak antara pesan dan input */
 }
-
