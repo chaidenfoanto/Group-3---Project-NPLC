@@ -7,54 +7,56 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="deckcardplayer.css">
+    <link rel="stylesheet" href="sidebar.css">
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="deckcardplayer.js"></script>
         
     <div class = "container">
-      <div class="sidebar">
-          <div class="logo_details">
-              <img src="img/logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
-              <div class="logo_name">NPLC 12th</div>
-          </div>
-          <ul class="nav-list">
-            <li>
-              <a href="dashboardplayer.html">
-                <i class="fa-solid fa-house"></i>
-                <span class="link_name">Home</span>
-              </a>
-              <span class="tooltip">Home</span>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa-regular fa-clone"></i>
-                <span class="link_name">Deck Card</span>
-              </a>
-              <span class="tooltip">Deck Cards</span>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa-regular fa-circle-question"></i>
-                <span class="link_name">QnA</span>
-              </a>
-              <span class="tooltip">QnA</span>
-            </li>
-            <li class="profile">
-              <div class="profile_details">
-                <i class="fa-regular fa-user"></i>
-                <div class="profile_content">
-                  <div class="name">Anna Jhon</div>
-                  <div class="designation">Admin</div>
-                </div>
-              </div>
-              <i class="bx bx-log-out" id="log_out"></i>
-            </li>
-          </ul>
-        </div>
+      <div class="sidebar"></div>
         <div class="main-content">
           <header>
               <h1>Your Deck Card</h1>
           </header>
+          <div class="ticket-container">
+            <div>
+                <i class="fas fa-ticket-alt"></i>
+                <span>Tickets Owned</span>
+            </div>
+            <div>
+                <span style="margin-right: 10px">9</span>
+                <button id="rollButton">ROLL</button>
+            </div>
+          </div>
+              <div class = "container-dice">
+                <h2>Gacha your Card</h2>
+                  <div class = "dice">
+                      <div class = "face front"></div>
+                      <div class = "face back"></div>
+                      <div class = "face top"></div>
+                      <div class = "face bottom"></div>
+                      <div class = "face right"></div>
+                      <div class = "face left"></div>
+                  </div>
+                  <div class = "buttons">
+                    <button class = "roll">Start</button>
+                    <button id = "closeGacha">Cancel</button>
+                  </div>
+              </div> 
+              <div class="gacharesult" id="modal">
+                <div class="gacharesult-inner">
+                    <h2>Card B209</h2>
+                    <div class="card-content">
+                        <img src="img/kartu2.png" alt="Hasil Gacha">
+                        <div class="card-details">
+                            <p><strong>Card Name:</strong> Time +3</p>
+                            <p><strong>Card Description:</strong> </p>
+                            <p>Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It. Tim mendapatkan tambahan waktu 3 Menit dari durasi normal permainan.</p>
+                        </div>
+                    </div>
+                    <button id="closeResult" class="btn-ok">OK</button>
+                </div>
+            </div>            
           <div class="cards-list">
               <div class="card">
                   <img src="img/kartu1.png" alt="Double Point" class="card-image">
