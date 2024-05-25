@@ -57,5 +57,5 @@ $(document).ready(function() {
 
     // Panggil fungsi untuk mengambil data saat halaman dimuat
     fetchData();
-    setInterval(fetchData, 800); 
+    setInterval(fetchData, 1000); 
 });
