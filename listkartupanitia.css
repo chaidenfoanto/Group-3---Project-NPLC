@@ -124,7 +124,7 @@
 
         .inner-container h2 {
             font-weight: bold;
-            color: var(--color-default);
+            color: black;
         }
 
         table {

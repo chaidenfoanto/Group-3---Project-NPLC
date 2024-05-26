@@ -15,4 +15,16 @@ $(document).ready(function() {
             }
         }
     });
+
+    const openBtn = $(".game-card");
+    const closeBtn = $("#closePopup");
+    const modal = $(".gamedetails");
+
+    openBtn.click(function() {
+        modal.addClass("open");
+    });
+
+    closeBtn.click(function() {
+        modal.removeClass("open");
+    });
 });
