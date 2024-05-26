@@ -55,6 +55,7 @@ $(document).ready(function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 $('#cardImage').attr('src', e.target.result);
+                $("#fileSource").text(`File source: ${file.name}`);
             }
             reader.readAsDataURL(file);
         }
