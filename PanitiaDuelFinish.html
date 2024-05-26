@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panitia Duel Dashboard</title>
+    <title>Panitia Duel Finish Game</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="dashboardpanitiaduel.css">
+    <link rel="stylesheet" href="PanitiaDuelFinish.css">
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="dashboardpanitiaduel.js"></script>
+    <script src="PanitiaDuelFinish.js"></script>
         
         
 <div class="sidebar">
@@ -76,13 +76,45 @@
         </div>
     </div>
       <div class="start">
-            <button class="button">Start Game</button>
+            <button class="button">Finish Game</button>
         </div>
 
-      <div class="history">
         <h1>History</h1>
-        <p>There are no teams playing in your booth yet...</p>
-      </div>
+        <div id="history">
+          
+        </div>
+
+      <div id="gameEndModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Game Has Ended</h1>
+            <form>
+                <label for="winningTeam">Winning Team</label>
+                <select id="winningTeam">
+                    <option value="">Choose Team Name</option>
+                    <option value="team1">Team 1</option>
+                    <option value="team2">Team 2</option>
+                </select>
+                <div class="time-container">
+                    <div>
+                        <label for="timeStarted">Time Started</label>
+                        <input type="text" id="timeStarted">
+                    </div>
+                    <div>
+                        <label for="timeFinished">Time Finished</label>
+                        <input type="text" id="timeFinished">
+                    </div>
+                    <div>
+                        <label for="duration">Duration</label>
+                        <input type="text" id="duration">
+                    </div>
+                </div>
+                <p id="pointsMessage">100 POINTS WILL BE GIVEN TO ...</p>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    
     
 </div>
 </body>
