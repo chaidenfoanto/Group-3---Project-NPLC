@@ -6,7 +6,6 @@ $(document).ready(function() {
             $(".sidebar").toggleClass("open");
             menuBtnChange();
         });
-
         function menuBtnChange() {
             if (sidebar.hasClass("open")) {
                 logo.hide();
