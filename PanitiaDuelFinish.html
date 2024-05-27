@@ -18,30 +18,40 @@
     <header>
         <h1>Selamat datang Penjaga Booth!</h1>
         <div class="timer">
-            <strong>⏱</strong> 00:00:00
+          <p>Remaining Time:</p>
+          <p class="timeleft">
+            <i class="fa-regular fa-clock" style="color: #000000"></i>
+            00:00:00
+          </p>
         </div>
     </header>
     <h2>Nama Booth</h2>
 
     <div class="matchup-container">
         <div class="team">
-            <select>
-                <option value="">Team Name</option>
-                <option value="team1">Team 1</option>
-                <option value="team2">Team 2</option>
-            </select>
+          <div class="input-group">
+              <select>
+                  <option value=""></option>
+                  <option value="team1">Team 1</option>
+                  <option value="team2">Team 2</option>
+              </select>
+              <label class = "placeholder">Team Name</label>
+          </div>
         </div>
         <div class="vs">VS</div>
         <div class="team">
+          <div class="input-group">
             <select>
-                <option value="">Team Name</option>
+                <option value=""></option>
                 <option value="team1">Team 1</option>
                 <option value="team2">Team 2</option>
             </select>
+            <label class = "placeholder">Team Name</label>
         </div>
+      </div>
     </div>
-      <div class="start">
-            <button class="button">Finish Game</button>
+        <div class="start">
+            <button class="button">Start Game</button>
         </div>
 
         <h1>History</h1>

@@ -16,6 +16,22 @@ $(document).ready(function() {
         }
     });
 
+    $('.matchup-container select').each(function() {
+        // Check if the input is not empty on page load
+        if ($(this).val() !== '') {
+            $(this).addClass('not-empty');
+        }
+
+        // Add event listener for input events
+        $(this).on('change', function() {
+            if ($(this).val() !== '') {
+                $(this).addClass('not-empty');
+            } else {
+                $(this).removeClass('not-empty');
+            }
+        });
+    });
+
     finishGameBtn.on('click', function() {
         modal.show();
     });

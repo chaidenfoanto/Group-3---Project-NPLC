@@ -113,7 +113,7 @@
             border: 1px solid #ccc;
         }
 
-        .inner-container input,textarea, select {
+        .inner-container input, textarea, select {
             border: none;
             margin: 8px 0;
             padding: 10px 15px;
