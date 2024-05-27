@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Card Skill Panitia</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="databoothpanitia.css">
+    <link rel="stylesheet" href="sidebarplayer.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="databoothpanitia.js"></script>
+        
+    <div class = "container">
+      <div class="sidebar"></div>
+        <div class="main-content">
+          <header>
+              <h1>Welcome Admin!</h1>
+          </header>
+          <h2>Data Booth Games</h2>
+          <div class="inner-container">
+            <form id="booth-form">
+              <div class = "image-upload">
+                <img src="img/kartu2.png" alt="Hasil Gacha" id="cardImage">
+                <label for="imageInput" class="upload-button">Upload File</label>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                <p id="fileSource"></p>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" id="boothName">
+                  <label class = "placeholder">Nama Booth</label>
+                  <span class="error-message" id="boothNameError"></span>
+                </div>
+                  <div class="input-group">
+                    <select id="guard1Name" name="guard1Name">
+                      <option value=""></option>
+                    </select>
+                    <label class = "placeholder">Penjaga Booth 1</label>
+                    <span class="error-message" id="guard1NameError"></span>
+                  </div>
+                  <div class="input-group">
+                    <select id="guard2Name" name="guard2Name">
+                      <option value=""></option>
+                    </select>
+                    <label class = "placeholder">Penjaga Booth 2</label>
+                    <span class="error-message" id="guard2NameError"></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <textarea type="text" id="howtoplay"></textarea>
+                    <label class = "placeholder">Cara Bermain</label>
+                    <span class="error-message" id="howtoplayError"></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <select id="noRuangan" name="noRuangan">
+                      <option value=""></option>
+                    </select>
+                    <label class = "placeholder">No. Ruangan</label>
+                    <span class="error-message" id="noRuanganError"></span>
+                  </div>
+                  <div class="input-group">
+                    <select id="tipeGame" name="tipeGame">
+                      <option value=""></option>
+                      <option value="single">Single</option>
+                      <option value="Duel">Duel</option>
+                    </select>
+                    <label class = "placeholder">Tipe Game</label>
+                    <span class="error-message" id="tipeGameError"></span>
+                  </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="save" class = "btn ok">Simpan</button>
+                    <button type="button" id="delete" class = "btn cancel">Hapus</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</body>
