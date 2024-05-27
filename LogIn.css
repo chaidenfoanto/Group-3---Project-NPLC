@@ -115,6 +115,7 @@ body {
 
 h1 {
     font-size: 20px;
+    margin-left: 0px;
 }
 
 .container.active .log-in {
@@ -141,7 +142,7 @@ h1 {
 .input-register {
     height: 200px;
     overflow-y: scroll;
-    padding-right: 15px;
+    padding-right: 0px;
 }
 
 .input-register::-webkit-scrollbar {
@@ -233,6 +234,7 @@ h1 {
 }
 
 .popup {
+    max-width: 400px;
     width: 80%;
     background: #2A9BDB;
     border-radius: 6px;
