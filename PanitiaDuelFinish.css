@@ -57,13 +57,18 @@
             margin-top: 3%;
         }
         .timer {
-            display: flex;
             align-items: center;
-            padding: 10px;
+            padding: 10px 20px 10px 20px;
             border-radius: 10px;
-            margin: 5px;
-            background-color: #f28b82;
+            border: 0.5px solid black;
+            margin: 10px;
+            background-color: #B57F80;
             color: white;
+        }
+        .timer .timeleft {
+            font-size: xx-large;
+            text-align: center;
+            font-weight: bold;
         }
         .matchup-container {
             display: flex;
@@ -157,11 +162,9 @@
             gap: 15px;
         }
 
-        .modal-content label {
-            font-weight: bold;
-        }
-
-        .matchup-container select {
+        .matchup-container select, 
+        .modal-content select, 
+        .modal-content input {
             border: none;
             margin: 8px 0;
             padding: 10px 15px;
@@ -178,7 +181,8 @@
             width: 100%;
         }
 
-        .matchup-container .placeholder {
+        .matchup-container .placeholder,
+        .modal-content .placeholder {
             position: absolute;
             top: 18px;
             left: 15px;
@@ -190,18 +194,14 @@
         }
 
         .matchup-container select:focus + .placeholder,
-        .matchup-container select.not-empty + .placeholder {
+        .matchup-container select.not-empty + .placeholder,
+        .modal-content select:focus + .placeholder,
+        .modal-content select.not-empty + .placeholder,
+        .modal-content input:focus + .placeholder,
+        .modal-content input.not-empty + .placeholder {
             top: -6px;
             color: #000000;
             background-color: white;
-        }
-
-        .modal-content select, .modal-content input {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 8px;
-            width: 100%;
-            border: 1px solid #2c2c2c;
         }
 
         .time-container {
@@ -246,74 +246,105 @@
         }
 
         .history-item {
-            border: 1px solid #888;
-            border-radius: 8px;
+            margin: 10px;
             padding: 10px;
-            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-
-        .history-item h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
         }
-
-        .history-item p {
-            margin: 5px 0;
+        
+        .history-table th, .history-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
         }
-
-        .history-item span {
+        
+        .history-table th {
+            background-color: #f4f4f4;
+        }
+        
+        .history-table td {
+            white-space: nowrap;
+        }
+        
+        .history-table td:nth-child(4), .history-table td:nth-child(5) {
             font-weight: bold;
         }
+        
 
-
+    @media (max-width: 480px) {
+        .sidebar {
+            flex-direction: row;
+            height: auto;
+            width: 100%;
+            position: static;
+            justify-content: space-around;
+        }
+        
+        .main-content {
+            margin-left: 0;
+        }
+        
+        .start {
+            right: 5px;
+        }
+    }
+    
+    @media (max-width: 600px) {
+        .matchup-container {
+            flex-direction: column;
+        }
+        .team {
+            margin: 10px 0;
+        }
                 
-                @media (max-width: 480px) {
-                    .sidebar {
-                        flex-direction: row;
-                        height: auto;
-                        width: 100%;
-                        position: static;
-                        justify-content: space-around;
-                    }
-                
-                    .main-content {
-                        margin-left: 0;
-                    }
-                
-                    .start {
-                        right: 5px;
-                    }
-                }
-                
-                @media (max-width: 600px) {
-                    .matchup-container {
-                        flex-direction: column;
-                    }
-                
-                    .team {
-                        margin: 10px 0;
-                    }
-                
-                    .vs {
-                        margin: 10px 0;
-                    }
-                }
-                @media (max-width: 768px) {
-                    .header h1 {
-                        flex: 1 1 100%;
-                        text-align: center;
-                        margin-bottom: 10px;
-                    }
-                
-                    .header {
-                        flex-direction: column;
-                    }
-                
-                    .matchup-container {
-                        padding: 10px;
-                    }
-                
-                    .start button {
-                        width: auto;
-                    }
-                }
+        .vs {
+            margin: 10px 0;
+        }
+    }
+    @media (max-width: 768px) {
+        .header h1 {
+            flex: 1 1 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    
+        .header {
+            flex-direction: column;
+        }
+    
+        .matchup-container {
+            padding: 10px;
+        }
+    
+        .start button {
+            width: auto;
+        }
+        .history-table th, .history-table td {
+            display: block;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    
+        .history-table th {
+            display: none; /* Hide table headers on small screens */
+        }
+    
+        .history-table td:before {
+            content: attr(data-label);
+            font-weight: bold;
+            display: inline-block;
+            width: 120px; /* Adjust width as needed */
+            box-sizing: border-box;
+        }
+    
+        .history-table tr {
+            display: block;
+            margin-bottom: 10px;
+        }
+    }
