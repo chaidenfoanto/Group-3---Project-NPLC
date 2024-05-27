@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player's Qna</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="playerQna.css">
+    <link rel="stylesheet" href="sidebarplayer.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="playerQna.js"></script>
+</head>
+
+<body>        
+    <div class = "container">
+      <div class="sidebar"></div>
+      <div class="main-content">
+        <header>
+            <h1>Question & Answer</h1>
+        </header>
+        <div class="inner-container">
+            <div id="qna-list">
+                <div class="qna-item">
+                    <div class="question-container">
+                        <div class="user-icon">A</div>
+                        <div class="question-content">
+                            <div class="username">anonim</div>
+                            <div class="question-text">Question: Bagaimana blBalbalabalbabla... ?</div>
+                        </div>
+                    </div>
+                    <div class="answer-container">
+                        <div class="answer-text">Answer: BLABLABLABLABLABLABLABLABLABLABLABLABLABLABLA</div>
+                    </div>
+                </div>
+                <div class="qna-item">
+                    <div class="question-container">
+                        <div class="user-icon">A</div>
+                        <div class="question-content">
+                            <div class="username">anonim</div>
+                            <div class="question-text">Question: Bagaimana blBalbalabalbabla... ?</div>
+                        </div>
+                    </div>
+                    <div class="answer-container">
+                        <input type="text" placeholder="Ketik Jawaban Disini" class="answer-input">
+                        <button class="submit-answer">
+                            <img src="send-icon.png" alt="Send" class="send-icon">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+      </div>
+    </div>
+
+    <script src="apiDasboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+    --color-default: #35A2DB;
+    --color-second: #0067ac;
+    --color-white: #fff;
+    --color-body: #ffffff;
+    --color-light: #e0e0e0;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--color-body);
+    display: flex;
+    justify-content: left;
+    margin-left: 10%;
+    align-items: left;
+    min-height: 100vh;
+}
+
+.main-content {
+    background-color: var(--color-white);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+header {
+    text-align: left;
+    color: var(--color-default);
+    margin-bottom: 20px;
+
+}
+
+header h1 {
+    font-size: 35px;
+    font-weight: 900;
+}
+
+.inner-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.qna-item {
+    background-color: var(--color-light);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.question-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--color-default);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-white);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.question-content {
+    flex-grow: 1;
+}
+
+.username {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.question-text {
+    font-size: 14px;
+}
+
+.answer-container {
+    background-color: var(--color-default);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.answer-text {
+    color: var(--color-white);
+}
+
+.answer-input {
+    flex-grow: 1;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    outline: none;
+}
+
+.submit-answer {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.send-icon {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+}
