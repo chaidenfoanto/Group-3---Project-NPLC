@@ -298,3 +298,42 @@ h1 {
     font-size: 12px;
     padding-top: 2px; /* Mengurangi jarak antara pesan dan input */
 }
+
+.inner-container input,textarea, select {
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #212b27;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.inner-container .placeholder {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-size: 16px;
+    padding: 0px 5px;
+    color: #666;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.inner-container input:focus + .placeholder,
+.inner-container textarea:focus + .placeholder,
+.inner-container input.not-empty + .placeholder,
+.inner-container textarea.not-empty + .placeholder,
+.inner-container select:focus + .placeholder,
+.inner-container select.not-empty + .placeholder {
+    top: -6px;
+    color: #000000;
+    background-color: white;
+}
