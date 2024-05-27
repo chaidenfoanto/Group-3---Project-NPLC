@@ -26,5 +26,4 @@ function closePopup() {
     popupOverlay.style.zIndex = "100";
 }
 
-
 popupOverlay.addEventListener('click', closePopup);

@@ -1,0 +1,176 @@
+document.addEventListener('DOMContentLoaded', function () {
+    function showErrorMessage(inputElement, message) {
+        const errorMessageElement = document.getElementById(inputElement.id + 'Error');
+        errorMessageElement.textContent = message;
+        errorMessageElement.style.display = 'block';
+    }
+
+    function hideErrorMessage(inputElement) {
+        const errorMessageElement = document.getElementById(inputElement.id + 'Error');
+        errorMessageElement.textContent = '';
+        errorMessageElement.style.display = 'none';
+    }
+
+    function validateInputs(inputs) {
+        let isValid = true;
+        let hasError = false;
+    
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                showErrorMessage(input, 'Harap isi semua data dengan lengkap.');
+                isValid = false;
+                hasError = true;
+            } else {
+                hideErrorMessage(input);
+            }
+        });
+    
+        const fileInputs = inputs.filter(input => input.type === 'file');
+        const anyFileUploaded = fileInputs.some(input => input.files[0]);
+        if (!anyFileUploaded && !hasError) {
+            fileInputs.forEach(input => {
+                showErrorMessage(input, 'Harap pilih file foto.');
+            });
+            isValid = false;
+        }
+    
+        return isValid;
+    }
+    
+
+    const registerForm = document.querySelector('.form-container.register form');
+    registerForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const inputs = [
+            document.getElementById('teamName'),
+            document.getElementById('schoolName'),
+            document.getElementById('player1'),
+            document.getElementById('player2'),
+            document.getElementById('player3'),
+            document.getElementById('guruPendamping'),
+            document.getElementById('whatsapp'),
+            document.getElementById('category'),
+            document.getElementById('photo1'),
+            document.getElementById('photo2'),
+            document.getElementById('photo3'),
+            document.getElementById('paymentProof')
+        ];
+
+        if (!validateInputs(inputs)) {
+            return;
+        }
+
+        const photoInputs = [
+            { input: document.getElementById('photo1'), preview: document.getElementById('photoPreview1') },
+            { input: document.getElementById('photo2'), preview: document.getElementById('photoPreview2') },
+            { input: document.getElementById('photo3'), preview: document.getElementById('photoPreview3') },
+            { input: document.getElementById('paymentProof'), preview: document.getElementById('paymentProofPreview') }
+        ];
+
+        let isPhotoValid = true;
+        photoInputs.forEach(photoInput => {
+            const input = photoInput.input;
+            const preview = photoInput.preview;
+            if (!input.files[0]) {
+                showErrorMessage(input, 'Harap pilih file foto.');
+                isPhotoValid = false;
+            } else {
+                hideErrorMessage(input);
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        
+        if (!isPhotoValid) {
+            return;
+        }
+
+        const formData = new FormData(registerForm);
+
+        fetch('https://bot.telkom.club/Warredion/public/api/register', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response from API:', data);
+            if (data.status === 'success') {
+                // Menampilkan popup jika pendaftaran berhasil
+                const popup = document.getElementById('registerSuccessPopup');
+                popup.classList.add('open-popup');
+
+                // Reset formulir setelah popup ditutup
+                const okButton = document.getElementById('okButton');
+                okButton.addEventListener('click', function() {
+                    popup.classList.remove('open-popup');
+                    registerForm.reset();
+                });
+            } else {
+                console.error('Pendaftaran gagal:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    const loginForm = document.querySelector('.form-container.log-in form');
+    loginForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const username = loginForm.querySelector('input[placeholder="Username"]').value.trim();
+        const password = loginForm.querySelector('input[placeholder="Password"]').value.trim();
+
+        if (!username || !password) {
+            console.error('Harap isi username dan password!');
+            return;
+        }
+
+        fetch('https://bot.telkom.club/Warredion/public/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log('Response from API:', data);
+            } else {
+                console.error('Login failed:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // Tambahkan event listener untuk input file
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(input => {
+        input.addEventListener('change', function(event) {
+            const preview = document.getElementById(input.id + 'Preview');
+            const file = input.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+});
