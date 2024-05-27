@@ -87,18 +87,6 @@ body {
     margin-top: 5%;
 }
 
-.container input {
-    background-color: #eee;
-    border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
-    margin-bottom: 6%;
-}
-
 .form-container {
     position: absolute;
     top: 0;
@@ -299,16 +287,18 @@ h1 {
     padding-top: 2px; /* Mengurangi jarak antara pesan dan input */
 }
 
-.inner-container input,textarea, select {
+.container input,textarea, select {
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 12px;
     border-radius: 8px;
     width: 100%;
     outline: none;
     box-sizing: border-box;
-    border: 1px solid #212b27;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    margin-bottom: 6%;
 }
 
 .input-group {
@@ -316,24 +306,15 @@ h1 {
     width: 100%;
 }
 
-.inner-container .placeholder {
+.container .placeholder {
+    top: 0px;
+    color: #000000;
+    background-color: white;
     position: absolute;
-    top: 18px;
-    left: 18px;
-    font-size: 16px;
+    left: 15px;
+    font-size: 12px;
     padding: 0px 5px;
     color: #666;
     transition: 0.3s;
     pointer-events: none;
-}
-
-.inner-container input:focus + .placeholder,
-.inner-container textarea:focus + .placeholder,
-.inner-container input.not-empty + .placeholder,
-.inner-container textarea.not-empty + .placeholder,
-.inner-container select:focus + .placeholder,
-.inner-container select.not-empty + .placeholder {
-    top: -6px;
-    color: #000000;
-    background-color: white;
 }

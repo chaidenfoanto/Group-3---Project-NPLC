@@ -14,44 +14,89 @@
                 <h1 style="text-align: right;">Register</h1>
                 <span>Silakan daftarkan tim anda!</span>
                 <div class="input-register">
-                    <input type="text" placeholder="Team Name" id="teamName">
-                    <span class="error-message" id="teamNameError"></span>
-                    <input type="text" placeholder="School Name" id="schoolName">
-                    <span class="error-message" id="schoolNameError"></span>
-                    <input type="text" placeholder="Player 1" id="player1">
-                    <span class="error-message" id="player1Error"></span>
-                    <input type="file" id="photo1" name="photo1">
-                    <span class="error-message" id="photo1Error"></span>
-                    <img id="photo1Preview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <input type="text" placeholder="Player 2" id="player2">
-                    <span class="error-message" id="player2Error"></span>
-                    <input type="file" id="photo2" name="photo2">
-                    <span class="error-message" id="photo2Error"></span>
-                    <img id="photo2Preview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <input type="text" placeholder="Player 3" id="player3">
-                    <span class="error-message" id="player3Error"></span>
-                    <input type="file" id="photo3" name="photo3">
-                    <span class="error-message" id="photo3Error"></span>
-                    <img id="photo3Preview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <input type="text" placeholder="Nama Guru Pendamping" id="guruPendamping">
-                    <span class="error-message" id="guruPendampingError"></span>
-                    <input type="text" placeholder="No. Whatsapp Perwakilan" id="whatsapp">
-                    <span class="error-message" id="whatsappError"></span>
-                    <input type="text" placeholder="Category" id="category">
-                    <span class="error-message" id="categoryError"></span>
-                    <input type="file" id="paymentProof" name="paymentProof">
-                    <span class="error-message" id="paymentProofError"></span>
-                    <img id="paymentProofPreview" src="#" alt="Pratinjau Foto" style="display: none; max-width: 100px;">
-                    <button type="submit">Register</button>
+                    <div class="input-group">
+                        <input type="text" id="teamName">
+                        <label class="placeholder">Nama Tim</label>
+                        <span class="error-message" id="teamNameError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="schoolName">
+                        <label class="placeholder">Nama Sekolah</label>
+                        <span class="error-message" id="schoolNameError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="player1">
+                        <label class="placeholder">Player 1</label>
+                        <span class="error-message" id="player1Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="photo1" name="photo1">
+                        <label class="placeholder">Foto Player 1</label>
+                        <span class="error-message" id="photo1Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="player2">
+                        <label class="placeholder">Player 2</label>
+                        <span class="error-message" id="player2Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="photo2" name="photo2">
+                        <label class="placeholder">Foto Player 2</label>
+                        <span class="error-message" id="photo2Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="player3">
+                        <label class="placeholder">Player 3</label>
+                        <span class="error-message" id="player3Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="photo3" name="photo3">
+                        <label class="placeholder">Foto Player 3</label>
+                        <span class="error-message" id="photo3Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="guruPendamping">
+                        <label class="placeholder">Nama Guru Pendamping</label>
+                        <span class="error-message" id="guruPendampingError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="whatsapp">
+                        <label class="placeholder">No. Whatsapp Perwakilan</label>
+                        <span class="error-message" id="whatsappError"></span>
+                    </div>
+                    <div class="input-group">
+                        <select id="category" name="category">
+                            <option value="Kategori 1"></option>
+                            <option value="Kategori 2"></option>
+                          </select>
+                          <label class="placeholder">Kategori</label>
+                          <span class="error-message" id="categoryError"></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="file" id="paymentProof" name="paymentProof">
+                            <label for="placeholder">Bukti Pembayaran</label>
+                            <span class="error-message" id="paymentProofError"></span>
+                        </div>
+                        <button type="submit">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="form-container log-in">
+                <form>
+                    <h1>Log In</h1>
+                    <span>Silahkan masukkan username dan password.</span>
+                    <div class="input-login">
+                        <div class="input-group">
+                            <input type="text" id="username">
+                            <label class="placeholder">Username</label>
+                            <span class="error-message" id="usernameError"></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="password">
+                            <label class="placeholder">Password</label>
+                            <span class="error-message" id="passwordError"></span>
+                    </div>
                 </div>
-            </form>
-        </div>
-        <div class="form-container log-in">
-            <form>
-                <h1>Log In</h1>
-                <span>Silahkan masukkan username dan password.</span>
-                <input type="text" placeholder="Username">
-                <input type="password" placeholder="Password">
                 <a href="#" onclick="openPopup()">Forget Your Password?</a>
                 <button>Login</button>
             </form>
