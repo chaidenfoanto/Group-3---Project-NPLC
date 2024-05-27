@@ -87,18 +87,6 @@ body {
     margin-top: 5%;
 }
 
-.container input {
-    background-color: #eee;
-    border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
-    margin-bottom: 6%;
-}
-
 .form-container {
     position: absolute;
     top: 0;
@@ -297,4 +285,36 @@ h1 {
     color: red;
     font-size: 12px;
     padding-top: 2px; /* Mengurangi jarak antara pesan dan input */
+}
+
+.container input,textarea, select {
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 12px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    margin-bottom: 6%;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.container .placeholder {
+    top: 0px;
+    color: #000000;
+    background-color: white;
+    position: absolute;
+    left: 15px;
+    font-size: 12px;
+    padding: 0px 5px;
+    color: #666;
+    transition: 0.3s;
+    pointer-events: none;
 }

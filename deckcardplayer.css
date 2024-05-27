@@ -111,10 +111,6 @@
             cursor: pointer;
         }
 
-        .ticket-container button:hover {
-            background-color: var(--color-second);
-        }
-
         table {
             width: 100%;
             /* margin-top: 10px; */
@@ -495,8 +491,3 @@
             }
         }
         
-        @media (max-width: 360px) {
-            .ticket-container i {
-                display: none;
-            }
-        }
