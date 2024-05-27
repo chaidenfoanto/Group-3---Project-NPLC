@@ -20,264 +20,6 @@
         min-height: 100vh;
         }
 
-        .sidebar{
-            min-height: 100vh;
-            width: 78px;
-            padding: 6px 14px;
-            z-index: 99;
-            background-color: var(--color-default);
-            transition: all .5s ease;
-            position: fixed;
-            top:0;
-            left: 0;
-        }
-
-        .sidebar.open{
-        width: 250px;
-        }
-
-        .sidebar .logo_details{
-        height: 60px;
-        display: flex;
-        align-items: center;
-        position: relative;
-        }
-
-        .sidebar .logo_details .icon{
-        opacity: 0;
-        transition: all 0.5s ease ;
-        }
-
-        .sidebar .logo_details .logo_name{
-        color:var(--color-white);
-        font-size: 22px;
-        font-weight: 600;
-        opacity: 0;
-        transition: all .5s ease;
-        }
-
-        .sidebar.open .logo_details .icon,
-        .sidebar.open .logo_details .logo_name{
-        opacity: 1;
-        }
-
-        .sidebar .logo_details #btn{
-        position: absolute;
-        top:50%;
-        right: 0;
-        transform: translateY(-50%);
-        font-size: 23px;
-        text-align: center;
-        cursor: pointer;
-        transition: all .5s ease;
-        }
-
-        .sidebar.open .logo_details #btn{
-        text-align: right;
-        }
-
-        .sidebar i{
-        color:var(--color-white);
-        height: 60px;
-        line-height: 60px;
-        min-width: 50px;
-        font-size: 25px;
-        text-align: center;
-        }
-
-        .sidebar .nav-list{
-        margin-top: 20px;
-        height: 100%;
-        }
-
-        .sidebar li{
-        position: relative;
-        margin:8px 0;
-        list-style: none;
-        }
-
-        .sidebar li .tooltip{
-        position: absolute;
-        top:-20px;
-        left:calc(100% + 15px);
-        z-index: 3;
-        background-color: var(--color-white);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-        padding: 6px 14px;
-        font-size: 15px;
-        font-weight: 400;
-        border-radius: 5px;
-        white-space: nowrap;
-        opacity: 0;
-        pointer-events: none;
-        }
-
-        .sidebar li:hover .tooltip{
-        opacity: 1;
-        pointer-events: auto;
-        transition: all 0.4s ease;
-        top:50%;
-        transform: translateY(-50%);
-        }
-
-        .sidebar.open li .tooltip{
-        display: none;
-        }
-
-        .sidebar input{
-        font-size: 15px;
-        color: var(--color-white);
-        font-weight: 400;
-        outline: none;
-        height: 35px;
-        width: 35px;
-        border:none;
-        border-radius: 5px;
-        background-color: var(--color-default);
-        transition: all .5s ease;
-        }
-
-        .sidebar input::placeholder{
-        color:var(--color-light)
-        }
-
-        .sidebar.open input{
-        width: 100%;
-        padding: 0 20px 0 50px;
-        }
-
-        .sidebar .bx-search{
-        position: absolute;
-        top:50%;
-        left:0;
-        transform: translateY(-50%);
-        font-size: 22px;
-        background-color: var(--color-default);
-        color: var(--color-white);
-        }
-
-        .sidebar li a{
-        display: flex;
-        height: 100%;
-        width: 100%;
-        align-items: center;
-        text-decoration: none;
-        background-color: #35A2DB;
-        position: relative;
-        transition: all .5s ease;
-        z-index: 12;
-        }
-
-        .sidebar li a::after{
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transform: scaleX(0);
-        background-color: var(--color-white);
-        border-radius: 5px;
-        transition: transform 0.5s ease-in-out;
-        transform-origin: left;
-        z-index: -2;
-        }
-
-        .sidebar li a:hover::after{
-        transform: scaleX(1);
-        color:var(--color-default)
-        }
-
-        .sidebar li a .link_name{
-        color:var(--color-white);
-        font-size: 15px;
-        font-weight: 400;
-        white-space: nowrap;
-        pointer-events: auto;
-        transition: all 0.4s ease;
-        pointer-events: none;
-        opacity: 0;
-        }
-
-        .sidebar li a:hover .link_name,
-        .sidebar li a:hover i{
-        transition: all 0.5s ease;
-        color:var(--color-default)
-        }
-
-        .sidebar.open li a .link_name{
-        opacity: 1;
-        pointer-events: auto;
-        }
-
-        .sidebar li i{
-        height: 35px;
-        line-height: 35px;
-        font-size: 18px;
-        border-radius: 5px;
-        }
-
-        .sidebar li.profile{
-        position: fixed;
-        height: 60px;
-        width: 78px;
-        left: 0;
-        bottom:-8px;
-        padding:10px 14px;
-        overflow: hidden;
-        transition: all .5s ease;
-        }
-
-        .sidebar.open li.profile{
-        width: 250px;
-        }
-
-        .sidebar .profile .profile_details{
-        display: flex;
-        align-items: center;
-        flex-wrap:  nowrap;
-        }
-
-        .sidebar li img{
-        height: 45px;
-        width: 45px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-right: 10px;
-        }
-
-        .sidebar li.profile .name,
-        .sidebar li.profile .designation{
-        font-size: 15px;
-        font-weight: 400;
-        color:var(--color-white);
-        white-space: nowrap;
-        }
-
-        .sidebar li.profile .designation{
-        font-size: 12px;
-        }
-
-        .sidebar .profile #log_out{
-        position: absolute;
-        top:50%;
-        right: 0;
-        transform: translateY(-50%);
-        background-color: var(--color-default);
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.5s ease;
-        }
-
-        .sidebar.open .profile #log_out{
-        width: 50px;
-        background: none;
-        }
-        .logo {
-            width: 50px;
-        }
-
         .main-content{
             position: relative;
             /* background-color: var(--color-body); */
@@ -298,12 +40,6 @@
         font-size: 25px;
         font-weight: 500;
         margin: 18px;
-        }
-
-        .sidebar.open ~ .main-content{
-            transition: all .5s ease;
-            left:170px;
-            width: calc(100% - 250px);
         }
 
         header {
@@ -367,7 +103,7 @@
             top: 10px;
             right: 10px;
             background-color: #b4fc71a8;
-            padding: 5px 15px 5px 15px;
+            padding: 2px 15px 2px 15px;
             border-radius: 20px;
         }
 
@@ -376,12 +112,17 @@
             top: 10px;
             right: 10px;
             background-color: #56aff8c7;
-            padding: 5px 15px 5px 15px;
+            padding: 2px 15px 2px 15px;
             border-radius: 20px;
         }
     
         .game-card p {
             margin: 5px 0;
+        }
+
+        .game-card:hover {
+            background-color: #f7f7f7;
+            cursor: pointer;
         }
 
         .badge {
@@ -419,28 +160,97 @@
             width: 6%;
             white-space: nowrap;
         }
-        
-        @media (max-width: 500px) {
-            .header h1 {
-                flex: 1 1 100%;
-                text-align: left;
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
-            .header {
-                flex-direction: column;
-            }
-            .main-content {
-                margin-left: 0;
-                left: 80px;
-            }
-            .sidebar.open ~ .main-content{
-                transition: all .5s ease;
-                left:80px;
-                width: calc(100% - 80px);
-            }
+
+        .gamedetails {
+            background-color: rgba(255, 255, 255);
+            opacity: 0;
+            padding: 20px 0 20px;
+            border-radius: 30px;
+            position: fixed;
+            left: calc(50% + 40px);
+            top: 50%;
+            width: 60%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            transition: all 0.3s ease-in-out;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
         }
-        @media (max-width: 359px) {
+        
+        .gamedetails.open {
+            opacity: 1;
+            z-index: 999;
+            display: flex;
+        }
+        
+        .gamedetails-inner {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .gamedetails h2 {
+            text-align: left;
+            color: var(--color-default);
+            margin: 10px 0;
+        }
+        
+        .game-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .game-content img {
+            max-width: 150px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+
+        .cara-bermain {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        .game-details {
+            width: 100%;
+        }
+        
+        .game-details p {
+            margin: 5px 0;
+            text-align: justify;
+        }
+
+        .btn-ok {
+            font-size: 16px;
+            padding: 10px 40px;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            color: #fff;
+            background-color: var(--color-default);
+            cursor: pointer;
+        }
+
+        .btn-ok:hover {
+            color: #000000;
+            background: transparent; 
+            border: 1px solid var(--color-second);
+        }
+
+        .sidebar.open ~ .main-content .gamedetails {
+            left: calc(125px + 50%);
+        }
+
+        @media (max-width: 375px) {
             .sidebar {
                 flex-direction: row;
                 height: auto;
@@ -448,18 +258,13 @@
                 position: fixed;
                 justify-content: space-around;
             }
-            .main-content {
-                margin-left: 0;
-                left: 0px;
-            }
-            .sidebar.open ~ .main-content{
-                transition: all .5s ease;
-                /* left:80px; */
-                width: calc(100% - 80px);
+            .points, .timer {
+                font-size: 14px;
+                margin: 2px;
             }
         }
 
-        @media (max-width: 780px) {
+        @media (max-width: 768px) {
             table.duel {
                 width: 100%;
                 /* margin-top: 10px; */
@@ -469,5 +274,74 @@
             }
             table.duel td:first-child {
                 width: 40%;
+            }
+
+            h1 {
+                font-size: 35px;
+            }
+
+            .card {
+                font-size: 15px;
+            }
+            .points, .timer {
+                padding: 10px;
+            }
+            header h1 {
+                font-size: 28px;
+            }
+            .points .total, .timer .timeleft {
+                font-size: larger;
+            }
+            .gamedetails {
+                width: 50%;
+                left: calc(125px + ((100%-125px)/2));
+            }
+
+            .game-content img {
+                max-width: 120px;
+                width: 100%;
+                height: auto;
+                border: 1px solid #ccc;
+            }
+            .game-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+
+            .gamedetails h2 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 1120px) {
+            header h1 {
+                flex: 1 1 50%;
+            }
+        }
+
+        @media (max-width: 500px) {
+            header h1 {
+                flex: 1 1 100%;
+            }
+            .header {
+                flex-direction: column;
+            }
+            .main-content {
+                margin-left: 0;
+                left: 75px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            .gamedetails {
+                width: 70%;
+            }
+
+            .sidebar.open ~ .main-content .gamedetails {
+                left: calc(50% + 40px)
             }
         }
