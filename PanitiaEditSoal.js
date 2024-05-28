@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".sidebar").load("sidebarpanitia.html", function() {
+    $(".sidebar").load("sidebarplayer.html", function() {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {
@@ -33,7 +33,7 @@ $(document).ready(function() {
         modal.removeClass("open");
     });
 
-    $('.datacontainer input, .datacontainer textarea').each(function() {
+    $('.inner-container input, .inner-container textarea, .inner-container select').each(function() {
         // Check if the input is not empty on page load
         if ($(this).val() !== '') {
             $(this).addClass('not-empty');
@@ -48,32 +48,4 @@ $(document).ready(function() {
             }
         });
     });
-
-    $('#imageInput').change(function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                $('#cardImage').attr('src', e.target.result);
-                $("#fileSource").text(`File source: ${file.name}`);
-            }
-            reader.readAsDataURL(file);
-        }
-    });
 });
-
-function readMore(btn) {
-    var card = $(btn).closest('.card');
-    var dots = card.find('.dots');
-    var moreText = card.find('.more');
-
-    if (dots.css("display") === "none") {
-        dots.css("display", "inline");
-        $(btn).text("Read more");
-        moreText.css("display", "none");
-    } else {
-        dots.css("display", "none");
-        $(btn).text("Read less");
-        moreText.css("display", "inline");
-    }
-}

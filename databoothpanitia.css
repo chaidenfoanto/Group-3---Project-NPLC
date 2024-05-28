@@ -113,7 +113,7 @@
             border: 1px solid #ccc;
         }
 
-        .inner-container input,textarea, select {
+        .inner-container input, textarea, select {
             border: none;
             margin: 8px 0;
             padding: 10px 15px;
@@ -260,7 +260,7 @@
         }
 
         #howtoplay {
-            flex: 1 100%; /* TextArea akan mengambil 100% lebar dari barisnya */
-            height: 200px; /* Atur tinggi */
-            overflow-y: auto; /* Aktifkan scroll vertikal jika teks melebihi tinggi */
+            flex: 1 100%;
+            height: 200px; 
+            overflow-y: auto;
         }

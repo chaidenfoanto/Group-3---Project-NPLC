@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+    --color-default: #35A2DB;
+    --color-second: #0067ac;
+    --color-white: #fff;
+    --color-body: #ffffff;
+    --color-light: #e0e0e0;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--color-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+}
+
+.main-content {
+    background-color: var(--color-white);
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    width: 100%;
+}
+
+header {
+    text-align: left;
+    color: var(--color-default);
+    margin-bottom: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    z-index: 1000;
+    background-color: var(--color-white);
+}
+
+header h1 {
+    font-size: 35px;
+    font-weight: 900;
+    margin-left: 10%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: calc(100% - 100px); /* Adjust the input width to fill the remaining space */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.sticky-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    background-color: #35a2db;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#questionsContainer {
+    margin-top: 20px;
+    width: 120%;
+    max-width: 600px;
+}
+
+.question {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
