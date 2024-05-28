@@ -343,6 +343,14 @@
         #closeGacha {
             background-image: linear-gradient(to right, #a72e25, #d85959);
         }
+
+        #closeGacha:disabled {
+            background-image: none;
+            background-color: #cccccc; 
+            cursor: not-allowed; 
+            color: #666666;
+            border: 1px solid #999999;
+        }
         
         .roll:hover {
             color: #000000;
@@ -350,7 +358,7 @@
             border: 1px solid var(--color-second);
         }
 
-        #closeGacha:hover {
+        #closeGacha:not(:disabled):hover {
             color: #000000;
             background: transparent; 
             border: 1px solid #ff0000;

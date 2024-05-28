@@ -18,6 +18,7 @@ $(document).ready(function() {
 
     const dice = $('.dice');
     const rollBtn = $('.roll');
+    const closeBtn = $("#closeGacha");
 
     const randomDice = () => {
         const random = Math.floor(Math.random() * 10);
@@ -30,6 +31,8 @@ $(document).ready(function() {
     }
 
     const rollDice = (random) => {
+        closeBtn.prop('disabled', true);
+
         dice.css('animation', 'rolling 4s');
 
         dice.one('animationend', function() {
@@ -59,13 +62,13 @@ $(document).ready(function() {
             dice.css('animation', 'none');
             $(".container-dice").removeClass("open");
             $(".gacharesult").addClass("open");
+            closeBtn.prop('disabled', false);
         });
     }
 
     rollBtn.click(randomDice);
 
     const openBtn = $("#rollButton");
-    const closeBtn = $("#closeGacha");
     const modal = $(".container-dice");
     const closeresult = $("#closeResult");
 
