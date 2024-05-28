@@ -18,7 +18,7 @@ public class Panitia {
     @Column(name = "username", length = 50, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "nama", length = 255, nullable = false)
+    @Column(name = "nama", length = 50, nullable = false)
     private String nama;
 
     @Column(name = "passusr", length = 255, nullable = false)

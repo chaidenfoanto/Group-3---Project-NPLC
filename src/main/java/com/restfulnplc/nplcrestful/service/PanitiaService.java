@@ -45,4 +45,5 @@ public class PanitiaService {
         panitiaRepository.save(newPanitia);
         return newPanitia;
     }
+    
 }

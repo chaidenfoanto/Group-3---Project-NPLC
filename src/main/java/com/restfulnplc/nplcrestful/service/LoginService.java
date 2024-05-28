@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.restfulnplc.nplcrestful.dto.LoginDTO;
 import com.restfulnplc.nplcrestful.model.Login;
 import com.restfulnplc.nplcrestful.model.Panitia;
+import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.model.Role;
 import com.restfulnplc.nplcrestful.repository.LoginRepository;
 import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
@@ -25,13 +26,38 @@ public class LoginService {
     @Autowired
     private PanitiaService panitiaService;
 
+    @Autowired
+    private TeamService teamService;
+
     public Optional<Login> LoginPanitia(LoginDTO loginDTO)
     {
         Optional<Panitia> panitiaOptional = panitiaService.findPanitiaByUsername(loginDTO.getUsername());
         if (panitiaOptional.isPresent()) {
             Panitia panitia = panitiaOptional.get();
             if(passwordMaker.matchPassword(loginDTO.getPassword(), panitia.getPassword())){
+                Optional<Login> sessionActive = getLoginSessionByUser(panitia.getIdPanitia());
+                if(sessionActive.isPresent()){
+                    deleteSession(sessionActive.get().getToken());
+                }
                 Login session = new Login(panitia.getIdPanitia(), passwordMaker.hashPassword(panitia.getIdPanitia()), Role.PANITIA);
+                loginRepository.save(session);
+                return Optional.of(session);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Login> LoginPlayer(LoginDTO loginDTO)
+    {
+        Optional<Team> teamOptional = teamService.findTeamByUsername(loginDTO.getUsername());
+        if (teamOptional.isPresent()) {
+            Team team = teamOptional.get();
+            if(passwordMaker.matchPassword(loginDTO.getPassword(), team.getPassUsr())){
+                Optional<Login> sessionActive = getLoginSessionByUser(team.getIdTeam());
+                if(sessionActive.isPresent()){
+                    deleteSession(sessionActive.get().getToken());
+                }
+                Login session = new Login(team.getIdTeam(), passwordMaker.hashPassword(team.getIdTeam()), Role.PLAYERS);
                 loginRepository.save(session);
                 return Optional.of(session);
             }
@@ -42,5 +68,34 @@ public class LoginService {
     public boolean checkAdminPassword(String password)
     {
         return passwordMaker.matchPassword(password, encodedAdminPassword);
+    }
+
+    public boolean checkSessionAlive(String token)
+    {
+        return loginRepository.findById(token).isPresent();
+    }
+
+    public Login getLoginSession(String token)
+    {
+        return loginRepository.findById(token).get();
+    }
+
+    public Optional<Login> getLoginSessionByUser(String userId)
+    {
+        for(Login session : loginRepository.findAll()){
+            if(session.getIdUser().equals(userId)) return Optional.of(session);
+        }
+        return Optional.empty();
+    }
+
+    public boolean userIsLoggedIn(String userId)
+    {
+        if(getLoginSessionByUser(userId).isPresent()) return true;
+        return false;
+    }
+
+    public void deleteSession(String token)
+    {
+        loginRepository.deleteById(token);
     }
 }

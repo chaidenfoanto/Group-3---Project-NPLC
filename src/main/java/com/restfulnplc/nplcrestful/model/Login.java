@@ -53,13 +53,4 @@ public class Login {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-            " idUser='" + getIdUser() + "'" +
-            ", token='" + getToken() + "'" +
-            ", role='" + getRole() + "'" +
-            "}";
-    }
-
 }
