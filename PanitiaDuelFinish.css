@@ -23,10 +23,10 @@
         .main-content h1, h2{
             color: #35A2DB;
             font-weight:900;
-            margin-left: 2%;
+            margin-left: 10px;
         }
         .main-content h2{
-            margin-top: 3%;
+            margin-top: 10px;
         }
 
         .main-content{
@@ -77,14 +77,14 @@
             align-items: center;
             background-color: #fff;
             border-radius: 8px;
-            padding: 10px 20px;
-            margin-left: -1%;
+            padding: 15px 0;
         }
         .team {
             display: flex;
             align-items: center;
             flex: 1;
             margin: 0 10px;
+            width: 100%;
         }
         .vs {
             font-size: 28px;
@@ -99,6 +99,7 @@
         }
         
         .start button {
+            box-sizing: border-box;
             background: #35A2DB;
             color: white;
             border: none;
@@ -106,7 +107,7 @@
             border-radius: 15px;
             text-align: center;
             cursor: pointer;
-            margin-right: 3.5%;
+            margin-right: 10px;
             filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
         }
         
@@ -246,33 +247,49 @@
         }
 
         .history-item {
+            border: 1px solid #ccc;
             margin: 10px;
             padding: 10px;
-            border: 1px solid #ccc;
             border-radius: 5px;
         }
-        
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
+
+        .winner {
+            color: white;
+            background-color: #B57F80;
+            padding: 0 10px;
         }
         
-        .history-table th, .history-table td {
-            border: 1px solid #ccc;
-            padding: 8px;
+        .history-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .history-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+            margin: 2px;
+            box-sizing: border-box;
+        }
+
+        .team {
+            flex: 1 1 20%;
+        }
+
+        .time {
+            flex: 1 1 10%;
+        }
+        
+        .history-cell[data-label="VS"] {
+            flex: 0 0 auto;
             text-align: center;
         }
-        
-        .history-table th {
-            background-color: #f4f4f4;
-        }
-        
-        .history-table td {
-            white-space: nowrap;
-        }
-        
-        .history-table td:nth-child(4), .history-table td:nth-child(5) {
-            font-weight: bold;
+
+        #history .noteam {
+            margin: 10px;
         }
         
 
@@ -286,7 +303,7 @@
         }
         
         .main-content {
-            margin-left: 0;
+            margin-left: 75px;
         }
         
         .start {
@@ -299,22 +316,17 @@
             flex-direction: column;
         }
         .team {
-            margin: 10px 0;
+            margin: 0;
         }
                 
         .vs {
-            margin: 10px 0;
+            margin: 0;
         }
     }
     @media (max-width: 768px) {
-        .header h1 {
-            flex: 1 1 100%;
-            text-align: center;
+        header h1 {
+            font-size: 30px;
             margin-bottom: 10px;
-        }
-    
-        .header {
-            flex-direction: column;
         }
     
         .matchup-container {
@@ -324,27 +336,21 @@
         .start button {
             width: auto;
         }
-        .history-table th, .history-table td {
-            display: block;
-            text-align: left;
-            width: 100%;
-            box-sizing: border-box;
+
+        .history-row {
+            flex-direction: row;
+            font-size: 12px;
         }
-    
-        .history-table th {
-            display: none; /* Hide table headers on small screens */
+        .history-cell {
+            flex-direction: row;
         }
-    
-        .history-table td:before {
-            content: attr(data-label);
-            font-weight: bold;
-            display: inline-block;
-            width: 120px; /* Adjust width as needed */
-            box-sizing: border-box;
+
+        .team {
+            flex: 1 1 100%;
         }
-    
-        .history-table tr {
-            display: block;
-            margin-bottom: 10px;
+
+        .time {
+            flex: 1 1 100%;
         }
+
     }

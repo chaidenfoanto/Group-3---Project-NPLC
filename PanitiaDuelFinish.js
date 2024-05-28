@@ -48,6 +48,14 @@ $(document).ready(function() {
 
     $('#timeStarted, #timeFinished').on('change', calculateDuration);
 
+    function checkHistory() {
+        if ($('#history').is(':empty')) {
+            $('#history').html('<p class = "noteam">There are no team playing in your booth yet...</p>');
+        }
+    }
+
+    checkHistory();
+
     $('.matchup-container select, .modal-content select, .modal-content input').each(function() {
         // Check if the input is not empty on page load
         if ($(this).val() !== '') {
@@ -66,6 +74,9 @@ $(document).ready(function() {
 
     $('.startButton').on('click', function() {
         $('#gameEndModal').show();
+        setCurrentTime('#timeStarted');
+        setCurrentTime('#timeFinished');
+        calculateDuration();
     });
 
     $('.close').on('click', function() {
@@ -95,30 +106,17 @@ $(document).ready(function() {
 
         const historyItem = $(`
         <div class="history-item">
-            <table class="history-table">
-                <thead>
-                    <tr>
-                        <th>Team Name</th>
-                        <th></th>
-                        <th>Team Name</th>
-                        <th>Time Started</th>
-                        <th>Time Finished</th>
-                        <th>Duration</th>
-                        <th>Winning Team</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>${team1}</td>
-                        <td>VS</td>
-                        <td>${team2}</td>
-                        <td>${timeStarted}</td>
-                        <td>${timeFinished}</td>
-                        <td>${duration}</td>
-                        <td>${winningTeam}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="history-row">
+                <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                <p class="${team1 === winningTeam ? 'winner' : ''}">${team1}</p></div>
+                <div class="history-cell" data-label="VS">VS</div>
+                <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                <p class="${team2 === winningTeam ? 'winner' : ''}">${team2}</p></div>
+                <div class="history-cell time" data-label="Time Started"><p>Time Started</p><p>${timeStarted}</p></div>
+                <div class="history-cell" data-label="VS">-</div>
+                <div class="history-cell time" data-label="Time Finished"><p>Time Finished</p><p>${timeFinished}</p></div>
+                <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${duration}</p></div>
+            </div>
         </div>
     `);
 
@@ -126,5 +124,8 @@ $(document).ready(function() {
 
         $('#gameEndModal').hide();
         $('#gameEndForm')[0].reset();
+        $('#history .noteam').remove();  // Remove the no team message if a new history item is added
     });
+
+    $('#history').bind('DOMNodeInserted DOMNodeRemoved', checkHistory);
 });
