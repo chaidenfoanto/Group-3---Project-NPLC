@@ -119,60 +119,45 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
     // });
 
-    // Mengambil referensi ke elemen formulir login, popup, dan overlay popup dari dokumen HTML
+   
     const loginForm = document.querySelector('.form-container.log-in form');
     const popup = document.getElementById('popup');
     const popupOverlay = document.getElementById('popup-overlay');
     const popupMessage = document.querySelector('.popup p');
 
-    // Menambahkan event listener untuk menangani pengiriman formulir login
     loginForm.addEventListener('submit', async (event) => {
-        // Mencegah perilaku bawaan pengiriman formulir yang memuat ulang halaman
         event.preventDefault();
         
-        // Mengambil nilai username dan password dari input formulir login
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
         try {
-            // Mengirim permintaan POST ke endpoint login server dengan menggunakan fetch API
             const response = await fetch('http://localhost:8080/api/login/process_login_panitia', {
-                method: 'POST', // Metode permintaan adalah POST
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // Tipe konten yang dikirimkan adalah JSON
+                    'Content-Type': 'application/json',
+                    
                 },
-                body: JSON.stringify({ username, password }) // Mengonversi objek ke format JSON dan mengirimkannya sebagai tubuh permintaan
+                body: JSON.stringify({ username, password })
             });
 
-            // Mengonversi respons JSON menjadi objek JavaScript
             const result = await response.json();
 
-            // Memeriksa apakah respons adalah sukses dan jenis layanan adalah "Login Panitia"
             if (response.ok && result.service === "Login Panitia") {
-                // Jika login berhasil, ambil token dari respons API
-                const token = result.data.token;
-
-                // Simpan token di localStorage untuk digunakan di sesi selanjutnya
-                localStorage.setItem('authToken', token);
-
-                // Setelah token diperoleh, arahkan pengguna ke halaman dashboard player
-                window.location.href = 'dashboardplayer.html';
-
+                window.location.href = "dashboardplayer.html"
+                // You can also perform additional actions like storing token in localStorage
             } else {
-                // Jika login gagal, tampilkan pesan kesalahan kepada pengguna
                 popupMessage.textContent = 'Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.');
                 popup.style.display = 'block';
                 popupOverlay.style.display = 'block';
             }
         } catch (error) {
-            // Tangani kesalahan jika ada kesalahan saat melakukan permintaan
             popupMessage.textContent = 'Login gagal: ' + error.message;
             popup.style.display = 'block';
             popupOverlay.style.display = 'block';
         }
     });
 
-    // Fungsi untuk menutup popup
     window.closePopup = function() {
         popup.style.display = 'none';
         popupOverlay.style.display = 'none';
