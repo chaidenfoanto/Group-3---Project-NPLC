@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // });
 
    
+    
     const loginForm = document.querySelector('.form-container.log-in form');
     const popup = document.getElementById('popup');
     const popupOverlay = document.getElementById('popup-overlay');
@@ -136,7 +137,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    
                 },
                 body: JSON.stringify({ username, password })
             });
@@ -144,8 +144,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
 
             if (response.ok && result.service === "Login Panitia") {
-                window.location.href = "dashboardplayer.html"
-                // You can also perform additional actions like storing token in localStorage
+                const token = result.data.token;
+                // Set token in cookie
+                document.cookie = `authToken=${token}; path=/`;
+                // Redirect to dashboard
+                window.location.href = "dashboardplayer.html";
             } else {
                 popupMessage.textContent = 'Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.');
                 popup.style.display = 'block';
