@@ -1,19 +1,15 @@
 package com.restfulnplc.nplcrestful.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restfulnplc.nplcrestful.dto.LoginDTO;
-import com.restfulnplc.nplcrestful.dto.PanitiaDTO;
 import com.restfulnplc.nplcrestful.model.Login;
 import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.model.Role;
 import com.restfulnplc.nplcrestful.repository.LoginRepository;
-import com.restfulnplc.nplcrestful.repository.PanitiaRepository;
-import com.restfulnplc.nplcrestful.service.PanitiaService;
 import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 
 @Service
@@ -22,9 +18,6 @@ public class LoginService {
 
     @Autowired
     private LoginRepository loginRepository;
-
-    @Autowired
-    private PanitiaRepository panitiaRepository;
 
     @Autowired
     private PasswordHasherMatcher passwordMaker;

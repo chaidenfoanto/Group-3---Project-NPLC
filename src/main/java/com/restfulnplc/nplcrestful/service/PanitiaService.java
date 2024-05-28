@@ -6,13 +6,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.restfulnplc.nplcrestful.dto.PanitiaDTO;
 import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.repository.PanitiaRepository;
+import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 
 @Service
 public class PanitiaService {
     @Autowired
     private PanitiaRepository panitiaRepository;
+
+    @Autowired
+    private PasswordHasherMatcher passwordMaker;
 
     public Optional<Panitia> findPanitiaByUsername(String username)
     {
