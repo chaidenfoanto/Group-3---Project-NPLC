@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panitia Duel Finish Game</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="PanitiaDuelFinish.css">
+    <link rel="stylesheet" href="sidebarpanitia.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="PanitiaDuelFinish.js"></script>
+        
+    <div class = "container">    
+<div class="sidebar"></div>
+  <div class="main-content">
+    <header>
+        <h1>Selamat datang Penjaga Booth!</h1>
+        <div class="timer">
+          <p>Remaining Time:</p>
+          <p class="timeleft">
+            <i class="fa-regular fa-clock" style="color: #000000"></i>
+            00:00
+          </p>
+        </div>
+    </header>
+    <h2>Nama Booth</h2>
+
+    <div class="matchup-container">
+        <div class="team">
+          <div class="input-group">
+              <select id="team1">
+                  <option value=""></option>
+                  <option value="Anak Pak Dengklek">Anak Pak Dengklek</option>
+                  <option value="Notionaries">Notionaries</option>
+              </select>
+              <label class = "placeholder">Team Name</label>
+          </div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <div class="input-group">
+            <select id="team2">
+                <option value=""></option>
+                <option value="Team 1">Team 1</option>
+                <option value="Team 2">Team 2</option>
+            </select>
+            <label class = "placeholder">Team Name</label>
+        </div>
+      </div>
+    </div>
+        <div class="start">
+            <button class="startButton">Start Game</button>
+        </div>
+
+        <h2>History</h2>
+        <div id="history"></div>
+
+      <div id="gameEndModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1>Game Has Ended</h1>
+            <form id = "gameEndForm">
+              <div class = "input-group">
+                <select id="winningTeam">
+                    <option value=""></option>
+                    <option value="Team 1">Team 1</option>
+                    <option value="Team 2">Team 2</option>
+                </select>
+                <label class = "placeholder" for="winningTeam">Winning Team</label>
+              </div>
+                <div class="time-container">
+                    <div class = "input-group">
+                        <input type="time" id="timeStarted">
+                        <label class = "placeholder" for="timeStarted">Time Started</label>
+                    </div>
+                    <div class = "input-group">
+                        <input type="time" id="timeFinished">
+                        <label class = "placeholder" for="timeFinished">Time Finished</label>
+                    </div>
+                    <div class = "input-group">
+                        <input type="text" id="duration">
+                        <label class = "placeholder" for="duration">Duration</label>
+                    </div>
+                </div>
+                <p id="pointsMessage">100 POINTS WILL BE GIVEN TO ...</p>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+  </div>
+</div>
+</body>
