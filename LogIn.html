@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="LogIn.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Login</title>
 </head>
 <body>
     <div class="container" id="container">
-        <div class="form-container register">
+        <!-- <div class="form-container register">
             <form>
                 <h1 style="text-align: right;">Register</h1>
                 <span>Silakan daftarkan tim anda!</span>
@@ -74,15 +75,15 @@
                         </div>
                         <div class="input-group">
                             <input type="file" id="paymentProof" name="paymentProof">
-                            <label for="placeholder">Bukti Pembayaran</label>
+                            <label class="placeholder">Bukti Pembayaran</label>
                             <span class="error-message" id="paymentProofError"></span>
                         </div>
                         <button type="submit">Register</button>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <div class="form-container log-in">
-                <form>
+                <form action="http://localhost:8080/api/login/process_login_panitia" method="post">
                     <h1>Log In</h1>
                     <span>Silahkan masukkan username dan password.</span>
                     <div class="input-login">
@@ -90,11 +91,13 @@
                             <input type="text" id="username">
                             <label class="placeholder">Username</label>
                             <span class="error-message" id="usernameError"></span>
+                            <i class="bx bxs-user" ></i>
                         </div>
                         <div class="input-group">
                             <input type="password" id="password">
                             <label class="placeholder">Password</label>
                             <span class="error-message" id="passwordError"></span>
+                            <i class="bx bxs-lock-alt"></i>
                     </div>
                 </div>
                 <a href="#" onclick="openPopup()">Forget Your Password?</a>
@@ -103,23 +106,26 @@
         </div>
         <div class="toggle-container">
             <div class="toggle">
-                <div class="toggle-panel toggle-left">
+                <!-- <div class="toggle-panel toggle-left">
                     <h1 style="text-align: left; margin-right: auto;">Selamat datang Players!</h1>
                     <p style="text-align: left;">Siapkan dirimu untuk tantangan terbesar dalam logika dan pemrograman! 
                     Bergabunglah di lomba 11th National Programming & Logic Competition sekarang!</p>
                     <p style="text-align: left;">Tunjukkan kemampuanmu, temukan inspirasimu, dan jadilah bagian dari komunitas coder yang hebat! 
                     Mari bersama-sama menciptakan masa depan teknologi yang lebih cerah dan menyenangkan!</p>
                     <button class="hidden" id="login">Log In</button>
-                </div>
+                </div> -->
                 <div class="toggle-panel toggle-right">
                     <h1 style="text-align: right; margin-left: auto;">Selamat datang Players!</h1>
                     <p style="text-align: right;">Siapkan dirimu untuk tantangan terbesar dalam logika dan pemrograman! 
                     Bergabunglah di lomba 11th National Programming & Logic Competition sekarang!</p>
                     <p style="text-align: right;">Tunjukkan kemampuanmu, temukan inspirasimu, dan jadilah bagian dari komunitas coder yang hebat! 
                     Mari bersama-sama menciptakan masa depan teknologi yang lebih cerah dan menyenangkan!</p>
-                    <button class="hidden" id="register">Register</button>
+                    <!-- <button class="hidden" id="register">Register</button> -->
                 </div>
             </div>
+        </div>
+        <div class="new-toggle">
+            <h1 style="text-align: center; margin-top: 30px; margin: auto;">Selamat datang Players!</h1>
         </div>
         <div class="popup" id="popup">
             <p>Silahkan menghubungi kakak panitia yang mendampingi untuk menanyakan passwordnya!</p>
@@ -131,3 +137,4 @@
     <script src="LoginValidation.js"></script>
 </body>
 </html>
+

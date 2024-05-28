@@ -8,8 +8,9 @@
 }
 
 body {
-    background: url('img/Background.png');
+    background: url('img/Background.png') no-repeat;
     background-size: cover;
+    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,12 +22,12 @@ body {
 .container {
     background-color: #fff;
     border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
     width: 768px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 450px;
 }
 
 .container p {
@@ -48,8 +49,10 @@ body {
     font-size: 11px;
     text-decoration: underline;
     margin: 0 10px;
+    margin-left: auto;
     text-align: right;
     margin-bottom: 5%;
+    max-width: fit-content;
 }
 
 .register span {
@@ -77,7 +80,6 @@ body {
 }
 
 .container form {
-    background-color: #fff;
     display: flex;
     align-items: left;
     justify-content: center;
@@ -110,7 +112,7 @@ h1 {
     transform: translateX(100%);
 }
 
-.register {
+/* .register {
     left: 0;
     width: 50%;
     opacity: 0;
@@ -118,7 +120,7 @@ h1 {
     text-align: right;
     justify-content: right;
     margin-top: -5%;
-}
+} */
 
 .container.active .register {
     transform: translateX(100%);
@@ -127,7 +129,7 @@ h1 {
     animation: move 0.6s;
 }
 
-.input-register {
+/* .input-register {
     height: 200px;
     overflow-y: scroll;
     padding-right: 0px;
@@ -136,7 +138,7 @@ h1 {
 .input-register::-webkit-scrollbar {
     width: 0;
     background: transparent;
-}
+} */
 
 @keyframes move {
     0%, 49.99% {
@@ -157,13 +159,16 @@ h1 {
     height: 100%;
     overflow: hidden;
     transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
+    border-radius: 50px 0 0 50px;
     z-index: 1000;
 }
 
 .container.active .toggle-container {
     transform: translateX(-100%);
     border-radius: 0 150px 100px 0;
+}
+.new-toggle{
+    display: none;
 }
 
 .toggle {
@@ -288,6 +293,7 @@ h1 {
 }
 
 .container input,textarea, select {
+    position: relative;
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
@@ -306,6 +312,15 @@ h1 {
     width: 100%;
 }
 
+.input-group i{
+    background-color: #fff;
+    position: absolute;
+    right: 10px;
+    padding-left: 5px;
+    top: 25%;
+    font-size: 20px;
+}
+
 .container .placeholder {
     top: 0px;
     color: #000000;
@@ -317,4 +332,70 @@ h1 {
     color: #666;
     transition: 0.3s;
     pointer-events: none;
+}
+
+@media (max-width: 675px) {
+    .log-in {
+        width: 100%;
+    }
+    .toggle-container {
+        display: none;
+    }
+    .new-toggle{
+        width: 100%;
+        background-color: #2A9BDB;
+        border-radius: 0 0 50% 50%;
+        top: 0%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+        padding: 40px;
+    }
+    .new-toggle h1{
+        font-size: 15px;
+        color: #fff;
+    }
+    .form-container{
+        top: 8%;
+    }
+    .container {
+        width: 85%; /* Mengubah lebar menjadi 100% */
+        padding: 0 0 20px 0; /* Menghilangkan padding di sisi kiri, kanan, dan atas, tetap mempertahankan padding bawah 20px */
+        box-shadow: none;
+        border-radius: 20px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.35);
+        margin: 20px;
+    }
+    .container span {
+        margin-top: 20px;
+        margin-bottom: 10%;
+    }
+    .container h1 {
+        bottom: -10%;
+        font-size: 18px;
+        margin-bottom: 0px;
+    }
+    .container p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    .container input, .container button {
+        font-size: 14px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    .container button {
+        margin-top: 20px;
+    }
+    .container a {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+    .input-group i {
+        font-size: 16px;
+        top: 40%;
+        transform: translateY(-50%);
+    }
 }
