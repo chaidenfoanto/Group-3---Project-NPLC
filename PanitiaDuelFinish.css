@@ -291,6 +291,17 @@
         #history .noteam {
             margin: 10px;
         }
+
+        .history-item span {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
         
 
     @media (max-width: 480px) {

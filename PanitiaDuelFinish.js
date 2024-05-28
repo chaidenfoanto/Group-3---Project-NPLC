@@ -60,14 +60,17 @@ $(document).ready(function() {
         // Check if the input is not empty on page load
         if ($(this).val() !== '') {
             $(this).addClass('not-empty');
+            $('.input-group .error').text('');
         }
 
         // Add event listener for input events
-        $(this).on('change', function() {
+        $(this).on('input', function() {
             if ($(this).val() !== '') {
                 $(this).addClass('not-empty');
+                $('.input-group .error').text('');
             } else {
                 $(this).removeClass('not-empty');
+                $('.input-group .error').text('Winning team should be filled.');
             }
         });
     });
@@ -103,6 +106,15 @@ $(document).ready(function() {
         const timeStarted = $('#timeStarted').val();
         const timeFinished = $('#timeFinished').val();
         const duration = $('#duration').val();
+
+        if (!winningTeam) {
+            // Display the error message in the span element
+            $('.input-group .error').text('Winning team should be filled.');
+            return;
+        } else {
+            // Remove the error message if it exists
+            $('.input-group .error').text('');
+        }
 
         const historyItem = $(`
         <div class="history-item">
