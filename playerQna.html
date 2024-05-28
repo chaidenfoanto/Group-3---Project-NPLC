@@ -8,54 +8,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="playerQna.css">
     <link rel="stylesheet" href="sidebarplayer.css">
-    <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="playerQna.js"></script>
 </head>
-
 <body>        
-    <div class = "container">
-      <div class="sidebar"></div>
-      <div class="main-content">
-        <header>
-            <h1>Question & Answer</h1>
-        </header>
-        <div class="inner-container">
-            <div id="qna-list">
-                <div class="qna-item">
-                    <div class="question-container">
-                        <div class="user-icon">A</div>
-                        <div class="question-content">
-                            <div class="username">anonim</div>
-                            <div class="question-text">Question: Bagaimana blBalbalabalbabla... ?</div>
-                        </div>
-                    </div>
-                    <div class="answer-container">
-                        <div class="answer-text">Answer: BLABLABLABLABLABLABLABLABLABLABLABLABLABLABLA</div>
-                    </div>
-                </div>
-                <div class="qna-item">
-                    <div class="question-container">
-                        <div class="user-icon">A</div>
-                        <div class="question-content">
-                            <div class="username">anonim</div>
-                            <div class="question-text">Question: Bagaimana blBalbalabalbabla... ?</div>
-                        </div>
-                    </div>
-                    <div class="answer-container">
-                        <input type="text" placeholder="Ketik Jawaban Disini" class="answer-input">
-                        <button class="submit-answer">
-                            <img src="send-icon.png" alt="Send" class="send-icon">
-                        </button>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="sidebar"></div>
+            <div class="main-content">
+                <header>
+                    <h1>Question & Answer</h1>
+                </header> 
+            </div>
+        <div id="questionsContainer">
+            <div class="sticky-input-container">
+                <input type="text" id="questionInput" placeholder="Tuliskan kendala dikolom ini">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAA2tJREFUWEftmEtsDHEcx7+/2W20dfAIB9JKsK2WxKs7WxKEIwmRSCoV202FCok0EdIHeirqeSBEPbuzqSIcnISEOkiqL0SEdmd6YOORegTxqG53fjJrNWs6M1vtbu3BnDb7n/19P/t7zxCS7KIk48F/oFgRGeghZhJ9sodh625zT7sBIo5lJJ7nA4BcXsXDxHURET+Ia0ZnvPTdXbasL57CZrYGADm98gYinNP9IMDA0ZTU1NqmgszviQQbAJRf35WlhlS/ieg7MB8LqinHHxVP/ZgIMMMqEyXlFcCTIoKa8Fid+DcAp1UKHmx3z3wdTzBDIJdXucjEhZoQgbeohE/EVAZgjk68FwwpJNCBB26HEg8wQyCnTykh5towEFNDi8exTvvs9CrLSeByMJboxFUGroGxv82T9XA4YIZAeRc6cwSb8Cxi+E1rUdbv8IW/ckldTmZ1Dwgrw06Muphwy6ZSTbPH0TgUMNNOLUryewDjNaNMoZw2d06nXmC+T3EIzHsI0MKbEn1OQDOIalrWT7/+N73MCugSgLVhEaKdrW7HYbN/LJ5XMmHnCgDFAFJ193UQU036lED9YHqZOZBX3grCiSjjdwQBu5rXZ903A1tU/3xcb19vKRO2/fZu1L0vAD5iT007Y9XLzIHq5FkQ8MRAPCZYXu2rdEr7WkLAdgCZOhuWvcxy2ouS/BbABCOPMNDILFS1e6bfM/PY0sZG+5dARiEBlQByjHoZcV91iydXy9df2WFVCaIkXwWwxrJamG8LNtptFUowk0vqWs3gKhDm/lGV4MdtRdn9/c0ayCtfBqHACmgwntKAnJKySiBUMJA/dCBJ7gYw0QTopspCdayQfQtkeBjYYRQyJpxK+dG7t2njrA8xQyYOI6kXXgmkBXt6Nsc1qUV92Q8iVxJb9lH5Q+CylqLsg2a5NK+hY7I9aC8DuMSgMfqJad/wG2PU6FBDam578YwOPZDT1zEDbKtM+OhYIPlzQ6CnEYB/P1xFn7wFjJO/gPhSa1F2eDdySl0rCFwO8GKdtxK7foiS3D9YtQUNwGcVKCPQbB3IyCxoYnT/YXwCYYy+7Ws9hBE8nPAVVrec6fN45Jd8UVI2AXxaRxIgpkO2tFFnR/wxKOkeFMOD0KeUAoI/KR6lLVeNETj8/zomlpOTzkM/AbHXpjSbmyggAAAAAElFTkSuQmCC"/>    </div>
             </div>
         </div>
     </div>
-        
-      </div>
-    </div>
-
+    <script src="playerQna.js"></script>
     <script src="apiDasboard.js"></script>
 </body>
 </html>

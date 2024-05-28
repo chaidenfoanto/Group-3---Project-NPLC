@@ -8,7 +8,7 @@ $(document).ready(function() {
         });
 
         function menuBtnChange() {
-            if (sidebar.hasClass("open")) {
+            if ($(".sidebar").hasClass("open")) {
                 logo.hide();
             } else {
                 logo.show();
@@ -16,21 +16,23 @@ $(document).ready(function() {
         }
     });
 
-    document.querySelectorAll('.submit-answer').forEach(button => {
-        button.addEventListener('click', function() {
-            const answerInput = this.previousElementSibling;
-            const answerText = answerInput.value.trim();
-            
-            if (answerText) {
-                const answerDiv = document.createElement('div');
-                answerDiv.className = 'answer-text';
-                answerDiv.textContent = 'Answer: ' + answerText;
-                
-                const answerContainer = this.parentElement;
-                answerContainer.innerHTML = '';
-                answerContainer.appendChild(answerDiv);
-            }
-        });
+    // Event listener for the submit button
+    $('#submitBtn').on('click', function() {
+        var questionInput = $('#questionInput');
+        var questionText = questionInput.val().trim();
+
+        if (questionText !== "") {
+            var questionsContainer = $('#questionsContainer');
+
+            var questionElement = $('<div></div>');
+            questionElement.addClass('question');
+            questionElement.text(questionText);
+
+            questionsContainer.append(questionElement);
+
+            questionInput.val(''); // Clear the input field
+        } else {
+            alert('Please enter a question.');
+        }
     });
-    
 });
