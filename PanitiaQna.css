@@ -48,19 +48,17 @@ header h1 {
     font-size: 35px;
     font-weight: 900;
     margin-left: 10%;
-
 }
 
 .container {
     display: flex;
     flex-direction: column;
     flex: 1;
-
 }
 
 input[type="text"] {
     padding: 10px;
-    width: 100%;
+    width: calc(100% - 100px); /* Adjust the input width to fill the remaining space */
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -70,18 +68,13 @@ input[type="text"] {
 .sticky-input-container {
     position: fixed;
     bottom: 0;
-    left: 10%; /* align with body margin */
-    width: 80%; /* width to fill the body, adjust if necessary */
-    background-color: var(--color-body);
+    left: 10%;
+    width: 80%;
+    background-color: #35a2db;
     padding: 10px 0;
     display: flex;
     align-items: center;
-}
-
-.icon {
-    margin: 10px;
-    font-size: 24px; /* Adjust the size as needed */
-    color: #35A2DB;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #questionsContainer {
