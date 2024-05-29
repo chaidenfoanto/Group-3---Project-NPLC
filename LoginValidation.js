@@ -145,13 +145,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok && result.message === "Login Success") {
                 const token = result.data.token;
-                alert(token);
                 // Set token in cookie
-                setCookie("Token", token, 7);
-                alert(getCookie("Token"));
+                setCookie("Token", token, 365);
                 // Redirect to dashboard
                 window.location.href = "dashboardplayer.html";
-                // alert(token);
             } else {    
                 alert("Login Invalid")
                 popupMessage.textContent = 'Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.');
@@ -185,24 +182,4 @@ function setCookie(name, value, daysToLive) {
         document.cookie = cookie;
         alert(cookie)
     }
-}
-
-function getCookie(name) {
-    // Split cookie string and get all individual name=value pairs in an array
-    let cookieArr = document.cookie.split(";");
-    
-    // Loop through the array elements
-    for(let i = 0; i < cookieArr.length; i++) {
-        let cookiePair = cookieArr[i].split("=");
-        
-        /* Removing whitespace at the beginning of the cookie name
-        and compare it with the given string */
-        if(name == cookiePair[0].trim()) {
-            // Decode the cookie value and return
-            return decodeURIComponent(cookiePair[1]);
-        }
-    }
-    
-    // Return null if not found
-    return null;
 }
