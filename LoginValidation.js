@@ -118,13 +118,20 @@ document.addEventListener('DOMContentLoaded', function () {
     //         console.error('Error:', error);
     //     });
     // });
-
-   
     
+    function showErrorMessage(message) {
+        const errorMessageElement = document.getElementById('loginErrorMessage');
+        errorMessageElement.textContent = message;
+        errorMessageElement.style.display = 'block';
+    }
+
+    function hideErrorMessage() {
+        const errorMessageElement = document.getElementById('loginErrorMessage');
+        errorMessageElement.textContent = '';
+        errorMessageElement.style.display = 'none';
+    }
+
     const loginForm = document.querySelector('.form-container.log-in form');
-    const popup = document.getElementById('popup');
-    const popupOverlay = document.getElementById('popup-overlay');
-    const popupMessage = document.querySelector('.popup p');
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -145,41 +152,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok && result.message === "Login Success") {
                 const token = result.data.token;
-                // Set token in cookie
                 setCookie("Token", token, 365);
-                // Redirect to dashboard
                 window.location.href = "dashboardplayer.html";
-            } else {    
-                alert("Login Invalid")
-                popupMessage.textContent = 'Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.');
-                popup.style.display = 'block';
-                popupOverlay.style.display = 'block';
+            } else {
+                showErrorMessage('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
             }
         } catch (error) {
-            popupMessage.textContent = 'Login gagal: ' + error.message;
-            popup.style.display = 'block';
-            popupOverlay.style.display = 'block';
+            showErrorMessage('Login gagal: ' + error.message);
         }
     });
 
-    window.closePopup = function() {
-        popup.style.display = 'none';
-        popupOverlay.style.display = 'none';
-    };
-
-});
-
-function setCookie(name, value, daysToLive) {
-    // Encode value in order to escape semicolons, commas, and whitespace
-    let cookie = name + "=" + encodeURIComponent(value);
-    alert(encodeURIComponent(value))
-    
-    if(typeof daysToLive === "number") {
-        /* Sets the max-age attribute so that the cookie expires
-        after the specified number of days */
-        cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
-        
-        document.cookie = cookie;
-        alert(cookie)
+    function setCookie(name, value, daysToLive) {
+        let cookie = name + "=" + encodeURIComponent(value);
+        if (typeof daysToLive === "number") {
+            cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
+            document.cookie = cookie;
+        }
     }
-}
+});
