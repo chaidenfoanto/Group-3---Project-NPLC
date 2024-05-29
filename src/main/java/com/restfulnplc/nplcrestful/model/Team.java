@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "eam")
+@Table(name = "team")
 public class Team {
 
     @Id
