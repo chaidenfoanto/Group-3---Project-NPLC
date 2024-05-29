@@ -3,11 +3,13 @@ package com.restfulnplc.nplcrestful.controller;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import com.restfulnplc.nplcrestful.util.Response;
 import com.restfulnplc.nplcrestful.model.Login;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/api/login")
 public class LoginController {
     @Autowired
