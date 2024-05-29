@@ -23,6 +23,9 @@ public class TeamService {
     @Autowired
     private PasswordHasherMatcher passwordMaker;
 
+    @Autowired
+    private PlayersService playersService;
+
     public Optional<Team> findTeamByUsername(String username)
     {
         List<Team> listTeam = teamRepository.findAll();
@@ -36,8 +39,9 @@ public class TeamService {
 
     public Team addTeam(TeamDTO teamDTO)
     {
+        String teamID = getNextTeamID();
         Team newTeam = new Team();
-        newTeam.setIdTeam(teamDTO.getIdTeam());
+        newTeam.setIdTeam(teamID);
         newTeam.setNama(teamDTO.getNama());
         newTeam.setUsername(teamDTO.getUsername());
         newTeam.setPassUsr(passwordMaker.hashPassword(teamDTO.getPassUsr()));
@@ -47,9 +51,12 @@ public class TeamService {
         newTeam.setTotalPoin(teamDTO.getTotalPoin());
 
         Set<Players> newPlayers = Collections.<Players>emptySet();
-
+        String playerID = "";
+        
         if(teamDTO.checkPlayer(1)){
+            playerID = playersService.getNextPlayerID();
             Players newPlayer1 = new Players();
+            newPlayer1.setIdPlayer(playerID);
             newPlayer1.setTeam(newTeam);
             newPlayer1.setNama(teamDTO.getNamaPlayer1());
             newPlayer1.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer1()));
@@ -57,7 +64,9 @@ public class TeamService {
         }
 
         if(teamDTO.checkPlayer(2)){
+            playerID = playersService.getNextPlayerID();
             Players newPlayer2 = new Players();
+            newPlayer2.setIdPlayer(playerID);
             newPlayer2.setTeam(newTeam);
             newPlayer2.setNama(teamDTO.getNamaPlayer2());
             newPlayer2.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer2()));
@@ -65,7 +74,9 @@ public class TeamService {
         }
 
         if(teamDTO.checkPlayer(3)){
+            playerID = playersService.getNextPlayerID();
             Players newPlayer3 = new Players();
+            newPlayer3.setIdPlayer(playerID);
             newPlayer3.setTeam(newTeam);
             newPlayer3.setNama(teamDTO.getNamaPlayer3());
             newPlayer3.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer3()));
@@ -76,5 +87,12 @@ public class TeamService {
         teamRepository.save(newTeam);
 
         return newTeam;
+    }
+
+    public String getNextTeamID()
+    {
+        List<Team> teams = teamRepository.findAll();
+        if(teams.size() > 0) return "TEAM" + (Integer.parseInt(teams.getLast().getIdTeam().split("TEAM")[1]) + 1);
+        return "TEAM1";
     }
 }

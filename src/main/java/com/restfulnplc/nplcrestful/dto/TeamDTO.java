@@ -4,7 +4,6 @@ import com.restfulnplc.nplcrestful.model.Kategori;
 
 public class TeamDTO {
 
-    private String idTeam;
     private String nama;
     private String username;
     private String passUsr;
@@ -25,14 +24,6 @@ public class TeamDTO {
             case 2: return (namaPlayer2.equals("")) ? false : true;
             default: return (namaPlayer3.equals("")) ? false : true;
         }
-    }
-
-    public String getIdTeam() {
-        return this.idTeam;
-    }
-
-    public void setIdTeam(String idTeam) {
-        this.idTeam = idTeam;
     }
 
     public String getNama() {

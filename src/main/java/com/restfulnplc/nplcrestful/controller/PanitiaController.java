@@ -13,6 +13,7 @@ import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.Response;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/api/panitia")
 public class PanitiaController {
     
