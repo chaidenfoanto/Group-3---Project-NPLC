@@ -143,13 +143,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const result = await response.json();
 
-            if (response.ok && result.service === "Login Panitia") {
+            if (response.ok && result.message === "Login Success") {
                 const token = result.data.token;
+                alert(token);
                 // Set token in cookie
-                document.cookie = `authToken=${token}; path=/`;
+                setCookie("Token", token, 7);
+                alert(getCookie("Token"));
                 // Redirect to dashboard
                 window.location.href = "dashboardplayer.html";
-            } else {
+                // alert(token);
+            } else {    
+                alert("Login Invalid")
                 popupMessage.textContent = 'Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.');
                 popup.style.display = 'block';
                 popupOverlay.style.display = 'block';
@@ -165,4 +169,40 @@ document.addEventListener('DOMContentLoaded', function () {
         popup.style.display = 'none';
         popupOverlay.style.display = 'none';
     };
+
 });
+
+function setCookie(name, value, daysToLive) {
+    // Encode value in order to escape semicolons, commas, and whitespace
+    let cookie = name + "=" + encodeURIComponent(value);
+    alert(encodeURIComponent(value))
+    
+    if(typeof daysToLive === "number") {
+        /* Sets the max-age attribute so that the cookie expires
+        after the specified number of days */
+        cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
+        
+        document.cookie = cookie;
+        alert(cookie)
+    }
+}
+
+function getCookie(name) {
+    // Split cookie string and get all individual name=value pairs in an array
+    let cookieArr = document.cookie.split(";");
+    
+    // Loop through the array elements
+    for(let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+        
+        /* Removing whitespace at the beginning of the cookie name
+        and compare it with the given string */
+        if(name == cookiePair[0].trim()) {
+            // Decode the cookie value and return
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    
+    // Return null if not found
+    return null;
+}
