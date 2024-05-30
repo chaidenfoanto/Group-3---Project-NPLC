@@ -1,11 +1,15 @@
 $(document).ready(function() {
+    const domain = "http://localhost:8080"
     // const apiURL = 'https://api.example.com/games'; // Ganti dengan URL API yang sesuai
     const gamesList = $('.games-list');
     const totalPointsElement = $('.total');
 
-    fetch('http://localhost:8080/api/login/getSession', {
+    var myHeaders = new Headers()
+    myHeaders.append("Token", getCookie("Token"))
+
+    fetch(domain + '/api/login/getSession', {
         method: 'GET',
-        credentials: 'same-origin' // Untuk mengirimkan cookie yang sesuai dengan domain dan path yang sama
+        headers: myHeaders
     }).then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -14,7 +18,6 @@ $(document).ready(function() {
     }).then(data => {
         if (data.service === "Auth Token") {
             if (data.message === "Authorization Success") {
-                console.log('Session Token:', data.data.token); // Log token sesi
                 setCookie("Token", getCookie("Token"), 365); //Memperbaharui cookie token
             } else {
                 console.log('Authorization Failed');
@@ -128,7 +131,6 @@ function getCookie(name) {
 function setCookie(name, value, daysToLive) {
     // Encode value in order to escape semicolons, commas, and whitespace
     let cookie = name + "=" + encodeURIComponent(value);
-    alert(encodeURIComponent(value))
     
     if(typeof daysToLive === "number") {
         /* Sets the max-age attribute so that the cookie expires
@@ -136,6 +138,5 @@ function setCookie(name, value, daysToLive) {
         cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
         
         document.cookie = cookie;
-        alert(cookie)
     }
 }

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const domain = "http://localhost:8080"
     function showErrorMessage(inputElement, message) {
         const errorMessageElement = document.getElementById(inputElement.id + 'Error');
         errorMessageElement.textContent = message;
@@ -140,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch('http://localhost:8080/api/login/process_login_panitia', {
+            const response = await fetch(domain + '/api/login/process_login_panitia', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
