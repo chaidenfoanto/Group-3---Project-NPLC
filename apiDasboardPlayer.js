@@ -21,12 +21,16 @@ $(document).ready(function() {
                 setCookie("Token", getCookie("Token"), 365); //Memperbaharui cookie token
             } else {
                 console.log('Authorization Failed');
+                deleteCookie("Token"); //menghapus cookie
+                window.location.href = "Login.html";
             }
         } else {
             console.log('Unexpected service response:', data.service);
         }
     }).catch(error => {
         console.error('Error occurred while fetching session:', error);
+        deleteCookie("Token"); //menghapus cookie
+        window.location.href = "Login.html";
     });
     
 
@@ -139,4 +143,8 @@ function setCookie(name, value, daysToLive) {
         
         document.cookie = cookie;
     }
+}
+
+function deleteCookie(name) {
+    document.cookie = name + '=; Max-age=0; path=/;';
 }
