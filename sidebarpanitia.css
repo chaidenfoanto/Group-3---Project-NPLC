@@ -264,12 +264,35 @@ font-size: 12px;
 }
 
 @media (max-width: 500px) {
+    .sidebar .profile #log_out{
+        display: none;
+    }
+
+    .sidebar.open .profile #log_out{
+        display: block;
+    }
+
     .sidebar.open ~ .main-content{
         transition: all .5s ease;
-        left:75px;
-        width: calc(100% - 75px);
+        left:0;
+        width: 100%;
     }
-    .sidebar{
+
+    .sidebar.open {
+        position: fixed;
+        background-color: var(--color-default);
+    }
+
+    .sidebar.open .logo_name {
+        display: block;
+    }
+
+    .sidebar.open .logo_details {
+        position: unset;
+        box-shadow: none;
+        padding: 0;
+    }
+    /* .sidebar{
         min-height: 100vh;
         width: 70px;
         padding: 6px 10px;
@@ -279,5 +302,56 @@ font-size: 12px;
         position: fixed;
         top:0;
         left: 0;
+    } */
+
+    .sidebar {
+        width: 0;
+        overflow: hidden;
+        background-color: transparent;
+        justify-content: flex-start; /* Align children (logo) to the left */
+        transition: all .5s ease;
+    }
+
+    .sidebar .logo_details {
+        width: 100%;
+        position: fixed;
+        z-index: 100;
+        cursor: pointer; /* Optional: makes it clear it's clickable */
+        border: var(--color-default) solid 3px;
+        padding: 7px;
+        left: 0;
+        top: 0;
+        box-sizing: border-box;
+        box-shadow: 5px 5px 5px grey;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        background-color: var(--color-default);
+    }
+
+    .sidebar .logo_name {
+        display: none;
+    }
+
+    /* .sidebar img {
+        border: var(--color-default) solid 3px;
+        padding: 7px 0;
+        box-sizing: border-box;
+        border-radius: 5px;
+        background-color: var(--color-default);
+    } */
+
+    .main-content {
+        top: 50px;
+        left: 0;
+        width: 100%;
+        margin-left: 0px;
+    }
+    .sidebar.open li.profile .name,
+    .sidebar.open li.profile .designation{
+        display: block;
+    }
+    .sidebar li.profile .name,
+    .sidebar li.profile .designation{
+        display: none;
     }
 }
