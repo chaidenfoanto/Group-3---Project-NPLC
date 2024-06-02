@@ -302,7 +302,23 @@
             font-size: 14px;
             margin-top: 5px;
         }
+
+        .sidebar.open ~ .main-content .modal-content {
+            left: calc(125px + 50%);
+        }
+
+        .history-group {
+            display: flex;
+            flex-direction: row;
+        }
         
+        .history-group.team {
+            flex: 1 1 45%;
+        }
+
+        .history-group.time {
+            flex: 1 1 30%;
+        }
 
     @media (max-width: 480px) {
         .sidebar {
@@ -333,35 +349,44 @@
         .vs {
             margin: 0;
         }
+        .timer .timeleft{
+            font-size: 25px;
+        }
+        .time-container {
+            flex-direction: column;
+        }
+        .history-cell.team p:first-child,
+        .history-cell.time p:first-child {
+            display: none;
+        }
+        .history-cell {
+            flex-direction: row;
+        }
+        .history-row {
+            flex-direction: column;
+        }
+        .history-group {
+            flex-direction: row;
+        }
     }
     @media (max-width: 768px) {
         header h1 {
-            font-size: 30px;
+            font-size: 28px;
             margin-bottom: 10px;
         }
     
         .matchup-container {
             padding: 10px;
         }
+
+        .history-item {
+            font-size: 12px;
+        }
     
         .start button {
             width: auto;
         }
-
-        .history-row {
-            flex-direction: row;
-            font-size: 12px;
+        .modal-content {
+            width: 80%;
         }
-        .history-cell {
-            flex-direction: row;
-        }
-
-        .team {
-            flex: 1 1 100%;
-        }
-
-        .time {
-            flex: 1 1 100%;
-        }
-
     }
