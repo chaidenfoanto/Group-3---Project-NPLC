@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    // Clear the local storage to remove all notes
+    localStorage.removeItem("notes");
+
     $(".sidebar").load("sidebarplayer.html", function() {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
@@ -15,57 +18,110 @@ $(document).ready(function() {
             }
         }
     });
-    document.getElementById('add-question').addEventListener('click', () => {
-        document.getElementById('question-modal').style.display = 'block';
+
+    const addBox = document.querySelector(".add-box"),
+    popupBox = document.querySelector(".popup-box"),
+    popupTitle = popupBox.querySelector("header p"),
+    closeIcon = popupBox.querySelector("header i"),
+    titleTag = popupBox.querySelector("input"),
+    descTag = popupBox.querySelector("textarea"),
+    addBtn = popupBox.querySelector("button");
+
+    const months = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+    const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+    let isUpdate = false, updateId;
+
+    addBox.addEventListener("click", () => {
+        popupTitle.innerText = "Welcome Players";
+        addBtn.innerText = "Submit";
+        popupBox.classList.add("show");
+        document.querySelector("body");
+        if(window.innerWidth > 660) titleTag.focus();
     });
 
-    // Close modal
-    document.querySelector('.close-button').addEventListener('click', () => {
-        document.getElementById('question-modal').style.display = 'none';
+    closeIcon.addEventListener("click", () => {
+        isUpdate = false;
+        titleTag.value = descTag.value = "";
+        popupBox.classList.remove("show");
+        document.querySelector("body").style.overflow = "auto";
     });
 
-    // Close modal when clicking outside of it
-    window.addEventListener('click', (event) => {
-        if (event.target === document.getElementById('question-modal')) {
-            document.getElementById('question-modal').style.display = 'none';
-        }
-    });
-
-    // Handle submit question
-    document.getElementById('submit-question').addEventListener('click', () => {
-        const title = document.getElementById('question-title').value;
-        const content = document.getElementById('question-content').value;
-
-        if (title && content) {
-            const questionContainer = document.getElementById('questions-container');
-            
-            const newQuestion = document.createElement('div');
-            newQuestion.classList.add('question');
-            newQuestion.innerHTML = `
-                <div class="question-footer">
-                    <span> New Question </span>
-                </div>
-                <h3>${title}</h3>
-                <p>${content}</p>
-            `;
-            newQuestion.addEventListener('click', () => {
-                showModal(title, content);
-            });
-
-            questionContainer.appendChild(newQuestion);
-
-            document.getElementById('question-title').value = '';
-            document.getElementById('question-content').value = '';
-            document.getElementById('question-modal').style.display = 'none';
-        } else {
-            alert('Please fill out both the title and content.');
-        }
-    });
-
-    // Show modal for viewing question
-    function showModal(title, content) {
-        document.getElementById('modal-title').textContent = title;
-        document.getElementById('modal-content').textContent = content;
-        document.getElementById('question-modal').style.display = 'block';
+    function showNotes() {
+        if(!notes) return;
+        document.querySelectorAll(".note").forEach(li => li.remove());
+        notes.forEach((note, id) => {
+            let filterDesc = note.description.replaceAll("\n", '<br/>');
+            let liTag = `<li class="note">
+                            <div class="details">
+                                <p>${note.title}</p>
+                                <span>${filterDesc}</span>
+                            </div>
+                            <div class="bottom-content">
+                                <span>${note.date}</span>
+                                <div class="settings">
+                                    <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+                                    <ul class="menu">
+                                        <li onclick="updateNote(${id}, '${note.title}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
+                                        <li onclick="deleteNote(${id})"><i class="uil uil-trash"></i>Delete</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>`;
+            addBox.insertAdjacentHTML("afterend", liTag);
+        });
     }
+    showNotes();
+
+    function showMenu(elem) {
+        elem.parentElement.classList.add("show");
+        document.addEventListener("click", e => {
+            if(e.target.tagName != "I" || e.target != elem) {
+                elem.parentElement.classList.remove("show");
+            }
+        });
+    }
+
+    function deleteNote(noteId) {
+        let confirmDel = confirm("Are you sure you want to delete this note?");
+        if(!confirmDel) return;
+        notes.splice(noteId, 1);
+        localStorage.setItem("notes", JSON.stringify(notes));
+        showNotes();
+    }
+
+    function updateNote(noteId, title, filterDesc) {
+        let description = filterDesc.replaceAll('<br/>', '\r\n');
+        updateId = noteId;
+        isUpdate = true;
+        addBox.click();
+        titleTag.value = title;
+        descTag.value = description;
+        popupTitle.innerText = "Update a Note";
+        addBtn.innerText = "Update Note";
+    }
+
+    addBtn.addEventListener("click", e => {
+        e.preventDefault();
+        let title = titleTag.value.trim(),
+        description = descTag.value.trim();
+
+        if(title || description) {
+            let currentDate = new Date(),
+            month = months[currentDate.getMonth()],
+            day = currentDate.getDate(),
+            year = currentDate.getFullYear();
+
+            let noteInfo = {title, description, date: `${month} ${day}, ${year}`}
+            if(!isUpdate) {
+                notes.push(noteInfo);
+            } else {
+                isUpdate = false;
+                notes[updateId] = noteInfo;
+            }
+            localStorage.setItem("notes", JSON.stringify(notes));
+            showNotes();
+            closeIcon.click();
+        }
+    });
 });
