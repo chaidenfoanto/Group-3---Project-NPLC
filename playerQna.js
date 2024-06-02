@@ -15,24 +15,57 @@ $(document).ready(function() {
             }
         }
     });
+    document.getElementById('add-question').addEventListener('click', () => {
+        document.getElementById('question-modal').style.display = 'block';
+    });
 
-    // Event listener for the submit button
-    $('#submitBtn').on('click', function() {
-        var questionInput = $('#questionInput');
-        var questionText = questionInput.val().trim();
+    // Close modal
+    document.querySelector('.close-button').addEventListener('click', () => {
+        document.getElementById('question-modal').style.display = 'none';
+    });
 
-        if (questionText !== "") {
-            var questionsContainer = $('#questionsContainer');
-
-            var questionElement = $('<div></div>');
-            questionElement.addClass('question');
-            questionElement.text(questionText);
-
-            questionsContainer.append(questionElement);
-
-            questionInput.val(''); // Clear the input field
-        } else {
-            alert('Please enter a question.');
+    // Close modal when clicking outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === document.getElementById('question-modal')) {
+            document.getElementById('question-modal').style.display = 'none';
         }
     });
+
+    // Handle submit question
+    document.getElementById('submit-question').addEventListener('click', () => {
+        const title = document.getElementById('question-title').value;
+        const content = document.getElementById('question-content').value;
+
+        if (title && content) {
+            const questionContainer = document.getElementById('questions-container');
+            
+            const newQuestion = document.createElement('div');
+            newQuestion.classList.add('question');
+            newQuestion.innerHTML = `
+                <div class="question-footer">
+                    <span> New Question </span>
+                </div>
+                <h3>${title}</h3>
+                <p>${content}</p>
+            `;
+            newQuestion.addEventListener('click', () => {
+                showModal(title, content);
+            });
+
+            questionContainer.appendChild(newQuestion);
+
+            document.getElementById('question-title').value = '';
+            document.getElementById('question-content').value = '';
+            document.getElementById('question-modal').style.display = 'none';
+        } else {
+            alert('Please fill out both the title and content.');
+        }
+    });
+
+    // Show modal for viewing question
+    function showModal(title, content) {
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-content').textContent = content;
+        document.getElementById('question-modal').style.display = 'block';
+    }
 });
