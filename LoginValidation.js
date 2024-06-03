@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const domain = "http://localhost:8080"
     function showErrorMessage(inputElement, message) {
         const errorMessageElement = document.getElementById(inputElement.id + 'Error');
         errorMessageElement.textContent = message;
@@ -118,13 +119,20 @@ document.addEventListener('DOMContentLoaded', function () {
     //         console.error('Error:', error);
     //     });
     // });
-
-   
     
+    function showErrorMessage(message) {
+        const errorMessageElement = document.getElementById('loginErrorMessage');
+        errorMessageElement.textContent = message;
+        errorMessageElement.style.display = 'block';
+    }
+
+    function hideErrorMessage() {
+        const errorMessageElement = document.getElementById('loginErrorMessage');
+        errorMessageElement.textContent = '';
+        errorMessageElement.style.display = 'none';
+    }
+
     const loginForm = document.querySelector('.form-container.log-in form');
-    const popup = document.getElementById('popup');
-    const popupOverlay = document.getElementById('popup-overlay');
-    const popupMessage = document.querySelector('.popup p');
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -133,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch('http://localhost:8080/api/login/process_login_panitia', {
+            const response = await fetch(domain + '/api/login/process_login_panitia', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,26 +151,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const result = await response.json();
 
-            if (response.ok && result.service === "Login Panitia") {
+            if (response.ok && result.message === "Login Success") {
                 const token = result.data.token;
-                // Set token in cookie
-                document.cookie = `authToken=${token}; path=/`;
-                // Redirect to dashboard
+                setCookie("Token", token, 365);
                 window.location.href = "dashboardplayer.html";
             } else {
-                popupMessage.textContent = 'Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.');
-                popup.style.display = 'block';
-                popupOverlay.style.display = 'block';
+                showErrorMessage('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
             }
         } catch (error) {
-            popupMessage.textContent = 'Login gagal: ' + error.message;
-            popup.style.display = 'block';
-            popupOverlay.style.display = 'block';
+            showErrorMessage('Login gagal: ' + error.message);
         }
     });
 
-    window.closePopup = function() {
-        popup.style.display = 'none';
-        popupOverlay.style.display = 'none';
-    };
+    function setCookie(name, value, daysToLive) {
+        let cookie = name + "=" + encodeURIComponent(value);
+        if (typeof daysToLive === "number") {
+            cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
+            document.cookie = cookie;
+        }
+    }
 });
