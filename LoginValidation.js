@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const domain = "http://localhost:8080"
+
     function showErrorMessage(inputElement, message) {
         const errorMessageElement = document.getElementById(inputElement.id + 'Error');
         errorMessageElement.textContent = message;
@@ -12,31 +13,31 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessageElement.style.display = 'none';
     }
 
-    function validateInputs(inputs) {
-        let isValid = true;
-        let hasError = false;
+    // function validateInputs(inputs) {
+    //     let isValid = true;
+    //     let hasError = false;
     
-        inputs.forEach(input => {
-            if (!input.value.trim()) {
-                showErrorMessage(input, 'Harap isi semua data dengan lengkap.');
-                isValid = false;
-                hasError = true;
-            } else {
-                hideErrorMessage(input);
-            }
-        });
+    //     inputs.forEach(input => {
+    //         if (!input.value.trim()) {
+    //             showErrorMessage(input, 'Harap isi semua data dengan lengkap.');
+    //             isValid = false;
+    //             hasError = true;
+    //         } else {
+    //             hideErrorMessage(input);
+    //         }
+    //     });
     
-        const fileInputs = inputs.filter(input => input.type === 'file');
-        const anyFileUploaded = fileInputs.some(input => input.files[0]);
-        if (!anyFileUploaded && !hasError) {
-            fileInputs.forEach(input => {
-                showErrorMessage(input, 'Harap pilih file foto.');
-            });
-            isValid = false;
-        }
+    //     const fileInputs = inputs.filter(input => input.type === 'file');
+    //     const anyFileUploaded = fileInputs.some(input => input.files[0]);
+    //     if (!anyFileUploaded && !hasError) {
+    //         fileInputs.forEach(input => {
+    //             showErrorMessage(input, 'Harap pilih file foto.');
+    //         });
+    //         isValid = false;
+    //     }
     
-        return isValid;
-    }
+    //     return isValid;
+    // }
     
 
     // const registerForm = document.querySelector('.form-container.register form');
