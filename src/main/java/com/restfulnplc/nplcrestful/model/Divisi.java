@@ -18,7 +18,7 @@ public enum Divisi {
         this.divisi = divisi;
     }
 
-    public String getDivisi() {
+    public String toString() {
         return divisi;
     }
 

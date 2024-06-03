@@ -44,8 +44,6 @@ public class PanitiaService {
         return newPanitia;
     }
 
-    // Menambahkan semua metode sesuai dengan controller
-
     public List<Panitia> getAllPanitia() {
         return panitiaRepository.findAll();
     }

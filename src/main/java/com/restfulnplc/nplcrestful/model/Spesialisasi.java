@@ -10,7 +10,7 @@ public enum Spesialisasi {
         this.spesialisasi = spesialisasi;
     }
 
-    public String getSpesialisasi() {
+    public String toString() {
         return spesialisasi;
     }
 

@@ -10,7 +10,7 @@ public enum Tipegame {
         this.tipegame = tipegame;
     }
 
-    public String getTipegame() {
+    public String toString() {
         return tipegame;
     }
 

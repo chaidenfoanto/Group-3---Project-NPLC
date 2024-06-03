@@ -1,14 +1,25 @@
 package com.restfulnplc.nplcrestful.model;
 
-    public enum Role{
-        PANITIA, PLAYERS;
+public enum Role{
+    PANITIA("Panitia"),
+    PLAYERS("Players");
 
-    @Override
-    public String toString(){
-        switch(this){
-            case PANITIA: return "Panitia";
-            case PLAYERS: return "Players";
-            default: throw new IllegalArgumentException();
+    private final String role;
+
+    Role(String role) {
+        this.role = role;
+    }
+
+    public String toString() {
+        return role;
+    }
+
+    public static Role fromString(String role) {
+        for (Role s : Role.values()) {
+            if (s.role.equalsIgnoreCase(role)) {
+                return s;
+            }
         }
+        throw new IllegalArgumentException("Unknown role: " + role);
     }
 }

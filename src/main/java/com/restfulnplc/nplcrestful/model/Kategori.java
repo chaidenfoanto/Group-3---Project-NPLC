@@ -10,7 +10,7 @@ public enum Kategori{
         this.kategori = kategori;
     }
 
-    public String getTipegame() {
+    public String toString() {
         return kategori;
     }
 

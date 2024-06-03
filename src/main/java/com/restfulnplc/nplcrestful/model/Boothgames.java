@@ -30,7 +30,7 @@ public class Boothgames {
     @Column(name = "sopgames", nullable = false)
     private String sopGames;
 
-    @Column(name = "lokasi", length = 5, nullable = false)
+    @Column(name = "lokasi", length = 10, nullable = false)
     private String lokasi;
 
     @Enumerated(EnumType.STRING)

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
+import com.restfulnplc.nplcrestful.service.PanitiaService;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
@@ -27,6 +28,9 @@ public class BoothgamesController {
     private BoothgamesService boothgamesService;
 
     @Autowired
+    private PanitiaService panitiaService;
+
+    @Autowired
     private Response response;
 
     @PostMapping("/addBoothgame")
@@ -38,10 +42,16 @@ public class BoothgamesController {
         response.setMessage("Boothgame Successfully Added");
         response.setData(listBoothGames.stream().map(boothgame -> Map.of(
             "idBoothGame", boothgame.getIdBooth(),
-            "namaBoothGame", boothgame.getNama()
+            "namaBoothGame", boothgame.getNama(),
+            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+            "sopGame", boothgame.getSopGames(),
+            "lokasi", boothgame.getLokasi(),
+            "tipeGame", boothgame.getTipegame().toString(),
+            "durasiPermainan", boothgame.getDurasiPermainan()
             )).collect(Collectors.toList()));
         response.setError(false);
-        response.setHttpCode(HTTPCode.OK);
+        response.setHttpCode(HTTPCode.CREATED);
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

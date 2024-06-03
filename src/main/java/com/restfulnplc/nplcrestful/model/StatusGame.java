@@ -11,7 +11,7 @@ public enum StatusGame {
         this.statusgame = statusgame;
     }
 
-    public String getStatusgame() {
+    public String toString() {
         return statusgame;
     }
 
