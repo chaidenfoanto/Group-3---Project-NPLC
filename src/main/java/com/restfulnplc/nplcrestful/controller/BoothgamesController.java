@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,14 +26,26 @@ public class BoothgamesController {
     @Autowired
     private BoothgamesService boothgamesService;
 
+    @Autowired
+    private Response response;
+
     @PostMapping("/addBoothgame")
     public ResponseEntity<Response> addBoothgame(@RequestBody BoothgamesDTO boothgamesDTO) {
-        Response response = new Response();
+        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         response.setService("Add Boothgame");
         Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
+        listBoothGames.add(newBoothgame);
         response.setMessage("Boothgame Successfully Added");
-        response.setData(newBoothgame.map());
-        
+        response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+            "idBoothGame", boothgame.getIdBooth(),
+            "namaBoothGame", boothgame.getNama()
+            )).collect(Collectors.toList()));
+        response.setError(false);
+        response.setHttpCode(HTTPCode.OK);
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 
     @GetMapping

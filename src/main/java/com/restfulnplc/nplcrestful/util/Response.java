@@ -10,9 +10,17 @@ import lombok.Setter;
 @Configuration
 public class Response {
 
-    private String status;
+    private boolean error;
+    private HTTPCode httpCode;
     private String service;
     private String message;
     private Object data;
+
+    public Response(boolean error, String service, HTTPCode httpCode, String message) {
+        this.error = error;
+        this.service = service;
+        this.message = message;
+        this.httpCode = httpCode;
+    }
 
 }
