@@ -21,6 +21,7 @@ $(document).ready(function() {
 
     const addBox = document.querySelector(".add-box"),
     popupBox = document.querySelector(".popup-box"),
+    popup = popupBox.querySelector(".popup"),
     popupTitle = popupBox.querySelector("header p"),
     closeIcon = popupBox.querySelector("header i"),
     titleTag = popupBox.querySelector("input"),
@@ -36,7 +37,7 @@ $(document).ready(function() {
         popupTitle.innerText = "Welcome Players";
         addBtn.innerText = "Submit";
         popupBox.classList.add("show");
-        document.querySelector("body");
+        document.body.style.overflow = "hidden";
         if(window.innerWidth > 660) titleTag.focus();
     });
 
@@ -44,7 +45,14 @@ $(document).ready(function() {
         isUpdate = false;
         titleTag.value = descTag.value = "";
         popupBox.classList.remove("show");
-        document.querySelector("body").style.overflow = "auto";
+        document.body.style.overflow = "auto";
+    });
+
+    // Close the popup when clicking outside the popup content
+    popupBox.addEventListener("click", (event) => {
+        if (event.target === popupBox) {
+            closeIcon.click();
+        }
     });
 
     function showNotes() {
