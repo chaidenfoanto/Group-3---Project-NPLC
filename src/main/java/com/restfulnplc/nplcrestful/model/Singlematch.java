@@ -17,7 +17,6 @@ import java.time.LocalTime;
 public class Singlematch {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nomatch", nullable = false)
     private String noMatch;
 

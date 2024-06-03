@@ -15,7 +15,7 @@ public class Boothgames {
 
     @Id
     @Column(name = "idbooth", nullable = false)
-    private int idBooth;
+    private String idBooth;
 
     @Column(name = "nama", length = 50, nullable = false)
     private String nama;

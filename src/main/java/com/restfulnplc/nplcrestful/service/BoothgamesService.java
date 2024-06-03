@@ -32,11 +32,11 @@ public class BoothgamesService {
         return boothgamesRepository.findAll();
     }
 
-    public Optional<Boothgames> getBoothgameById(int id) {
+    public Optional<Boothgames> getBoothgameById(String id) {
         return boothgamesRepository.findById(id);
     }
 
-    public Optional<Boothgames> updateBoothgame(int id, BoothgamesDTO boothgamesDTO) {
+    public Optional<Boothgames> updateBoothgame(String id, BoothgamesDTO boothgamesDTO) {
         Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
         if (optionalBoothgame.isPresent()) {
             Boothgames existingBoothgame = optionalBoothgame.get();
@@ -53,7 +53,7 @@ public class BoothgamesService {
         return Optional.empty();
     }
 
-    public boolean deleteBoothgame(int id) {
+    public boolean deleteBoothgame(String id) {
         Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
         if (optionalBoothgame.isPresent()) {
             boothgamesRepository.deleteById(id);

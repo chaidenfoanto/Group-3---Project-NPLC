@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.restfulnplc.nplcrestful.model.Boothgames;
 
-public interface BoothgamesRepository extends JpaRepository<Boothgames, Integer> {
+public interface BoothgamesRepository extends JpaRepository<Boothgames, String> {
 }
