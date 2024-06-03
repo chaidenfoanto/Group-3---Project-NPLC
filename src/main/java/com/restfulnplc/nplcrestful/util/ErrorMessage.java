@@ -12,9 +12,9 @@ public class ErrorMessage {
     private String HTTPMessage;
     private String detail;
 
-    public ErrorMessage(HTTPCode HTTPMessage, String detail) {
-        this.HTTPMessage = HTTPMessage.getDetailMessage();
-        this.detail = detail;
+    public ErrorMessage(HTTPCode HTTPMessage) {
+        this.HTTPMessage = HTTPMessage.getReasonPhrase();
+        this.detail = HTTPMessage.getDetailMessage();
     }
 
 }

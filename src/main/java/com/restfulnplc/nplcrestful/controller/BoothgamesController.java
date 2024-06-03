@@ -1,7 +1,6 @@
 package com.restfulnplc.nplcrestful.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +40,8 @@ public class BoothgamesController {
         Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
         listBoothGames.add(newBoothgame);
         response.setMessage("Boothgame Successfully Added");
+        response.setError(false);
+        response.setHttpCode(HTTPCode.CREATED);
         response.setData(listBoothGames.stream().map(boothgame -> Map.of(
             "idBoothGame", boothgame.getIdBooth(),
             "namaBoothGame", boothgame.getNama(),
@@ -51,8 +52,6 @@ public class BoothgamesController {
             "tipeGame", boothgame.getTipegame().toString(),
             "durasiPermainan", boothgame.getDurasiPermainan()
             )).collect(Collectors.toList()));
-        response.setError(false);
-        response.setHttpCode(HTTPCode.CREATED);
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +80,7 @@ public class BoothgamesController {
             response.setMessage("No Boothgames Found");
             response.setError(true);
             response.setHttpCode(HTTPCode.NO_CONTENT);
-            response.setData(new ErrorMessage(response.getHttpCode(), "Data Requested But No Data Returned"));
+            response.setData(new ErrorMessage(response.getHttpCode()));
         }
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
@@ -90,13 +89,15 @@ public class BoothgamesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getBoothgameById(@PathVariable("id") int id) {
+    public ResponseEntity<Response> getBoothgameById(@PathVariable("id") String id) {
         response.setService("Get Boothgame By ID");
         List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
         if (boothgameOptional.isPresent()) {
             listBoothGames.add(boothgameOptional.get());
             response.setMessage("Boothgame Retrieved Successfully");
+            response.setError(false);
+            response.setHttpCode(HTTPCode.CREATED);
             response.setData(listBoothGames.stream().map(boothgame -> Map.of(
             "idBoothGame", boothgame.getIdBooth(),
             "namaBoothGame", boothgame.getNama(),
@@ -107,13 +108,11 @@ public class BoothgamesController {
             "tipeGame", boothgame.getTipegame().toString(),
             "durasiPermainan", boothgame.getDurasiPermainan()
             )).collect(Collectors.toList()));
-            response.setError(false);
-            response.setHttpCode(HTTPCode.CREATED);
         } else {
             response.setMessage("Boothgame Not Found");
             response.setError(true);
             response.setHttpCode(HTTPCode.NO_CONTENT);
-            response.setData(new ErrorMessage(response.getHttpCode(), "Data Requested But No Data Returned"));
+            response.setData(new ErrorMessage(response.getHttpCode()));
         }
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
@@ -122,43 +121,54 @@ public class BoothgamesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boothgames>> updateBoothgame(@PathVariable("id") int id, @RequestBody BoothgamesDTO boothgamesDTO) {
-        Response<Boothgames> response = new Response<>();
+    public ResponseEntity<Response> updateBoothgame(@PathVariable("id") String id, @RequestBody BoothgamesDTO boothgamesDTO) {
         response.setService("Update Boothgame");
+        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         Optional<Boothgames> updatedBoothgame = boothgamesService.updateBoothgame(id, boothgamesDTO);
         if (updatedBoothgame.isPresent()) {
-            response.setData(updatedBoothgame.get());
+            listBoothGames.add(updatedBoothgame.get());
             response.setMessage("Boothgame Updated Successfully");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+            response.setError(false);
+            response.setHttpCode(HTTPCode.OK);
+            response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+            "idBoothGame", boothgame.getIdBooth(),
+            "namaBoothGame", boothgame.getNama(),
+            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+            "sopGame", boothgame.getSopGames(),
+            "lokasi", boothgame.getLokasi(),
+            "tipeGame", boothgame.getTipegame().toString(),
+            "durasiPermainan", boothgame.getDurasiPermainan()
+            )).collect(Collectors.toList()));
         } else {
             response.setMessage("Boothgame Not Found");
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+            response.setError(true);
+            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<String>> deleteBoothgame(@PathVariable("id") int id) {
-        Response<String> response = new Response<>();
+    public ResponseEntity<Response> deleteBoothgame(@PathVariable("id") String id) {
         response.setService("Delete Boothgame");
         boolean isDeleted = boothgamesService.deleteBoothgame(id);
         if (isDeleted) {
             response.setMessage("Boothgame Deleted Successfully");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+            response.setError(false);
+            response.setHttpCode(HTTPCode.OK);
         } else {
             response.setMessage("Boothgame Not Found");
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+            response.setError(true);
+            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 }
