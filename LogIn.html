@@ -90,18 +90,19 @@
                         <div class="input-group">
                             <input type="text" id="username">
                             <label class="placeholder">Username</label>
-                            <span class="error-message" id="usernameError"></span>
                             <i class="bx bxs-user" ></i>
+                            <div id="usernameError" class="error-message" style="display: none;">Username harus terisi.</div>
                         </div>
                         <div class="input-group">
                             <input type="password" id="password">
                             <label class="placeholder">Password</label>
-                            <span class="error-message" id="passwordError"></span>
                             <i class="bx bxs-lock-alt"></i>
+                            <div id="passwordError" class="error-message" style="display: none;">Password harus terisi.</div>
                     </div>
+                    <div id="loginErrorMessage" class="error-message" style="display: none;"></div>
                 </div>
-                <a href="#" onclick="openPopup()">Forget Your Password?</a>
-                <button>Login</button>
+                <a style="margin-top: 3%;" href="#" onclick="openPopup()">Forget Your Password?</a>
+                <button type="submit">Login</button>
             </form>
         </div>
         <div class="toggle-container">
@@ -131,7 +132,6 @@
             <p>Silahkan menghubungi kakak panitia yang mendampingi untuk menanyakan passwordnya!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
-        <div id="loginErrorMessage" class="error-message" style="display: none;"></div>
     </div>
     <div class="popup-overlay" id="popup-overlay"></div>
     <script src="Login.js"></script>

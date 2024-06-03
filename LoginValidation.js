@@ -13,19 +13,58 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessageElement.style.display = 'none';
     }
 
-    // function validateInputs(inputs) {
-    //     let isValid = true;
-    //     let hasError = false;
-    
-    //     inputs.forEach(input => {
-    //         if (!input.value.trim()) {
-    //             showErrorMessage(input, 'Harap isi semua data dengan lengkap.');
-    //             isValid = false;
-    //             hasError = true;
-    //         } else {
-    //             hideErrorMessage(input);
-    //         }
-    //     });
+    function showErrorMessage(message) {
+        const errorMessageElement = document.getElementById('loginErrorMessage');
+        errorMessageElement.textContent = message;
+        errorMessageElement.style.display = 'block';
+    }
+
+    function hideErrorMessage() {
+        const errorMessageElement = document.getElementById('loginErrorMessage');
+        errorMessageElement.textContent = '';
+        errorMessageElement.style.display = 'none';
+    }
+
+    function setCookie(name, value, daysToLive) {
+        let cookie = name + "=" + encodeURIComponent(value);
+        if (typeof daysToLive === "number") {
+            cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
+            document.cookie = cookie;
+        }
+    }
+
+
+    const loginForm = document.querySelector('.form-container.log-in form');
+
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch(domain + '/api/login/process_login_panitia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.message === "Login Success") {
+                const token = result.data.token;
+                setCookie("Token", token, 365);
+                window.location.href = "dashboardplayer.html";
+            } else {
+                showErrorMessage('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
+            }
+        } catch (error) {
+            showErrorMessage('Login gagal: Harap isi username dan password' );
+        }
+    });
+
     
     //     const fileInputs = inputs.filter(input => input.type === 'file');
     //     const anyFileUploaded = fileInputs.some(input => input.files[0]);
@@ -121,54 +160,4 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
     // });
     
-    function showErrorMessage(message) {
-        const errorMessageElement = document.getElementById('loginErrorMessage');
-        errorMessageElement.textContent = message;
-        errorMessageElement.style.display = 'block';
-    }
-
-    function hideErrorMessage() {
-        const errorMessageElement = document.getElementById('loginErrorMessage');
-        errorMessageElement.textContent = '';
-        errorMessageElement.style.display = 'none';
-    }
-
-    const loginForm = document.querySelector('.form-container.log-in form');
-
-    loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        try {
-            const response = await fetch(domain + '/api/login/process_login_panitia', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password })
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.message === "Login Success") {
-                const token = result.data.token;
-                setCookie("Token", token, 365);
-                window.location.href = "dashboardplayer.html";
-            } else {
-                showErrorMessage('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
-            }
-        } catch (error) {
-            showErrorMessage('Login gagal: ' + error.message);
-        }
-    });
-
-    function setCookie(name, value, daysToLive) {
-        let cookie = name + "=" + encodeURIComponent(value);
-        if (typeof daysToLive === "number") {
-            cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
-            document.cookie = cookie;
-        }
-    }
 });
