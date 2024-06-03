@@ -8,54 +8,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="PanitiaQna.css">
     <link rel="stylesheet" href="sidebarplayer.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
-<body>        
+<body>
     <div class="container">
         <div class="sidebar"></div>
         <div class="main-content">
             <header>
-                <h1>Question & Answer</h1>
-            </header> 
-        </div>
-        <div class="questions-container" id="questions-container">
-            <div class="question" data-team="Team 1" data-title="Question 1" data-content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.">
-                <div class="question-footer">
-                    <span> Team 1 </span>
-                </div>
-                <h3>Question</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.</p>   
+                <h1>Panitia Question & Answer</h1>
+            </header>
+            <div class="question-list">
+                <!-- Questions will be dynamically inserted here -->
             </div>
-            <div class="question" data-team="Team 2" data-title="Question 2" data-content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.">
-                <div class="question-footer">
-                    <span> Team 2 </span>
+            <div class="popup-box">
+                <div class="popup">
+                  <div class="content">
+                    <header>
+                      <p>Answer Question</p>
+                      <i class="uil uil-times"></i>
+                    </header>
+                    <form action="#">
+                      <div class="row question">
+                        <label>Question</label>
+                        <textarea id="question-text" readonly></textarea>
+                      </div>
+                      <div class="row answer">
+                        <label>Answer</label>
+                        <textarea id="answer-text" spellcheck="false"></textarea>
+                      </div>
+                      <button id="submit-answer">Submit Answer</button>
+                    </form>
+                  </div>
                 </div>
-                <h3>Question</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.</p>   
-            </div>
-            <div class="question" data-team="Team 3" data-title="Question 3" data-content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.">
-                <div class="question-footer">
-                    <span> Team 3 </span>
-                </div>
-                <h3>Question</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.</p>   
-            </div>
-        </div>
-    </div> 
-
-    <!-- Modal Pop-up -->
-    <div id="question-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3 id="modal-title">Title</h3>
-            <p id="modal-content">Content</p>
-            <textarea id="answer-input" placeholder="Type your answer here..." rows="4" cols="50"></textarea>
-            <button id="submit-answer">Submit</button>
-        </div>
+              </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="PanitiaQna.js"></script>
-    <script src="apiDasboard.js"></script>
 </body>
 </html>

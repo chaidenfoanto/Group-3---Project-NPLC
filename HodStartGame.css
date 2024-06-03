@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+    --color-default: #35A2DB;
+    --color-second: #0067ac;
+    --color-white: #fff;
+    --color-body: #ffffff;
+    --color-light: #e0e0e0;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--color-body);
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 78px;
+    /* Add your sidebar styles here */
+}
+
+.main-content {
+    position: relative;
+    min-height: 100vh;
+    width: calc(100% - 78px);
+    transition: all .5s ease;
+    z-index: 2;
+    margin-left: 80px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    color: #35A2DB;
+}
+
+header h1 {
+    margin: 10px;
+}
+.timer {
+    align-items: right;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+    border: 0.5px solid black;
+    margin: 10px;
+    background-color: #B57F80;
+    color: white;
+}
+.timer .timeleft {
+    font-size: xx-large;
+    text-align: center;
+    font-weight: bold;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+form > * {
+    margin-bottom: 15px; /* Adjust bottom margin as needed */
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.inner-container {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 10%;
+}
+
+.inner-container h2 {
+    font-weight: bold;
+    color: black;
+}
+
+.btn {
+    font-size: 16px;
+    margin-top: 5px;
+    padding: 10px 40px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.ok {
+    background-color: var(--color-default);
+}
+
+.cancel {
+    background-color: #d3574e;
+}
+
+.ok:hover {
+    background-color: var(--color-second);
+}
+
+.cancel:hover {
+    background-color: #a72e25;
+}
+
+.inner-container input,
+textarea,
+select {
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #212b27;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.inner-container .placeholder {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-size: 16px;
+    padding: 0px 5px;
+    color: #666;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.inner-container input:focus + .placeholder,
+.inner-container textarea:focus + .placeholder,
+.inner-container input.not-empty + .placeholder,
+.inner-container textarea.not-empty + .placeholder,
+.inner-container select:focus + .placeholder,
+.inner-container select.not-empty + .placeholder {
+    top: -6px;
+    color: #000000;
+    background-color: white;
+}
+
+@media (max-width: 500px) {
+    header h1 {
+        font-size: 28px;
+    }
+    .main-content {
+        margin-left: 0;
+        left: 75px;
+    }
+
+    .inner-container input,
+    .inner-container select,
+    .inner-container textarea,
+    .inner-container #fileSource,
+    .inner-container .upload-button,
+    .inner-container .placeholder,
+    .inner-container button {
+        font-size: 12px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 35px;
+    }
+    .card {
+        font-size: 15px;
+    }
+    .form-group {
+        flex-direction: column;
+    }
+
+    .input-group {
+        flex: 1 100%;
+        padding: 10px 0;
+    }
+
+    #Question {
+        height: 100px;
+    }
+    .time {
+        flex: 1 1 100%;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.input-group {
+    flex: 1;
+    padding: 0 10px;
+    width: 100%;
+}
+
+#Question {
+    flex: 1 100%; /* TextArea will take 100% width of its row */
+    height: 200px; /* Set height */
+    overflow-y: auto; /* Enable vertical scroll if text exceeds height */
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Start Game</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="HodStartGame.css">
+    <link rel="stylesheet" href="sidebarplayer.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="HodStartGame.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar"></div>
+        <div class="main-content">
+            <header>
+                <h1>Welcome Admin!</h1>
+                <div class="timer">
+                    <p>Remaining Time:</p>
+                    <p class="timeleft">
+                      <i class="fa-regular fa-clock" style="color: #000000"></i>
+                      00:00
+                    </p>
+                  </div>
+            </header>
+            <div class="inner-container">
+                <form id="booth-form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" id="durasigame">
+                            <label class="placeholder">Durasi Permainan</label>
+                            <span class="error-message" id="durasiameError"></span>
+                        </div>
+                        <div class="input-group">
+                            <select id="Ruangan" name="Ruangan">
+                                <option value=""></option>
+                            </select>
+                            <label class="placeholder">Ruangan Kumpul</label>
+                            <span class="error-message" id="RuanganError"></span>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="start" class="btn ok">Start</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

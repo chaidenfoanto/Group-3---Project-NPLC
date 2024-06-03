@@ -52,10 +52,12 @@ $(document).ready(function() {
         document.querySelectorAll(".note").forEach(li => li.remove());
         notes.forEach((note, id) => {
             let filterDesc = note.description.replaceAll("\n", '<br/>');
+            let answerText = note.answer ? `<p class="answer">${note.answer}</p>` : '';
             let liTag = `<li class="note">
                             <div class="details">
                                 <p>${note.title}</p>
                                 <span>${filterDesc}</span>
+                                ${answerText}
                             </div>
                             <div class="bottom-content">
                                 <span>${note.date}</span>
@@ -71,6 +73,7 @@ $(document).ready(function() {
             addBox.insertAdjacentHTML("afterend", liTag);
         });
     }
+    
     showNotes();
 
     function showMenu(elem) {
