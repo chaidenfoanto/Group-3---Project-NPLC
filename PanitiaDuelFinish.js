@@ -29,17 +29,23 @@ $(document).ready(function() {
         var endTime = $('#timeFinished').val();
 
         if (startTime && endTime) {
-            var start = new Date('1970-01-01T' + startTime + ':00');
-            var end = new Date('1970-01-01T' + endTime + ':00');
-            var diffMs = end - start;
-            var diffMins = Math.floor((diffMs / 1000) / 60);
+        const start = new Date(`1970-01-01T${startTime}`);
+        const end = new Date(`1970-01-01T${endTime}`);
+        const diffMs = end - start;
 
-            var hours = Math.floor(diffMins / 60);
-            var minutes = diffMins % 60;
+        if (diffMs >= 0) {
+            const diffSecs = Math.floor(diffMs / 1000);
+            const minutes = Math.floor(diffSecs / 60);
+            const seconds = diffSecs % 60;
 
-            var duration = hours + 'h ' + String(minutes).padStart(2, '0') + 'm';
+            duration = `${minutes}m ${String(seconds).padStart(2, '0')}s`;
             $('#duration').val(duration);
         }
+        // } else {
+        //     alert('End time must be after start time.');
+        //     return;
+        // }
+    }
     }
 
     setCurrentTime('#timeStarted');
@@ -119,14 +125,18 @@ $(document).ready(function() {
         const historyItem = $(`
         <div class="history-item">
             <div class="history-row">
-                <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
-                <p class="${team1 === winningTeam ? 'winner' : ''}">${team1}</p></div>
-                <div class="history-cell" data-label="VS">VS</div>
-                <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
-                <p class="${team2 === winningTeam ? 'winner' : ''}">${team2}</p></div>
-                <div class="history-cell time" data-label="Time Started"><p>Time Started</p><p>${timeStarted}</p></div>
-                <div class="history-cell" data-label="VS">-</div>
-                <div class="history-cell time" data-label="Time Finished"><p>Time Finished</p><p>${timeFinished}</p></div>
+                <div class = "history-group team">
+                    <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                    <p class="${team1 === winningTeam ? 'winner' : ''}">${team1}</p></div>
+                    <div class="history-cell" data-label="VS">VS</div>
+                    <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                    <p class="${team2 === winningTeam ? 'winner' : ''}">${team2}</p></div>
+                </div>
+                <div class = "history-group time">
+                    <div class="history-cell time" data-label="Time Started"><p>Time Started</p><p>${timeStarted}</p></div>
+                    <div class="history-cell" data-label="VS">-</div>
+                    <div class="history-cell time" data-label="Time Finished"><p>Time Finished</p><p>${timeFinished}</p></div>
+                </div>
                 <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${duration}</p></div>
             </div>
         </div>

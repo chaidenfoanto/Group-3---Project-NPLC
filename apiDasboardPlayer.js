@@ -1,43 +1,12 @@
 $(document).ready(function() {
     const domain = "http://localhost:8080"
-    // const apiURL = 'https://api.example.com/games'; // Ganti dengan URL API yang sesuai
     const gamesList = $('.games-list');
     const totalPointsElement = $('.total');
-
-    var myHeaders = new Headers()
-    myHeaders.append("Token", getCookie("Token"))
-
-    fetch(domain + '/api/login/getSession', {
-        method: 'GET',
-        headers: myHeaders
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then(data => {
-        if (data.service === "Auth Token") {
-            if (data.message === "Authorization Success") {
-                setCookie("Token", getCookie("Token"), 365); //Memperbaharui cookie token
-            } else {
-                console.log('Authorization Failed');
-                deleteCookie("Token"); //menghapus cookie
-                window.location.href = "Login.html";
-            }
-        } else {
-            console.log('Unexpected service response:', data.service);
-        }
-    }).catch(error => {
-        console.error('Error occurred while fetching session:', error);
-        deleteCookie("Token"); //menghapus cookie
-        window.location.href = "Login.html";
-    });
-    
 
     // Fungsi untuk mengambil data dari API
     // async function fetchData() {
     //     try {
-    //         const response = await fetch(apiURL);
+    //         const response = await fetch(domain + 'api/');
     //         const data = await response.json();
     //         displayData(data);
     //     } catch (error) {
@@ -45,7 +14,7 @@ $(document).ready(function() {
     //     }
     // }
 
-   // Fungsi untuk menampilkan data
+    // Fungsi untuk menampilkan data
     // function displayData(data) {
     //     let totalPoints = 0;
 
@@ -112,6 +81,38 @@ $(document).ready(function() {
 
 });
 
+
+    var myHeaders = new Headers()
+    myHeaders.append("Token", getCookie("Token"))
+
+    fetch(domain + '/api/login/getSession', {
+        method: 'GET',
+        headers: myHeaders
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    }).then(data => {
+        if (data.service === "Auth Token") {
+            if (data.message === "Authorization Success") {
+                setCookie("Token", getCookie("Token"), 365); //Memperbaharui cookie token
+            } else {
+                console.log('Authorization Failed');
+                deleteCookie("Token"); //menghapus cookie
+                window.location.href = "Login.html";
+            }
+        } else {
+            console.log('Unexpected service response:', data.service);
+        }
+    }).catch(error => {
+        console.error('Error occurred while fetching session:', error);
+        deleteCookie("Token"); //menghapus cookie
+        window.location.href = "Login.html";
+    });
+    
+
+    
 function getCookie(name) {
     // Split cookie string and get all individual name=value pairs in an array
     let cookieArr = document.cookie.split(";");
