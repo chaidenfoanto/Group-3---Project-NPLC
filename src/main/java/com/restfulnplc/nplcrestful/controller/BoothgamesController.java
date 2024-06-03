@@ -13,6 +13,7 @@ import com.restfulnplc.nplcrestful.util.Response;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -23,16 +24,13 @@ public class BoothgamesController {
     private BoothgamesService boothgamesService;
 
     @PostMapping("/addBoothgame")
-    public ResponseEntity<Response<Boothgames>> addBoothgame(@RequestBody BoothgamesDTO boothgamesDTO) {
-        Response<Boothgames> response = new Response<>();
+    public ResponseEntity<Response> addBoothgame(@RequestBody BoothgamesDTO boothgamesDTO) {
+        Response response = new Response();
         response.setService("Add Boothgame");
         Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
         response.setMessage("Boothgame Successfully Added");
-        response.setData(newBoothgame);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
+        response.setData(newBoothgame.map());
+        
     }
 
     @GetMapping

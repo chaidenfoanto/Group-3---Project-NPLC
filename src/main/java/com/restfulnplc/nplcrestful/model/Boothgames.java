@@ -41,11 +41,11 @@ public class Boothgames {
     private Time durasiPermainan;
 
 
-    public int getIdBooth() {
+    public String getIdBooth() {
         return this.idBooth;
     }
 
-    public void setIdBooth(int idBooth) {
+    public void setIdBooth(String idBooth) {
         this.idBooth = idBooth;
     }
 

@@ -8,11 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Configuration
-public class Response {
-
-    private String status;
-    private String service;
-    private String message;
-    private Object data;
-
+public class Error {
+    private HTTPCode httpCode;
+    private String detail;
 }
