@@ -33,10 +33,11 @@ public class BoothgamesController {
     @Autowired
     private Response response;
 
+    List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
+
     @PostMapping("/addBoothgame")
     public ResponseEntity<Response> addBoothgame(@RequestBody BoothgamesDTO boothgamesDTO) {
         response.setService("Add Boothgame");
-        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
         listBoothGames.add(newBoothgame);
         response.setMessage("Boothgame Successfully Added");
@@ -52,6 +53,7 @@ public class BoothgamesController {
             "tipeGame", boothgame.getTipegame().toString(),
             "durasiPermainan", boothgame.getDurasiPermainan()
             )).collect(Collectors.toList()));
+        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -82,6 +84,7 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.NO_CONTENT);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +94,6 @@ public class BoothgamesController {
     @GetMapping("/{id}")
     public ResponseEntity<Response> getBoothgameById(@PathVariable("id") String id) {
         response.setService("Get Boothgame By ID");
-        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
         if (boothgameOptional.isPresent()) {
             listBoothGames.add(boothgameOptional.get());
@@ -114,6 +116,7 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.NO_CONTENT);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -123,7 +126,6 @@ public class BoothgamesController {
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateBoothgame(@PathVariable("id") String id, @RequestBody BoothgamesDTO boothgamesDTO) {
         response.setService("Update Boothgame");
-        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         Optional<Boothgames> updatedBoothgame = boothgamesService.updateBoothgame(id, boothgamesDTO);
         if (updatedBoothgame.isPresent()) {
             listBoothGames.add(updatedBoothgame.get());
@@ -146,6 +148,7 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.NO_CONTENT);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -166,6 +169,7 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.NO_CONTENT);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

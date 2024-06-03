@@ -95,4 +95,8 @@ public class TeamService {
         if(teams.size() > 0) return "TEAM" + (Integer.parseInt(teams.getLast().getIdTeam().split("TEAM")[1]) + 1);
         return "TEAM1";
     }
+
+    public boolean checkTeam(String id) {
+        return teamRepository.findById(id).isPresent();
+    }
 }

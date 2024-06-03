@@ -79,4 +79,8 @@ public class PanitiaService {
         }
         return false;
     }
+
+    public boolean checkPanitia(String id) {
+        return panitiaRepository.findById(id).isPresent();
+    }
 }

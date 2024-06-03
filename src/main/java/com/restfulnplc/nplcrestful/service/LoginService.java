@@ -75,6 +75,28 @@ public class LoginService {
         return loginRepository.findById(token).isPresent();
     }
 
+    public boolean checkSessionAdmin(String token)
+    {
+        if(loginRepository.findById(token).isPresent()) {
+            Login session = loginRepository.findById(token).get();
+            if(session.getRole().equals(Role.PANITIA)) {
+                return panitiaService.checkPanitia(session.getIdUser());
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSessionTeam(String token)
+    {
+        if(loginRepository.findById(token).isPresent()) {
+            Login session = loginRepository.findById(token).get();
+            if(session.getRole().equals(Role.PLAYERS)) {
+                return teamService.checkTeam(session.getIdUser());
+            }
+        }
+        return false;
+    }
+
     public Login getLoginSession(String token)
     {
         return loginRepository.findById(token).get();
