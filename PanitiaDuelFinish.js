@@ -16,6 +16,17 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+          closeSidebar();
+        }
+    });
+
+    function closeSidebar() {
+        $('.sidebar').removeClass('open');
+        // $('.main-content').removeClass('shift');
+    }
+
     function setCurrentTime(inputId) {
         var now = new Date();
         var hours = String(now.getHours()).padStart(2, '0');
