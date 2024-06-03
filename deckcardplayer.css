@@ -191,7 +191,7 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, .2);
             opacity: 0;
             position: fixed;
-            left: calc(50% + 40px);
+            left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             z-index: -1;
@@ -370,7 +370,7 @@
             padding: 20px 0 20px;
             border-radius: 30px;
             position: fixed;
-            left: calc(50% + 40px);
+            left: 50%;
             top: 50%;
             width: 600px;
             transform: translate(-50%, -50%);
