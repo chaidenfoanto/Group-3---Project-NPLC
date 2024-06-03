@@ -17,7 +17,7 @@ public class BoothgamesService {
 
     public Boothgames addBoothgame(BoothgamesDTO boothgamesDTO) {
         Boothgames newBoothgame = new Boothgames();
-        newBoothgame.setIdBooth(boothgamesDTO.getIdBooth());
+        newBoothgame.setIdBooth(getNextBoothgameID());
         newBoothgame.setNama(boothgamesDTO.getNama());
         newBoothgame.setIdPenjaga1(boothgamesDTO.getIdPenjaga1());
         newBoothgame.setIdPenjaga2(boothgamesDTO.getIdPenjaga2());
@@ -60,5 +60,12 @@ public class BoothgamesService {
             return true;
         }
         return false;
+    }
+
+    public String getNextBoothgameID()
+    {
+        List<Boothgames> boothgames = boothgamesRepository.findAll();
+        if(boothgames.size() > 0) return "BOOTHGAME" + (Integer.parseInt(boothgames.getLast().getIdBooth().split("BOOTHGAME")[1]) + 1);
+        return "BOOTHGAME1";
     }
 }

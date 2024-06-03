@@ -10,6 +10,7 @@ import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.service.PanitiaService;
+import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
@@ -35,8 +36,8 @@ public class BoothgamesController {
 
     @PostMapping("/addBoothgame")
     public ResponseEntity<Response> addBoothgame(@RequestBody BoothgamesDTO boothgamesDTO) {
-        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         response.setService("Add Boothgame");
+        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
         Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
         listBoothGames.add(newBoothgame);
         response.setMessage("Boothgame Successfully Added");
@@ -59,37 +60,65 @@ public class BoothgamesController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<Boothgames>>> getAllBoothgames() {
-        Response<List<Boothgames>> response = new Response<>();
+    public ResponseEntity<Response> getAllBoothgames() {
         response.setService("Get All Boothgames");
         List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
-        response.setData(boothgamesList);
-        response.setMessage("All Boothgames Retrieved Successfully");
+        if(boothgamesList.size() > 0) {
+            response.setMessage("All Boothgames Retrieved Successfully");
+            response.setError(false);
+            response.setHttpCode(HTTPCode.OK);
+            response.setData(boothgamesList.stream().map(boothgame -> Map.of(
+                "idBoothGame", boothgame.getIdBooth(),
+                "namaBoothGame", boothgame.getNama(),
+                "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+                "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                "sopGame", boothgame.getSopGames(),
+                "lokasi", boothgame.getLokasi(),
+                "tipeGame", boothgame.getTipegame().toString(),
+                "durasiPermainan", boothgame.getDurasiPermainan()
+                )).collect(Collectors.toList()));
+        } else {
+            response.setMessage("No Boothgames Found");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setData(new ErrorMessage(response.getHttpCode(), "Data Requested But No Data Returned"));
+        }
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<Boothgames>> getBoothgameById(@PathVariable("id") int id) {
-        Response<Boothgames> response = new Response<>();
+    public ResponseEntity<Response> getBoothgameById(@PathVariable("id") int id) {
         response.setService("Get Boothgame By ID");
-        Optional<Boothgames> boothgame = boothgamesService.getBoothgameById(id);
-        if (boothgame.isPresent()) {
-            response.setData(boothgame.get());
+        List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
+        Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
+        if (boothgameOptional.isPresent()) {
+            listBoothGames.add(boothgameOptional.get());
             response.setMessage("Boothgame Retrieved Successfully");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+            response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+            "idBoothGame", boothgame.getIdBooth(),
+            "namaBoothGame", boothgame.getNama(),
+            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+            "sopGame", boothgame.getSopGames(),
+            "lokasi", boothgame.getLokasi(),
+            "tipeGame", boothgame.getTipegame().toString(),
+            "durasiPermainan", boothgame.getDurasiPermainan()
+            )).collect(Collectors.toList()));
+            response.setError(false);
+            response.setHttpCode(HTTPCode.CREATED);
         } else {
             response.setMessage("Boothgame Not Found");
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+            response.setError(true);
+            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setData(new ErrorMessage(response.getHttpCode(), "Data Requested But No Data Returned"));
         }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 
     @PutMapping("/{id}")

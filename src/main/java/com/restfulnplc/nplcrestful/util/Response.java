@@ -16,11 +16,4 @@ public class Response {
     private String message;
     private Object data;
 
-    public Response(boolean error, String service, HTTPCode httpCode, String message) {
-        this.error = error;
-        this.service = service;
-        this.message = message;
-        this.httpCode = httpCode;
-    }
-
 }
