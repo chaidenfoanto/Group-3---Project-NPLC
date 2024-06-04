@@ -14,4 +14,20 @@ $(document).ready(async function() {
             }
         }
     });
+    $(document).ready(function() {
+        $(".edit-btn").click(function() {
+          $("#popup").css("display", "block");
+        });
+      
+        $(".close-btn").click(function() {
+          $("#popup").css("display", "none");
+        });
+      
+        $(window).click(function(event) {
+          if ($(event.target).is("#popup")) {
+            $("#popup").css("display", "none");
+          }
+        });
+      });
+      
 });
