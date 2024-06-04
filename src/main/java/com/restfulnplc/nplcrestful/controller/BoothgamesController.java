@@ -9,6 +9,7 @@ import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.service.PanitiaService;
+import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
@@ -31,28 +32,38 @@ public class BoothgamesController {
     private PanitiaService panitiaService;
 
     @Autowired
+    private LoginService loginService;
+
+    @Autowired
     private Response response;
 
     List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
 
     @PostMapping("/addBoothgame")
-    public ResponseEntity<Response> addBoothgame(@RequestBody BoothgamesDTO boothgamesDTO) {
-        response.setService("Add Boothgame");
-        Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
-        listBoothGames.add(newBoothgame);
-        response.setMessage("Boothgame Successfully Added");
-        response.setError(false);
-        response.setHttpCode(HTTPCode.CREATED);
-        response.setData(listBoothGames.stream().map(boothgame -> Map.of(
-            "idBoothGame", boothgame.getIdBooth(),
-            "namaBoothGame", boothgame.getNama(),
-            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
-            "sopGame", boothgame.getSopGames(),
-            "lokasi", boothgame.getLokasi(),
-            "tipeGame", boothgame.getTipegame().toString(),
-            "durasiPermainan", boothgame.getDurasiPermainan()
-            )).collect(Collectors.toList()));
+    public ResponseEntity<Response> addBoothgame(@RequestHeader("Token") String sessionToken,
+            @RequestBody BoothgamesDTO boothgamesDTO) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Add Boothgame");
+            Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
+            listBoothGames.add(newBoothgame);
+            response.setMessage("Boothgame Successfully Added");
+            response.setError(false);
+            response.setHttpCode(HTTPCode.CREATED);
+            response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+                    "idBoothGame", boothgame.getIdBooth(),
+                    "namaBoothGame", boothgame.getNama(),
+                    "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+                    "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                    "sopGame", boothgame.getSopGames(),
+                    "lokasi", boothgame.getLokasi(),
+                    "tipeGame", boothgame.getTipegame().toString(),
+                    "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
         listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
@@ -61,27 +72,33 @@ public class BoothgamesController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllBoothgames() {
-        response.setService("Get All Boothgames");
-        List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
-        if(boothgamesList.size() > 0) {
-            response.setMessage("All Boothgames Retrieved Successfully");
-            response.setError(false);
-            response.setHttpCode(HTTPCode.OK);
-            response.setData(boothgamesList.stream().map(boothgame -> Map.of(
-                "idBoothGame", boothgame.getIdBooth(),
-                "namaBoothGame", boothgame.getNama(),
-                "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-                "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
-                "sopGame", boothgame.getSopGames(),
-                "lokasi", boothgame.getLokasi(),
-                "tipeGame", boothgame.getTipegame().toString(),
-                "durasiPermainan", boothgame.getDurasiPermainan()
-                )).collect(Collectors.toList()));
+    public ResponseEntity<Response> getAllBoothgames(@RequestHeader("Token") String sessionToken) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get All Boothgames");
+            List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
+            if (boothgamesList.size() > 0) {
+                response.setMessage("All Boothgames Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(boothgamesList.stream().map(boothgame -> Map.of(
+                        "idBoothGame", boothgame.getIdBooth(),
+                        "namaBoothGame", boothgame.getNama(),
+                        "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+                        "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                        "sopGame", boothgame.getSopGames(),
+                        "lokasi", boothgame.getLokasi(),
+                        "tipeGame", boothgame.getTipegame().toString(),
+                        "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("No Boothgames Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("No Boothgames Found");
+            response.setMessage("Authorization Failed");
             response.setError(true);
-            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listBoothGames.clear();
@@ -92,28 +109,35 @@ public class BoothgamesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getBoothgameById(@PathVariable("id") String id) {
-        response.setService("Get Boothgame By ID");
-        Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
-        if (boothgameOptional.isPresent()) {
-            listBoothGames.add(boothgameOptional.get());
-            response.setMessage("Boothgame Retrieved Successfully");
-            response.setError(false);
-            response.setHttpCode(HTTPCode.CREATED);
-            response.setData(listBoothGames.stream().map(boothgame -> Map.of(
-            "idBoothGame", boothgame.getIdBooth(),
-            "namaBoothGame", boothgame.getNama(),
-            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
-            "sopGame", boothgame.getSopGames(),
-            "lokasi", boothgame.getLokasi(),
-            "tipeGame", boothgame.getTipegame().toString(),
-            "durasiPermainan", boothgame.getDurasiPermainan()
-            )).collect(Collectors.toList()));
+    public ResponseEntity<Response> getBoothgameById(@RequestHeader("Token") String sessionToken,
+            @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get Boothgame By ID");
+            Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
+            if (boothgameOptional.isPresent()) {
+                listBoothGames.add(boothgameOptional.get());
+                response.setMessage("Boothgame Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.CREATED);
+                response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+                        "idBoothGame", boothgame.getIdBooth(),
+                        "namaBoothGame", boothgame.getNama(),
+                        "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+                        "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                        "sopGame", boothgame.getSopGames(),
+                        "lokasi", boothgame.getLokasi(),
+                        "tipeGame", boothgame.getTipegame().toString(),
+                        "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Boothgame Not Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("Boothgame Not Found");
+            response.setMessage("Authorization Failed");
             response.setError(true);
-            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listBoothGames.clear();
@@ -124,28 +148,35 @@ public class BoothgamesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateBoothgame(@PathVariable("id") String id, @RequestBody BoothgamesDTO boothgamesDTO) {
-        response.setService("Update Boothgame");
-        Optional<Boothgames> updatedBoothgame = boothgamesService.updateBoothgame(id, boothgamesDTO);
-        if (updatedBoothgame.isPresent()) {
-            listBoothGames.add(updatedBoothgame.get());
-            response.setMessage("Boothgame Updated Successfully");
-            response.setError(false);
-            response.setHttpCode(HTTPCode.OK);
-            response.setData(listBoothGames.stream().map(boothgame -> Map.of(
-            "idBoothGame", boothgame.getIdBooth(),
-            "namaBoothGame", boothgame.getNama(),
-            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
-            "sopGame", boothgame.getSopGames(),
-            "lokasi", boothgame.getLokasi(),
-            "tipeGame", boothgame.getTipegame().toString(),
-            "durasiPermainan", boothgame.getDurasiPermainan()
-            )).collect(Collectors.toList()));
+    public ResponseEntity<Response> updateBoothgame(@RequestHeader("Token") String sessionToken,
+            @PathVariable("id") String id, @RequestBody BoothgamesDTO boothgamesDTO) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Update Boothgame");
+            Optional<Boothgames> updatedBoothgame = boothgamesService.updateBoothgame(id, boothgamesDTO);
+            if (updatedBoothgame.isPresent()) {
+                listBoothGames.add(updatedBoothgame.get());
+                response.setMessage("Boothgame Updated Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+                        "idBoothGame", boothgame.getIdBooth(),
+                        "namaBoothGame", boothgame.getNama(),
+                        "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
+                        "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                        "sopGame", boothgame.getSopGames(),
+                        "lokasi", boothgame.getLokasi(),
+                        "tipeGame", boothgame.getTipegame().toString(),
+                        "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Boothgame Not Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("Boothgame Not Found");
+            response.setMessage("Authorization Failed");
             response.setError(true);
-            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listBoothGames.clear();
@@ -156,17 +187,25 @@ public class BoothgamesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteBoothgame(@PathVariable("id") String id) {
-        response.setService("Delete Boothgame");
-        boolean isDeleted = boothgamesService.deleteBoothgame(id);
-        if (isDeleted) {
-            response.setMessage("Boothgame Deleted Successfully");
-            response.setError(false);
-            response.setHttpCode(HTTPCode.OK);
+    public ResponseEntity<Response> deleteBoothgame(@RequestHeader("Token") String sessionToken,
+            @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Delete Boothgame");
+            boolean isDeleted = boothgamesService.deleteBoothgame(id);
+            if (isDeleted) {
+                response.setMessage("Boothgame Deleted Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+            } else {
+                response.setMessage("Boothgame Not Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("Boothgame Not Found");
+            response.setMessage("Authorization Failed");
             response.setError(true);
-            response.setHttpCode(HTTPCode.NO_CONTENT);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listBoothGames.clear();
