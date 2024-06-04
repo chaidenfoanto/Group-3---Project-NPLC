@@ -34,9 +34,7 @@ public class BoothgamesController {
     @Autowired
     private LoginService loginService;
 
-    @Autowired
-    private Response response;
-
+    private Response response = new Response();
     List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
 
     @PostMapping("/addBoothgame")
