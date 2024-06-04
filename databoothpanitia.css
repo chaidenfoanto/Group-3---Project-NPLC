@@ -257,6 +257,8 @@
         .input-group {
             flex: 1;
             padding: 0 10px;
+            position: relative; /* Tambahkan posisi relatif pada .input-group */
+            width: 100%;
         }
 
         #howtoplay {
@@ -268,6 +270,15 @@
         .error-message {
             color: red;
             font-size: 12px;
-            display: block;
-            margin-top: 5px;
+            display: none; /* Sembunyikan pesan kesalahan awalnya */
+            position: absolute; /* Atur posisi absolut */
+            top: 100%; /* Geser ke bawah input */
+            left: 0;
         }
+        
+        /* Tampilkan pesan kesalahan saat input tidak valid */
+        .input-group.error-input .error-message {
+            display: block;
+        }
+
+        
