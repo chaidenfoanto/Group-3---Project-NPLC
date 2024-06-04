@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.restfulnplc.nplcrestful.dto.PanitiaDTO;
 import com.restfulnplc.nplcrestful.model.Panitia;
+import com.restfulnplc.nplcrestful.model.Divisi;
 import com.restfulnplc.nplcrestful.repository.PanitiaRepository;
 import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 
@@ -87,6 +88,13 @@ public class PanitiaService {
     public boolean checkAdmin(String id) {
         if(panitiaRepository.findById(id).isPresent()) {
             return panitiaRepository.findById(id).get().getIsAdmin();
+        }
+        return false;
+    }
+
+    public boolean checkKetua(String id) {
+        if(panitiaRepository.findById(id).isPresent()) {
+            return panitiaRepository.findById(id).get().getDivisi().equals(Divisi.KETUAACARA);
         }
         return false;
     }

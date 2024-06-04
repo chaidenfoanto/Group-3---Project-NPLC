@@ -1,18 +1,17 @@
 package com.restfulnplc.nplcrestful.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.restfulnplc.nplcrestful.dto.StatusNPLCDTO;
-import com.restfulnplc.nplcrestful.model.StatusNPLC;
+import com.restfulnplc.nplcrestful.dto.TimeDTO;
+import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.service.StatusNPLCService;
+import com.restfulnplc.nplcrestful.util.ErrorMessage;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -21,92 +20,93 @@ public class StatusNPLCController {
 
     @Autowired
     private StatusNPLCService statusNPLCService;
+    
+    @Autowired
+    private LoginService loginService;
 
-    @PostMapping("/addStatusNPLC")
-    public ResponseEntity<Response<StatusNPLC>> addStatusNPLC(@RequestBody StatusNPLCDTO statusNPLCDTO) {
-        Response<StatusNPLC> response = new Response<>();
-        response.setService("Add Status NPLC");
-        StatusNPLC newStatusNPLC = statusNPLCService.addStatusNPLC(statusNPLCDTO);
-        response.setMessage("Status NPLC Successfully Added");
-        response.setData(newStatusNPLC);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
+    @Autowired
+    private Response response;
 
-    @GetMapping
-    public ResponseEntity<Response<List<StatusNPLC>>> getAllStatusNPLC() {
-        Response<List<StatusNPLC>> response = new Response<>();
-        response.setService("Get All Status NPLC");
-        List<StatusNPLC> statusNPLCList = statusNPLCService.getAllStatusNPLC();
-        response.setData(statusNPLCList);
-        response.setMessage("All Status NPLC Retrieved Successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Response<StatusNPLC>> getStatusNPLCById(@PathVariable("id") int id) {
-        Response<StatusNPLC> response = new Response<>();
-        response.setService("Get Status NPLC By ID");
-        Optional<StatusNPLC> statusNPLC = statusNPLCService.getStatusNPLCById(id);
-        if (statusNPLC.isPresent()) {
-            response.setData(statusNPLC.get());
-            response.setMessage("Status NPLC Retrieved Successfully");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+    @GetMapping("/startGame")
+    public ResponseEntity<Response> startNPLC(@RequestHeader("Token") String sessionToken, TimeDTO timeDTO) {
+        response.setService("NPLC Start");
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionKetua(sessionToken)) {
+                statusNPLCService.setNPLCTime(timeDTO);
+                response.setMessage("Game Started");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(statusNPLCService.updateStatusNPLC("Start"));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("Status NPLC Not Found");
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
+                    .status(response.getHttpCode().getStatus())
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(response);
-        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Response<StatusNPLC>> updateStatusNPLC(@PathVariable("id") int id, @RequestBody StatusNPLCDTO statusNPLCDTO) {
-        Response<StatusNPLC> response = new Response<>();
-        response.setService("Update Status NPLC");
-        Optional<StatusNPLC> updatedStatusNPLC = statusNPLCService.updateStatusNPLC(id, statusNPLCDTO);
-        if (updatedStatusNPLC.isPresent()) {
-            response.setData(updatedStatusNPLC.get());
-            response.setMessage("Status NPLC Updated Successfully");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+    @GetMapping("/stopGame")
+    public ResponseEntity<Response> stopNPLC(@RequestHeader("Token") String sessionToken) {
+        response.setService("NPLC Start");
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionKetua(sessionToken)) {
+                response.setMessage("Game Stopped");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(statusNPLCService.updateStatusNPLC("Stop"));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("Status NPLC Not Found");
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
+                    .status(response.getHttpCode().getStatus())
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(response);
-        }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Response<String>> deleteStatusNPLC(@PathVariable("id") int id) {
-        Response<String> response = new Response<>();
-        response.setService("Delete Status NPLC");
-        boolean isDeleted = statusNPLCService.deleteStatusNPLC(id);
-        if (isDeleted) {
-            response.setMessage("Status NPLC Deleted Successfully");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    body(response);
+    @GetMapping("/restartGame")
+    public ResponseEntity<Response> restartNPLC(@RequestHeader("Token") String sessionToken) {
+        response.setService("NPLC Start");
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionKetua(sessionToken)) {
+                response.setMessage("Game Restarted");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(statusNPLCService.updateStatusNPLC("Restart"));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("Status NPLC Not Found");
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
+                    .status(response.getHttpCode().getStatus())
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(response);
-        }
     }
+
 }

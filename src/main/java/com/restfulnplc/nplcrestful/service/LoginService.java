@@ -109,6 +109,17 @@ public class LoginService {
         return false;
     }
 
+    public boolean checkSessionKetua(String token)
+    {
+        if(loginRepository.findById(token).isPresent()) {
+            Login session = loginRepository.findById(token).get();
+            if(session.getRole().equals(Role.PANITIA)) {
+                return panitiaService.checkKetua(token);
+            }
+        }
+        return false;
+    }
+
     public Login getLoginSession(String token)
     {
         return loginRepository.findById(token).get();
