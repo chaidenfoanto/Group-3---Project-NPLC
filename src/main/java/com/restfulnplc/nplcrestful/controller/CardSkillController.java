@@ -38,18 +38,25 @@ public class CardSkillController {
     @PostMapping("/addCardSkill")
     public ResponseEntity<Response> addCardSkill(@RequestHeader("Token") String sessionToken, @RequestBody CardSkillDTO cardskillDTO){
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Add Card Skill");
-            CardSkill newCardSkill = cardSkillService.addCardSkill(cardskillDTO);
-            listCardSkill.add(newCardSkill);
-            response.setMessage("Card Skill Successfully Added");
-            response.setError(false);
-            response.setHttpCode(HTTPCode.CREATED);
-            response.setData(listCardSkill.stream().map(cardskill -> Map.of(
-                "idCard",cardskill.getIdCard(),
-                "namakartu",cardskill.getNamaKartu(),
-                "rules",cardskill.getRules(),
-                "totalkartu",cardskill.getTotalKartu(),
-                "gambarkartu", cardskill.getGambarKartu())).collect(Collectors.toList()));
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Add Card Skill");
+                CardSkill newCardSkill = cardSkillService.addCardSkill(cardskillDTO);
+                listCardSkill.add(newCardSkill);
+                response.setMessage("Card Skill Successfully Added");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.CREATED);
+                response.setData(listCardSkill.stream().map(cardskill -> Map.of(
+                    "idCard",cardskill.getIdCard(),
+                    "namakartu",cardskill.getNamaKartu(),
+                    "rules",cardskill.getRules(),
+                    "totalkartu",cardskill.getTotalKartu(),
+                    "gambarkartu", cardskill.getGambarKartu())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
             response.setMessage("Authorization Failed");
             response.setError(true);
@@ -136,7 +143,7 @@ public class CardSkillController {
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateCardSkill(@RequestHeader("Token") String sessionToken, @PathVariable("id") String id, @RequestBody CardSkillDTO cardSkillDTO) {
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Upate Card Skill");
+            response.setService("Update Card Skill");
             Optional<CardSkill> updatedCardSkill = cardSkillService.updateCardSkill(id, cardSkillDTO);
             if (updatedCardSkill.isPresent()) {
                 listCardSkill.add(updatedCardSkill.get());
