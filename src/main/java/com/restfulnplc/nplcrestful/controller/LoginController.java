@@ -27,9 +27,8 @@ import com.restfulnplc.nplcrestful.model.Login;
 public class LoginController {
     @Autowired
     private LoginService loginService;
-    
-    @Autowired
-    private Response response;
+
+    private Response response = new Response();
 
     @PostMapping("/process_login_panitia")
     public ResponseEntity<Response> process_login_panitia(@RequestBody LoginDTO loginDTO)

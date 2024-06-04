@@ -24,9 +24,7 @@ public class TeamController {
     @Autowired
     private TeamService teamService;
 
-    @Autowired
-    private Response response;
-
+    private Response response = new Response();
     List<Team> listTeam = Collections.<Team>emptyList();
 
     @PostMapping("addTeam")

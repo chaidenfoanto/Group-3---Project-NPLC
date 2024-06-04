@@ -23,9 +23,8 @@ public class StatusNPLCController {
     
     @Autowired
     private LoginService loginService;
-
-    @Autowired
-    private Response response;
+    
+    private Response response = new Response();
 
     @GetMapping("/startGame")
     public ResponseEntity<Response> startNPLC(@RequestHeader("Token") String sessionToken, TimeDTO timeDTO) {

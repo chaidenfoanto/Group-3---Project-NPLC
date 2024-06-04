@@ -30,9 +30,7 @@ public class CardSkillController {
     @Autowired
     private LoginService loginService;
 
-    @Autowired
-    private Response response;
-
+    private Response response = new Response();
     List<CardSkill> listCardSkill = Collections.<CardSkill>emptyList();
 
     @PostMapping("/addCardSkill")
