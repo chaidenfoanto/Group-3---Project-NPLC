@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restfulnplc.nplcrestful.dto.LoginDTO;
+import com.restfulnplc.nplcrestful.dto.AccessDTO;
 import com.restfulnplc.nplcrestful.model.Login;
 import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.model.Team;
-import com.restfulnplc.nplcrestful.model.Role;
+import com.restfulnplc.nplcrestful.enums.Role;
 import com.restfulnplc.nplcrestful.repository.LoginRepository;
 import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 
@@ -75,12 +76,23 @@ public class LoginService {
         return loginRepository.findById(token).isPresent();
     }
 
-    public boolean checkSessionAdmin(String token)
+    public boolean checkSessionPanitia(String token)
     {
         if(loginRepository.findById(token).isPresent()) {
             Login session = loginRepository.findById(token).get();
             if(session.getRole().equals(Role.PANITIA)) {
                 return panitiaService.checkPanitia(session.getIdUser());
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSessionAdmin(String token)
+    {
+        if(loginRepository.findById(token).isPresent()) {
+            Login session = loginRepository.findById(token).get();
+            if(session.getRole().equals(Role.PANITIA)) {
+                return panitiaService.checkAdmin(session.getIdUser());
             }
         }
         return false;
@@ -119,5 +131,19 @@ public class LoginService {
     public void deleteSession(String token)
     {
         loginRepository.deleteById(token);
+    }
+
+    public AccessDTO getAccessDetails(String sessionToken)
+    {
+        Login sessionActive = getLoginSession(sessionToken);
+        boolean isAdmin = checkSessionAdmin(sessionToken);
+        String idUser = sessionActive.getIdUser();
+        AccessDTO accessDetails = new AccessDTO(
+            idUser,
+            sessionActive.getRole().toString(),
+            isAdmin,
+            isAdmin ? (panitiaService.getPanitiaById(idUser).get().getDivisi().toString()) : null
+        );
+        return accessDetails;
     }
 }

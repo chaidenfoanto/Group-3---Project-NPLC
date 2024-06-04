@@ -19,7 +19,7 @@ public class StatusNPLCService {
     }
 
     public StatusNPLC updateStatusNPLC(int id, StatusNPLCDTO statusNPLCDTO) {
-        StatusNPLC statusNPLC = statusNPLCRepository.findAll().getLast();
+        StatusNPLC statusNPLC = statusNPLCRepository.findAll().get(statusNPLCRepository.findAll().size()-1);
         statusNPLC.setWaktuSelesai(statusNPLCDTO.getWaktuSelesai());
         statusNPLC.setStatusGame(statusNPLCDTO.getStatusGame());
         statusNPLCRepository.save(statusNPLC);

@@ -92,7 +92,7 @@ public class TeamService {
     public String getNextTeamID()
     {
         List<Team> teams = teamRepository.findAll();
-        if(teams.size() > 0) return "TEAM" + (Integer.parseInt(teams.getLast().getIdTeam().split("TEAM")[1]) + 1);
+        if(teams.size() > 0) return "TEAM" + (Integer.parseInt(teams.get(teams.size()-1).getIdTeam().split("TEAM")[1]) + 1);
         return "TEAM1";
     }
 

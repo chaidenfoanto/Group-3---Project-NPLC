@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.restfulnplc.nplcrestful.dto.LoginDTO;
+import com.restfulnplc.nplcrestful.dto.AccessDTO;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
-import com.restfulnplc.nplcrestful.util.HTTPCode;
+import com.restfulnplc.nplcrestful.enums.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 import com.restfulnplc.nplcrestful.model.Login;
 
@@ -92,5 +93,23 @@ public class LoginController {
             .body(response);
     }
         
-
+    @GetMapping("/getAccess")
+    public ResponseEntity<Response> getAccess(@RequestHeader("Token") String sessionToken) {
+        response.setService("Auth Token");
+        if(loginService.checkSessionAlive(sessionToken)){
+            AccessDTO accessDetails = loginService.getAccessDetails(sessionToken);
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
+            response.setData(accessDetails);
+        }
+        response.setMessage("Authorization Failed");
+        response.setError(true);
+        response.setHttpCode(HTTPCode.FORBIDDEN);
+        response.setData(new ErrorMessage(response.getHttpCode()));
+        return  ResponseEntity
+            .status(response.getHttpCode().getStatus())
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(response);
+    }
 }

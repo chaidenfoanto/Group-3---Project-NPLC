@@ -83,4 +83,11 @@ public class PanitiaService {
     public boolean checkPanitia(String id) {
         return panitiaRepository.findById(id).isPresent();
     }
+
+    public boolean checkAdmin(String id) {
+        if(panitiaRepository.findById(id).isPresent()) {
+            return panitiaRepository.findById(id).get().getIsAdmin();
+        }
+        return false;
+    }
 }

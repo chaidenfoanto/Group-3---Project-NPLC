@@ -15,7 +15,7 @@ public class PlayersService {
     public String getNextPlayerID()
     {
         List<Players> players = playersRepository.findAll();
-        if(players.size() > 0) return "PLAYER" + (Integer.parseInt(players.getLast().getIdPlayer().split("PLAYER")[1]) + 1);
+        if(players.size() > 0) return "PLAYER" + (Integer.parseInt(players.get(players.size()-1).getIdPlayer().split("PLAYER")[1]) + 1);
         return "PLAYER1";
     }
 }

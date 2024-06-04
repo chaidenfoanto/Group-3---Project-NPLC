@@ -1,4 +1,4 @@
-package com.restfulnplc.nplcrestful.model;
+package com.restfulnplc.nplcrestful.enums;
 
 public enum StatusGame {
     NOTSTARTED("Not Started"),

@@ -1,6 +1,6 @@
 package com.restfulnplc.nplcrestful.dto;
 
-import com.restfulnplc.nplcrestful.model.StatusGame;
+import com.restfulnplc.nplcrestful.enums.StatusGame;
 import java.time.LocalTime;
 
 public class StatusNPLCDTO {

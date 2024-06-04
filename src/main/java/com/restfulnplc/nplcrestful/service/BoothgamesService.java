@@ -65,7 +65,7 @@ public class BoothgamesService {
     public String getNextBoothgameID()
     {
         List<Boothgames> boothgames = boothgamesRepository.findAll();
-        if(boothgames.size() > 0) return "BOOTHGAME" + (Integer.parseInt(boothgames.getLast().getIdBooth().split("BOOTHGAME")[1]) + 1);
+        if(boothgames.size() > 0) return "BOOTHGAME" + (Integer.parseInt(boothgames.get(boothgames.size()-1).getIdBooth().split("BOOTHGAME")[1]) + 1);
         return "BOOTHGAME1";
     }
 }

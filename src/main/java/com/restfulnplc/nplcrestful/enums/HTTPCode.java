@@ -1,4 +1,4 @@
-package com.restfulnplc.nplcrestful.util;
+package com.restfulnplc.nplcrestful.enums;
 
 import org.springframework.http.HttpStatus;
 
