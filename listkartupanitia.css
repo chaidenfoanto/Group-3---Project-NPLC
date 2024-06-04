@@ -348,7 +348,7 @@
 
         @media (max-width: 500px) {
             .datacontainer {
-                width: 70%;
+                left: 50%;
             }
 
             .card-content img {
@@ -362,8 +362,7 @@
             }
 
             .sidebar.open ~ .main-content .datacontainer {
-                left: calc(50% + 40px);
-                width: 70%;
+                left: 50%;
             }
 
             h1 {
@@ -397,12 +396,12 @@
 
         @media (max-width: 768px) {
             .datacontainer {
-                width: 70%;
+                width: 80%;
                 flex-direction: row;
             }
 
             .sidebar.open ~ .main-content .datacontainer {
-                width: 60%;
+                left: 50%;
             }
             
             .image-upload {
