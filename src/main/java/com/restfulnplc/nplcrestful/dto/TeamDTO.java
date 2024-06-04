@@ -1,6 +1,6 @@
 package com.restfulnplc.nplcrestful.dto;
 
-import com.restfulnplc.nplcrestful.enums.Kategori;
+import com.restfulnplc.nplcrestful.model.Kategori;
 
 public class TeamDTO {
 

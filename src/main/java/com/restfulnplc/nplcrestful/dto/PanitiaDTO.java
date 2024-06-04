@@ -1,7 +1,7 @@
 package com.restfulnplc.nplcrestful.dto;
 
-import com.restfulnplc.nplcrestful.enums.Divisi;
-import com.restfulnplc.nplcrestful.enums.Spesialisasi;
+import com.restfulnplc.nplcrestful.model.Divisi;
+import com.restfulnplc.nplcrestful.model.Spesialisasi;
 
 public class PanitiaDTO {
     private String idPanitia;

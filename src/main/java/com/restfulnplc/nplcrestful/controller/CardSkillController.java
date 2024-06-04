@@ -9,9 +9,9 @@ import com.restfulnplc.nplcrestful.dto.CardSkillDTO;
 import com.restfulnplc.nplcrestful.model.CardSkill;
 import com.restfulnplc.nplcrestful.service.CardSkillService;
 import com.restfulnplc.nplcrestful.service.LoginService;
-import com.restfulnplc.nplcrestful.enums.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
 
 import java.util.Collections;
 import java.util.List;

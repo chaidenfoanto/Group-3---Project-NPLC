@@ -17,7 +17,7 @@ import com.restfulnplc.nplcrestful.dto.LoginDTO;
 import com.restfulnplc.nplcrestful.dto.AccessDTO;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
-import com.restfulnplc.nplcrestful.enums.HTTPCode;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 import com.restfulnplc.nplcrestful.model.Login;
 

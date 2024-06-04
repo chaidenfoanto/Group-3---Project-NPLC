@@ -1,4 +1,4 @@
-package com.restfulnplc.nplcrestful.enums;
+package com.restfulnplc.nplcrestful.model;
 
 public enum Kategori{
     SINGLE("Single"),

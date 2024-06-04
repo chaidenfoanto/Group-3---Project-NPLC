@@ -8,8 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalTime;
 
-import com.restfulnplc.nplcrestful.enums.StatusGame;
-
 @Entity
 @Table(name = "statusNPLC")
 public class StatusNPLC {

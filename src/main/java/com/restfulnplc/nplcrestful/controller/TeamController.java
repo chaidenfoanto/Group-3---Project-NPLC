@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.restfulnplc.nplcrestful.dto.TeamDTO;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.service.TeamService;
-import com.restfulnplc.nplcrestful.enums.HTTPCode;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
 import java.util.Collections;

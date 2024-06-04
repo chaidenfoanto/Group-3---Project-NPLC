@@ -9,8 +9,8 @@ import com.restfulnplc.nplcrestful.dto.LoginDTO;
 import com.restfulnplc.nplcrestful.dto.AccessDTO;
 import com.restfulnplc.nplcrestful.model.Login;
 import com.restfulnplc.nplcrestful.model.Panitia;
+import com.restfulnplc.nplcrestful.model.Role;
 import com.restfulnplc.nplcrestful.model.Team;
-import com.restfulnplc.nplcrestful.enums.Role;
 import com.restfulnplc.nplcrestful.repository.LoginRepository;
 import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 

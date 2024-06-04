@@ -9,7 +9,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.Set;
-import com.restfulnplc.nplcrestful.enums.Kategori;
 
 @Entity
 @Table(name = "team")

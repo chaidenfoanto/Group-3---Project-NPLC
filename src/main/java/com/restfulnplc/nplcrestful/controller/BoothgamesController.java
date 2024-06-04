@@ -11,7 +11,7 @@ import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.service.PanitiaService;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
-import com.restfulnplc.nplcrestful.enums.HTTPCode;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
 import java.util.Collections;

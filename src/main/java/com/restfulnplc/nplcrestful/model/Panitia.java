@@ -7,9 +7,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import com.restfulnplc.nplcrestful.enums.Spesialisasi;
-import com.restfulnplc.nplcrestful.enums.Divisi;
-
 @Entity
 @Table(name = "panitia")
 public class Panitia {
