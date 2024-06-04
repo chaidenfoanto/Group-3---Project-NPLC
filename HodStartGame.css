@@ -54,14 +54,15 @@ header {
 
 header h1 {
     margin: 10px;
+    margin-right: 55%;
 }
 .timer {
     align-items: right;
     padding: 10px 20px 10px 20px;
     border-radius: 10px;
-    border: 0.5px solid black;
+    border: 0.5px solid #9a9a9a;
     margin: 10px;
-    background-color: #B57F80;
+    background-color: #35A2DB;
     color: white;
 }
 .timer .timeleft {
