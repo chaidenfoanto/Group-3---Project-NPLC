@@ -130,12 +130,15 @@
 
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto;
+            top: 50%;
+            left: calc(50% + 40px);
+            transform: translate(-50%, -50%);
             padding: 20px;
             border: 1px solid #888;
-            width: 100%;
+            width: 70%;
             max-width: 550px;
             border-radius: 8px;
+            position: absolute;
         }
 
         .close {
@@ -368,6 +371,9 @@
         .history-group {
             flex-direction: row;
         }
+        .sidebar.open ~ .main-content .modal-content {
+            left: 50%;
+        }
     }
     @media (max-width: 768px) {
         header h1 {
@@ -388,5 +394,6 @@
         }
         .modal-content {
             width: 80%;
+            left: 50%;
         }
     }
