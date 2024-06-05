@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Qna</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="HodQna.css">
+    <link rel="stylesheet" href="sidebarplayer.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar"></div>
+        <div class="main-content">
+            <header>
+                <h1>Panitia Question & Answer</h1>
+            </header>
+            <div class="question-list">
+                    <div class="bg-white shadow-lg rounded-lg p-6 max-w-sm">
+                      <h2 class="text-lg font-semibold mb-2">Nama Team</h2>
+                      <p class="text-zinc-700 mb-4">siapakah saya ini dan dimana?</p>
+                      <hr class="mb-4" />
+                      <p class="text-zinc-500 text-sm">Juni 5, 2024</p>
+                    </div>
+                  </div>
+                  
+            </div>
+            <div class="popup-box">
+                <div class="popup">
+                  <div class="content">
+                    <header>
+                      <p>Answer Question</p>
+                      <span class="close-btn">&times;</span>    
+                    </header>
+                    <form action="#">
+                      <div class="form-row">
+                        <div class="row-question">
+                          <label>Team Name</label>
+                          <textarea id="team-name" readonly></textarea>
+                        </div>
+                        <div class="row-question">
+                          <label>Question</label>
+                          <textarea id="question-text" readonly></textarea>
+                        </div>
+                      </div>
+                      <div class="row-answer">
+                        <label>Answer</label>
+                        <textarea id="answer-text" spellcheck="false"></textarea>
+                      </div>
+                      <button id="submit-answer">Submit Answer</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="HodQna.js"></script>
+</body>
+</html>

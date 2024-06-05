@@ -271,6 +271,19 @@
             border-radius: 10px;
             background: #35A2DB;
           }
+          .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
           @media (max-width: 660px){
             .wrapper{
               margin: 15px;

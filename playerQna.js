@@ -1,7 +1,4 @@
 $(document).ready(function() {
-    // Clear the local storage to remove all notes
-    localStorage.removeItem("notes");
-
     $(".sidebar").load("sidebarplayer.html", function() {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
@@ -21,9 +18,8 @@ $(document).ready(function() {
 
     const addBox = document.querySelector(".add-box"),
     popupBox = document.querySelector(".popup-box"),
-    popup = popupBox.querySelector(".popup"),
     popupTitle = popupBox.querySelector("header p"),
-    closeIcon = popupBox.querySelector("header i"),
+    closeIcon = popupBox.querySelector(".close-btn"), // Correctly select the close button
     titleTag = popupBox.querySelector("input"),
     descTag = popupBox.querySelector("textarea"),
     addBtn = popupBox.querySelector("button");
@@ -46,13 +42,6 @@ $(document).ready(function() {
         titleTag.value = descTag.value = "";
         popupBox.classList.remove("show");
         document.body.style.overflow = "auto";
-    });
-
-    // Close the popup when clicking outside the popup content
-    popupBox.addEventListener("click", (event) => {
-        if (event.target === popupBox) {
-            closeIcon.click();
-        }
     });
 
     function showNotes() {
@@ -83,34 +72,6 @@ $(document).ready(function() {
     }
     
     showNotes();
-
-    function showMenu(elem) {
-        elem.parentElement.classList.add("show");
-        document.addEventListener("click", e => {
-            if(e.target.tagName != "I" || e.target != elem) {
-                elem.parentElement.classList.remove("show");
-            }
-        });
-    }
-
-    function deleteNote(noteId) {
-        let confirmDel = confirm("Are you sure you want to delete this note?");
-        if(!confirmDel) return;
-        notes.splice(noteId, 1);
-        localStorage.setItem("notes", JSON.stringify(notes));
-        showNotes();
-    }
-
-    function updateNote(noteId, title, filterDesc) {
-        let description = filterDesc.replaceAll('<br/>', '\r\n');
-        updateId = noteId;
-        isUpdate = true;
-        addBox.click();
-        titleTag.value = title;
-        descTag.value = description;
-        popupTitle.innerText = "Update a Note";
-        addBtn.innerText = "Update Note";
-    }
 
     addBtn.addEventListener("click", e => {
         e.preventDefault();
