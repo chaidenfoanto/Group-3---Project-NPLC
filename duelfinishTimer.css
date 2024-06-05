@@ -1,519 +1,520 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-        :root{
-        --color-default:#35A2DB;
-        --color-second:#35A2DB;
-        --color-white:#fff;
-        --color-body:#e4e9f7;
-        --color-light:#e0e0e0;
-        }
-
-
-        *{
-        padding: 0%;
-        margin: 0%;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-        }
-
-        body{
-        min-height: 100vh;
-        }
-
-        .main-content h1, h2{
-            color: #35A2DB;
-            font-weight:900;
-            margin-left: 10px;
-        }
-        .main-content h2{
-            margin-top: 10px;
-        }
-
-        .main-content{
-            position: relative;
-            /* background-color: var(--color-body); */
-            min-height: 100vh;
-            top:0;
-            /* left:78px; */
-            width: calc(100% - 78px);
-            transition: all .5s ease;
-            z-index: 2;
-            margin-left: 80px;
-            padding: 20px;
-            flex: 1
-        }
-        header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header h1 {
-            margin: 0;
-            flex: 1 1 60%;
-        }
-        .history h1{
-            font-weight: bolder;
-            margin-top: 3%;
-        }
-        .timer {
-            align-items: center;
-            padding: 10px 20px 10px 20px;
-            border-radius: 10px;
-            border: 0.5px solid black;
-            margin: 10px;
-            background-color: #B57F80;
-            color: white;
-        }
-        .timer .timeleft {
-            font-size: xx-large;
-            text-align: center;
-            font-weight: bold;
-        }
-        .matchup-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 15px 0;
-        }
-        .team {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            margin: 0 10px;
-            width: 100%;
-        }
-        .vs {
-            font-size: 28px;
-            font-weight: 1000;
-            color: #35A2DB;
-        }
-        .start {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex: 1;
-        }
-        
-        .start button {
-            box-sizing: border-box;
-            background: #35A2DB;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            margin-right: 10px;
-            filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .stop button {
-            box-sizing: border-box;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            margin-right: 10px;
-            filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .stop button:hover {
-            background-color: rgb(188, 18, 18);
-        }
-        
-        .start button:hover {
-            background-color: #2c8ec1;
-        }
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 100%;
-            max-width: 550px;
-            border-radius: 8px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal-content h1 {
-            color: #35A2DB;
-            text-align: center;
-        }
-
-        .modal-content form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .matchup-container select, 
-        .modal-content select, 
-        .modal-content input {
-            border: none;
-            margin: 8px 0;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 8px;
-            width: 100%;
-            outline: none;
-            box-sizing: border-box;
-            border: 1px solid #212b27;
-        }
-
-        .input-group {
-            position: relative;
-            width: 100%;
-        }
-
-        .matchup-container .placeholder,
-        .modal-content .placeholder {
-            position: absolute;
-            top: 18px;
-            left: 15px;
-            font-size: 16px;
-            padding: 0px 5px;
-            color: #666;
-            transition: 0.3s;
-            pointer-events: none;
-        }
-
-        .matchup-container select:focus + .placeholder,
-        .matchup-container select.not-empty + .placeholder,
-        .modal-content select:focus + .placeholder,
-        .modal-content select.not-empty + .placeholder,
-        .modal-content input:focus + .placeholder,
-        .modal-content input.not-empty + .placeholder {
-            top: -6px;
-            color: #000000;
-            background-color: white;
-        }
-
-        .time-container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .time-container div {
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        .time-container div:last-child {
-            margin-right: 0;
-        }
-
-        .modal-content p {
-            text-align: center;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .modal-content button {
-            background: #35A2DB;
-            color: white;
-            border: none;
-            padding: 10px 40px;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            margin: auto;
-            display: block;
-            filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .modal-content button:hover {
-            background-color: #2c8ec1;
-        }
-        
-        #history {
-            margin-top: 20px;
-        }
-
-        .history-item {
-            border: 1px solid #ccc;
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .winner {
-            color: white;
-            background-color: #B57F80;
-            padding: 0 10px;
-        }
-        
-        .history-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        
-        .history-cell {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0px;
-            margin: 2px;
-            box-sizing: border-box;
-        }
-
-        .team {
-            flex: 1 1 20%;
-        }
-
-        .time {
-            flex: 1 1 10%;
-        }
-        
-        .history-cell[data-label="VS"] {
-            flex: 0 0 auto;
-            text-align: center;
-        }
-
-        #history .noteam {
-            margin: 10px;
-        }
-
-        .history-item span {
-            width: 100%;
-            margin-bottom: 5px;
-        }
-
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .sidebar.open ~ .main-content .modal-content {
-            left: calc(125px + 50%);
-        }
-
-        .history-group {
-            display: flex;
-            flex-direction: row;
-        }
-        
-        .history-group.team {
-            flex: 1 1 45%;
-        }
-
-        .history-group.time {
-            flex: 1 1 30%;
-        }
-
-    @media (max-width: 480px) {
-        .sidebar {
-            flex-direction: row;
-            height: auto;
-            width: 100%;
-            position: static;
-            justify-content: space-around;
-        }
-        
-        .main-content {
-            margin-left: 75px;
-        }
-        
-        .start {
-            right: 5px;
-        }
-    }
-    
-    @media (max-width: 600px) {
-        .matchup-container {
-            flex-direction: column;
-        }
-        .team {
-            margin: 0;
-        }
-                
-        .vs {
-            margin: 0;
-        }
-        .timer .timeleft{
-            font-size: 25px;
-        }
-        .time-container {
-            flex-direction: column;
-        }
-        .history-cell.team p:first-child,
-        .history-cell.time p:first-child {
-            display: none;
-        }
-        .history-cell {
-            flex-direction: row;
-        }
-        .history-row {
-            flex-direction: column;
-        }
-        .history-group {
-            flex-direction: row;
-        }
-    }
-    @media (max-width: 768px) {
-        header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-    
-        .matchup-container {
-            padding: 10px;
-        }
-
-        .history-item {
-            font-size: 12px;
-        }
-    
-        .start button {
-            width: auto;
-        }
-        .modal-content {
-            width: 80%;
-        }
-    }
-
-    /* Style untuk pop up Set Time */
-.set-time-modal {
-    display: none; 
-    position: fixed; 
-    z-index: 2; /* Diganti menjadi 2 agar tidak bertabrakan */
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.4); 
-    padding-top: 60px;
+:root {
+  --color-default: #35a2db;
+  --color-second: #35a2db;
+  --color-white: #fff;
+  --color-body: #e4e9f7;
+  --color-light: #e0e0e0;
 }
 
-.set-time-modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
-    position: relative;
+* {
+  padding: 0%;
+  margin: 0%;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-.set-time-modal-content h1 {
-    color: #35A2DB;
-    text-align: center;
+body {
+  min-height: 100vh;
 }
 
-.set-time-modal-content form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.main-content h1,
+h2 {
+  color: #35a2db;
+  font-weight: 900;
+  margin-left: 10px;
+}
+.main-content h2 {
+  margin-top: 10px;
 }
 
-.set-time-modal-content input[type="number"],
-.set-time-modal-content button {
-    border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 16px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
-    box-sizing: border-box;
-    border: 1px solid #212b27;
+.main-content {
+  position: relative;
+  /* background-color: var(--color-body); */
+  min-height: 100vh;
+  top: 0;
+  /* left:78px; */
+  width: calc(100% - 78px);
+  transition: all 0.5s ease;
+  z-index: 2;
+  margin-left: 80px;
+  padding: 20px;
+  flex: 1;
+}
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 {
+  margin: 0;
+  flex: 1 1 60%;
+}
+.history h1 {
+  font-weight: bolder;
+  margin-top: 3%;
+}
+.timer {
+  align-items: center;
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  border: 0.5px solid black;
+  margin: 10px;
+  background-color: #b57f80;
+  color: white;
+}
+.timer .timeleft {
+  font-size: xx-large;
+  text-align: center;
+  font-weight: bold;
+}
+.matchup-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 15px 0;
+}
+.team {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin: 0 10px;
+  width: 100%;
+}
+.vs {
+  font-size: 28px;
+  font-weight: 1000;
+  color: #35a2db;
+}
+.start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
 }
 
-.input-group {
-    position: relative;
-    width: 100%;
+.start button {
+  box-sizing: border-box;
+  background: #35a2db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 10px;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
 }
 
-.placeholder {
-    position: absolute;
-    top: 18px;
-    left: 15px;
-    font-size: 16px;
-    padding: 0px 5px;
-    color: #666;
-    transition: 0.3s;
-    pointer-events: none;
+.stop button {
+  box-sizing: border-box;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 10px;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
 }
 
-.input-group input[type="number"]:focus + .placeholder,
-.input-group input[type="number"].not-empty + .placeholder {
-    top: -6px;
-    color: #000000;
-    background-color: white;
+.stop button:hover {
+  background-color: rgb(188, 18, 18);
 }
 
-.set-time-modal-content button {
-    background: #35A2DB;
-    color: white;
-    border: none;
-    padding: 10px 40px;
-    border-radius: 15px;
-    text-align: center;
-    cursor: pointer;
-    margin: auto;
-    display: block;
-    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
+.start button:hover {
+  background-color: #2c8ec1;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
 }
 
-.set-time-modal-content button:hover {
-    background-color: #2c8ec1;
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 100%;
+  max-width: 550px;
+  border-radius: 8px;
+  position: relative;
 }
 
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
-    text-decoration: none;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content h1 {
+  color: #35a2db;
+  text-align: center;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.matchup-container select,
+.modal-content select,
+.modal-content input {
+  border: none;
+  margin: 8px 0;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid #212b27;
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.matchup-container .placeholder,
+.modal-content .placeholder {
+  position: absolute;
+  top: 18px;
+  left: 15px;
+  font-size: 16px;
+  padding: 0px 5px;
+  color: #666;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.matchup-container select:focus + .placeholder,
+.matchup-container select.not-empty + .placeholder,
+.modal-content select:focus + .placeholder,
+.modal-content select.not-empty + .placeholder,
+.modal-content input:focus + .placeholder,
+.modal-content input.not-empty + .placeholder {
+  top: -6px;
+  color: #000000;
+  background-color: white;
+}
+
+.time-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.time-container div {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.time-container div:last-child {
+  margin-right: 0;
+}
+
+.modal-content p {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.modal-content button {
+  background: #35a2db;
+  color: white;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  margin: auto;
+  display: block;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.modal-content button:hover {
+  background-color: #2c8ec1;
+}
+
+#history {
+  margin-top: 20px;
+}
+
+.history-item {
+  border: 1px solid #ccc;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.winner {
+  color: white;
+  background-color: #b57f80;
+  padding: 0 10px;
+}
+
+.history-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.history-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  margin: 2px;
+  box-sizing: border-box;
+}
+
+.team {
+  flex: 1 1 20%;
+}
+
+.time {
+  flex: 1 1 10%;
+}
+
+.history-cell[data-label='VS'] {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+#history .noteam {
+  margin: 10px;
+}
+
+.history-item span {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.sidebar.open ~ .main-content .modal-content {
+  left: calc(125px + 50%);
+}
+
+.history-group {
+  display: flex;
+  flex-direction: row;
+}
+
+.history-group.team {
+  flex: 1 1 45%;
+}
+
+.history-group.time {
+  flex: 1 1 30%;
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+    position: static;
+    justify-content: space-around;
+  }
+
+  .main-content {
+    margin-left: 75px;
+  }
+
+  .start {
+    right: 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .matchup-container {
+    flex-direction: column;
+  }
+  .team {
+    margin: 0;
+  }
+
+  .vs {
+    margin: 0;
+  }
+  .timer .timeleft {
+    font-size: 25px;
+  }
+  .time-container {
+    flex-direction: column;
+  }
+  .history-cell.team p:first-child,
+  .history-cell.time p:first-child {
+    display: none;
+  }
+  .history-cell {
+    flex-direction: row;
+  }
+  .history-row {
+    flex-direction: column;
+  }
+  .history-group {
+    flex-direction: row;
+  }
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .matchup-container {
+    padding: 10px;
+  }
+
+  .history-item {
+    font-size: 12px;
+  }
+
+  .start button {
+    width: auto;
+  }
+  .modal-content {
+    width: 80%;
+  }
+}
+
+/* Style untuk pop up Set Time */
+.set-time-modal {
+  display: none;
+  position: fixed;
+  z-index: 2; /* Diganti menjadi 2 agar tidak bertabrakan */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+}
+
+.set-time-modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.set-time-modal-content h1 {
+  color: #35a2db;
+  text-align: center;
+}
+
+.set-time-modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.set-time-modal-content input[type='number'],
+.set-time-modal-content button {
+  border: none;
+  margin: 8px 0;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid #212b27;
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.placeholder {
+  position: absolute;
+  top: 18px;
+  left: 15px;
+  font-size: 16px;
+  padding: 0px 5px;
+  color: #666;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.input-group input[type='number']:focus + .placeholder,
+.input-group input[type='number'].not-empty + .placeholder {
+  top: -6px;
+  color: #000000;
+  background-color: white;
+}
+
+.set-time-modal-content button {
+  background: #35a2db;
+  color: white;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  margin: auto;
+  display: block;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.set-time-modal-content button:hover {
+  background-color: #2c8ec1;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
 }
