@@ -1,112 +1,216 @@
-// package com.restfulnplc.nplcrestful.controller;
+package com.restfulnplc.nplcrestful.controller;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.MediaType;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// import com.restfulnplc.nplcrestful.dto.ListKartuDTO;
-// import com.restfulnplc.nplcrestful.model.ListKartu;
-// import com.restfulnplc.nplcrestful.service.ListKartuService;
-// import com.restfulnplc.nplcrestful.util.Response;
+import com.restfulnplc.nplcrestful.dto.ListKartuDTO;
+import com.restfulnplc.nplcrestful.model.ListKartu;
+import com.restfulnplc.nplcrestful.service.ListKartuService;
+import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.util.ErrorMessage;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
+import com.restfulnplc.nplcrestful.util.Response;
 
-// import java.util.List;
-// import java.util.Optional;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-// @RestController
-// @CrossOrigin
-// @RequestMapping(value = "/api/listkartu")
-// public class ListKartuController {
+@RestController
+@CrossOrigin
+@RequestMapping(value = "/api/listkartu")
+public class ListKartuController {
 
-//     @Autowired
-//     private ListKartuService listKartuService;
+    @Autowired
+    private ListKartuService listKartuService;
 
-//     @PostMapping("/addListKartu")
-//     public ResponseEntity<Response<ListKartu>> addListKartu(@RequestBody ListKartuDTO listKartuDTO) {
-//         Response<ListKartu> response = new Response<>();
-//         response.setService("Add ListKartu");
-//         ListKartu newListKartu = listKartuService.addListKartu(listKartuDTO);
-//         response.setMessage("ListKartu Successfully Added");
-//         response.setData(newListKartu);
-//         return ResponseEntity
-//                 .status(HttpStatus.OK)
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
+    @Autowired
+    private LoginService loginService;
 
-//     @GetMapping
-//     public ResponseEntity<Response<List<ListKartu>>> getAllListKartu() {
-//         Response<List<ListKartu>> response = new Response<>();
-//         response.setService("Get All ListKartu");
-//         List<ListKartu> listKartuList = listKartuService.getAllListKartu();
-//         response.setData(listKartuList);
-//         response.setMessage("All ListKartu Retrieved Successfully");
-//         return ResponseEntity
-//                 .status(HttpStatus.OK)
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
+    private Response response = new Response();
+    List<ListKartu> listKartuList = Collections.<ListKartu>emptyList();
 
-//     @GetMapping("/{id}")
-//     public ResponseEntity<Response<ListKartu>> getListKartuById(@PathVariable("id") String id) {
-//         Response<ListKartu> response = new Response<>();
-//         response.setService("Get ListKartu By ID");
-//         Optional<ListKartu> listKartu = listKartuService.getListKartuById(id);
-//         if (listKartu.isPresent()) {
-//             response.setData(listKartu.get());
-//             response.setMessage("ListKartu Retrieved Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("ListKartu Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
+    @PostMapping("/addListKartu")
+    public ResponseEntity<Response> addListKartu(@RequestHeader("Token") String sessionToken,
+                                                 @RequestBody ListKartuDTO listKartuDTO) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Add List Kartu");
+                ListKartu newListKartu = listKartuService.addListKartu(listKartuDTO);
+                listKartuList.add(newListKartu);
+                response.setMessage("List Kartu Successfully Added");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.CREATED);
+                response.setData(listKartuList.stream().map(listKartu -> Map.of(
+                        "noKartu", listKartu.getNoKartu(),
+                        "cardSkill", listKartu.getCardSkill(),
+                        "ownedBy", listKartu.getOwnedBy(),
+                        "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listKartuList.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
-//     @PutMapping("/{id}")
-//     public ResponseEntity<Response<ListKartu>> updateListKartu(@PathVariable("id") String id, @RequestBody ListKartuDTO listKartuDTO) {
-//         Response<ListKartu> response = new Response<>();
-//         response.setService("Update ListKartu");
-//         Optional<ListKartu> updatedListKartu = listKartuService.updateListKartu(id, listKartuDTO);
-//         if (updatedListKartu.isPresent()) {
-//             response.setData(updatedListKartu.get());
-//             response.setMessage("ListKartu Updated Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("ListKartu Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
+    @GetMapping
+    public ResponseEntity<Response> getAllListKartu(@RequestHeader("Token") String sessionToken) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get All List Kartu");
+            List<ListKartu> listKartuList = listKartuService.getAllListKartu();
+            if (listKartuList.size() > 0) {
+                response.setMessage("All List Kartu Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(listKartuList.stream().map(listKartu -> Map.of(
+                        "noKartu", listKartu.getNoKartu(),
+                        "cardSkill", listKartu.getCardSkill(),
+                        "ownedBy", listKartu.getOwnedBy(),
+                        "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("No List Kartu Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listKartuList.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
-//     @DeleteMapping("/{id}")
-//     public ResponseEntity<Response<String>> deleteListKartu(@PathVariable("id") String id) {
-//         Response<String> response = new Response<>();
-//         response.setService("Delete ListKartu");
-//         boolean isDeleted = listKartuService.deleteListKartu(id);
-//         if (isDeleted) {
-//             response.setMessage("ListKartu Deleted Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("ListKartu Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
-// }
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getListKartuById(@RequestHeader("Token") String sessionToken,
+                                                     @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get List Kartu By ID");
+            Optional<ListKartu> listKartuOptional = listKartuService.getListKartuById(id);
+            if (listKartuOptional.isPresent()) {
+                listKartuList.add(listKartuOptional.get());
+                response.setMessage("List Kartu Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(listKartuList.stream().map(listKartu -> Map.of(
+                        "noKartu", listKartu.getNoKartu(),
+                        "cardSkill", listKartu.getCardSkill(),
+                        "ownedBy", listKartu.getOwnedBy(),
+                        "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("List Kartu Not Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listKartuList.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response> updateListKartu(@RequestHeader("Token") String sessionToken,
+                                                    @PathVariable("id") String id,
+                                                    @RequestBody ListKartuDTO listKartuDTO) {
+        if (loginService.checkSessionPanitia(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Update List Kartu");
+                Optional<ListKartu> updatedListKartu = listKartuService.updateListKartu(id, listKartuDTO);
+                if (updatedListKartu.isPresent()) {
+                    listKartuList.add(updatedListKartu.get());
+                    response.setMessage("List Kartu Updated Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(listKartuList.stream().map(listKartu -> Map.of(
+                            "noKartu", listKartu.getNoKartu(),
+                            "cardSkill", listKartu.getCardSkill(),
+                            "ownedBy", listKartu.getOwnedBy(),
+                            "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("List Kartu Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listKartuList.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> deleteListKartu(@RequestHeader("Token") String sessionToken,
+                                                    @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Delete List Kartu");
+                boolean isDeleted = listKartuService.deleteListKartu(id);
+                if (isDeleted) {
+                    response.setMessage("List Kartu Deleted Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                } else {
+                    response.setMessage("List Kartu Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+}

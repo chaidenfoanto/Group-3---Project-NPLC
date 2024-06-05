@@ -1,112 +1,232 @@
-// package com.restfulnplc.nplcrestful.controller;
+package com.restfulnplc.nplcrestful.controller;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.MediaType;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// import com.restfulnplc.nplcrestful.dto.DuelMatchDTO;
-// import com.restfulnplc.nplcrestful.model.DuelMatch;
-// import com.restfulnplc.nplcrestful.service.DuelMatchService;
-// import com.restfulnplc.nplcrestful.util.Response;
+import com.restfulnplc.nplcrestful.dto.DuelMatchDTO;
+import com.restfulnplc.nplcrestful.model.DuelMatch;
+import com.restfulnplc.nplcrestful.service.DuelMatchService;
+import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.util.ErrorMessage;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
+import com.restfulnplc.nplcrestful.util.Response;
 
-// import java.util.List;
-// import java.util.Optional;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-// @RestController
-// @CrossOrigin
-// @RequestMapping(value = "/api/duelmatch")
-// public class DuelMatchController {
+@RestController
+@CrossOrigin
+@RequestMapping(value = "/api/duelmatch")
+public class DuelMatchController {
 
-//     @Autowired
-//     private DuelMatchService duelMatchService;
+    @Autowired
+    private DuelMatchService duelMatchService;
 
-//     @PostMapping("/addDuelMatch")
-//     public ResponseEntity<Response<DuelMatch>> addDuelMatch(@RequestBody DuelMatchDTO duelMatchDTO) {
-//         Response<DuelMatch> response = new Response<>();
-//         response.setService("Add DuelMatch");
-//         DuelMatch newDuelMatch = duelMatchService.addDuelMatch(duelMatchDTO);
-//         response.setMessage("DuelMatch Successfully Added");
-//         response.setData(newDuelMatch);
-//         return ResponseEntity
-//                 .status(HttpStatus.OK)
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
+    @Autowired
+    private LoginService loginService;
 
-//     @GetMapping
-//     public ResponseEntity<Response<List<DuelMatch>>> getAllDuelMatches() {
-//         Response<List<DuelMatch>> response = new Response<>();
-//         response.setService("Get All DuelMatches");
-//         List<DuelMatch> duelMatchList = duelMatchService.getAllDuelMatches();
-//         response.setData(duelMatchList);
-//         response.setMessage("All DuelMatches Retrieved Successfully");
-//         return ResponseEntity
-//                 .status(HttpStatus.OK)
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
+    private Response response = new Response();
+    List<DuelMatch> listDuelMatches = Collections.<DuelMatch>emptyList();
 
-//     @GetMapping("/{id}")
-//     public ResponseEntity<Response<DuelMatch>> getDuelMatchById(@PathVariable("id") String id) {
-//         Response<DuelMatch> response = new Response<>();
-//         response.setService("Get DuelMatch By ID");
-//         Optional<DuelMatch> duelMatch = duelMatchService.getDuelMatchById(id);
-//         if (duelMatch.isPresent()) {
-//             response.setData(duelMatch.get());
-//             response.setMessage("DuelMatch Retrieved Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("DuelMatch Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
+    @PostMapping("/addDuelMatch")
+    public ResponseEntity<Response> addDuelMatch(@RequestHeader("Token") String sessionToken,
+                                                 @RequestBody DuelMatchDTO duelMatchDTO) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Add Duel Match");
+                DuelMatch newDuelMatch = duelMatchService.addDuelMatch(duelMatchDTO);
+                listDuelMatches.add(newDuelMatch);
+                response.setMessage("Duel Match Successfully Added");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.CREATED);
+                response.setData(listDuelMatches.stream().map(duelMatch -> Map.of(
+                        "noMatch", duelMatch.getNoMatch(),
+                        "team1", duelMatch.getTeam1(),
+                        "team2", duelMatch.getTeam2(),
+                        "waktuMulai", duelMatch.getWaktuMulai(),
+                        "waktuSelesai", duelMatch.getWaktuSelesai(),
+                        "inputBy", duelMatch.getInputBy(),
+                        "timMenang", duelMatch.getTimMenang(),
+                        "boothgames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listDuelMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
-//     @PutMapping("/{id}")
-//     public ResponseEntity<Response<DuelMatch>> updateDuelMatch(@PathVariable("id") String id, @RequestBody DuelMatchDTO duelMatchDTO) {
-//         Response<DuelMatch> response = new Response<>();
-//         response.setService("Update DuelMatch");
-//         Optional<DuelMatch> updatedDuelMatch = duelMatchService.updateDuelMatch(id, duelMatchDTO);
-//         if (updatedDuelMatch.isPresent()) {
-//             response.setData(updatedDuelMatch.get());
-//             response.setMessage("DuelMatch Updated Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("DuelMatch Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
+    @GetMapping
+    public ResponseEntity<Response> getAllDuelMatches(@RequestHeader("Token") String sessionToken) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get All Duel Matches");
+            List<DuelMatch> duelMatchList = duelMatchService.getAllDuelMatches();
+            if (duelMatchList.size() > 0) {
+                response.setMessage("All Duel Matches Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(duelMatchList.stream().map(duelMatch -> Map.of(
+                        "noMatch", duelMatch.getNoMatch(),
+                        "team1", duelMatch.getTeam1(),
+                        "team2", duelMatch.getTeam2(),
+                        "waktuMulai", duelMatch.getWaktuMulai(),
+                        "waktuSelesai", duelMatch.getWaktuSelesai(),
+                        "inputBy", duelMatch.getInputBy(),
+                        "timMenang", duelMatch.getTimMenang(),
+                        "boothGames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("No Duel Matches Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listDuelMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
-//     @DeleteMapping("/{id}")
-//     public ResponseEntity<Response<String>> deleteDuelMatch(@PathVariable("id") String id) {
-//         Response<String> response = new Response<>();
-//         response.setService("Delete DuelMatch");
-//         boolean isDeleted = duelMatchService.deleteDuelMatch(id);
-//         if (isDeleted) {
-//             response.setMessage("DuelMatch Deleted Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("DuelMatch Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
-// }
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getDuelMatchById(@RequestHeader("Token") String sessionToken,
+                                                     @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get Duel Match By ID");
+            Optional<DuelMatch> duelMatchOptional = duelMatchService.getDuelMatchById(id);
+            if (duelMatchOptional.isPresent()) {
+                listDuelMatches.add(duelMatchOptional.get());
+                response.setMessage("Duel Match Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(listDuelMatches.stream().map(duelMatch -> Map.of(
+                        "noMatch", duelMatch.getNoMatch(),
+                        "team1", duelMatch.getTeam1(),
+                        "team2", duelMatch.getTeam2(),
+                        "waktuMulai", duelMatch.getWaktuMulai(),
+                        "waktuSelesai", duelMatch.getWaktuSelesai(),
+                        "inputBy", duelMatch.getInputBy(),
+                        "timMenang", duelMatch.getTimMenang(),
+                        "boothGames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Duel Match Not Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listDuelMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response> updateDuelMatch(@RequestHeader("Token") String sessionToken,
+                                                    @PathVariable("id") String id,
+                                                    @RequestBody DuelMatchDTO duelMatchDTO) {
+        if (loginService.checkSessionPanitia(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Update Duel Match");
+                Optional<DuelMatch> updatedDuelMatch = duelMatchService.updateDuelMatch(id, duelMatchDTO);
+                if (updatedDuelMatch.isPresent()) {
+                    listDuelMatches.add(updatedDuelMatch.get());
+                    response.setMessage("Duel Match Updated Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(listDuelMatches.stream().map(duelMatch -> Map.of(
+                            "noMatch", duelMatch.getNoMatch(),
+                            "team1", duelMatch.getTeam1(),
+                            "team2", duelMatch.getTeam2(),
+                            "waktuMulai", duelMatch.getWaktuMulai(),
+                            "waktuSelesai", duelMatch.getWaktuSelesai(),
+                            "inputBy", duelMatch.getInputBy(),
+                            "timMenang", duelMatch.getTimMenang(),
+                            "boothGames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Duel Match Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listDuelMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> deleteDuelMatch(@RequestHeader("Token") String sessionToken,
+                                                    @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Delete Duel Match");
+                boolean isDeleted = duelMatchService.deleteDuelMatch(id);
+                if (isDeleted) {
+                    response.setMessage("Duel Match Deleted Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                } else {
+                    response.setMessage("Duel Match Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+}

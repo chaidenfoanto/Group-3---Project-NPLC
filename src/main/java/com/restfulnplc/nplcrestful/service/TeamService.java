@@ -37,6 +37,14 @@ public class TeamService {
         return Optional.empty();
     }
 
+    public Optional<Team> getTeamByID(String id)
+    {
+        if(teamRepository.findById(id).isPresent()) {
+            return teamRepository.findById(id);
+        }
+        return Optional.empty();
+    }
+
     public Team addTeam(TeamDTO teamDTO)
     {
         String teamID = getNextTeamID();

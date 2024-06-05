@@ -42,6 +42,7 @@ public class Singlematch {
     @JoinColumn(name = "idbooth", referencedColumnName = "idbooth", nullable = false, foreignKey = @ForeignKey(name = "fk_idboothsingle"))
     private Boothgames boothGames;
 
+
     public String getNoMatch() {
         return this.noMatch;
     }
@@ -105,6 +106,7 @@ public class Singlematch {
     public void setBoothGames(Boothgames boothGames) {
         this.boothGames = boothGames;
     }
+    
     
 }
 

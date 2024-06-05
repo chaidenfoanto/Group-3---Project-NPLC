@@ -1,112 +1,232 @@
-// package com.restfulnplc.nplcrestful.controller;
+package com.restfulnplc.nplcrestful.controller;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.MediaType;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
-// import com.restfulnplc.nplcrestful.model.Singlematch;
-// import com.restfulnplc.nplcrestful.service.SinglematchService;
-// import com.restfulnplc.nplcrestful.util.Response;
+import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
+import com.restfulnplc.nplcrestful.model.Singlematch;
+import com.restfulnplc.nplcrestful.service.SinglematchService;
+import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.util.ErrorMessage;
+import com.restfulnplc.nplcrestful.util.HTTPCode;
+import com.restfulnplc.nplcrestful.util.Response;
 
-// import java.util.List;
-// import java.util.Optional;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-// @RestController
-// @CrossOrigin
-// @RequestMapping(value = "/api/singlematch")
-// public class SinglematchController {
+@RestController
+@CrossOrigin
+@RequestMapping(value = "/api/singlematch")
+public class SinglematchController {
 
-//     @Autowired
-//     private SinglematchService singlematchService;
+    @Autowired
+    private SinglematchService singlematchService;
 
-//     @PostMapping("/addSinglematch")
-//     public ResponseEntity<Response<Singlematch>> addSinglematch(@RequestBody SinglematchDTO singlematchDTO) {
-//         Response<Singlematch> response = new Response<>();
-//         response.setService("Add Singlematch");
-//         Singlematch newSinglematch = singlematchService.addSinglematch(singlematchDTO);
-//         response.setMessage("Singlematch Successfully Added");
-//         response.setData(newSinglematch);
-//         return ResponseEntity
-//                 .status(HttpStatus.OK)
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
+    @Autowired
+    private LoginService loginService;
 
-//     @GetMapping
-//     public ResponseEntity<Response<List<Singlematch>>> getAllSinglematches() {
-//         Response<List<Singlematch>> response = new Response<>();
-//         response.setService("Get All Singlematches");
-//         List<Singlematch> singlematchList = singlematchService.getAllSinglematches();
-//         response.setData(singlematchList);
-//         response.setMessage("All Singlematches Retrieved Successfully");
-//         return ResponseEntity
-//                 .status(HttpStatus.OK)
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
+    private Response response = new Response();
+    List<Singlematch> listSingleMatches = Collections.<Singlematch>emptyList();
 
-//     @GetMapping("/{id}")
-//     public ResponseEntity<Response<Singlematch>> getSinglematchById(@PathVariable("id") String id) {
-//         Response<Singlematch> response = new Response<>();
-//         response.setService("Get Singlematch By ID");
-//         Optional<Singlematch> singlematch = singlematchService.getSinglematchById(id);
-//         if (singlematch.isPresent()) {
-//             response.setData(singlematch.get());
-//             response.setMessage("Singlematch Retrieved Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("Singlematch Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
+    @PostMapping("/addSingleMatch")
+    public ResponseEntity<Response> addSinglematch(@RequestHeader("Token") String sessionToken,
+                                                 @RequestBody SinglematchDTO singlematchDTO) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Add Single Match");
+                Singlematch newSinglematch = singlematchService.addSinglematch(singlematchDTO);
+                listSingleMatches.add(newSinglematch);
+                response.setMessage("Single Match Successfully Added");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.CREATED);
+                response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
+                        "noMatch", singleMatch.getNoMatch(),
+                        "idTeam", singleMatch.getTeam(),
+                        "waktuMulai", singleMatch.getWaktuMulai(),
+                        "waktuSelesai", singleMatch.getWaktuSelesai(),
+                        "noKartu", singleMatch.getListKartu(),
+                        "inputBy", singleMatch.getInputBy(),
+                        "totalPoin", singleMatch.getTotalPoin(),
+                        "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listSingleMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
-//     @PutMapping("/{id}")
-//     public ResponseEntity<Response<Singlematch>> updateSinglematch(@PathVariable("id") String id, @RequestBody SinglematchDTO singlematchDTO) {
-//         Response<Singlematch> response = new Response<>();
-//         response.setService("Update Singlematch");
-//         Optional<Singlematch> updatedSinglematch = singlematchService.updateSinglematch(id, singlematchDTO);
-//         if (updatedSinglematch.isPresent()) {
-//             response.setData(updatedSinglematch.get());
-//             response.setMessage("Singlematch Updated Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("Singlematch Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
+    @GetMapping
+    public ResponseEntity<Response> getAllSingleMatches(@RequestHeader("Token") String sessionToken) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get All Single Matches");
+            List<Singlematch> singleMatchList = singlematchService.getAllSinglematches();
+            if (singleMatchList.size() > 0) {
+                response.setMessage("All Single Matches Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(singleMatchList.stream().map(singleMatch -> Map.of(
+                    "noMatch", singleMatch.getNoMatch(),
+                    "idTeam", singleMatch.getTeam(),
+                    "waktuMulai", singleMatch.getWaktuMulai(),
+                    "waktuSelesai", singleMatch.getWaktuSelesai(),
+                    "noKartu", singleMatch.getListKartu(),
+                    "inputBy", singleMatch.getInputBy(),
+                    "totalPoin", singleMatch.getTotalPoin(),
+                    "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("No Single Matches Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listSingleMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
-//     @DeleteMapping("/{id}")
-//     public ResponseEntity<Response<String>> deleteSinglematch(@PathVariable("id") String id) {
-//         Response<String> response = new Response<>();
-//         response.setService("Delete Singlematch");
-//         boolean isDeleted = singlematchService.deleteSinglematch(id);
-//         if (isDeleted) {
-//             response.setMessage("Singlematch Deleted Successfully");
-//             return ResponseEntity
-//                     .status(HttpStatus.OK)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         } else {
-//             response.setMessage("Singlematch Not Found");
-//             return ResponseEntity
-//                     .status(HttpStatus.NOT_FOUND)
-//                     .contentType(MediaType.APPLICATION_JSON)
-//                     .body(response);
-//         }
-//     }
-// }
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getSingleMatchById(@RequestHeader("Token") String sessionToken,
+                                                     @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            response.setService("Get Single Match By ID");
+            Optional<Singlematch> singleMatchOptional = singlematchService.getSinglematchById(id);
+            if (singleMatchOptional.isPresent()) {
+                listSingleMatches.add(singleMatchOptional.get());
+                response.setMessage("Single Match Retrieved Successfully");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
+                    "noMatch", singleMatch.getNoMatch(),
+                    "idTeam", singleMatch.getTeam(),
+                    "waktuMulai", singleMatch.getWaktuMulai(),
+                    "waktuSelesai", singleMatch.getWaktuSelesai(),
+                    "noKartu", singleMatch.getListKartu(),
+                    "inputBy", singleMatch.getInputBy(),
+                    "totalPoin", singleMatch.getTotalPoin(),
+                    "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+            } else {
+                response.setMessage("Single Match Not Found");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listSingleMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response> updateSinglematch(@RequestHeader("Token") String sessionToken,
+                                                    @PathVariable("id") String id,
+                                                    @RequestBody SinglematchDTO singlematchDTO) {
+        if (loginService.checkSessionPanitia(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Update Single Match");
+                Optional<Singlematch> updatedSingleMatch = singlematchService.updateSinglematch(id, singlematchDTO);
+                if (updatedSingleMatch.isPresent()) {
+                    listSingleMatches.add(updatedSingleMatch.get());
+                    response.setMessage("Single Match Updated Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
+                        "noMatch", singleMatch.getNoMatch(),
+                        "idTeam", singleMatch.getTeam(),
+                        "waktuMulai", singleMatch.getWaktuMulai(),
+                        "waktuSelesai", singleMatch.getWaktuSelesai(),
+                        "noKartu", singleMatch.getListKartu(),
+                        "inputBy", singleMatch.getInputBy(),
+                        "totalPoin", singleMatch.getTotalPoin(),
+                        "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Single Match Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listSingleMatches.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> deleteSingleMatch(@RequestHeader("Token") String sessionToken,
+                                                    @PathVariable("id") String id) {
+        if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionAdmin(sessionToken)) {
+                response.setService("Delete Single Match");
+                boolean isDeleted = singlematchService.deleteSinglematch(id);
+                if (isDeleted) {
+                    response.setMessage("Single Match Deleted Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                } else {
+                    response.setMessage("Single Match Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } else {
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+}
