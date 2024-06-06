@@ -38,7 +38,7 @@ public class PanitiaController {
             @RequestBody PanitiaDTO panitiaDTO) {
         response.setService("Add Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
+            if (loginService.checkSessionKetua(sessionToken)) {
                 Panitia newPanitia = panitiaService.addPanitia(panitiaDTO);
                 panitiaList.add(newPanitia);
                 response.setMessage("Panitia Successfully Added");
