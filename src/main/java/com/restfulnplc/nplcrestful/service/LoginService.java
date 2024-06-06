@@ -76,6 +76,14 @@ public class LoginService {
         return loginRepository.findById(token).isPresent();
     }
 
+    public boolean checkSessionSelf(String token, String idUser)
+    {
+        if(loginRepository.findById(token).isPresent()) {
+            return loginRepository.findById(token).get().getIdUser().equals(idUser);
+        }
+        return false;
+    }
+
     public boolean checkSessionPanitia(String token)
     {
         if(loginRepository.findById(token).isPresent()) {

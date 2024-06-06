@@ -151,7 +151,7 @@ public class PanitiaController {
             @RequestBody PanitiaDTO panitiaDTO) {
         response.setService("Update Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
+            if (loginService.checkSessionSelf(sessionToken, id)) {
                 Optional<Panitia> updatedPanitia = panitiaService.updatePanitia(id, panitiaDTO);
                 if (updatedPanitia.isPresent()) {
                     panitiaList.add(updatedPanitia.get());
