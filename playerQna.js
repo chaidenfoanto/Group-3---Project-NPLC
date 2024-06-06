@@ -24,8 +24,6 @@ $(document).ready(function() {
     descTag = popupBox.querySelector("textarea"),
     addBtn = popupBox.querySelector("button");
 
-    const months = ["January", "February", "March", "April", "May", "June", "July",
-                "August", "September", "October", "November", "December"];
     const notes = JSON.parse(localStorage.getItem("notes") || "[]");
     let isUpdate = false, updateId;
 
@@ -49,15 +47,16 @@ $(document).ready(function() {
         document.querySelectorAll(".note").forEach(li => li.remove());
         notes.forEach((note, id) => {
             let filterDesc = note.description.replaceAll("\n", '<br/>');
-            let answerText = note.answer ? `<p class="answer">${note.answer}</p>` : '';
-            let liTag = `<li class="note">
+            let answeredStatus = note.answer ? 'answered' : 'not-answered';
+            let answeredText = note.answer ? 'Sudah Terjawab' : 'Belum Terjawab';
+            let liTag = `<li class="note ${answeredStatus}">
                             <div class="details">
                                 <p>${note.title}</p>
                                 <span>${filterDesc}</span>
-                                ${answerText}
+                                <p class="answer">${note.answer || ''}</p>
                             </div>
                             <div class="bottom-content">
-                                <span>${note.date}</span>
+                                <span class="status ${answeredStatus}">${answeredText}</span>
                                 <div class="settings">
                                     <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
                                     <ul class="menu">
@@ -79,12 +78,7 @@ $(document).ready(function() {
         description = descTag.value.trim();
 
         if(title || description) {
-            let currentDate = new Date(),
-            month = months[currentDate.getMonth()],
-            day = currentDate.getDate(),
-            year = currentDate.getFullYear();
-
-            let noteInfo = {title, description, date: `${month} ${day}, ${year}`}
+            let noteInfo = {title, description, answer: ''} // Initial answer is empty
             if(!isUpdate) {
                 notes.push(noteInfo);
             } else {

@@ -284,6 +284,104 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .status.answered {
+          color: green;
+        }
+        
+        .status.not-answered {
+            color: red;
+        }      
+        .popup-box-2 {
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 2;
+          height: 100%;
+          width: 100%;
+          background: rgba(0,0,0,0.4);
+      }
+      
+      .popup-box-2 .popup {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          z-index: 3;
+          width: 100%;
+          max-width: 400px;
+          justify-content: center;
+          transform: translate(-50%, -50%) scale(0.95);
+      }
+      
+      .popup-box-2, .popup {
+          opacity: 0;
+          pointer-events: none;
+          transition: all 0.25s ease;
+      }
+      
+      .popup-box-2.show, .popup-box-2.show .popup {
+          opacity: 1;
+          pointer-events: auto;
+      }
+      
+      .popup-box-2.show .popup {
+          transform: translate(-50%, -50%) scale(1);
+      }
+      
+      .popup-box-2 .popup .content {
+          border-radius: 5px;
+          background: #fff;
+          width: calc(100% - 15px);
+          box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      }
+      
+      .popup-box-2 .content header {
+          padding: 15px 25px;
+          border-bottom: 1px solid #ccc;
+      }
+      
+      .popup-box-2 .content header p {
+          font-size: 20px;
+          font-weight: 500;
+      }
+      
+      .popup-box-2 .content header i {
+          color: #8b8989;
+          cursor: pointer;
+          font-size: 23px;
+      }
+      
+      .popup-box-2 .content p {
+          margin: 15px 25px;
+          font-size: 18px;
+      }
+      
+      .popup-box-2 .content button {
+          width: 35%;
+          height: 40px;
+          color: #fff;
+          outline: none;
+          border: none;
+          cursor: pointer;
+          font-size: 17px;
+          font-weight: 400;
+          border-radius: 10px;
+          background: #35A2DB;
+          margin: 15px 25px;
+      }
+      
+      .close-btn-2 {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+      }
+      
+      .close-btn-2:hover,
+      .close-btn-2:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+      }
           @media (max-width: 660px){
             .wrapper{
               margin: 15px;
