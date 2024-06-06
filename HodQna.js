@@ -1,23 +1,22 @@
 $(document).ready(function() {
     // Clear the local storage to remove all notes
     localStorage.removeItem("notes");
-
-    $(".sidebar").load("sidebarplayer.html", function() {
-        const toggleBtn = $("#toggle-btn");
-        const logo = $(".logo_details .logo").eq(1); // Select the second logo
-        toggleBtn.on("click", function() {
-            $(".sidebar").toggleClass("open");
-            menuBtnChange();
-        });
-
-        function menuBtnChange() {
-            if ($(".sidebar").hasClass("open")) {
-                logo.hide();
-            } else {
-                logo.show();
+        $(".sidebar").load("sidebarpanitia.html", function() {
+            const toggleBtn = $("#toggle-btn");
+            const logo = $(".logo_details .logo").eq(1); // Select the second logo
+            toggleBtn.on("click", function() {
+                $(".sidebar").toggleClass("open");
+                menuBtnChange();
+            });
+      
+            function menuBtnChange() {
+                if (sidebar.hasClass("open")) {
+                    logo.hide();
+                } else {
+                    logo.show();
+                }
             }
-        }
-    });
+        });
 
     const popupBox = $(".popup-box");
     const teamNameInput = $("#team-name");
