@@ -3,8 +3,6 @@ package com.restfulnplc.nplcrestful.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,9 +14,8 @@ import java.time.LocalDateTime;
 public class Qna {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpertanyaan", nullable = false)
-    private int idPertanyaan;
+    private String idPertanyaan;
 
     @Column(name = "pertanyaan", columnDefinition = "TEXT", nullable = false)
     private String pertanyaan;
@@ -27,8 +24,8 @@ public class Qna {
     private LocalDateTime waktuInput;
 
     @ManyToOne
-    @JoinColumn(name = "idplayer", referencedColumnName = "idplayer", nullable = false, foreignKey = @ForeignKey(name = "fk_idplayerqna"))
-    private Players player;
+    @JoinColumn(name = "idteam", referencedColumnName = "idteam", nullable = false, foreignKey = @ForeignKey(name = "fk_idteamqna"))
+    private Team team;
 
     @Column(name = "jawaban", length = 5000, nullable = false)
     private String jawaban;
@@ -38,11 +35,11 @@ public class Qna {
     private Panitia panitia;
 
 
-    public int getIdPertanyaan() {
+    public String getIdPertanyaan() {
         return this.idPertanyaan;
     }
 
-    public void setIdPertanyaan(int idPertanyaan) {
+    public void setIdPertanyaan(String idPertanyaan) {
         this.idPertanyaan = idPertanyaan;
     }
 
@@ -62,12 +59,12 @@ public class Qna {
         this.waktuInput = waktuInput;
     }
 
-    public Players getPlayer() {
-        return this.player;
+    public Team getTeam() {
+        return this.team;
     }
 
-    public void setPlayer(Players player) {
-        this.player = player;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public String getJawaban() {
