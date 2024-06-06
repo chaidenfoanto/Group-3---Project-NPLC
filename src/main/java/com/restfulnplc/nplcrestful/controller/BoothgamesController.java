@@ -40,9 +40,9 @@ public class BoothgamesController {
     @PostMapping("/addBoothgame")
     public ResponseEntity<Response> addBoothgame(@RequestHeader("Token") String sessionToken,
             @RequestBody BoothgamesDTO boothgamesDTO) {
+        response.setService("Add Boothgame");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Add Boothgame");
                 Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
                 listBoothGames.add(newBoothgame);
                 response.setMessage("Boothgame Successfully Added");
@@ -78,8 +78,8 @@ public class BoothgamesController {
 
     @GetMapping
     public ResponseEntity<Response> getAllBoothgames(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All Boothgames");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get All Boothgames");
             List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
             if (boothgamesList.size() > 0) {
                 response.setMessage("All Boothgames Retrieved Successfully");
@@ -116,8 +116,8 @@ public class BoothgamesController {
     @GetMapping("/{id}")
     public ResponseEntity<Response> getBoothgameById(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
+        response.setService("Get Boothgame By ID");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get Boothgame By ID");
             Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
             if (boothgameOptional.isPresent()) {
                 listBoothGames.add(boothgameOptional.get());
@@ -155,9 +155,9 @@ public class BoothgamesController {
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateBoothgame(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id, @RequestBody BoothgamesDTO boothgamesDTO) {
+        response.setService("Update Boothgame");
         if (loginService.checkSessionPanitia(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Update Boothgame");
                 Optional<Boothgames> updatedBoothgame = boothgamesService.updateBoothgame(id, boothgamesDTO);
                 if (updatedBoothgame.isPresent()) {
                     listBoothGames.add(updatedBoothgame.get());
@@ -201,9 +201,9 @@ public class BoothgamesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteBoothgame(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
+        response.setService("Delete Boothgame");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Delete Boothgame");
                 boolean isDeleted = boothgamesService.deleteBoothgame(id);
                 if (isDeleted) {
                     response.setMessage("Boothgame Deleted Successfully");

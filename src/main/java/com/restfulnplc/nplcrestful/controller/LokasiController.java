@@ -35,10 +35,10 @@ public class LokasiController {
 
     @PostMapping("/addLokasi")
     public ResponseEntity<Response> addLokasi(@RequestHeader("Token") String sessionToken,
-                                              @RequestBody LokasiDTO lokasiDTO) {
+            @RequestBody LokasiDTO lokasiDTO) {
+        response.setService("Add Lokasi");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Add Lokasi");
                 Lokasi newLokasi = lokasiService.addLokasi(lokasiDTO);
                 lokasiList.add(newLokasi);
                 response.setMessage("Lokasi Successfully Added");
@@ -68,8 +68,8 @@ public class LokasiController {
 
     @GetMapping
     public ResponseEntity<Response> getAllLokasi(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All Lokasi");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get All Lokasi");
             List<Lokasi> lokasiList = lokasiService.getAllLokasi();
             if (lokasiList.size() > 0) {
                 response.setMessage("All Lokasi Retrieved Successfully");
@@ -99,9 +99,9 @@ public class LokasiController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getLokasiById(@RequestHeader("Token") String sessionToken,
-                                                  @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Get Lokasi By ID");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get Lokasi By ID");
             Optional<Lokasi> lokasiOptional = lokasiService.getLokasiById(id);
             if (lokasiOptional.isPresent()) {
                 lokasiList.add(lokasiOptional.get());
@@ -132,11 +132,11 @@ public class LokasiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateLokasi(@RequestHeader("Token") String sessionToken,
-                                                 @PathVariable("id") String id,
-                                                 @RequestBody LokasiDTO lokasiDTO) {
+            @PathVariable("id") String id,
+            @RequestBody LokasiDTO lokasiDTO) {
+        response.setService("Update Lokasi");
         if (loginService.checkSessionPanitia(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Update Lokasi");
                 Optional<Lokasi> updatedLokasi = lokasiService.updateLokasi(id, lokasiDTO);
                 if (updatedLokasi.isPresent()) {
                     lokasiList.add(updatedLokasi.get());
@@ -173,10 +173,10 @@ public class LokasiController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteLokasi(@RequestHeader("Token") String sessionToken,
-                                                 @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Delete Lokasi");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Delete Lokasi");
                 boolean isDeleted = lokasiService.deleteLokasi(id);
                 if (isDeleted) {
                     response.setMessage("Lokasi Deleted Successfully");

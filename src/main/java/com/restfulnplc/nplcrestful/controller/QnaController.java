@@ -36,28 +36,27 @@ public class QnaController {
     @PostMapping("/ask")
     public ResponseEntity<Response> askQuestion(@RequestHeader("Token") String sessionToken,
             @RequestBody QnaPlayersDTO qnaplayerDTO) {
-                response.setService("Tanya Pertanyaan");
+        response.setService("Tanya Pertanyaan");
         if (loginService.checkSessionAlive(sessionToken)) {
-            if(loginService.checkSessionTeam(sessionToken)){
-            Qna newQna = qnaService.addQuestion(qnaplayerDTO);
-            listQna.add(newQna);
-            response.setMessage("Pertanyaan Berhasil Diajukan");
-            response.setError(false);
-            response.setHttpCode(HTTPCode.CREATED);
-            response.setData(listQna.stream().map(qna -> Map.of(
-                    "idPertanyaan", qna.getIdPertanyaan(),
-                    "pertanyaan", qna.getPertanyaan(),
-                    "waktuInput", qna.getWaktuInput(),
-                    "team", qna.getTeam()
-                    ))
-                    .collect(Collectors.toList()));
+            if (loginService.checkSessionTeam(sessionToken)) {
+                Qna newQna = qnaService.addQuestion(qnaplayerDTO);
+                listQna.add(newQna);
+                response.setMessage("Pertanyaan Berhasil Diajukan");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.CREATED);
+                response.setData(listQna.stream().map(qna -> Map.of(
+                        "idPertanyaan", qna.getIdPertanyaan(),
+                        "pertanyaan", qna.getPertanyaan(),
+                        "waktuInput", qna.getWaktuInput(),
+                        "team", qna.getTeam()))
+                        .collect(Collectors.toList()));
+            } else {
+                response.setMessage("Access Denied");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
         } else {
-            response.setMessage("Access Denied");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.FORBIDDEN);
-            response.setData(new ErrorMessage(response.getHttpCode()));
-        }
-     } else {
             response.setMessage("Authorization Failed");
             response.setError(true);
             response.setHttpCode(HTTPCode.BAD_REQUEST);
@@ -73,7 +72,7 @@ public class QnaController {
     @PostMapping("/answer/{id}")
     public ResponseEntity<Response> answerQuestion(@RequestHeader("Token") String sessionToken,
             @RequestBody QnaPanitiaDTO qnapanitiaDTO, @PathVariable String idQna) {
-                response.setService("Menjawab Pertanyaan");
+        response.setService("Menjawab Pertanyaan");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
                 Qna answeredQna = qnaService.answerQuestion(idQna, qnapanitiaDTO);
@@ -181,5 +180,3 @@ public class QnaController {
                 .body(response);
     }
 }
-
-                

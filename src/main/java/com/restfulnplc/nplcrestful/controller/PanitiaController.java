@@ -35,10 +35,10 @@ public class PanitiaController {
 
     @PostMapping("/addPanitia")
     public ResponseEntity<Response> addPanitia(@RequestHeader("Token") String sessionToken,
-                                               @RequestBody PanitiaDTO panitiaDTO) {
+            @RequestBody PanitiaDTO panitiaDTO) {
+        response.setService("Add Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Add Panitia");
                 Panitia newPanitia = panitiaService.addPanitia(panitiaDTO);
                 panitiaList.add(newPanitia);
                 response.setMessage("Panitia Successfully Added");
@@ -51,8 +51,7 @@ public class PanitiaController {
                         "angkatan", panitia.getAngkatan(),
                         "spesialisasi", panitia.getSpesialisasi(),
                         "isAdmin", panitia.getIsAdmin(),
-                        "divisi", panitia.getDivisi()
-                )).collect(Collectors.toList()));
+                        "divisi", panitia.getDivisi())).collect(Collectors.toList()));
             } else {
                 response.setMessage("Access Denied");
                 response.setError(true);
@@ -74,8 +73,8 @@ public class PanitiaController {
 
     @GetMapping
     public ResponseEntity<Response> getAllPanitia(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get All Panitia");
             List<Panitia> panitiaList = panitiaService.getAllPanitia();
             if (panitiaList.size() > 0) {
                 response.setMessage("All Panitia Retrieved Successfully");
@@ -88,8 +87,7 @@ public class PanitiaController {
                         "angkatan", panitia.getAngkatan(),
                         "spesialisasi", panitia.getSpesialisasi(),
                         "isAdmin", panitia.getIsAdmin(),
-                        "divisi", panitia.getDivisi()
-                )).collect(Collectors.toList()));
+                        "divisi", panitia.getDivisi())).collect(Collectors.toList()));
             } else {
                 response.setMessage("No Panitia Found");
                 response.setError(true);
@@ -111,9 +109,9 @@ public class PanitiaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getPanitiaById(@RequestHeader("Token") String sessionToken,
-                                                   @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Get Panitia By ID");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get Panitia By ID");
             Optional<Panitia> panitiaOptional = panitiaService.getPanitiaById(id);
             if (panitiaOptional.isPresent()) {
                 panitiaList.add(panitiaOptional.get());
@@ -127,8 +125,7 @@ public class PanitiaController {
                         "angkatan", panitia.getAngkatan(),
                         "spesialisasi", panitia.getSpesialisasi(),
                         "isAdmin", panitia.getIsAdmin(),
-                        "divisi", panitia.getDivisi()
-                )).collect(Collectors.toList()));
+                        "divisi", panitia.getDivisi())).collect(Collectors.toList()));
             } else {
                 response.setMessage("Panitia Not Found");
                 response.setError(true);
@@ -150,11 +147,11 @@ public class PanitiaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updatePanitia(@RequestHeader("Token") String sessionToken,
-                                                  @PathVariable("id") String id,
-                                                  @RequestBody PanitiaDTO panitiaDTO) {
+            @PathVariable("id") String id,
+            @RequestBody PanitiaDTO panitiaDTO) {
+        response.setService("Update Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Update Panitia");
                 Optional<Panitia> updatedPanitia = panitiaService.updatePanitia(id, panitiaDTO);
                 if (updatedPanitia.isPresent()) {
                     panitiaList.add(updatedPanitia.get());
@@ -168,8 +165,7 @@ public class PanitiaController {
                             "angkatan", panitia.getAngkatan(),
                             "spesialisasi", panitia.getSpesialisasi(),
                             "isAdmin", panitia.getIsAdmin(),
-                            "divisi", panitia.getDivisi()
-                    )).collect(Collectors.toList()));
+                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
                 } else {
                     response.setMessage("Panitia Not Found");
                     response.setError(true);
@@ -197,10 +193,10 @@ public class PanitiaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deletePanitia(@RequestHeader("Token") String sessionToken,
-                                                  @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Delete Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Delete Panitia");
                 boolean isDeleted = panitiaService.deletePanitia(id);
                 if (isDeleted) {
                     response.setMessage("Panitia Deleted Successfully");
@@ -230,4 +226,3 @@ public class PanitiaController {
                 .body(response);
     }
 }
-

@@ -35,10 +35,10 @@ public class DuelMatchController {
 
     @PostMapping("/addDuelMatch")
     public ResponseEntity<Response> addDuelMatch(@RequestHeader("Token") String sessionToken,
-                                                 @RequestBody DuelMatchDTO duelMatchDTO) {
+            @RequestBody DuelMatchDTO duelMatchDTO) {
+        response.setService("Add Duel Match");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Add Duel Match");
                 DuelMatch newDuelMatch = duelMatchService.addDuelMatch(duelMatchDTO);
                 listDuelMatches.add(newDuelMatch);
                 response.setMessage("Duel Match Successfully Added");
@@ -74,8 +74,8 @@ public class DuelMatchController {
 
     @GetMapping
     public ResponseEntity<Response> getAllDuelMatches(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All Duel Matches");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get All Duel Matches");
             List<DuelMatch> duelMatchList = duelMatchService.getAllDuelMatches();
             if (duelMatchList.size() > 0) {
                 response.setMessage("All Duel Matches Retrieved Successfully");
@@ -111,9 +111,9 @@ public class DuelMatchController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getDuelMatchById(@RequestHeader("Token") String sessionToken,
-                                                     @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Get Duel Match By ID");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get Duel Match By ID");
             Optional<DuelMatch> duelMatchOptional = duelMatchService.getDuelMatchById(id);
             if (duelMatchOptional.isPresent()) {
                 listDuelMatches.add(duelMatchOptional.get());
@@ -150,11 +150,11 @@ public class DuelMatchController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateDuelMatch(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id,
-                                                    @RequestBody DuelMatchDTO duelMatchDTO) {
+            @PathVariable("id") String id,
+            @RequestBody DuelMatchDTO duelMatchDTO) {
+        response.setService("Update Duel Match");
         if (loginService.checkSessionPanitia(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Update Duel Match");
                 Optional<DuelMatch> updatedDuelMatch = duelMatchService.updateDuelMatch(id, duelMatchDTO);
                 if (updatedDuelMatch.isPresent()) {
                     listDuelMatches.add(updatedDuelMatch.get());
@@ -197,10 +197,10 @@ public class DuelMatchController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteDuelMatch(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Delete Duel Match");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Delete Duel Match");
                 boolean isDeleted = duelMatchService.deleteDuelMatch(id);
                 if (isDeleted) {
                     response.setMessage("Duel Match Deleted Successfully");

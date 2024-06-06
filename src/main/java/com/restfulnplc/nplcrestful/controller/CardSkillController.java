@@ -35,10 +35,10 @@ public class CardSkillController {
 
     @PostMapping("/addCardSkill")
     public ResponseEntity<Response> addCardSkill(@RequestHeader("Token") String sessionToken,
-                                                 @RequestBody CardSkillDTO cardSkillDTO) {
+            @RequestBody CardSkillDTO cardSkillDTO) {
+        response.setService("Add Card Skill");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Add Card Skill");
                 CardSkill newCardSkill = cardSkillService.addCardSkill(cardSkillDTO);
                 listCardSkills.add(newCardSkill);
                 response.setMessage("Card Skill Successfully Added");
@@ -71,8 +71,8 @@ public class CardSkillController {
 
     @GetMapping
     public ResponseEntity<Response> getAllCardSkills(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All CardSkills");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get All CardSkills");
             List<CardSkill> cardSkillList = cardSkillService.getAllCardSkills();
             if (cardSkillList.size() > 0) {
                 response.setMessage("All Card Skills Retrieved Successfully");
@@ -105,9 +105,9 @@ public class CardSkillController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getCardSkillById(@RequestHeader("Token") String sessionToken,
-                                                     @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Get Card Skill By ID");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get Card Skill By ID");
             Optional<CardSkill> cardSkillOptional = cardSkillService.getCardSkillById(id);
             if (cardSkillOptional.isPresent()) {
                 listCardSkills.add(cardSkillOptional.get());
@@ -141,11 +141,11 @@ public class CardSkillController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateCardSkill(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id,
-                                                    @RequestBody CardSkillDTO cardSkillDTO) {
+            @PathVariable("id") String id,
+            @RequestBody CardSkillDTO cardSkillDTO) {
+        response.setService("Update Card Skill");
         if (loginService.checkSessionPanitia(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Update Card Skill");
                 Optional<CardSkill> updatedCardSkill = cardSkillService.updateCardSkill(id, cardSkillDTO);
                 if (updatedCardSkill.isPresent()) {
                     listCardSkills.add(updatedCardSkill.get());
@@ -185,10 +185,10 @@ public class CardSkillController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteCardSkill(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Delete Card Skill");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Delete Card Skill");
                 boolean isDeleted = cardSkillService.deleteCardSkill(id);
                 if (isDeleted) {
                     response.setMessage("Card Skill Deleted Successfully");

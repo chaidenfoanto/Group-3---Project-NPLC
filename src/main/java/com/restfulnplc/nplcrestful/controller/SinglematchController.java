@@ -35,10 +35,10 @@ public class SinglematchController {
 
     @PostMapping("/addSingleMatch")
     public ResponseEntity<Response> addSinglematch(@RequestHeader("Token") String sessionToken,
-                                                 @RequestBody SinglematchDTO singlematchDTO) {
+            @RequestBody SinglematchDTO singlematchDTO) {
+        response.setService("Add Single Match");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Add Single Match");
                 Singlematch newSinglematch = singlematchService.addSinglematch(singlematchDTO);
                 listSingleMatches.add(newSinglematch);
                 response.setMessage("Single Match Successfully Added");
@@ -74,22 +74,22 @@ public class SinglematchController {
 
     @GetMapping
     public ResponseEntity<Response> getAllSingleMatches(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All Single Matches");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get All Single Matches");
             List<Singlematch> singleMatchList = singlematchService.getAllSinglematches();
             if (singleMatchList.size() > 0) {
                 response.setMessage("All Single Matches Retrieved Successfully");
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
                 response.setData(singleMatchList.stream().map(singleMatch -> Map.of(
-                    "noMatch", singleMatch.getNoMatch(),
-                    "idTeam", singleMatch.getTeam(),
-                    "waktuMulai", singleMatch.getWaktuMulai(),
-                    "waktuSelesai", singleMatch.getWaktuSelesai(),
-                    "noKartu", singleMatch.getListKartu(),
-                    "inputBy", singleMatch.getInputBy(),
-                    "totalPoin", singleMatch.getTotalPoin(),
-                    "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                        "noMatch", singleMatch.getNoMatch(),
+                        "idTeam", singleMatch.getTeam(),
+                        "waktuMulai", singleMatch.getWaktuMulai(),
+                        "waktuSelesai", singleMatch.getWaktuSelesai(),
+                        "noKartu", singleMatch.getListKartu(),
+                        "inputBy", singleMatch.getInputBy(),
+                        "totalPoin", singleMatch.getTotalPoin(),
+                        "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
             } else {
                 response.setMessage("No Single Matches Found");
                 response.setError(true);
@@ -111,9 +111,9 @@ public class SinglematchController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getSingleMatchById(@RequestHeader("Token") String sessionToken,
-                                                     @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Get Single Match By ID");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get Single Match By ID");
             Optional<Singlematch> singleMatchOptional = singlematchService.getSinglematchById(id);
             if (singleMatchOptional.isPresent()) {
                 listSingleMatches.add(singleMatchOptional.get());
@@ -121,14 +121,14 @@ public class SinglematchController {
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
                 response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
-                    "noMatch", singleMatch.getNoMatch(),
-                    "idTeam", singleMatch.getTeam(),
-                    "waktuMulai", singleMatch.getWaktuMulai(),
-                    "waktuSelesai", singleMatch.getWaktuSelesai(),
-                    "noKartu", singleMatch.getListKartu(),
-                    "inputBy", singleMatch.getInputBy(),
-                    "totalPoin", singleMatch.getTotalPoin(),
-                    "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                        "noMatch", singleMatch.getNoMatch(),
+                        "idTeam", singleMatch.getTeam(),
+                        "waktuMulai", singleMatch.getWaktuMulai(),
+                        "waktuSelesai", singleMatch.getWaktuSelesai(),
+                        "noKartu", singleMatch.getListKartu(),
+                        "inputBy", singleMatch.getInputBy(),
+                        "totalPoin", singleMatch.getTotalPoin(),
+                        "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
             } else {
                 response.setMessage("Single Match Not Found");
                 response.setError(true);
@@ -150,11 +150,11 @@ public class SinglematchController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateSinglematch(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id,
-                                                    @RequestBody SinglematchDTO singlematchDTO) {
+            @PathVariable("id") String id,
+            @RequestBody SinglematchDTO singlematchDTO) {
+        response.setService("Update Single Match");
         if (loginService.checkSessionPanitia(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Update Single Match");
                 Optional<Singlematch> updatedSingleMatch = singlematchService.updateSinglematch(id, singlematchDTO);
                 if (updatedSingleMatch.isPresent()) {
                     listSingleMatches.add(updatedSingleMatch.get());
@@ -162,14 +162,14 @@ public class SinglematchController {
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
-                        "noMatch", singleMatch.getNoMatch(),
-                        "idTeam", singleMatch.getTeam(),
-                        "waktuMulai", singleMatch.getWaktuMulai(),
-                        "waktuSelesai", singleMatch.getWaktuSelesai(),
-                        "noKartu", singleMatch.getListKartu(),
-                        "inputBy", singleMatch.getInputBy(),
-                        "totalPoin", singleMatch.getTotalPoin(),
-                        "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                            "noMatch", singleMatch.getNoMatch(),
+                            "idTeam", singleMatch.getTeam(),
+                            "waktuMulai", singleMatch.getWaktuMulai(),
+                            "waktuSelesai", singleMatch.getWaktuSelesai(),
+                            "noKartu", singleMatch.getListKartu(),
+                            "inputBy", singleMatch.getInputBy(),
+                            "totalPoin", singleMatch.getTotalPoin(),
+                            "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
                 } else {
                     response.setMessage("Single Match Not Found");
                     response.setError(true);
@@ -197,10 +197,10 @@ public class SinglematchController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteSingleMatch(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Delete Single Match");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Delete Single Match");
                 boolean isDeleted = singlematchService.deleteSinglematch(id);
                 if (isDeleted) {
                     response.setMessage("Single Match Deleted Successfully");

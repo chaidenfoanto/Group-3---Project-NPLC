@@ -35,10 +35,10 @@ public class ListKartuController {
 
     @PostMapping("/addListKartu")
     public ResponseEntity<Response> addListKartu(@RequestHeader("Token") String sessionToken,
-                                                 @RequestBody ListKartuDTO listKartuDTO) {
+            @RequestBody ListKartuDTO listKartuDTO) {
+        response.setService("Add List Kartu");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Add List Kartu");
                 ListKartu newListKartu = listKartuService.addListKartu(listKartuDTO);
                 listKartuList.add(newListKartu);
                 response.setMessage("List Kartu Successfully Added");
@@ -70,8 +70,8 @@ public class ListKartuController {
 
     @GetMapping
     public ResponseEntity<Response> getAllListKartu(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All List Kartu");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get All List Kartu");
             List<ListKartu> listKartuList = listKartuService.getAllListKartu();
             if (listKartuList.size() > 0) {
                 response.setMessage("All List Kartu Retrieved Successfully");
@@ -103,9 +103,9 @@ public class ListKartuController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getListKartuById(@RequestHeader("Token") String sessionToken,
-                                                     @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Get List Kartu By ID");
         if (loginService.checkSessionAlive(sessionToken)) {
-            response.setService("Get List Kartu By ID");
             Optional<ListKartu> listKartuOptional = listKartuService.getListKartuById(id);
             if (listKartuOptional.isPresent()) {
                 listKartuList.add(listKartuOptional.get());
@@ -138,11 +138,11 @@ public class ListKartuController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateListKartu(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id,
-                                                    @RequestBody ListKartuDTO listKartuDTO) {
+            @PathVariable("id") String id,
+            @RequestBody ListKartuDTO listKartuDTO) {
+        response.setService("Update List Kartu");
         if (loginService.checkSessionPanitia(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Update List Kartu");
                 Optional<ListKartu> updatedListKartu = listKartuService.updateListKartu(id, listKartuDTO);
                 if (updatedListKartu.isPresent()) {
                     listKartuList.add(updatedListKartu.get());
@@ -181,10 +181,10 @@ public class ListKartuController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteListKartu(@RequestHeader("Token") String sessionToken,
-                                                    @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
+        response.setService("Delete List Kartu");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Delete List Kartu");
                 boolean isDeleted = listKartuService.deleteListKartu(id);
                 if (isDeleted) {
                     response.setMessage("List Kartu Deleted Successfully");
