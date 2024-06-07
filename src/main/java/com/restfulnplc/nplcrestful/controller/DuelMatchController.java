@@ -13,6 +13,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,9 @@ public class DuelMatchController {
     List<DuelMatch> listDuelMatches = Collections.<DuelMatch>emptyList();
 
     @PostMapping("/addDuelMatch")
-    public ResponseEntity<Response> addDuelMatch(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> addDuelMatch(HttpServletRequest request,
             @RequestBody DuelMatchDTO duelMatchDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Add Duel Match");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -80,8 +83,9 @@ public class DuelMatchController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllDuelMatches(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllDuelMatches(HttpServletRequest request) {
         response.setService("Get All Duel Matches");
+        String sessionToken = request.getHeader("Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<DuelMatch> duelMatchList = duelMatchService.getAllDuelMatches();
@@ -124,8 +128,9 @@ public class DuelMatchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getDuelMatchById(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getDuelMatchById(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get Duel Match By ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -170,9 +175,10 @@ public class DuelMatchController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateDuelMatch(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> updateDuelMatch(HttpServletRequest request,
             @PathVariable("id") String id,
             @RequestBody DuelMatchDTO duelMatchDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Update Duel Match");
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
@@ -224,8 +230,9 @@ public class DuelMatchController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteDuelMatch(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deleteDuelMatch(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Delete Duel Match");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

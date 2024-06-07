@@ -13,6 +13,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,9 @@ public class PanitiaController {
     List<Panitia> panitiaList = Collections.<Panitia>emptyList();
 
     @PostMapping("/addPanitia")
-    public ResponseEntity<Response> addPanitia(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> addPanitia(HttpServletRequest request,
             @RequestBody PanitiaDTO panitiaDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Add Panitia");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -86,8 +89,9 @@ public class PanitiaController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllPanitia(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllPanitia(HttpServletRequest request) {
         response.setService("Get All Panitia");
+        String sessionToken = request.getHeader("Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<Panitia> panitiaList = panitiaService.getAllPanitia();
@@ -129,8 +133,9 @@ public class PanitiaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getPanitiaById(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getPanitiaById(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get Panitia By ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -174,9 +179,10 @@ public class PanitiaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updatePanitia(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> updatePanitia(HttpServletRequest request,
             @PathVariable("id") String id,
             @RequestBody PanitiaDTO panitiaDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Update Panitia");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -234,8 +240,9 @@ public class PanitiaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deletePanitia(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deletePanitia(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Delete Panitia");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

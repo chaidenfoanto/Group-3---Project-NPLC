@@ -13,6 +13,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,9 @@ public class LokasiController {
     List<Lokasi> lokasiList = Collections.<Lokasi>emptyList();
 
     @PostMapping("/addLokasi")
-    public ResponseEntity<Response> addLokasi(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> addLokasi(HttpServletRequest request,
             @RequestBody LokasiDTO lokasiDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Add Lokasi");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -74,7 +77,8 @@ public class LokasiController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllLokasi(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllLokasi(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get All Lokasi");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -112,8 +116,9 @@ public class LokasiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getLokasiById(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getLokasiById(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get Lokasi By ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -152,9 +157,10 @@ public class LokasiController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateLokasi(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> updateLokasi(HttpServletRequest request,
             @PathVariable("id") String id,
             @RequestBody LokasiDTO lokasiDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Update Lokasi");
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
@@ -200,8 +206,9 @@ public class LokasiController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteLokasi(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deleteLokasi(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Delete Lokasi");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

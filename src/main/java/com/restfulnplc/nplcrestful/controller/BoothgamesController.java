@@ -14,6 +14,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +40,9 @@ public class BoothgamesController {
     List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
 
     @PostMapping("/addBoothgame")
-    public ResponseEntity<Response> addBoothgame(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> addBoothgame(HttpServletRequest request,
             @RequestBody BoothgamesDTO boothgamesDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Add Boothgame");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -84,7 +87,8 @@ public class BoothgamesController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllBoothgames(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllBoothgames(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get All Boothgames");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -128,8 +132,9 @@ public class BoothgamesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getBoothgameById(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getBoothgameById(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get Boothgame By ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -174,8 +179,9 @@ public class BoothgamesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateBoothgame(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> updateBoothgame(HttpServletRequest request,
             @PathVariable("id") String id, @RequestBody BoothgamesDTO boothgamesDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Update Boothgame");
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
@@ -227,8 +233,9 @@ public class BoothgamesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteBoothgame(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deleteBoothgame(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Delete Boothgame");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

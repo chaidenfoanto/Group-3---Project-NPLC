@@ -13,6 +13,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,9 @@ public class SinglematchController {
     List<Singlematch> listSingleMatches = Collections.<Singlematch>emptyList();
 
     @PostMapping("/addSingleMatch")
-    public ResponseEntity<Response> addSinglematch(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> addSinglematch(HttpServletRequest request,
             @RequestBody SinglematchDTO singlematchDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Add Single Match");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -80,8 +83,9 @@ public class SinglematchController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllSingleMatches(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllSingleMatches(HttpServletRequest request) {
         response.setService("Get All Single Matches");
+        String sessionToken = request.getHeader("Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<Singlematch> singleMatchList = singlematchService.getAllSinglematches();
@@ -124,8 +128,9 @@ public class SinglematchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getSingleMatchById(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getSingleMatchById(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get Single Match By ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -170,9 +175,10 @@ public class SinglematchController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateSinglematch(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> updateSinglematch(HttpServletRequest request,
             @PathVariable("id") String id,
             @RequestBody SinglematchDTO singlematchDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Update Single Match");
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
@@ -224,8 +230,9 @@ public class SinglematchController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteSingleMatch(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deleteSingleMatch(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Delete Single Match");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

@@ -16,7 +16,6 @@ import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 
 @Service
 public class LoginService {
-    private final String encodedAdminPassword = "$2a$10$YOgnsr/9C7DazPD5tph5Ou5taF7FizE.0jwnXRy8NX7o1MI297QgG";
 
     @Autowired
     private LoginRepository loginRepository;
@@ -30,17 +29,17 @@ public class LoginService {
     @Autowired
     private TeamService teamService;
 
-    public Optional<Login> LoginPanitia(LoginDTO loginDTO)
-    {
+    public Optional<Login> LoginPanitia(LoginDTO loginDTO) {
         Optional<Panitia> panitiaOptional = panitiaService.findPanitiaByUsername(loginDTO.getUsername());
         if (panitiaOptional.isPresent()) {
             Panitia panitia = panitiaOptional.get();
-            if(passwordMaker.matchPassword(loginDTO.getPassword(), panitia.getPassword())){
+            if (passwordMaker.matchPassword(loginDTO.getPassword(), panitia.getPassword())) {
                 Optional<Login> sessionActive = getLoginSessionByUser(panitia.getIdPanitia());
-                if(sessionActive.isPresent()){
+                if (sessionActive.isPresent()) {
                     deleteSession(sessionActive.get().getToken());
                 }
-                Login session = new Login(panitia.getIdPanitia(), passwordMaker.hashPassword(panitia.getIdPanitia()), Role.PANITIA);
+                Login session = new Login(panitia.getIdPanitia(), passwordMaker.hashPassword(panitia.getIdPanitia()),
+                        Role.PANITIA);
                 loginRepository.save(session);
                 return Optional.of(session);
             }
@@ -48,14 +47,13 @@ public class LoginService {
         return Optional.empty();
     }
 
-    public Optional<Login> LoginPlayer(LoginDTO loginDTO)
-    {
+    public Optional<Login> LoginPlayer(LoginDTO loginDTO) {
         Optional<Team> teamOptional = teamService.findTeamByUsername(loginDTO.getUsername());
         if (teamOptional.isPresent()) {
             Team team = teamOptional.get();
-            if(passwordMaker.matchPassword(loginDTO.getPassword(), team.getPassUsr())){
+            if (passwordMaker.matchPassword(loginDTO.getPassword(), team.getPassUsr())) {
                 Optional<Login> sessionActive = getLoginSessionByUser(team.getIdTeam());
-                if(sessionActive.isPresent()){
+                if (sessionActive.isPresent()) {
                     deleteSession(sessionActive.get().getToken());
                 }
                 Login session = new Login(team.getIdTeam(), passwordMaker.hashPassword(team.getIdTeam()), Role.PLAYERS);
@@ -66,103 +64,101 @@ public class LoginService {
         return Optional.empty();
     }
 
-    public boolean checkAdminPassword(String password)
-    {
-        return passwordMaker.matchPassword(password, encodedAdminPassword);
-    }
-
-    public boolean checkSessionAlive(String token)
-    {
-        return loginRepository.findById(token).isPresent();
-    }
-
-    public boolean checkSessionSelf(String token, String idUser)
-    {
-        if(loginRepository.findById(token).isPresent()) {
-            return loginRepository.findById(token).get().getIdUser().equals(idUser);
+    public boolean checkSessionAlive(String token) {
+        if (token != null) {
+            return loginRepository.findById(token).isPresent();
         }
         return false;
     }
 
-    public boolean checkSessionPanitia(String token)
-    {
-        if(loginRepository.findById(token).isPresent()) {
-            Login session = loginRepository.findById(token).get();
-            if(session.getRole().equals(Role.PANITIA)) {
-                return panitiaService.checkPanitia(session.getIdUser());
+    public boolean checkSessionSelf(String token, String idUser) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                return loginRepository.findById(token).get().getIdUser().equals(idUser);
             }
         }
         return false;
     }
 
-    public boolean checkSessionAdmin(String token)
-    {
-        if(loginRepository.findById(token).isPresent()) {
-            Login session = loginRepository.findById(token).get();
-            if(session.getRole().equals(Role.PANITIA)) {
-                return panitiaService.checkAdmin(session.getIdUser());
+    public boolean checkSessionPanitia(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login session = loginRepository.findById(token).get();
+                if (session.getRole().equals(Role.PANITIA)) {
+                    return panitiaService.checkPanitia(session.getIdUser());
+                }
             }
         }
         return false;
     }
 
-    public boolean checkSessionTeam(String token)
-    {
-        if(loginRepository.findById(token).isPresent()) {
-            Login session = loginRepository.findById(token).get();
-            if(session.getRole().equals(Role.PLAYERS)) {
-                return teamService.checkTeam(session.getIdUser());
+    public boolean checkSessionAdmin(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login session = loginRepository.findById(token).get();
+                if (session.getRole().equals(Role.PANITIA)) {
+                    return panitiaService.checkAdmin(session.getIdUser());
+                }
             }
         }
         return false;
     }
 
-    public boolean checkSessionKetua(String token)
-    {
-        if(loginRepository.findById(token).isPresent()) {
-            Login session = loginRepository.findById(token).get();
-            if(session.getRole().equals(Role.PANITIA)) {
-                return panitiaService.checkKetua(token);
+    public boolean checkSessionTeam(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login session = loginRepository.findById(token).get();
+                if (session.getRole().equals(Role.PLAYERS)) {
+                    return teamService.checkTeam(session.getIdUser());
+                }
             }
         }
         return false;
     }
 
-    public Login getLoginSession(String token)
-    {
+    public boolean checkSessionKetua(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login session = loginRepository.findById(token).get();
+                if (session.getRole().equals(Role.PANITIA)) {
+                    return panitiaService.checkKetua(token);
+                }
+            }
+        }
+        return false;
+    }
+
+    public Login getLoginSession(String token) {
         return loginRepository.findById(token).get();
     }
 
-    public Optional<Login> getLoginSessionByUser(String userId)
-    {
-        for(Login session : loginRepository.findAll()){
-            if(session.getIdUser().equals(userId)) return Optional.of(session);
+    public Optional<Login> getLoginSessionByUser(String userId) {
+        for (Login session : loginRepository.findAll()) {
+            if (session.getIdUser().equals(userId))
+                return Optional.of(session);
         }
         return Optional.empty();
     }
 
-    public boolean userIsLoggedIn(String userId)
-    {
-        if(getLoginSessionByUser(userId).isPresent()) return true;
+    public boolean userIsLoggedIn(String userId) {
+        if (getLoginSessionByUser(userId).isPresent())
+            return true;
         return false;
     }
 
-    public void deleteSession(String token)
-    {
+    public void deleteSession(String token) {
         loginRepository.deleteById(token);
     }
 
-    public AccessDTO getAccessDetails(String sessionToken)
-    {
+    public AccessDTO getAccessDetails(String sessionToken) {
         Login sessionActive = getLoginSession(sessionToken);
         boolean isAdmin = checkSessionAdmin(sessionToken);
         String idUser = sessionActive.getIdUser();
         AccessDTO accessDetails = new AccessDTO(
-            idUser,
-            sessionActive.getRole().toString(),
-            isAdmin,
-            isAdmin ? (panitiaService.getPanitiaById(idUser).get().getDivisi().toString()) : null
-        );
+                idUser,
+                sessionActive.getRole().toString(),
+                isAdmin,
+                isAdmin ? (panitiaService.getPanitiaById(idUser).get().getDivisi().toString()) : null);
         return accessDetails;
     }
 }

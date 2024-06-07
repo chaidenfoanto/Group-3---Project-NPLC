@@ -13,6 +13,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,9 @@ public class ListKartuController {
     List<ListKartu> listKartuList = Collections.<ListKartu>emptyList();
 
     @PostMapping("/addListKartu")
-    public ResponseEntity<Response> addListKartu(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> addListKartu(HttpServletRequest request,
             @RequestBody ListKartuDTO listKartuDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Add List Kartu");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -76,8 +79,9 @@ public class ListKartuController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllListKartu(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllListKartu(HttpServletRequest request) {
         response.setService("Get All List Kartu");
+        String sessionToken = request.getHeader("Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<ListKartu> listKartuList = listKartuService.getAllListKartu();
@@ -116,8 +120,9 @@ public class ListKartuController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getListKartuById(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getListKartuById(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get List Kartu By ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -158,9 +163,10 @@ public class ListKartuController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateListKartu(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> updateListKartu(HttpServletRequest request,
             @PathVariable("id") String id,
             @RequestBody ListKartuDTO listKartuDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Update List Kartu");
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
@@ -208,8 +214,9 @@ public class ListKartuController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteListKartu(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deleteListKartu(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Delete List Kartu");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

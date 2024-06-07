@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +18,9 @@ import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.restfulnplc.nplcrestful.model.Login;
 
 @RestController
@@ -85,7 +87,8 @@ public class LoginController {
     }
 
     @GetMapping("/getSession")
-    public ResponseEntity<Response> getSession(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getSession(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Auth Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -112,7 +115,8 @@ public class LoginController {
     }
 
     @GetMapping("/getAccess")
-    public ResponseEntity<Response> getAccess(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAccess(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Auth Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

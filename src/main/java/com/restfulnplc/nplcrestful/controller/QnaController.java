@@ -9,6 +9,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +36,9 @@ public class QnaController {
     List<Qna> listQna = Collections.<Qna>emptyList();
 
     @PostMapping("/ask")
-    public ResponseEntity<Response> askQuestion(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> askQuestion(HttpServletRequest request,
             @RequestBody QnaPlayersDTO qnaplayerDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Tanya Pertanyaan");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -77,8 +80,9 @@ public class QnaController {
     }
 
     @PostMapping("/answer/{id}")
-    public ResponseEntity<Response> answerQuestion(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> answerQuestion(HttpServletRequest request,
             @RequestBody QnaPanitiaDTO qnapanitiaDTO, @PathVariable String idQna) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Menjawab Pertanyaan");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -122,8 +126,9 @@ public class QnaController {
     }
 
     @GetMapping("/questions")
-    public ResponseEntity<Response> getAllQuestions(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllQuestions(HttpServletRequest request) {
         response.setService("Mendapatkan Semua Pertanyaan");
+        String sessionToken = request.getHeader("Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<Qna> questionsList = qnaService.getAllQuestions();
@@ -165,8 +170,9 @@ public class QnaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteQuestion(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deleteQuestion(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Hapus Pertanyaan");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

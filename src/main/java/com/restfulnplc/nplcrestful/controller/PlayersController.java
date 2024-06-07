@@ -7,6 +7,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +29,9 @@ public class PlayersController {
     private Response response = new Response();
 
     @GetMapping("/getByTeam/{idTeam}")
-    public ResponseEntity<Response> getPlayersByTeam(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getPlayersByTeam(HttpServletRequest request,
             @PathVariable("idTeam") String idTeam) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get Players By Team ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

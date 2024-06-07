@@ -13,6 +13,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,9 @@ public class CardSkillController {
     List<CardSkill> listCardSkills = Collections.<CardSkill>emptyList();
 
     @PostMapping("/addCardSkill")
-    public ResponseEntity<Response> addCardSkill(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> addCardSkill(HttpServletRequest request,
             @RequestBody CardSkillDTO cardSkillDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Add Card Skill");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -77,8 +80,9 @@ public class CardSkillController {
     }
 
     @GetMapping
-    public ResponseEntity<Response> getAllCardSkills(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> getAllCardSkills(HttpServletRequest request) {
         response.setService("Get All CardSkills");
+        String sessionToken = request.getHeader("Token");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<CardSkill> cardSkillList = cardSkillService.getAllCardSkills();
@@ -118,8 +122,9 @@ public class CardSkillController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getCardSkillById(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> getCardSkillById(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Get Card Skill By ID");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -161,9 +166,10 @@ public class CardSkillController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateCardSkill(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> updateCardSkill(HttpServletRequest request,
             @PathVariable("id") String id,
             @RequestBody CardSkillDTO cardSkillDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Update Card Skill");
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
@@ -212,8 +218,9 @@ public class CardSkillController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteCardSkill(@RequestHeader("Token") String sessionToken,
+    public ResponseEntity<Response> deleteCardSkill(HttpServletRequest request,
             @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Delete Card Skill");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

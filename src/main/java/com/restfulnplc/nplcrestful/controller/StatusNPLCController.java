@@ -12,6 +12,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/api/statusnplc")
@@ -26,7 +28,8 @@ public class StatusNPLCController {
     private Response response = new Response();
 
     @GetMapping("/startGame")
-    public ResponseEntity<Response> startNPLC(@RequestHeader("Token") String sessionToken, TimeDTO timeDTO) {
+    public ResponseEntity<Response> startNPLC(HttpServletRequest request, TimeDTO timeDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("NPLC Start");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -61,7 +64,8 @@ public class StatusNPLCController {
     }
 
     @GetMapping("/stopGame")
-    public ResponseEntity<Response> stopNPLC(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> stopNPLC(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
         response.setService("NPLC Start");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
@@ -95,7 +99,8 @@ public class StatusNPLCController {
     }
 
     @GetMapping("/restartGame")
-    public ResponseEntity<Response> restartNPLC(@RequestHeader("Token") String sessionToken) {
+    public ResponseEntity<Response> restartNPLC(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
         response.setService("NPLC Start");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {

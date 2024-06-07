@@ -13,6 +13,8 @@ import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,8 @@ public class TeamController {
     List<Team> listTeam = Collections.<Team>emptyList();
 
     @PostMapping("addTeam")
-    public ResponseEntity<Response> addTeam(@RequestHeader("Token") String sessionToken, @RequestBody TeamDTO teamDTO) {
+    public ResponseEntity<Response> addTeam(HttpServletRequest request, @RequestBody TeamDTO teamDTO) {
+        String sessionToken = request.getHeader("Token");
         response.setService("Team Creation");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
