@@ -55,7 +55,7 @@ public class TeamController {
                 } else {
                     response.setMessage("Username Exists");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.BAD_REQUEST);
+                    response.setHttpCode(HTTPCode.CONFLICT);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
