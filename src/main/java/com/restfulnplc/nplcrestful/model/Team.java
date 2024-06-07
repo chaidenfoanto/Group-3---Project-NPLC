@@ -32,7 +32,7 @@ public class Team {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "kategori")
-    private Kategori kategori;
+    private KategoriTeam kategoriTeam;
 
     @OneToMany(mappedBy = "team")
     private Set<Players> players;
@@ -83,12 +83,12 @@ public class Team {
         this.asalSekolah = asalSekolah;
     }
 
-    public Kategori getKategori() {
-        return this.kategori;
+    public KategoriTeam getKategoriTeam() {
+        return this.kategoriTeam;
     }
 
-    public void setKategori(Kategori kategori) {
-        this.kategori = kategori;
+    public void setKategoriTeam(Kategori kategoriTeam) {
+        this.kategoriTeam = kategoriTeam;
     }
 
     public Set<Players> getPlayers() {
