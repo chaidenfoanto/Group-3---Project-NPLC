@@ -37,20 +37,27 @@ public class TeamController {
         response.setService("Team Creation");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionAdmin(sessionToken)) {
-                Team newTeam = teamService.addTeam(teamDTO);
-                listTeam.add(newTeam);
-                response.setMessage("Team Successfully Created");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(listTeam.stream().map(team -> Map.of(
-                        "idTeam", team.getIdTeam(),
-                        "namaTeam", team.getNama(),
-                        "usernameTeam", team.getUsername(),
-                        "asalSekolah", team.getAsalSekolah(),
-                        "kategoriTeam", team.getKategori().toString(),
-                        "chanceRoll", team.getChanceRoll(),
-                        "totalPoin", team.getTotalPoin(),
-                        "players", team.getPlayers())).collect(Collectors.toList()));
+                if (!teamService.checkUsernameExists(teamDTO.getUsername())) {
+                    Team newTeam = teamService.addTeam(teamDTO);
+                    listTeam.add(newTeam);
+                    response.setMessage("Team Successfully Created");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(listTeam.stream().map(team -> Map.of(
+                            "idTeam", team.getIdTeam(),
+                            "namaTeam", team.getNama(),
+                            "usernameTeam", team.getUsername(),
+                            "asalSekolah", team.getAsalSekolah(),
+                            "kategoriTeam", team.getKategori().toString(),
+                            "chanceRoll", team.getChanceRoll(),
+                            "totalPoin", team.getTotalPoin(),
+                            "players", team.getPlayers())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Username Exists");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.BAD_REQUEST);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
                 response.setMessage("Access Denied");
                 response.setError(true);

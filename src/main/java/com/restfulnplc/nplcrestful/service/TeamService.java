@@ -107,4 +107,17 @@ public class TeamService {
     public boolean checkTeam(String id) {
         return teamRepository.findById(id).isPresent();
     }
+
+    public List<Team> getAllTeam()
+    {
+        return teamRepository.findAll();
+    }
+    
+    public boolean checkUsernameExists(String username) {
+        for(Team team : getAllTeam()) {
+            if(team.getUsername().equals(username)) return true;
+        }
+        return false;
+    }
+    
 }
