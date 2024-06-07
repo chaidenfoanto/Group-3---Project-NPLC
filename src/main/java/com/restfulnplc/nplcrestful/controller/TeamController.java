@@ -35,39 +35,46 @@ public class TeamController {
     @PostMapping("addTeam")
     public ResponseEntity<Response> addTeam(@RequestHeader("Token") String sessionToken, @RequestBody TeamDTO teamDTO) {
         response.setService("Team Creation");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                if (!teamService.checkUsernameExists(teamDTO.getUsername())) {
-                    Team newTeam = teamService.addTeam(teamDTO);
-                    listTeam.add(newTeam);
-                    response.setMessage("Team Successfully Created");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
-                    response.setData(listTeam.stream().map(team -> Map.of(
-                            "idTeam", team.getIdTeam(),
-                            "namaTeam", team.getNama(),
-                            "usernameTeam", team.getUsername(),
-                            "asalSekolah", team.getAsalSekolah(),
-                            "kategoriTeam", team.getKategori().toString(),
-                            "chanceRoll", team.getChanceRoll(),
-                            "totalPoin", team.getTotalPoin(),
-                            "players", team.getPlayers())).collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    if (!teamService.checkUsernameExists(teamDTO.getUsername())) {
+                        Team newTeam = teamService.addTeam(teamDTO);
+                        listTeam.add(newTeam);
+                        response.setMessage("Team Successfully Created");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(listTeam.stream().map(team -> Map.of(
+                                "idTeam", team.getIdTeam(),
+                                "namaTeam", team.getNama(),
+                                "usernameTeam", team.getUsername(),
+                                "asalSekolah", team.getAsalSekolah(),
+                                "kategoriTeam", team.getKategori().toString(),
+                                "chanceRoll", team.getChanceRoll(),
+                                "totalPoin", team.getTotalPoin(),
+                                "players", team.getPlayers())).collect(Collectors.toList()));
+                    } else {
+                        response.setMessage("Username Exists");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.CONFLICT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
-                    response.setMessage("Username Exists");
+                    response.setMessage("Access Denied");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.CONFLICT);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         return ResponseEntity

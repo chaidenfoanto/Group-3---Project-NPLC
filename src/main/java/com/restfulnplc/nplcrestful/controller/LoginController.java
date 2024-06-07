@@ -31,84 +31,110 @@ public class LoginController {
     private Response response = new Response();
 
     @PostMapping("/process_login_panitia")
-    public ResponseEntity<Response> process_login_panitia(@RequestBody LoginDTO loginDTO)
-    {
+    public ResponseEntity<Response> process_login_panitia(@RequestBody LoginDTO loginDTO) {
         response.setService("Login Panitia");
-        Optional<Login> sessionOptional = loginService.LoginPanitia(loginDTO);
-        if (sessionOptional.isPresent()) {
-            response.setMessage("Login Success");
-            response.setData(sessionOptional.get());
-            response.setError(false);
-            response.setHttpCode(HTTPCode.OK);
+        try {
+            Optional<Login> sessionOptional = loginService.LoginPanitia(loginDTO);
+            if (sessionOptional.isPresent()) {
+                response.setMessage("Login Success");
+                response.setData(sessionOptional.get());
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+            }
+            response.setMessage("Login Failed. User or Password Invalid");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        response.setMessage("Login Failed. User or Password Invalid");
-        response.setError(true);
-        response.setHttpCode(HTTPCode.FORBIDDEN);
-        response.setData(new ErrorMessage(response.getHttpCode()));
-        return  ResponseEntity
-            .status(response.getHttpCode().getStatus())
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(response);
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 
     @PostMapping("/process_login_players")
-    public ResponseEntity<Response> process_login_player(@RequestBody LoginDTO loginDTO)
-    {
+    public ResponseEntity<Response> process_login_player(@RequestBody LoginDTO loginDTO) {
         response.setService("Login Player");
-        Optional<Login> sessionOptional = loginService.LoginPlayer(loginDTO);
-        if (sessionOptional.isPresent()) {
-            response.setMessage("Login Success");
-            response.setData(sessionOptional.get());
-            response.setError(false);
-            response.setHttpCode(HTTPCode.OK);
+        try {
+            Optional<Login> sessionOptional = loginService.LoginPlayer(loginDTO);
+            if (sessionOptional.isPresent()) {
+                response.setMessage("Login Success");
+                response.setData(sessionOptional.get());
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+            }
+            response.setMessage("Login Failed. User or Password Invalid");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        response.setMessage("Login Failed. User or Password Invalid");
-        response.setError(true);
-        response.setHttpCode(HTTPCode.FORBIDDEN);
-        response.setData(new ErrorMessage(response.getHttpCode()));
-        return  ResponseEntity
-            .status(response.getHttpCode().getStatus())
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(response);
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
-    
+
     @GetMapping("/getSession")
     public ResponseEntity<Response> getSession(@RequestHeader("Token") String sessionToken) {
         response.setService("Auth Token");
-        if(loginService.checkSessionAlive(sessionToken)){
-            Login sessionActive = loginService.getLoginSession(sessionToken);
-            response.setMessage("Authorization Success");
-            response.setData(sessionActive);
-            response.setError(false);
-            response.setHttpCode(HTTPCode.OK);
-        }
-        response.setMessage("Authorization Failed");
-        response.setError(true);
-        response.setHttpCode(HTTPCode.FORBIDDEN);
-        response.setData(new ErrorMessage(response.getHttpCode()));
-        return  ResponseEntity
-            .status(response.getHttpCode().getStatus())
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(response);
-    }
-        
-    @GetMapping("/getAccess")
-    public ResponseEntity<Response> getAccess(@RequestHeader("Token") String sessionToken) {
-        response.setService("Auth Token");
-        if(loginService.checkSessionAlive(sessionToken)){
-            AccessDTO accessDetails = loginService.getAccessDetails(sessionToken);
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                Login sessionActive = loginService.getLoginSession(sessionToken);
+                response.setMessage("Authorization Success");
+                response.setData(sessionActive);
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+            }
             response.setMessage("Authorization Failed");
             response.setError(true);
             response.setHttpCode(HTTPCode.FORBIDDEN);
-            response.setData(accessDetails);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        response.setMessage("Authorization Failed");
-        response.setError(true);
-        response.setHttpCode(HTTPCode.FORBIDDEN);
-        response.setData(new ErrorMessage(response.getHttpCode()));
-        return  ResponseEntity
-            .status(response.getHttpCode().getStatus())
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(response);
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/getAccess")
+    public ResponseEntity<Response> getAccess(@RequestHeader("Token") String sessionToken) {
+        response.setService("Auth Token");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                AccessDTO accessDetails = loginService.getAccessDetails(sessionToken);
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(accessDetails);
+            }
+            response.setMessage("Authorization Failed");
+            response.setError(true);
+            response.setHttpCode(HTTPCode.FORBIDDEN);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 }

@@ -37,29 +37,36 @@ public class QnaController {
     public ResponseEntity<Response> askQuestion(@RequestHeader("Token") String sessionToken,
             @RequestBody QnaPlayersDTO qnaplayerDTO) {
         response.setService("Tanya Pertanyaan");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionTeam(sessionToken)) {
-                Qna newQna = qnaService.addQuestion(qnaplayerDTO);
-                listQna.add(newQna);
-                response.setMessage("Pertanyaan Berhasil Diajukan");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.CREATED);
-                response.setData(listQna.stream().map(qna -> Map.of(
-                        "idPertanyaan", qna.getIdPertanyaan(),
-                        "pertanyaan", qna.getPertanyaan(),
-                        "waktuInput", qna.getWaktuInput(),
-                        "team", qna.getTeam()))
-                        .collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionTeam(sessionToken)) {
+                    Qna newQna = qnaService.addQuestion(qnaplayerDTO);
+                    listQna.add(newQna);
+                    response.setMessage("Pertanyaan Berhasil Diajukan");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.CREATED);
+                    response.setData(listQna.stream().map(qna -> Map.of(
+                            "idPertanyaan", qna.getIdPertanyaan(),
+                            "pertanyaan", qna.getPertanyaan(),
+                            "waktuInput", qna.getWaktuInput(),
+                            "team", qna.getTeam()))
+                            .collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listQna.clear();
@@ -73,31 +80,38 @@ public class QnaController {
     public ResponseEntity<Response> answerQuestion(@RequestHeader("Token") String sessionToken,
             @RequestBody QnaPanitiaDTO qnapanitiaDTO, @PathVariable String idQna) {
         response.setService("Menjawab Pertanyaan");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                Qna answeredQna = qnaService.answerQuestion(idQna, qnapanitiaDTO);
-                listQna.add(answeredQna);
-                response.setMessage("Pertanyaan Berhasil Dijawab");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.CREATED);
-                response.setData(listQna.stream().map(qna -> Map.of(
-                        "idPertanyaan", qna.getIdPertanyaan(),
-                        "pertanyaan", qna.getPertanyaan(),
-                        "waktuInput", qna.getWaktuInput(),
-                        "jawaban", qna.getJawaban(),
-                        "panitia", qna.getPanitia(),
-                        "player", qna.getTeam()))
-                        .collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    Qna answeredQna = qnaService.answerQuestion(idQna, qnapanitiaDTO);
+                    listQna.add(answeredQna);
+                    response.setMessage("Pertanyaan Berhasil Dijawab");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.CREATED);
+                    response.setData(listQna.stream().map(qna -> Map.of(
+                            "idPertanyaan", qna.getIdPertanyaan(),
+                            "pertanyaan", qna.getPertanyaan(),
+                            "waktuInput", qna.getWaktuInput(),
+                            "jawaban", qna.getJawaban(),
+                            "panitia", qna.getPanitia(),
+                            "player", qna.getTeam()))
+                            .collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listQna.clear();
@@ -110,30 +124,37 @@ public class QnaController {
     @GetMapping("/questions")
     public ResponseEntity<Response> getAllQuestions(@RequestHeader("Token") String sessionToken) {
         response.setService("Mendapatkan Semua Pertanyaan");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            List<Qna> questionsList = qnaService.getAllQuestions();
-            if (!questionsList.isEmpty()) {
-                response.setMessage("Semua Pertanyaan Berhasil Didapatkan");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(questionsList.stream().map(qna -> Map.of(
-                        "idPertanyaan", qna.getIdPertanyaan(),
-                        "pertanyaan", qna.getPertanyaan(),
-                        "waktuInput", qna.getWaktuInput(),
-                        "jawaban", qna.getJawaban(),
-                        "panitia", qna.getPanitia(),
-                        "player", qna.getTeam()))
-                        .collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                List<Qna> questionsList = qnaService.getAllQuestions();
+                if (!questionsList.isEmpty()) {
+                    response.setMessage("Semua Pertanyaan Berhasil Didapatkan");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(questionsList.stream().map(qna -> Map.of(
+                            "idPertanyaan", qna.getIdPertanyaan(),
+                            "pertanyaan", qna.getPertanyaan(),
+                            "waktuInput", qna.getWaktuInput(),
+                            "jawaban", qna.getJawaban(),
+                            "panitia", qna.getPanitia(),
+                            "player", qna.getTeam()))
+                            .collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Tidak Ada Pertanyaan yang Ditemukan");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("Tidak Ada Pertanyaan yang Ditemukan");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listQna.clear();
@@ -146,31 +167,38 @@ public class QnaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteQuestion(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                response.setService("Hapus Pertanyaan");
-                boolean isDeleted = qnaService.deleteQuestion(id);
-                if (isDeleted) {
-                    response.setMessage("Pertanyaan Berhasil Dihapus");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
+        response.setService("Hapus Pertanyaan");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    boolean isDeleted = qnaService.deleteQuestion(id);
+                    if (isDeleted) {
+                        response.setMessage("Pertanyaan Berhasil Dihapus");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                    } else {
+                        response.setMessage("Pertanyaan Tidak Ditemukan");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
-                    response.setMessage("Pertanyaan Tidak Ditemukan");
+                    response.setMessage("Access Denied");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
+
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listQna.clear();

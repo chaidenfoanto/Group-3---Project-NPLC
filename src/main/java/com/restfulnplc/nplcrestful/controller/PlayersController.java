@@ -27,25 +27,33 @@ public class PlayersController {
     private Response response = new Response();
 
     @GetMapping("/getByTeam/{idTeam}")
-    public ResponseEntity<Response> getPlayersByTeam(@RequestHeader("Token") String sessionToken, @PathVariable("idTeam") String idTeam) {
+    public ResponseEntity<Response> getPlayersByTeam(@RequestHeader("Token") String sessionToken,
+            @PathVariable("idTeam") String idTeam) {
         response.setService("Get Players By Team ID");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            List<Players> playersList = playersService.getPlayersByTeam(idTeam);
-            if(playersList.size() > 0) {
-                response.setMessage("Player List Retrieved Successfully");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(playersList);
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                List<Players> playersList = playersService.getPlayersByTeam(idTeam);
+                if (playersList.size() > 0) {
+                    response.setMessage("Player List Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(playersList);
+                } else {
+                    response.setMessage("No Players Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("No Players Found");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         return ResponseEntity

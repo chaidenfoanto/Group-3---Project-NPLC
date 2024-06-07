@@ -37,29 +37,36 @@ public class CardSkillController {
     public ResponseEntity<Response> addCardSkill(@RequestHeader("Token") String sessionToken,
             @RequestBody CardSkillDTO cardSkillDTO) {
         response.setService("Add Card Skill");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                CardSkill newCardSkill = cardSkillService.addCardSkill(cardSkillDTO);
-                listCardSkills.add(newCardSkill);
-                response.setMessage("Card Skill Successfully Added");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.CREATED);
-                response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
-                        "idCard", cardSkill.getIdCard(),
-                        "namaKartu", cardSkill.getNamaKartu(),
-                        "rules", cardSkill.getRules(),
-                        "totalKartu", cardSkill.getTotalKartu(),
-                        "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    CardSkill newCardSkill = cardSkillService.addCardSkill(cardSkillDTO);
+                    listCardSkills.add(newCardSkill);
+                    response.setMessage("Card Skill Successfully Added");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.CREATED);
+                    response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
+                            "idCard", cardSkill.getIdCard(),
+                            "namaKartu", cardSkill.getNamaKartu(),
+                            "rules", cardSkill.getRules(),
+                            "totalKartu", cardSkill.getTotalKartu(),
+                            "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listCardSkills.clear();
@@ -72,28 +79,35 @@ public class CardSkillController {
     @GetMapping
     public ResponseEntity<Response> getAllCardSkills(@RequestHeader("Token") String sessionToken) {
         response.setService("Get All CardSkills");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            List<CardSkill> cardSkillList = cardSkillService.getAllCardSkills();
-            if (cardSkillList.size() > 0) {
-                response.setMessage("All Card Skills Retrieved Successfully");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(cardSkillList.stream().map(cardSkill -> Map.of(
-                        "idCard", cardSkill.getIdCard(),
-                        "namaKartu", cardSkill.getNamaKartu(),
-                        "rules", cardSkill.getRules(),
-                        "totalKartu", cardSkill.getTotalKartu(),
-                        "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                List<CardSkill> cardSkillList = cardSkillService.getAllCardSkills();
+                if (cardSkillList.size() > 0) {
+                    response.setMessage("All Card Skills Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(cardSkillList.stream().map(cardSkill -> Map.of(
+                            "idCard", cardSkill.getIdCard(),
+                            "namaKartu", cardSkill.getNamaKartu(),
+                            "rules", cardSkill.getRules(),
+                            "totalKartu", cardSkill.getTotalKartu(),
+                            "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("No Card Skills Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("No Card Skills Found");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listCardSkills.clear();
@@ -107,49 +121,12 @@ public class CardSkillController {
     public ResponseEntity<Response> getCardSkillById(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
         response.setService("Get Card Skill By ID");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            Optional<CardSkill> cardSkillOptional = cardSkillService.getCardSkillById(id);
-            if (cardSkillOptional.isPresent()) {
-                listCardSkills.add(cardSkillOptional.get());
-                response.setMessage("Card Skill Retrieved Successfully");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
-                        "idCard", cardSkill.getIdCard(),
-                        "namaKartu", cardSkill.getNamaKartu(),
-                        "rules", cardSkill.getRules(),
-                        "totalKartu", cardSkill.getTotalKartu(),
-                        "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
-            } else {
-                response.setMessage("Card Skill Not Found");
-                response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
-                response.setData(new ErrorMessage(response.getHttpCode()));
-            }
-        } else {
-            response.setMessage("Authorization Failed");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
-            response.setData(new ErrorMessage(response.getHttpCode()));
-        }
-        listCardSkills.clear();
-        return ResponseEntity
-                .status(response.getHttpCode().getStatus())
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Response> updateCardSkill(@RequestHeader("Token") String sessionToken,
-            @PathVariable("id") String id,
-            @RequestBody CardSkillDTO cardSkillDTO) {
-        response.setService("Update Card Skill");
-        if (loginService.checkSessionPanitia(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                Optional<CardSkill> updatedCardSkill = cardSkillService.updateCardSkill(id, cardSkillDTO);
-                if (updatedCardSkill.isPresent()) {
-                    listCardSkills.add(updatedCardSkill.get());
-                    response.setMessage("Card Skill Updated Successfully");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                Optional<CardSkill> cardSkillOptional = cardSkillService.getCardSkillById(id);
+                if (cardSkillOptional.isPresent()) {
+                    listCardSkills.add(cardSkillOptional.get());
+                    response.setMessage("Card Skill Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
@@ -165,15 +142,66 @@ public class CardSkillController {
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        listCardSkills.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response> updateCardSkill(@RequestHeader("Token") String sessionToken,
+            @PathVariable("id") String id,
+            @RequestBody CardSkillDTO cardSkillDTO) {
+        response.setService("Update Card Skill");
+        try {
+            if (loginService.checkSessionPanitia(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    Optional<CardSkill> updatedCardSkill = cardSkillService.updateCardSkill(id, cardSkillDTO);
+                    if (updatedCardSkill.isPresent()) {
+                        listCardSkills.add(updatedCardSkill.get());
+                        response.setMessage("Card Skill Updated Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
+                                "idCard", cardSkill.getIdCard(),
+                                "namaKartu", cardSkill.getNamaKartu(),
+                                "rules", cardSkill.getRules(),
+                                "totalKartu", cardSkill.getTotalKartu(),
+                                "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+                    } else {
+                        response.setMessage("Card Skill Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listCardSkills.clear();
@@ -187,30 +215,37 @@ public class CardSkillController {
     public ResponseEntity<Response> deleteCardSkill(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
         response.setService("Delete Card Skill");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                boolean isDeleted = cardSkillService.deleteCardSkill(id);
-                if (isDeleted) {
-                    response.setMessage("Card Skill Deleted Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    boolean isDeleted = cardSkillService.deleteCardSkill(id);
+                    if (isDeleted) {
+                        response.setMessage("Card Skill Deleted Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                    } else {
+                        response.setMessage("Card Skill Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
-                    response.setMessage("Card Skill Not Found");
+                    response.setMessage("Access Denied");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
+
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         listCardSkills.clear();

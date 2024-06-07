@@ -37,26 +37,33 @@ public class LokasiController {
     public ResponseEntity<Response> addLokasi(@RequestHeader("Token") String sessionToken,
             @RequestBody LokasiDTO lokasiDTO) {
         response.setService("Add Lokasi");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                Lokasi newLokasi = lokasiService.addLokasi(lokasiDTO);
-                lokasiList.add(newLokasi);
-                response.setMessage("Lokasi Successfully Added");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.CREATED);
-                response.setData(lokasiList.stream().map(lokasi -> Map.of(
-                        "noRuangan", lokasi.getNoRuangan(),
-                        "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    Lokasi newLokasi = lokasiService.addLokasi(lokasiDTO);
+                    lokasiList.add(newLokasi);
+                    response.setMessage("Lokasi Successfully Added");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.CREATED);
+                    response.setData(lokasiList.stream().map(lokasi -> Map.of(
+                            "noRuangan", lokasi.getNoRuangan(),
+                            "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         lokasiList.clear();
@@ -69,25 +76,32 @@ public class LokasiController {
     @GetMapping
     public ResponseEntity<Response> getAllLokasi(@RequestHeader("Token") String sessionToken) {
         response.setService("Get All Lokasi");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            List<Lokasi> lokasiList = lokasiService.getAllLokasi();
-            if (lokasiList.size() > 0) {
-                response.setMessage("All Lokasi Retrieved Successfully");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(lokasiList.stream().map(lokasi -> Map.of(
-                        "noRuangan", lokasi.getNoRuangan(),
-                        "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                List<Lokasi> lokasiList = lokasiService.getAllLokasi();
+                if (lokasiList.size() > 0) {
+                    response.setMessage("All Lokasi Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(lokasiList.stream().map(lokasi -> Map.of(
+                            "noRuangan", lokasi.getNoRuangan(),
+                            "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("No Lokasi Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("No Lokasi Found");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         lokasiList.clear();
@@ -101,26 +115,33 @@ public class LokasiController {
     public ResponseEntity<Response> getLokasiById(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
         response.setService("Get Lokasi By ID");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            Optional<Lokasi> lokasiOptional = lokasiService.getLokasiById(id);
-            if (lokasiOptional.isPresent()) {
-                lokasiList.add(lokasiOptional.get());
-                response.setMessage("Lokasi Retrieved Successfully");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(lokasiList.stream().map(lokasi -> Map.of(
-                        "noRuangan", lokasi.getNoRuangan(),
-                        "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                Optional<Lokasi> lokasiOptional = lokasiService.getLokasiById(id);
+                if (lokasiOptional.isPresent()) {
+                    lokasiList.add(lokasiOptional.get());
+                    response.setMessage("Lokasi Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(lokasiList.stream().map(lokasi -> Map.of(
+                            "noRuangan", lokasi.getNoRuangan(),
+                            "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Lokasi Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
-                response.setMessage("Lokasi Not Found");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         lokasiList.clear();
@@ -135,33 +156,40 @@ public class LokasiController {
             @PathVariable("id") String id,
             @RequestBody LokasiDTO lokasiDTO) {
         response.setService("Update Lokasi");
-        if (loginService.checkSessionPanitia(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                Optional<Lokasi> updatedLokasi = lokasiService.updateLokasi(id, lokasiDTO);
-                if (updatedLokasi.isPresent()) {
-                    lokasiList.add(updatedLokasi.get());
-                    response.setMessage("Lokasi Updated Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
-                    response.setData(lokasiList.stream().map(lokasi -> Map.of(
-                            "noRuangan", lokasi.getNoRuangan(),
-                            "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+        try {
+            if (loginService.checkSessionPanitia(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    Optional<Lokasi> updatedLokasi = lokasiService.updateLokasi(id, lokasiDTO);
+                    if (updatedLokasi.isPresent()) {
+                        lokasiList.add(updatedLokasi.get());
+                        response.setMessage("Lokasi Updated Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(lokasiList.stream().map(lokasi -> Map.of(
+                                "noRuangan", lokasi.getNoRuangan(),
+                                "lantai", lokasi.getLantai())).collect(Collectors.toList()));
+                    } else {
+                        response.setMessage("Lokasi Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
-                    response.setMessage("Lokasi Not Found");
+                    response.setMessage("Access Denied");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         lokasiList.clear();
@@ -175,31 +203,39 @@ public class LokasiController {
     public ResponseEntity<Response> deleteLokasi(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
         response.setService("Delete Lokasi");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                boolean isDeleted = lokasiService.deleteLokasi(id);
-                if (isDeleted) {
-                    response.setMessage("Lokasi Deleted Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    boolean isDeleted = lokasiService.deleteLokasi(id);
+                    if (isDeleted) {
+                        response.setMessage("Lokasi Deleted Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                    } else {
+                        response.setMessage("Lokasi Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
-                    response.setMessage("Lokasi Not Found");
+                    response.setMessage("Access Denied");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        lokasiList.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

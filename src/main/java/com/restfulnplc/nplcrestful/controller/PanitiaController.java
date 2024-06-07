@@ -37,135 +37,15 @@ public class PanitiaController {
     public ResponseEntity<Response> addPanitia(@RequestHeader("Token") String sessionToken,
             @RequestBody PanitiaDTO panitiaDTO) {
         response.setService("Add Panitia");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionKetua(sessionToken)) {
-                if (!panitiaService.checkUsernameExists(panitiaDTO.getUsername())) {
-                    Panitia newPanitia = panitiaService.addPanitia(panitiaDTO);
-                    panitiaList.add(newPanitia);
-                    response.setMessage("Panitia Successfully Added");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(panitiaList.stream().map(panitia -> Map.of(
-                            "idPanitia", panitia.getIdPanitia(),
-                            "username", panitia.getUsername(),
-                            "nama", panitia.getNama(),
-                            "angkatan", panitia.getAngkatan(),
-                            "spesialisasi", panitia.getSpesialisasi(),
-                            "isAdmin", panitia.getIsAdmin(),
-                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
-                } else {
-                    response.setMessage("Username Exists");
-                    response.setError(true);
-                    response.setHttpCode(HTTPCode.CONFLICT);
-                    response.setData(new ErrorMessage(response.getHttpCode()));
-                }
-            } else {
-                response.setMessage("Access Denied");
-                response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
-                response.setData(new ErrorMessage(response.getHttpCode()));
-            }
-        } else {
-            response.setMessage("Authorization Failed");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
-            response.setData(new ErrorMessage(response.getHttpCode()));
-        }
-        panitiaList.clear();
-        return ResponseEntity
-                .status(response.getHttpCode().getStatus())
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<Response> getAllPanitia(@RequestHeader("Token") String sessionToken) {
-        response.setService("Get All Panitia");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            List<Panitia> panitiaList = panitiaService.getAllPanitia();
-            if (panitiaList.size() > 0) {
-                response.setMessage("All Panitia Retrieved Successfully");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(panitiaList.stream().map(panitia -> Map.of(
-                        "idPanitia", panitia.getIdPanitia(),
-                        "username", panitia.getUsername(),
-                        "nama", panitia.getNama(),
-                        "angkatan", panitia.getAngkatan(),
-                        "spesialisasi", panitia.getSpesialisasi(),
-                        "isAdmin", panitia.getIsAdmin(),
-                        "divisi", panitia.getDivisi())).collect(Collectors.toList()));
-            } else {
-                response.setMessage("No Panitia Found");
-                response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
-                response.setData(new ErrorMessage(response.getHttpCode()));
-            }
-        } else {
-            response.setMessage("Authorization Failed");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
-            response.setData(new ErrorMessage(response.getHttpCode()));
-        }
-        panitiaList.clear();
-        return ResponseEntity
-                .status(response.getHttpCode().getStatus())
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Response> getPanitiaById(@RequestHeader("Token") String sessionToken,
-            @PathVariable("id") String id) {
-        response.setService("Get Panitia By ID");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            Optional<Panitia> panitiaOptional = panitiaService.getPanitiaById(id);
-            if (panitiaOptional.isPresent()) {
-                panitiaList.add(panitiaOptional.get());
-                response.setMessage("Panitia Retrieved Successfully");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.OK);
-                response.setData(panitiaList.stream().map(panitia -> Map.of(
-                        "idPanitia", panitia.getIdPanitia(),
-                        "username", panitia.getUsername(),
-                        "nama", panitia.getNama(),
-                        "angkatan", panitia.getAngkatan(),
-                        "spesialisasi", panitia.getSpesialisasi(),
-                        "isAdmin", panitia.getIsAdmin(),
-                        "divisi", panitia.getDivisi())).collect(Collectors.toList()));
-            } else {
-                response.setMessage("Panitia Not Found");
-                response.setError(true);
-                response.setHttpCode(HTTPCode.NO_CONTENT);
-                response.setData(new ErrorMessage(response.getHttpCode()));
-            }
-        } else {
-            response.setMessage("Authorization Failed");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
-            response.setData(new ErrorMessage(response.getHttpCode()));
-        }
-        panitiaList.clear();
-        return ResponseEntity
-                .status(response.getHttpCode().getStatus())
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Response> updatePanitia(@RequestHeader("Token") String sessionToken,
-            @PathVariable("id") String id,
-            @RequestBody PanitiaDTO panitiaDTO) {
-        response.setService("Update Panitia");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionSelf(sessionToken, id)) {
-                if (!panitiaService.checkUsernameExists(panitiaDTO.getUsername())) {
-                    Optional<Panitia> updatedPanitia = panitiaService.updatePanitia(id, panitiaDTO);
-                    if (updatedPanitia.isPresent()) {
-                        panitiaList.add(updatedPanitia.get());
-                        response.setMessage("Panitia Updated Successfully");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionKetua(sessionToken)) {
+                    if (!panitiaService.checkUsernameExists(panitiaDTO.getUsername())) {
+                        Panitia newPanitia = panitiaService.addPanitia(panitiaDTO);
+                        panitiaList.add(newPanitia);
+                        response.setMessage("Panitia Successfully Added");
                         response.setError(false);
-                        response.setHttpCode(HTTPCode.OK);
+                        response.setHttpCode(HTTPCode.CREATED);
                         response.setData(panitiaList.stream().map(panitia -> Map.of(
                                 "idPanitia", panitia.getIdPanitia(),
                                 "username", panitia.getUsername(),
@@ -181,21 +61,169 @@ public class PanitiaController {
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        panitiaList.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<Response> getAllPanitia(@RequestHeader("Token") String sessionToken) {
+        response.setService("Get All Panitia");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                List<Panitia> panitiaList = panitiaService.getAllPanitia();
+                if (panitiaList.size() > 0) {
+                    response.setMessage("All Panitia Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(panitiaList.stream().map(panitia -> Map.of(
+                            "idPanitia", panitia.getIdPanitia(),
+                            "username", panitia.getUsername(),
+                            "nama", panitia.getNama(),
+                            "angkatan", panitia.getAngkatan(),
+                            "spesialisasi", panitia.getSpesialisasi(),
+                            "isAdmin", panitia.getIsAdmin(),
+                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("No Panitia Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        panitiaList.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getPanitiaById(@RequestHeader("Token") String sessionToken,
+            @PathVariable("id") String id) {
+        response.setService("Get Panitia By ID");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                Optional<Panitia> panitiaOptional = panitiaService.getPanitiaById(id);
+                if (panitiaOptional.isPresent()) {
+                    panitiaList.add(panitiaOptional.get());
+                    response.setMessage("Panitia Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(panitiaList.stream().map(panitia -> Map.of(
+                            "idPanitia", panitia.getIdPanitia(),
+                            "username", panitia.getUsername(),
+                            "nama", panitia.getNama(),
+                            "angkatan", panitia.getAngkatan(),
+                            "spesialisasi", panitia.getSpesialisasi(),
+                            "isAdmin", panitia.getIsAdmin(),
+                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                } else {
                     response.setMessage("Panitia Not Found");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.NO_CONTENT);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        panitiaList.clear();
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response> updatePanitia(@RequestHeader("Token") String sessionToken,
+            @PathVariable("id") String id,
+            @RequestBody PanitiaDTO panitiaDTO) {
+        response.setService("Update Panitia");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionSelf(sessionToken, id)) {
+                    if (!panitiaService.checkUsernameExists(panitiaDTO.getUsername())) {
+                        Optional<Panitia> updatedPanitia = panitiaService.updatePanitia(id, panitiaDTO);
+                        if (updatedPanitia.isPresent()) {
+                            panitiaList.add(updatedPanitia.get());
+                            response.setMessage("Panitia Updated Successfully");
+                            response.setError(false);
+                            response.setHttpCode(HTTPCode.OK);
+                            response.setData(panitiaList.stream().map(panitia -> Map.of(
+                                    "idPanitia", panitia.getIdPanitia(),
+                                    "username", panitia.getUsername(),
+                                    "nama", panitia.getNama(),
+                                    "angkatan", panitia.getAngkatan(),
+                                    "spesialisasi", panitia.getSpesialisasi(),
+                                    "isAdmin", panitia.getIsAdmin(),
+                                    "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                        } else {
+                            response.setMessage("Username Exists");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.CONFLICT);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
+                    } else {
+                        response.setMessage("Panitia Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
         panitiaList.clear();
@@ -209,31 +237,39 @@ public class PanitiaController {
     public ResponseEntity<Response> deletePanitia(@RequestHeader("Token") String sessionToken,
             @PathVariable("id") String id) {
         response.setService("Delete Panitia");
-        if (loginService.checkSessionAlive(sessionToken)) {
-            if (loginService.checkSessionAdmin(sessionToken)) {
-                boolean isDeleted = panitiaService.deletePanitia(id);
-                if (isDeleted) {
-                    response.setMessage("Panitia Deleted Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    boolean isDeleted = panitiaService.deletePanitia(id);
+                    if (isDeleted) {
+                        response.setMessage("Panitia Deleted Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                    } else {
+                        response.setMessage("Panitia Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
-                    response.setMessage("Panitia Not Found");
+                    response.setMessage("Access Denied");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Access Denied");
+                response.setMessage("Authorization Failed");
                 response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
             }
-        } else {
-            response.setMessage("Authorization Failed");
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
             response.setError(true);
-            response.setHttpCode(HTTPCode.BAD_REQUEST);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
+        panitiaList.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
