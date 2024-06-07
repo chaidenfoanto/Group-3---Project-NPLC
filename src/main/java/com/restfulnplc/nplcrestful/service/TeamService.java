@@ -55,8 +55,8 @@ public class TeamService {
         newTeam.setPassUsr(passwordMaker.hashPassword(teamDTO.getPassUsr()));
         newTeam.setAsalSekolah(teamDTO.getAsalSekolah());
         newTeam.setKategori(teamDTO.getKategoriClass());
-        newTeam.setChanceRoll(teamDTO.getChanceRoll());
-        newTeam.setTotalPoin(teamDTO.getTotalPoin());
+        newTeam.setChanceRoll(0);
+        newTeam.setTotalPoin(0);
 
         Set<Players> newPlayers = Collections.<Players>emptySet();
         String playerID = "";

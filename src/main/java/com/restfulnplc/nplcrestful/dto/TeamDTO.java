@@ -9,8 +9,6 @@ public class TeamDTO {
     private String passUsr;
     private String asalSekolah;
     private String kategori;
-    private int chanceRoll;
-    private int totalPoin;
     private String namaPlayer1;
     private String fotoPlayer1;
     private String namaPlayer2;
@@ -68,22 +66,6 @@ public class TeamDTO {
 
     public void setKategori(String kategori) {
         this.kategori = kategori;
-    }
-
-    public int getChanceRoll() {
-        return this.chanceRoll;
-    }
-
-    public void setChanceRoll(int chanceRoll) {
-        this.chanceRoll = chanceRoll;
-    }
-
-    public int getTotalPoin() {
-        return this.totalPoin;
-    }
-
-    public void setTotalPoin(int totalPoin) {
-        this.totalPoin = totalPoin;
     }
 
     public String getNamaPlayer1() {
