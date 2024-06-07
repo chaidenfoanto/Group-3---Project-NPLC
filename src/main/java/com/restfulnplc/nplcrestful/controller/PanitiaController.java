@@ -39,19 +39,26 @@ public class PanitiaController {
         response.setService("Add Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionKetua(sessionToken)) {
-                Panitia newPanitia = panitiaService.addPanitia(panitiaDTO);
-                panitiaList.add(newPanitia);
-                response.setMessage("Panitia Successfully Added");
-                response.setError(false);
-                response.setHttpCode(HTTPCode.CREATED);
-                response.setData(panitiaList.stream().map(panitia -> Map.of(
-                        "idPanitia", panitia.getIdPanitia(),
-                        "username", panitia.getUsername(),
-                        "nama", panitia.getNama(),
-                        "angkatan", panitia.getAngkatan(),
-                        "spesialisasi", panitia.getSpesialisasi(),
-                        "isAdmin", panitia.getIsAdmin(),
-                        "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                if (!panitiaService.checkUsernameExists(panitiaDTO.getUsername())) {
+                    Panitia newPanitia = panitiaService.addPanitia(panitiaDTO);
+                    panitiaList.add(newPanitia);
+                    response.setMessage("Panitia Successfully Added");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.CREATED);
+                    response.setData(panitiaList.stream().map(panitia -> Map.of(
+                            "idPanitia", panitia.getIdPanitia(),
+                            "username", panitia.getUsername(),
+                            "nama", panitia.getNama(),
+                            "angkatan", panitia.getAngkatan(),
+                            "spesialisasi", panitia.getSpesialisasi(),
+                            "isAdmin", panitia.getIsAdmin(),
+                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                } else {
+                    response.setMessage("Username Exists");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.BAD_REQUEST);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
             } else {
                 response.setMessage("Access Denied");
                 response.setError(true);
@@ -152,20 +159,27 @@ public class PanitiaController {
         response.setService("Update Panitia");
         if (loginService.checkSessionAlive(sessionToken)) {
             if (loginService.checkSessionSelf(sessionToken, id)) {
-                Optional<Panitia> updatedPanitia = panitiaService.updatePanitia(id, panitiaDTO);
-                if (updatedPanitia.isPresent()) {
-                    panitiaList.add(updatedPanitia.get());
-                    response.setMessage("Panitia Updated Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
-                    response.setData(panitiaList.stream().map(panitia -> Map.of(
-                            "idPanitia", panitia.getIdPanitia(),
-                            "username", panitia.getUsername(),
-                            "nama", panitia.getNama(),
-                            "angkatan", panitia.getAngkatan(),
-                            "spesialisasi", panitia.getSpesialisasi(),
-                            "isAdmin", panitia.getIsAdmin(),
-                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                if (!panitiaService.checkUsernameExists(panitiaDTO.getUsername())) {
+                    Optional<Panitia> updatedPanitia = panitiaService.updatePanitia(id, panitiaDTO);
+                    if (updatedPanitia.isPresent()) {
+                        panitiaList.add(updatedPanitia.get());
+                        response.setMessage("Panitia Updated Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(panitiaList.stream().map(panitia -> Map.of(
+                                "idPanitia", panitia.getIdPanitia(),
+                                "username", panitia.getUsername(),
+                                "nama", panitia.getNama(),
+                                "angkatan", panitia.getAngkatan(),
+                                "spesialisasi", panitia.getSpesialisasi(),
+                                "isAdmin", panitia.getIsAdmin(),
+                                "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                    } else {
+                        response.setMessage("Username Exists");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
                     response.setMessage("Panitia Not Found");
                     response.setError(true);
@@ -225,4 +239,5 @@ public class PanitiaController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+
 }

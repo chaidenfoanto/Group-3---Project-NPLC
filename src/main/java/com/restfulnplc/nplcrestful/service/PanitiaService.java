@@ -98,4 +98,11 @@ public class PanitiaService {
         }
         return false;
     }
+
+    public boolean checkUsernameExists(String username) {
+        for(Panitia panitia : getAllPanitia()) {
+            if(panitia.getUsername().equals(username)) return true;
+        }
+        return false;
+    }
 }
