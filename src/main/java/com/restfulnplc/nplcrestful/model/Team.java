@@ -87,7 +87,7 @@ public class Team {
         return this.kategoriTeam;
     }
 
-    public void setKategoriTeam(Kategori kategoriTeam) {
+    public void setKategoriTeam(KategoriTeam kategoriTeam) {
         this.kategoriTeam = kategoriTeam;
     }
 
