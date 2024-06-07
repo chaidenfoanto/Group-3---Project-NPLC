@@ -42,11 +42,12 @@ public class LoginController {
                 response.setData(sessionOptional.get());
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
+            } else {
+                response.setMessage("Login Failed. User or Password Invalid");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
             }
-            response.setMessage("Login Failed. User or Password Invalid");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.FORBIDDEN);
-            response.setData(new ErrorMessage(response.getHttpCode()));
         } catch (Exception e) {
             response.setMessage(e.getMessage());
             response.setError(true);
@@ -69,11 +70,12 @@ public class LoginController {
                 response.setData(sessionOptional.get());
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
+            } else {
+                response.setMessage("Login Failed. User or Password Invalid");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
             }
-            response.setMessage("Login Failed. User or Password Invalid");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.FORBIDDEN);
-            response.setData(new ErrorMessage(response.getHttpCode()));
         } catch (Exception e) {
             response.setMessage(e.getMessage());
             response.setError(true);
@@ -97,11 +99,12 @@ public class LoginController {
                 response.setData(sessionActive);
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
             }
-            response.setMessage("Authorization Failed");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.FORBIDDEN);
-            response.setData(new ErrorMessage(response.getHttpCode()));
         } catch (Exception e) {
             response.setMessage(e.getMessage());
             response.setError(true);
@@ -125,11 +128,12 @@ public class LoginController {
                 response.setError(true);
                 response.setHttpCode(HTTPCode.FORBIDDEN);
                 response.setData(accessDetails);
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
             }
-            response.setMessage("Authorization Failed");
-            response.setError(true);
-            response.setHttpCode(HTTPCode.FORBIDDEN);
-            response.setData(new ErrorMessage(response.getHttpCode()));
         } catch (Exception e) {
             response.setMessage(e.getMessage());
             response.setError(true);
