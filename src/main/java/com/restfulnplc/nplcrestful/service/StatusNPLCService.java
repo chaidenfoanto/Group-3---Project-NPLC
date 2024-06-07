@@ -22,7 +22,9 @@ public class StatusNPLCService {
         switch(condition) {
             case "Start": statusNPLC.setStatusGame(StatusGame.INPROGRESS); break;
             case "Stop": statusNPLC.setStatusGame(StatusGame.DONE); break;
-            default: statusNPLC.setStatusGame(StatusGame.NOTSTARTED); break;
+            default:
+            statusNPLC.setStatusGame(StatusGame.NOTSTARTED);
+            break;
         }
         statusNPLCRepository.save(statusNPLC);
         return statusNPLC;
