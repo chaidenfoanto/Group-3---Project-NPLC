@@ -20,6 +20,9 @@ public class StatusNPLC {
     @Column(name = "waktuSelesai", nullable = false)
     private LocalTime waktuSelesai;
 
+    @Column(name = "nplcGen", nullable = false)
+    private int nplcGen;
+
     public LocalTime getWaktuSelesai() {
         return this.waktuSelesai;
     }
@@ -34,6 +37,14 @@ public class StatusNPLC {
 
     public void setStatusGame(StatusGame statusGame) {
         this.statusGame = statusGame;
+    }
+
+    public int getNplcGen() {
+        return this.nplcGen;
+    }
+
+    public void setNplcGen(int nplcGen) {
+        this.nplcGen = nplcGen;
     }
     
 }
