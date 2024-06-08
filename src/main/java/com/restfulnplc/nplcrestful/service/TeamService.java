@@ -54,7 +54,7 @@ public class TeamService {
         newTeam.setUsername(teamDTO.getUsername());
         newTeam.setPassUsr(passwordMaker.hashPassword(teamDTO.getPassUsr()));
         newTeam.setAsalSekolah(teamDTO.getAsalSekolah());
-        newTeam.setKategori(teamDTO.getKategoriClass());
+        newTeam.setKategoriTeam(teamDTO.getKategoriTeamClass());
         newTeam.setChanceRoll(0);
         newTeam.setTotalPoin(0);
 

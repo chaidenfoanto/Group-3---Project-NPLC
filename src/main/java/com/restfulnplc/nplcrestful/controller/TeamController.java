@@ -52,7 +52,7 @@ public class TeamController {
                                 "namaTeam", team.getNama(),
                                 "usernameTeam", team.getUsername(),
                                 "asalSekolah", team.getAsalSekolah(),
-                                "kategoriTeam", team.getKategori().toString(),
+                                "kategoriTeam", team.getKategoriTeam().toString(),
                                 "chanceRoll", team.getChanceRoll(),
                                 "totalPoin", team.getTotalPoin(),
                                 "players", team.getPlayers())).collect(Collectors.toList()));

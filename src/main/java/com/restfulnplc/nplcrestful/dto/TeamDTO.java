@@ -1,6 +1,6 @@
 package com.restfulnplc.nplcrestful.dto;
 
-import com.restfulnplc.nplcrestful.model.Kategori;
+import com.restfulnplc.nplcrestful.model.KategoriTeam;
 
 public class TeamDTO {
 
@@ -8,7 +8,7 @@ public class TeamDTO {
     private String username;
     private String passUsr;
     private String asalSekolah;
-    private String kategori;
+    private String kategoriTeam;
     private String namaPlayer1;
     private String fotoPlayer1;
     private String namaPlayer2;
@@ -56,16 +56,16 @@ public class TeamDTO {
         this.asalSekolah = asalSekolah;
     }
 
-    public String getKategori() {
-        return this.kategori;
+    public String getKategoriTeam() {
+        return this.kategoriTeam;
     }
 
-    public Kategori getKategoriClass() {
-        return Kategori.fromString(this.kategori);
+    public KategoriTeam getKategoriTeamClass() {
+        return KategoriTeam.fromString(this.kategoriTeam);
     }
 
-    public void setKategori(String kategori) {
-        this.kategori = kategori;
+    public void setKategoriTeam(String kategoriTeam) {
+        this.kategoriTeam = kategoriTeam;
     }
 
     public String getNamaPlayer1() {
