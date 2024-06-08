@@ -3,11 +3,14 @@ package com.restfulnplc.nplcrestful.service;
 import com.restfulnplc.nplcrestful.dto.ListKartuDTO;
 import com.restfulnplc.nplcrestful.model.ListKartu;
 import com.restfulnplc.nplcrestful.repository.ListKartuRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ListKartuService {
@@ -15,12 +18,23 @@ public class ListKartuService {
     @Autowired
     private ListKartuRepository listKartuRepository;
 
+    @Autowired
+    private CardSkillService cardSkillService;
+
+    @Autowired
+    private TeamService teamService;
+
     public ListKartu addListKartu(ListKartuDTO listKartuDTO) {
         ListKartu listKartu = new ListKartu();
         listKartu.setNoKartu(listKartuDTO.getNoKartu());
-        listKartu.setCardSkill(listKartuDTO.getCardSkill());
-        listKartu.setOwnedBy(listKartuDTO.getOwnedBy());
-        listKartu.setIsUsed(listKartuDTO.isIsUsed());
+        listKartu.setCardSkill(cardSkillService.getCardSkillById(listKartuDTO.getCardSkillId()).get());
+        return listKartuRepository.save(listKartu);
+    }
+
+    public ListKartu updateListKartu(String id, ListKartuDTO listKartuDTO) {
+        ListKartu listKartu = getListKartuById(id).get();
+        listKartu.setNoKartu(listKartuDTO.getNoKartu());
+        listKartu.setCardSkill(cardSkillService.getCardSkillById(listKartuDTO.getCardSkillId()).get());
         return listKartuRepository.save(listKartu);
     }
 
@@ -32,14 +46,40 @@ public class ListKartuService {
         return listKartuRepository.findById(id);
     }
 
-    public Optional<ListKartu> updateListKartu(String id, ListKartuDTO listKartuDTO) {
+    public ListKartu teamGetCard(String idTeam) {
+        Random rand = new Random();
+        List<ListKartu> listAvailables = getAvailableCard();
+        ListKartu selectedCard = listAvailables.get(rand.nextInt((listAvailables.size() - 1) - 0 + 1) + 0);
+        selectedCard.setOwnedBy(teamService.getTeamByID(idTeam).get());
+        listKartuRepository.save(selectedCard);
+        return selectedCard;
+    }
+
+    public List<ListKartu> getAvailableCard() {
+        List<ListKartu> listKartu = Collections.<ListKartu>emptyList();
+        for(ListKartu kartu : getAllListKartu()) {
+            if(kartu.getOwnedBy() == null) {
+                listKartu.add(kartu);
+            }
+        }
+        return listKartu;
+    }
+
+    public Optional<ListKartu> useCard(String id) {
         Optional<ListKartu> optionalListKartu = listKartuRepository.findById(id);
         if (optionalListKartu.isPresent()) {
             ListKartu listKartu = optionalListKartu.get();
-            listKartu.setCardSkill(listKartuDTO.getCardSkill());
-            listKartu.setOwnedBy(listKartuDTO.getOwnedBy());
-            listKartu.setIsUsed(listKartuDTO.isIsUsed());
+            listKartu.setIsUsed(true);
             return Optional.of(listKartuRepository.save(listKartu));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<ListKartu> getCardByTeamId(String id) {
+        for(ListKartu kartu : getAllListKartu()) {
+            if(kartu.getOwnedBy().equals(teamService.getTeamByID(id).get())) {
+                return Optional.of(kartu);
+            }
         }
         return Optional.empty();
     }

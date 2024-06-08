@@ -171,9 +171,9 @@ public class ListKartuController {
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
-                    Optional<ListKartu> updatedListKartu = listKartuService.updateListKartu(id, listKartuDTO);
-                    if (updatedListKartu.isPresent()) {
-                        listKartuList.add(updatedListKartu.get());
+                    Optional<ListKartu> updateKartu = listKartuService.getListKartuById(id);
+                    if (updateKartu.isPresent()) {
+                        listKartuList.add(listKartuService.updateListKartu(id, listKartuDTO));
                         response.setMessage("List Kartu Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
