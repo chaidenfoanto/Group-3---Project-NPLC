@@ -66,7 +66,7 @@ public class StatusNPLCController {
     @GetMapping("/stopGame")
     public ResponseEntity<Response> stopNPLC(HttpServletRequest request) {
         String sessionToken = request.getHeader("Token");
-        response.setService("NPLC Start");
+        response.setService("NPLC Stop");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionKetua(sessionToken)) {
@@ -101,7 +101,7 @@ public class StatusNPLCController {
     @GetMapping("/restartGame")
     public ResponseEntity<Response> restartNPLC(HttpServletRequest request) {
         String sessionToken = request.getHeader("Token");
-        response.setService("NPLC Start");
+        response.setService("NPLC Restart");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionKetua(sessionToken)) {
@@ -109,6 +109,41 @@ public class StatusNPLCController {
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(statusNPLCService.updateStatusNPLC("Restart"));
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/setNplcGen/{gen}")
+    public ResponseEntity<Response> setGen(HttpServletRequest request, @PathVariable("gen") int gen) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("NPLC Gen Change");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionKetua(sessionToken)) {
+                    response.setMessage("Game Gen Changed!");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(statusNPLCService.setNPLCGen(gen));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);

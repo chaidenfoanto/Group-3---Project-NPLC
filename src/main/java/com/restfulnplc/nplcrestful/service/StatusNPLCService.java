@@ -24,6 +24,7 @@ public class StatusNPLCService {
             case "Stop": statusNPLC.setStatusGame(StatusGame.DONE); break;
             default:
             statusNPLC.setStatusGame(StatusGame.NOTSTARTED);
+            statusNPLC.setNplcGen(statusNPLC.getNplcGen() + 1);
             break;
         }
         statusNPLCRepository.save(statusNPLC);
@@ -33,5 +34,13 @@ public class StatusNPLCService {
     public void setNPLCTime(TimeDTO timeDTO) {
         StatusNPLC statusNPLC = getStatusNPLC();
         statusNPLC.setWaktuSelesai(timeDTO.getWaktuSelesai());
+        statusNPLCRepository.save(statusNPLC);
+    }
+
+    public StatusNPLC setNPLCGen(int gen) {
+        StatusNPLC statusNPLC = getStatusNPLC();
+        statusNPLC.setNplcGen(gen);
+        statusNPLCRepository.save(statusNPLC);
+        return statusNPLC;
     }
 }
