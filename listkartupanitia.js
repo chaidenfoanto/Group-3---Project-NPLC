@@ -44,6 +44,16 @@ $(document).ready(function() {
         modal.removeClass("open");
     });
 
+    $("#addBtn, #editBtn").click(function() {
+        $(".datacontainer").show(); // Tampilkan modal
+        $(".modal-overlay").show(); // Tampilkan overlay
+    });
+
+    $("#cancel").click(function() {
+        $(".datacontainer").hide(); // Sembunyikan modal
+        $(".modal-overlay").hide(); // Sembunyikan overlay
+    });
+
     $('.datacontainer input, .datacontainer textarea').each(function() {
         // Check if the input is not empty on page load
         if ($(this).val() !== '') {
