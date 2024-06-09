@@ -94,6 +94,16 @@ $(document).ready(function() {
     closeresult.click(function() {
         $(".gacharesult").removeClass("open");
     });
+
+    $("#rollButton").click(function() {
+        $(".container-dice").show();
+        $(".modal-overlay").show();
+    });
+
+    $("#closeResult, #closeGacha").click(function() {
+        $(".container-dice").hide();
+        $(".modal-overlay").hide();
+    });
 });
 
 function readMore(btn) {

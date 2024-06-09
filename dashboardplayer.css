@@ -69,6 +69,16 @@
             background-color: #B57F80;
             color: white;
         }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Abu-abu transparan */
+            z-index: 10; /* Pastikan overlay berada di atas konten lain tetapi di bawah modal */
+            display: none; /* Sembunyikan secara default */
+        }
         .games-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

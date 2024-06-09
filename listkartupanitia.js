@@ -45,13 +45,13 @@ $(document).ready(function() {
     });
 
     $("#addBtn, #editBtn").click(function() {
-        $(".datacontainer").show(); // Tampilkan modal
-        $(".modal-overlay").show(); // Tampilkan overlay
+        $(".datacontainer").show();
+        $(".modal-overlay").show();
     });
 
     $("#cancel").click(function() {
-        $(".datacontainer").hide(); // Sembunyikan modal
-        $(".modal-overlay").hide(); // Sembunyikan overlay
+        $(".datacontainer").hide();
+        $(".modal-overlay").hide();
     });
 
     $('.datacontainer input, .datacontainer textarea').each(function() {

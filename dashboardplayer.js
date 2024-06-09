@@ -38,4 +38,14 @@ $(document).ready(async function() {
         modal.removeClass("open");
     });
 
+    $(".game-card").click(function() {
+        $(".gamedetails").show();
+        $(".modal-overlay").show();
+    });
+
+    $("#closePopup").click(function() {
+        $(".gamedetails").hide();
+        $(".modal-overlay").hide();
+    });
+
 });
