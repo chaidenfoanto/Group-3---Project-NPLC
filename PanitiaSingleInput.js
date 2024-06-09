@@ -73,6 +73,21 @@ $(document).ready(function() {
 
     checkHistory();
 
+    function checkTeams() {
+        const teamname = $('#teamname').val();
+        if (teamname) {
+            $('#startButton').prop('disabled', false);
+        } else {
+            $('#startButton').prop('disabled', true);
+        }
+    }
+
+    // Check on page load
+    checkTeams();
+
+    // Check when either select element changes
+    $('#teamname').on('change', checkTeams);
+
     $('.matchup-container select, .modal-content select, .modal-content input').each(function() {
         // Check if the input is not empty on page load
         if ($(this).val() !== '') {

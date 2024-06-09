@@ -110,6 +110,12 @@
             margin-right: 10px;
             filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
         }
+
+        #startButton:disabled {
+            background-color: #cccccc; /* Gray */
+            color: #646464; /* Dark gray */
+            cursor: not-allowed; /* Change cursor to not-allowed */
+        }
         
         .start button:hover {
             background-color: #2c8ec1;
