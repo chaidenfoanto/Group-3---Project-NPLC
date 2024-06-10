@@ -33,7 +33,7 @@ public class StatusNPLCService {
 
     public void setNPLCTime(TimeDTO timeDTO) {
         StatusNPLC statusNPLC = getStatusNPLC();
-        statusNPLC.setWaktuSelesai(timeDTO.getWaktuSelesai());
+        statusNPLC.setWaktuSelesai(timeDTO.getWaktu());
         statusNPLCRepository.save(statusNPLC);
     }
 

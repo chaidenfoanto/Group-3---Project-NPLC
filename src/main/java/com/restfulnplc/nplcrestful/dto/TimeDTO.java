@@ -8,5 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TimeDTO {
-    private LocalTime waktuSelesai;
+    private LocalTime waktu;
 }
