@@ -35,15 +35,15 @@ body {
 }
 
 .main-content {
-    position: relative;
-    min-height: 100vh;
-    top:0;
-    width: calc(100% - 78px);
-    transition: all .5s ease;
-    z-index: 2;
-    margin-left: 80px;
-    padding: 20px;
-    flex: 1
+  position: relative;
+  min-height: 100vh;
+  top: 0;
+  width: calc(100% - 78px);
+  transition: all .5s ease;
+  z-index: 2;
+  margin-left: 80px;
+  padding: 20px;
+  flex: 1;
 }
 
 header {
@@ -57,33 +57,20 @@ header h1 {
   margin: 10px;
   flex: 1;
 }
-
 .timer {
-  display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #f5f5f5;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  border: 0.5px solid black;
+  margin: 10px;
+  background-color: #B57F80;
+  color: white;
 }
-
-.timer #countdown {
-  display: flex;
-  gap: 10px;
-}
-
-.countdown-col {
+.timer .timeleft {
+  font-size: xx-large;
   text-align: center;
+  font-weight: bold;
 }
-
-.countdown-col-element {
-  display: block;
-}
-
-.countdown-col-element strong {
-  font-size: 24px;
-}
-
 .inner-content {
   display: flex;
   justify-content: space-between;
@@ -164,8 +151,8 @@ select.not-empty + .placeholder {
 }
 
 .btn-secondary {
-    background-color: var(--color-default);
-    color: var(--color-white);
+  background-color: var(--color-default);
+  color: var(--color-white);
 }
 
 .booth-list {
@@ -183,7 +170,18 @@ select.not-empty + .placeholder {
 .booth-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.booth-left {
+  flex: 1;
+}
+
+.booth-right {
+  display: flex;
   align-items: center;
+  gap: 20px;
 }
 
 .booth-footer {
@@ -193,163 +191,165 @@ select.not-empty + .placeholder {
 }
 
 .edit-btn {
-    background-color: var(--color-default);
-    color: var(--color-white);
-    padding: 5px 10px;
-    border: none;
-    margin-left: 90%;
-    width: 10%;
-    border-radius: 8px;
-    cursor: pointer;
+  background-color: var(--color-default);
+  color: var(--color-white);
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 50px; /* Tambahkan min-width untuk memastikan tombol tidak terlalu kecil */
+  text-align: center;
 }
-.booth-heaader p{
-    margin-bottom: 2%;
-}
+
 .type {
-    background-color: #898989; 
-    padding: 5px 10px; 
-    border-radius: 5px; 
-    display: inline-block; 
-  }
+  background-color: #898989;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+}
 
 .popup {
-    display: none; 
-    position: fixed; 
-    z-index: 1000; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: hidden; /* Prevent scrolling */
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .popup-content {
-    background-color: #fefefe;
-    margin: auto; /* Center the popup */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
-    height: 70%;
-    z-index: 1001; 
-    position: absolute; /* Keep it centered */
-    top: 0; 
-    bottom: 0; 
-    left: 0; 
-    right: 0; 
-    border-radius: 20px;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+  height: 70%;
+  z-index: 1001;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 20px;
 }
 
 .close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close-btn:hover,
 .close-btn:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .popup-content h2 {
-    color: #35A2DB;
-    font-weight: 900;
-    font-size: 30px;
+  color: #35A2DB;
+  font-weight: 900;
+  font-size: 30px;
 }
 
 .input-popup {
-    flex: 1;
-    position: relative;
-    padding: 0 5px;
+  flex: 1;
+  position: relative;
+  padding: 0 5px;
 }
 
 .input-popup input,
 .input-popup select {
-    width: 100%;
-    padding: 10px 15px;
-    margin: 5px 0; 
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #212b27;
+  width: 100%;
+  padding: 10px 15px;
+  margin: 5px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #212b27;
 }
 
 .popup-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8%;
 }
 .popup-row2 {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
 }
 .input-desc{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
 }
 .edit-popup-btn-container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .edit-popup-btn {
-    background-color: #35A2DB; 
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: auto;
-    height: 10%;
-    width: 20%;
-    margin-left: 79%;
-    margin-top: 5%;
-  }
-  
-  .edit-popup-btn:hover {
-    background-color: #297eac; 
-  }
-  
+  background-color: #35A2DB;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: auto;
+  height: 10%;
+  width: 20%;
+  margin-left: 79%;
+  margin-top: 5%;
+}
+
+.edit-popup-btn:hover {
+  background-color: #297eac;
+}
 
 @media (max-width: 768px) {
-    header h1 {
-        font-size: 28px;
-    }
-    
-    .form-group {
-        flex-direction: column;
-    }
+  header h1 {
+    font-size: 28px;
+  }
 
-    .input-group {
-        padding: 10px 0;
-    }
+  .form-group {
+    flex-direction: column;
+  }
 
-    .buttons {
-        flex-direction: column;
-        gap: 5px;
-    }
+  .input-group {
+    padding: 10px 0;
+  }
 
-    .booth-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
 
-    .booth-footer {
-        flex-wrap: wrap;
-        justify-content: flex-start;
-    }
+  .booth-header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
 
-    .popup-row {
-        flex-direction: column;
-    }
+  .booth-left, .booth-right {
+    align-items: flex-start;
+  }
+
+  .edit-btn {
+    align-self: flex-start; /* Pastikan tombol edit tidak dipotong dengan menempatkannya di awal */
+    width: auto; /* Biarkan tombol menyesuaikan dengan konten */
+    min-width: unset; /* Hilangkan batasan min-width */
+    margin: 10px 0; /* Beri margin untuk memastikan ada ruang di sekitarnya */
+  }
 }
