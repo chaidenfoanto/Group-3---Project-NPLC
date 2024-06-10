@@ -121,7 +121,7 @@ public class LoginService {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
                 if (session.getRole().equals(Role.PANITIA)) {
-                    return panitiaService.checkKetua(token);
+                    return panitiaService.checkKetua(session.getIdUser());
                 }
             }
         }
