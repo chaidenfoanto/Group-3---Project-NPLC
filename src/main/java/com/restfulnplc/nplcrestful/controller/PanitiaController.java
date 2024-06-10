@@ -54,9 +54,9 @@ public class PanitiaController {
                                 "username", panitia.getUsername(),
                                 "nama", panitia.getNama(),
                                 "angkatan", panitia.getAngkatan(),
-                                "spesialisasi", panitia.getSpesialisasi(),
+                                "spesialisasi", panitia.getSpesialisasi().toString(),
                                 "isAdmin", panitia.getIsAdmin(),
-                                "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                                "divisi", panitia.getDivisi().toString())).collect(Collectors.toList()));
                     } else {
                         response.setMessage("Username Exists");
                         response.setError(true);
@@ -104,9 +104,9 @@ public class PanitiaController {
                             "username", panitia.getUsername(),
                             "nama", panitia.getNama(),
                             "angkatan", panitia.getAngkatan(),
-                            "spesialisasi", panitia.getSpesialisasi(),
+                            "spesialisasi", panitia.getSpesialisasi().toString(),
                             "isAdmin", panitia.getIsAdmin(),
-                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                            "divisi", panitia.getDivisi().toString())).collect(Collectors.toList()));
                 } else {
                     response.setMessage("No Panitia Found");
                     response.setError(true);
@@ -150,9 +150,9 @@ public class PanitiaController {
                             "username", panitia.getUsername(),
                             "nama", panitia.getNama(),
                             "angkatan", panitia.getAngkatan(),
-                            "spesialisasi", panitia.getSpesialisasi(),
+                            "spesialisasi", panitia.getSpesialisasi().toString(),
                             "isAdmin", panitia.getIsAdmin(),
-                            "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                            "divisi", panitia.getDivisi().toString())).collect(Collectors.toList()));
                 } else {
                     response.setMessage("Panitia Not Found");
                     response.setError(true);
@@ -199,9 +199,9 @@ public class PanitiaController {
                                     "username", panitia.getUsername(),
                                     "nama", panitia.getNama(),
                                     "angkatan", panitia.getAngkatan(),
-                                    "spesialisasi", panitia.getSpesialisasi(),
+                                    "spesialisasi", panitia.getSpesialisasi().toString(),
                                     "isAdmin", panitia.getIsAdmin(),
-                                    "divisi", panitia.getDivisi())).collect(Collectors.toList()));
+                                    "divisi", panitia.getDivisi().toString())).collect(Collectors.toList()));
                         } else {
                             response.setMessage("Username Exists");
                             response.setError(true);

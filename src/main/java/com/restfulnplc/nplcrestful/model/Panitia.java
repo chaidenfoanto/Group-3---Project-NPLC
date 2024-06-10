@@ -84,8 +84,8 @@ public class Panitia {
         this.angkatan = angkatan;
     }
 
-    public String getSpesialisasi() {
-        return this.spesialisasi.toString();
+    public Spesialisasi getSpesialisasi() {
+        return this.spesialisasi;
     }
 
     public void setSpesialisasi(Spesialisasi spesialisasi) {

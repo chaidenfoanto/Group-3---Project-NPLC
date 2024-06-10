@@ -13,13 +13,16 @@ import java.time.LocalTime;
 public class StatusNPLC {
 
     @Id
+    @Column(name = "idStatus", nullable = false)
+    private String idStatus;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "statusGame", nullable = false)
     private StatusGame statusGame;
-
+    
     @Column(name = "waktuSelesai", nullable = false)
     private LocalTime waktuSelesai;
-
+    
     @Column(name = "nplcGen", nullable = false)
     private int nplcGen;
 
