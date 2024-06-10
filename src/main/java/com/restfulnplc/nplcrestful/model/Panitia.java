@@ -104,8 +104,8 @@ public class Panitia {
         this.isAdmin = isAdmin;
     }
 
-    public String getDivisi() {
-        return this.divisi.toString();
+    public Divisi getDivisi() {
+        return this.divisi;
     }
 
     public void setDivisi(Divisi divisi) {
