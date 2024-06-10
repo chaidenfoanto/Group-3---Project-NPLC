@@ -124,9 +124,9 @@ public class LoginController {
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 AccessDTO accessDetails = loginService.getAccessDetails(sessionToken);
-                response.setMessage("Authorization Failed");
-                response.setError(true);
-                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setMessage("Authorization Success");
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
                 response.setData(accessDetails);
             } else {
                 response.setMessage("Authorization Failed");
