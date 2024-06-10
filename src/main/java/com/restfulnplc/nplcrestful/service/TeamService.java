@@ -37,7 +37,7 @@ public class TeamService {
         return Optional.empty();
     }
 
-    public Optional<Team> getTeamByID(String id)
+    public Optional<Team> getTeamById(String id)
     {
         if(teamRepository.findById(id).isPresent()) {
             return teamRepository.findById(id);

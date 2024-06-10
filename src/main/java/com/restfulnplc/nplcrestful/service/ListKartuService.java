@@ -50,7 +50,7 @@ public class ListKartuService {
         Random rand = new Random();
         List<ListKartu> listAvailables = getAvailableCard();
         ListKartu selectedCard = listAvailables.get(rand.nextInt((listAvailables.size() - 1) - 0 + 1) + 0);
-        selectedCard.setOwnedBy(teamService.getTeamByID(idTeam).get());
+        selectedCard.setOwnedBy(teamService.getTeamById(idTeam).get());
         listKartuRepository.save(selectedCard);
         return selectedCard;
     }
@@ -77,7 +77,7 @@ public class ListKartuService {
 
     public Optional<ListKartu> getCardByTeamId(String id) {
         for(ListKartu kartu : getAllListKartu()) {
-            if(kartu.getOwnedBy().equals(teamService.getTeamByID(id).get())) {
+            if(kartu.getOwnedBy().equals(teamService.getTeamById(id).get())) {
                 return Optional.of(kartu);
             }
         }

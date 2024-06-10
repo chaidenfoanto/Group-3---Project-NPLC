@@ -31,8 +31,9 @@ public class DuelMatch {
     @Column(name = "waktuselesai")
     private Time waktuSelesai;
 
-    @Column(name = "inputby", length = 14, nullable = false)
-    private String inputBy;
+    @ManyToOne
+    @JoinColumn(name = "inputby", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_inputby"), nullable = false)
+    private Panitia inputBy;
 
     @ManyToOne
     @JoinColumn(name = "timmenang", referencedColumnName = "idteam", foreignKey = @ForeignKey(name = "fk_timmenang"), nullable = false)
@@ -82,11 +83,11 @@ public class DuelMatch {
         this.waktuSelesai = waktuSelesai;
     }
 
-    public String getInputBy() {
+    public Panitia getInputBy() {
         return this.inputBy;
     }
 
-    public void setInputBy(String inputBy) {
+    public void setInputBy(Panitia inputBy) {
         this.inputBy = inputBy;
     }
 

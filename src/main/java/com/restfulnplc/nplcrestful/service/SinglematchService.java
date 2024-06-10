@@ -16,33 +16,36 @@ public class SinglematchService {
     private SinglematchRepository singlematchRepository;
 
     @Autowired
-    private TeamRepository teamRepository;
+    private TeamService teamService;
 
     @Autowired
-    private ListKartuRepository listKartuRepository;
+    private PanitiaService panitiaService;
 
     @Autowired
-    private BoothgamesRepository boothGamesRepository;
+    private ListKartuService listKartuService;
+
+    @Autowired
+    private BoothgamesService boothGamesService;
 
     public Singlematch addSinglematch(SinglematchDTO singlematchDTO) {
         Singlematch singlematch = new Singlematch();
         singlematch.setNoMatch(singlematchDTO.getNoMatch());
         singlematch.setWaktuMulai(singlematchDTO.getWaktuMulai());
         singlematch.setWaktuSelesai(singlematchDTO.getWaktuSelesai());
-        singlematch.setInputBy(singlematchDTO.getInputBy());
+        singlematch.setInputBy(panitiaService.getPanitiaById(singlematchDTO.getInputBy()).get());
         singlematch.setTotalPoin(singlematchDTO.getTotalPoin());
 
-        Optional<Team> team = teamRepository.findById(singlematchDTO.getIdTeam());
+        Optional<Team> team = teamService.getTeamById(singlematchDTO.getIdTeam());
         if (team.isPresent()) {
             singlematch.setTeam(team.get());
         }
 
-        Optional<ListKartu> listKartu = listKartuRepository.findById(singlematchDTO.getNoKartu());
+        Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
         if (listKartu.isPresent()) {
             singlematch.setListKartu(listKartu.get());
         }
 
-        Optional<Boothgames> boothGames = boothGamesRepository.findById(singlematchDTO.getIdBooth());
+        Optional<Boothgames> boothGames = boothGamesService.getBoothgameById(singlematchDTO.getIdBooth());
         if (boothGames.isPresent()) {
             singlematch.setBoothGames(boothGames.get());
         }
@@ -65,20 +68,20 @@ public class SinglematchService {
             singlematch.setNoMatch(singlematchDTO.getNoMatch());
             singlematch.setWaktuMulai(singlematchDTO.getWaktuMulai());
             singlematch.setWaktuSelesai(singlematchDTO.getWaktuSelesai());
-            singlematch.setInputBy(singlematchDTO.getInputBy());
+            singlematch.setInputBy(panitiaService.getPanitiaById(singlematchDTO.getInputBy()).get());
             singlematch.setTotalPoin(singlematchDTO.getTotalPoin());
 
-            Optional<Team> team = teamRepository.findById(singlematchDTO.getIdTeam());
+            Optional<Team> team = teamService.getTeamById(singlematchDTO.getIdTeam());
             if (team.isPresent()) {
                 singlematch.setTeam(team.get());
             }
 
-            Optional<ListKartu> listKartu = listKartuRepository.findById(singlematchDTO.getNoKartu());
+            Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
             if (listKartu.isPresent()) {
                 singlematch.setListKartu(listKartu.get());
             }
 
-            Optional<Boothgames> boothGames = boothGamesRepository.findById(singlematchDTO.getIdBooth());
+            Optional<Boothgames> boothGames = boothGamesService.getBoothgameById(singlematchDTO.getIdBooth());
             if (boothGames.isPresent()) {
                 singlematch.setBoothGames(boothGames.get());
             }

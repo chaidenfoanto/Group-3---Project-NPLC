@@ -32,8 +32,9 @@ public class Singlematch {
     @JoinColumn(name = "nokartu", referencedColumnName = "nokartu", foreignKey = @ForeignKey(name = "fk_nokartu"))
     private ListKartu listKartu;
 
-    @Column(name = "inputby", length = 14, nullable = false)
-    private String inputBy;
+    @ManyToOne
+    @JoinColumn(name = "inputby", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_inputby"), nullable = false)
+    private Panitia inputBy;
 
     @Column(name = "totalpoin")
     private int totalPoin;
@@ -83,11 +84,11 @@ public class Singlematch {
         this.listKartu = listKartu;
     }
 
-    public String getInputBy() {
+    public Panitia getInputBy() {
         return this.inputBy;
     }
 
-    public void setInputBy(String inputBy) {
+    public void setInputBy(Panitia inputBy) {
         this.inputBy = inputBy;
     }
 

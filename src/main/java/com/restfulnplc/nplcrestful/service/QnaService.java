@@ -25,7 +25,7 @@ public class QnaService {
     public Qna addQuestion(QnaPlayersDTO qnaplayerDTO) {
         Qna qna = new Qna();
         qna.setIdPertanyaan(getNextQnaID());
-        qna.setTeam(teamService.getTeamByID(qnaplayerDTO.getIdTeam()).get());
+        qna.setTeam(teamService.getTeamById(qnaplayerDTO.getIdTeam()).get());
         qna.setPertanyaan(qnaplayerDTO.getPertanyaan());
         qna.setWaktuInput(qnaplayerDTO.getWaktuInput());
 
