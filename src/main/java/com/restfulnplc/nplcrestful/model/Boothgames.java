@@ -3,9 +3,12 @@ package com.restfulnplc.nplcrestful.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.EnumType;
 import java.sql.Time;
 
@@ -20,22 +23,25 @@ public class Boothgames {
     @Column(name = "nama", length = 50, nullable = false)
     private String nama;
 
-    @Column(name = "idpenjaga1", length = 14, nullable = false)
-    private String idPenjaga1;
+    @OneToOne
+    @JoinColumn(name = "penjaga1", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_penjaga1"), nullable = false)
+    private Panitia idPenjaga1;
 
-    @Column(name = "idpenjaga2", length = 14)
-    private String idPenjaga2;
+    @OneToOne
+    @JoinColumn(name = "penjaga2", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_penjaga2"), nullable = false)
+    private Panitia idPenjaga2;
 
     @Lob
     @Column(name = "sopgames", nullable = false)
     private String sopGames;
 
-    @Column(name = "lokasi", length = 10, nullable = false)
-    private String lokasi;
+    @OneToOne
+    @JoinColumn(name = "lokasi", referencedColumnName = "noruangan", foreignKey = @ForeignKey(name = "fk_lokasi"), nullable = false)
+    private Lokasi lokasi;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Tipegame", nullable = false)
-    private TipeGame Tipegame;
+    private Tipegame tipegame;
 
     @Column(name = "durasipermainan", nullable = false)
     private Time durasiPermainan;
@@ -57,19 +63,19 @@ public class Boothgames {
         this.nama = nama;
     }
 
-    public String getIdPenjaga1() {
+    public Panitia getIdPenjaga1() {
         return this.idPenjaga1;
     }
 
-    public void setIdPenjaga1(String idPenjaga1) {
+    public void setIdPenjaga1(Panitia idPenjaga1) {
         this.idPenjaga1 = idPenjaga1;
     }
 
-    public String getIdPenjaga2() {
+    public Panitia getIdPenjaga2() {
         return this.idPenjaga2;
     }
 
-    public void setIdPenjaga2(String idPenjaga2) {
+    public void setIdPenjaga2(Panitia idPenjaga2) {
         this.idPenjaga2 = idPenjaga2;
     }
 
@@ -81,20 +87,20 @@ public class Boothgames {
         this.sopGames = sopGames;
     }
 
-    public String getLokasi() {
+    public Lokasi getLokasi() {
         return this.lokasi;
     }
 
-    public void setLokasi(String lokasi) {
+    public void setLokasi(Lokasi lokasi) {
         this.lokasi = lokasi;
     }
 
-    public TipeGame getTipegame() {
-        return this.Tipegame;
+    public Tipegame getTipegame() {
+        return this.tipegame;
     }
 
-    public void setTipegame(TipeGame Tipegame) {
-        this.Tipegame = Tipegame;
+    public void setTipegame(Tipegame tipegame) {
+        this.tipegame = tipegame;
     }
 
     public Time getDurasiPermainan() {
@@ -105,8 +111,4 @@ public class Boothgames {
         this.durasiPermainan = durasiPermainan;
     }
     
-
-    public enum TipeGame {
-        Single, Duel
-    }
 }

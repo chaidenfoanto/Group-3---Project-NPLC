@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
-import com.restfulnplc.nplcrestful.service.PanitiaService;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
@@ -29,9 +28,6 @@ public class BoothgamesController {
 
     @Autowired
     private BoothgamesService boothgamesService;
-
-    @Autowired
-    private PanitiaService panitiaService;
 
     @Autowired
     private LoginService loginService;
@@ -55,8 +51,8 @@ public class BoothgamesController {
                     response.setData(listBoothGames.stream().map(boothgame -> Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
-                            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-                            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                            "panitia1", boothgame.getIdPenjaga1(),
+                            "panitia2", boothgame.getIdPenjaga2(),
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
@@ -100,8 +96,8 @@ public class BoothgamesController {
                     response.setData(boothgamesList.stream().map(boothgame -> Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
-                            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-                            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                            "panitia1", boothgame.getIdPenjaga1(),
+                            "panitia2", boothgame.getIdPenjaga2(),
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
@@ -147,8 +143,8 @@ public class BoothgamesController {
                     response.setData(listBoothGames.stream().map(boothgame -> Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
-                            "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-                            "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                            "panitia1", boothgame.getIdPenjaga1(),
+                            "panitia2", boothgame.getIdPenjaga2(),
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
@@ -195,8 +191,8 @@ public class BoothgamesController {
                         response.setData(listBoothGames.stream().map(boothgame -> Map.of(
                                 "idBoothGame", boothgame.getIdBooth(),
                                 "namaBoothGame", boothgame.getNama(),
-                                "panitia1", panitiaService.getPanitiaById(boothgame.getIdPenjaga1()),
-                                "panitia2", panitiaService.getPanitiaById(boothgame.getIdPenjaga2()),
+                                "panitia1", boothgame.getIdPenjaga1(),
+                                "panitia2", boothgame.getIdPenjaga2(),
                                 "sopGame", boothgame.getSopGames(),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),

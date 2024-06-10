@@ -1,19 +1,16 @@
 package com.restfulnplc.nplcrestful.dto;
 
-import com.restfulnplc.nplcrestful.model.Boothgames;
-import com.restfulnplc.nplcrestful.model.Team;
-
 import java.sql.Time;
 
 public class DuelMatchDTO {
     private String noMatch;
-    private Team team1;
-    private Team team2;
+    private String team1;
+    private String team2;
     private Time waktuMulai;
     private Time waktuSelesai;
     private String inputBy;
-    private Team timMenang;
-    private Boothgames boothGames;
+    private String timMenang;
+    private String boothGames;
 
     public String getNoMatch() {
         return noMatch;
@@ -23,19 +20,19 @@ public class DuelMatchDTO {
         this.noMatch = noMatch;
     }
 
-    public Team getTeam1() {
+    public String getTeam1() {
         return team1;
     }
 
-    public void setTeam1(Team team1) {
+    public void setTeam1(String team1) {
         this.team1 = team1;
     }
 
-    public Team getTeam2() {
+    public String getTeam2() {
         return team2;
     }
 
-    public void setTeam2(Team team2) {
+    public void setTeam2(String team2) {
         this.team2 = team2;
     }
 
@@ -63,19 +60,19 @@ public class DuelMatchDTO {
         this.inputBy = inputBy;
     }
 
-    public Team getTimMenang() {
+    public String getTimMenang() {
         return timMenang;
     }
 
-    public void setTimMenang(Team timMenang) {
+    public void setTimMenang(String timMenang) {
         this.timMenang = timMenang;
     }
 
-    public Boothgames getBoothGames() {
+    public String getBoothGames() {
         return boothGames;
     }
 
-    public void setBoothGames(Boothgames boothGames) {
+    public void setBoothGames(String boothGames) {
         this.boothGames = boothGames;
     }
 }

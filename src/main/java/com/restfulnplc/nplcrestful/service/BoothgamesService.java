@@ -15,15 +15,21 @@ public class BoothgamesService {
     @Autowired
     private BoothgamesRepository boothgamesRepository;
 
+    @Autowired
+    private PanitiaService panitiaService;
+
+    @Autowired
+    private LokasiService lokasiService;
+
     public Boothgames addBoothgame(BoothgamesDTO boothgamesDTO) {
         Boothgames newBoothgame = new Boothgames();
         newBoothgame.setIdBooth(getNextBoothgameID());
         newBoothgame.setNama(boothgamesDTO.getNama());
-        newBoothgame.setIdPenjaga1(boothgamesDTO.getIdPenjaga1());
-        newBoothgame.setIdPenjaga2(boothgamesDTO.getIdPenjaga2());
+        newBoothgame.setIdPenjaga1(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga1()).get());
+        newBoothgame.setIdPenjaga2(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga2()).get());
         newBoothgame.setSopGames(boothgamesDTO.getSopGames());
-        newBoothgame.setLokasi(boothgamesDTO.getLokasi());
-        newBoothgame.setTipegame(boothgamesDTO.getTipeGame());
+        newBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
+        newBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
         newBoothgame.setDurasiPermainan(boothgamesDTO.getDurasiPermainan());
         return boothgamesRepository.save(newBoothgame);
     }
@@ -41,11 +47,11 @@ public class BoothgamesService {
         if (optionalBoothgame.isPresent()) {
             Boothgames existingBoothgame = optionalBoothgame.get();
             existingBoothgame.setNama(boothgamesDTO.getNama());
-            existingBoothgame.setIdPenjaga1(boothgamesDTO.getIdPenjaga1());
-            existingBoothgame.setIdPenjaga2(boothgamesDTO.getIdPenjaga2());
+            existingBoothgame.setIdPenjaga1(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga1()).get());
+            existingBoothgame.setIdPenjaga2(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga2()).get());
             existingBoothgame.setSopGames(boothgamesDTO.getSopGames());
-            existingBoothgame.setLokasi(boothgamesDTO.getLokasi());
-            existingBoothgame.setTipegame(boothgamesDTO.getTipeGame());
+            existingBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
+            existingBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
             existingBoothgame.setDurasiPermainan(boothgamesDTO.getDurasiPermainan());
             boothgamesRepository.save(existingBoothgame);
             return Optional.of(existingBoothgame);
