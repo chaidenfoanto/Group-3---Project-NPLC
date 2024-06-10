@@ -17,6 +17,7 @@ public class CardSkillService {
 
     public CardSkill addCardSkill(CardSkillDTO cardSkillDTO) {
         CardSkill cardSkill = new CardSkill();
+        cardSkill.setIdCard(getNextCardSkillID());
         cardSkill.setNamaKartu(cardSkillDTO.getNamaKartu());
         cardSkill.setRules(cardSkillDTO.getRules());
         cardSkill.setTotalKartu(cardSkillDTO.getTotalKartu());
@@ -29,11 +30,11 @@ public class CardSkillService {
     }
 
     public Optional<CardSkill> getCardSkillById(String id) {
-        return cardSkillRepository.findById(Integer.parseInt(id));
+        return cardSkillRepository.findById(id);
     }
 
     public Optional<CardSkill> updateCardSkill(String id, CardSkillDTO cardSkillDTO) {
-        Optional<CardSkill> optionalCardSkill = cardSkillRepository.findById(Integer.parseInt(id));
+        Optional<CardSkill> optionalCardSkill = cardSkillRepository.findById(id);
         if (optionalCardSkill.isPresent()) {
             CardSkill cardSkill = optionalCardSkill.get();
             cardSkill.setNamaKartu(cardSkillDTO.getNamaKartu());
@@ -46,11 +47,18 @@ public class CardSkillService {
     }
 
     public boolean deleteCardSkill(String id) {
-        Optional<CardSkill> optionalCardSkill = cardSkillRepository.findById(Integer.parseInt(id));
+        Optional<CardSkill> optionalCardSkill = cardSkillRepository.findById(id);
         if (optionalCardSkill.isPresent()) {
             cardSkillRepository.delete(optionalCardSkill.get());
             return true;
         }
         return false;
+    }
+
+    public String getNextCardSkillID()
+    {
+        List<CardSkill> cardskills = cardSkillRepository.findAll();
+        if(cardskills.size() > 0) return "CARD" + (Integer.parseInt(cardskills.get(cardskills.size()-1).getIdCard().split("CARD")[1]) + 1);
+        return "CARD1";
     }
 }

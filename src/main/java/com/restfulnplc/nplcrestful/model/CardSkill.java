@@ -2,8 +2,6 @@ package com.restfulnplc.nplcrestful.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
@@ -13,9 +11,8 @@ import jakarta.persistence.Table;
 public class CardSkill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idcard", length = 11, nullable = false)
-    private int idCard;
+    private String idCard;
 
     @Column(name = "namakartu", length = 20, nullable = false)
     private String namaKartu;
@@ -32,11 +29,11 @@ public class CardSkill {
     private byte[] gambarKartu;
 
 
-    public int getIdCard() {
+    public String getIdCard() {
         return this.idCard;
     }
 
-    public void setIdCard(int idCard) {
+    public void setIdCard(String idCard) {
         this.idCard = idCard;
     }
 
