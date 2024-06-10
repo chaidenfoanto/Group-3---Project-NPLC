@@ -69,4 +69,9 @@ public class DuelMatchService {
         }
         return false;
     }
+    
+    public void reset()
+    {
+        duelMatchRepository.deleteAll();
+    }
 }

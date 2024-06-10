@@ -66,4 +66,9 @@ public class QnaService {
         if(questions.size() > 0) return "QNA" + (Integer.parseInt(questions.get(questions.size()-1).getIdPertanyaan().split("QNA")[1]) + 1);
         return "QNA1";
     }
+    
+    public void reset()
+    {
+        qnaRepository.deleteAll();
+    }
 }

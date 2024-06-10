@@ -74,4 +74,9 @@ public class BoothgamesService {
         if(boothgames.size() > 0) return "BOOTHGAME" + (Integer.parseInt(boothgames.get(boothgames.size()-1).getIdBooth().split("BOOTHGAME")[1]) + 1);
         return "BOOTHGAME1";
     }
+
+    public void reset()
+    {
+        boothgamesRepository.deleteAll();
+    }
 }

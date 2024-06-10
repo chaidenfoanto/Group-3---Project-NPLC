@@ -92,4 +92,12 @@ public class ListKartuService {
         }
         return false;
     }
+
+    public void reset()
+    {
+        for(ListKartu kartu : getAllListKartu()) {
+            kartu.setIsUsed(false);
+            kartu.setOwnedBy(null);
+        }
+    }
 }

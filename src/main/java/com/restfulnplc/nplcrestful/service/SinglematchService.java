@@ -98,4 +98,9 @@ public class SinglematchService {
         }
         return false;
     }
+    
+    public void reset()
+    {
+        singlematchRepository.deleteAll();
+    }
 }

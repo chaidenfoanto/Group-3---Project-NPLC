@@ -161,4 +161,9 @@ public class LoginService {
                 isAdmin ? (panitiaService.getPanitiaById(idUser).get().getDivisi().toString()) : null);
         return accessDetails;
     }
+
+    public void reset()
+    {
+        loginRepository.deleteAll();
+    }
 }

@@ -105,4 +105,9 @@ public class PanitiaService {
         }
         return false;
     }
+
+    public void reset()
+    {
+        panitiaRepository.deleteAll();
+    }
 }

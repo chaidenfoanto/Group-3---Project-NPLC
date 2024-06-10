@@ -31,4 +31,9 @@ public class PlayersService {
         }
         return players;
     }
+    
+    public void reset()
+    {
+        playersRepository.deleteAll();
+    }
 }

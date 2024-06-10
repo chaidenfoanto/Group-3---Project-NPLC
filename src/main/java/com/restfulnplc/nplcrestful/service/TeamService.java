@@ -12,6 +12,7 @@ import java.util.Base64;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.model.Players;
 import com.restfulnplc.nplcrestful.dto.TeamDTO;
+import com.restfulnplc.nplcrestful.repository.PlayersRepository;
 import com.restfulnplc.nplcrestful.repository.TeamRepository;
 import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 
@@ -19,6 +20,9 @@ import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    private PlayersRepository playerRepository;
 
     @Autowired
     private PasswordHasherMatcher passwordMaker;
@@ -69,6 +73,7 @@ public class TeamService {
             newPlayer1.setNama(teamDTO.getNamaPlayer1());
             newPlayer1.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer1()));
             newPlayers.add(newPlayer1);
+            playerRepository.save(newPlayer1);
         }
 
         if(teamDTO.checkPlayer(2)){
@@ -79,6 +84,7 @@ public class TeamService {
             newPlayer2.setNama(teamDTO.getNamaPlayer2());
             newPlayer2.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer2()));
             newPlayers.add(newPlayer2);
+            playerRepository.save(newPlayer2);
         }
 
         if(teamDTO.checkPlayer(3)){
@@ -89,6 +95,7 @@ public class TeamService {
             newPlayer3.setNama(teamDTO.getNamaPlayer3());
             newPlayer3.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer3()));
             newPlayers.add(newPlayer3);
+            playerRepository.save(newPlayer3);
         }
 
         newTeam.setPlayers(newPlayers);
@@ -120,4 +127,8 @@ public class TeamService {
         return false;
     }
     
+    public void reset()
+    {
+        teamRepository.deleteAll();
+    }
 }
