@@ -1,13 +1,14 @@
 $(document).ready(function() {
-    // Fungsi untuk menampilkan sidebar
+    // Memuat sidebar dari file sidebarpanitia.html saat dokumen telah siap
     $(".sidebar").load("sidebarpanitia.html", function() {
         const toggleBtn = $("#toggle-btn");
-        const logo = $(".logo_details .logo").eq(1); // Select the second logo
+        const logo = $(".logo_details .logo").eq(1); // Memilih logo kedua
         toggleBtn.on("click", function() {
             $(".sidebar").toggleClass("open");
             menuBtnChange();
         });
 
+        // Fungsi untuk mengubah ikon tombol menu saat sidebar dibuka/tutup
         function menuBtnChange() {
             if ($(".sidebar").hasClass("open")) {
                 logo.hide();
@@ -17,7 +18,7 @@ $(document).ready(function() {
         }
     });
 
-    // Fungsi untuk mengatur waktu saat ini
+    // Fungsi untuk mengatur waktu saat ini pada input time
     function setCurrentTime(inputId) {
         var now = new Date();
         var hours = String(now.getHours()).padStart(2, '0');
@@ -26,7 +27,7 @@ $(document).ready(function() {
         $(inputId).val(currentTime);
     }
 
-    // Fungsi untuk menghitung durasi
+    // Fungsi untuk menghitung durasi antara waktu mulai dan selesai
     function calculateDuration() {
         var startTime = $('#timeStarted').val();
         var endTime = $('#timeFinished').val();
@@ -51,91 +52,38 @@ $(document).ready(function() {
     setCurrentTime('#timeStarted');
     setCurrentTime('#timeFinished');
 
-    // Perhitungan durasi
+    // Perhitungan durasi saat input waktu berubah
     calculateDuration();
-
-    // Event untuk menghitung durasi saat input waktu berubah
     $('#timeStarted, #timeFinished').on('change', calculateDuration);
 
-    // Fungsi untuk mengecek riwayat
+    // Fungsi untuk mengecek riwayat permainan
     function checkHistory() {
         if ($('#history').is(':empty')) {
-            $('#history').html('<p class="noteam">There are no teams playing in your booth yet...</p>');
+            $('#history').html('<p class="noteam">Belum ada tim yang bermain di booth Anda...</p>');
         }
     }
     checkHistory();
 
+    // Fungsi untuk menambahkan kelas 'not-empty' pada input yang tidak kosong
+    // dan menampilkan pesan error jika input kosong
     $('.matchup-container select, .modal-content select, .modal-content input').each(function() {
-        // Check if the input is not empty on page load
         if ($(this).val() !== '') {
             $(this).addClass('not-empty');
             $('.input-group .error').text('');
         }
 
-        // Add event listener for input events
         $(this).on('input', function() {
             if ($(this).val() !== '') {
                 $(this).addClass('not-empty');
                 $('.input-group .error').text('');
             } else {
                 $(this).removeClass('not-empty');
-                $('.input-group .error').text('Winning team should be filled.');
+                $('.input-group .error').text('Harap diisi.');
             }
         });
     });
 
-    
-        // Fungsi untuk menampilkan popup set waktu saat tombol Start Game ditekan
-        $(".startButton").click(function() {
-            $(".set-time-modal").css("display", "block");
-        });
-    
-        // Fungsi untuk menutup popup set waktu saat tombol close di klik
-        $(".set-time-modal .close").click(function() {
-            $(".set-time-modal").css("display", "none");
-        });
-    
-        // Fungsi untuk memulai countdown ketika tombol Start di popup set waktu ditekan
-        $(".startTime").click(function() {
-            var minutes = parseInt($("#minutesInput").val());
-            var seconds = parseInt($("#secondsInput").val());
-    
-            if (isNaN(minutes) || isNaN(seconds) || minutes < 0 || seconds < 0 || seconds >= 60) {
-                alert('Please enter valid time.');
-                return;
-            }
-    
-            var totalTime = minutes * 60 + seconds;
-            startCountdown(totalTime);
-    
-            // Menutup popup set waktu
-            $(".set-time-modal").css("display", "none");
-        });
-    
-        // Fungsi untuk memulai countdown
-        function startCountdown(totalTime) {
-            var timerInterval = setInterval(function() {
-                var minutes = Math.floor(totalTime / 60);
-                var seconds = totalTime % 60;
-    
-                $('.timeleft').text(padZero(minutes) + ":" + padZero(seconds));
-    
-                if (totalTime <= 0) {
-                    clearInterval(timerInterval);
-                    $('#gameEndModal').show();
-                } else {
-                    totalTime--;
-                }
-            }, 1000);
-        }
-    
-        // Fungsi untuk menambah nol di depan angka jika hanya satu digit
-        function padZero(num) {
-            return (num < 10 ? "0" : "") + num;
-        }
-
-    
-
+    // Event saat form pengakhiran permainan disubmit
     $('#gameEndForm').on('submit', function(event) {
         event.preventDefault();
 
@@ -147,14 +95,14 @@ $(document).ready(function() {
         const duration = $('#duration').val();
 
         if (!winningTeam) {
-            // Display the error message in the span element
-            $('.input-group .error').text('Winning team should be filled.');
+            // Tampilkan pesan error jika nama tim pemenang tidak diisi
+            $('.input-group .error').text('Nama tim pemenang harus diisi.');
             return;
         } else {
-            // Remove the error message if it exists
             $('.input-group .error').text('');
         }
 
+        // Buat elemen riwayat permainan dan tambahkan ke riwayat
         const historyItem = $(`
         <div class="history-item">
             <div class="history-row">
@@ -173,80 +121,106 @@ $(document).ready(function() {
                 <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${duration}</p></div>
             </div>
         </div>
-    `);
-
+        `);
         $('#history').append(historyItem);
 
+        // Atur ulang form dan sembunyikan modal
         $('#gameEndModal').hide();
         $('#gameEndForm')[0].reset();
-        $('#history .noteam').remove();  // Remove the no team message if a new history item is added
+        $('#history .noteam').remove(); // Hapus pesan "Belum ada tim yang bermain" jika ada riwayat baru
     });
 
-    // Event untuk mengecek riwayat
+    // Event untuk mengecek perubahan pada riwayat permainan
     $('#history').bind('DOMNodeInserted DOMNodeRemoved', checkHistory);
 
-
-
-    $('.stopButton').on('click', function() {
-        $('#gameEndModal').show(); // Menampilkan popup "Game Has Ended"
-    });
-    
-    // Fungsi untuk menutup popup permainan berakhir
-    $('#gameEndModal .close').on('click', function() {
-        $('#gameEndModal').hide();
-    });
-
-    // Fungsi untuk mengatur pesan poin berdasarkan pemenang
+    // Event saat nama tim pemenang berubah
     $('#winningTeam').on('change', function() {
         const winningTeam = $('#winningTeam').val();
-        $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${winningTeam}`);
+        $('#pointsMessage').text(`100 POIN AKAN DIBERIKAN KEPADA ${winningTeam}`);
     });
 
-    // Fungsi untuk menambahkan riwayat permainan
-    $('#setTimeForm').on('submit', function(event) {
-        event.preventDefault();
-        const minutes = parseInt($('#minutesInput').val());
-        const seconds = parseInt($('#secondsInput').val());
+    // Inisialisasi variabel dan seleksi elemen DOM
+    const timerDisplay = document.querySelector('.timeleft');
+    const startButton = document.querySelector('.startButton');
+    const stopButton = document.querySelector('.stopButton');
+    const setTimeForm = document.getElementById('setTimeForm');
+    const setTimeModal = document.getElementById('setTimeModal');
+    const gameEndModal = document.getElementById('gameEndModal');
+    const historyContainer = document.getElementById('history');
 
-        if (isNaN(minutes) || isNaN(seconds) || minutes < 0 || seconds < 0 || seconds >= 60) {
-            alert('Please enter valid time.');
-            return;
-        }
+    let timer;
+    let remainingTime = 0;
 
-        const totalSeconds = minutes * 60 + seconds;
-        startTimer(totalSeconds);
-        $('#set-time-modal').hide();
-    });
+    // Fungsi untuk memulai timer
+    function startTimer(minutes, seconds) {
+        remainingTime = minutes * 60 + seconds;
+        updateDisplay();
 
-    // Fungsi untuk memulai timer mundur
-    function startTimer(totalSeconds) {
-        var timer = setInterval(function() {
-            totalSeconds--;
-            var minutes = Math.floor(totalSeconds / 60);
-            var seconds = totalSeconds % 60;
+        timer = setInterval(function() {
+            remainingTime--;
+            updateDisplay();
 
-            $('.timeleft').text(minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
-
-            if (totalSeconds <= 0) {
+            if (remainingTime <= 0) {
                 clearInterval(timer);
-                $('#gameEndModal').show();
+                openModal(gameEndModal);
             }
         }, 1000);
     }
 
-    // Event saat submit form set time
-    $('#setTimeForm').on('submit', function(event) {
+    // Fungsi untuk menghentikan timer
+    function stopTimer() {
+        clearInterval(timer);
+        remainingTime = 0;
+        updateDisplay();
+    }
+
+    // Fungsi untuk memperbarui tampilan timer
+    function updateDisplay() {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        timerDisplay.innerHTML = `<i class="fa-regular fa-clock" style="color: #000000"></i> ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // Fungsi untuk membuka modal
+    function openModal(modal) {
+        modal.style.display = 'block';
+    }
+
+    // Fungsi untuk menutup modal
+    function closeModal(modal) {
+        modal.style.display = 'none';
+    }
+
+    // Fungsi untuk memulai permainan
+    function startGame() {
+        openModal(setTimeModal);
+    }
+
+    // Fungsi untuk menghentikan permainan
+    function stopGame() {
+        stopTimer();
+        openModal(gameEndModal);
+    }
+
+
+    
+    // Event Listeners
+    startButton.addEventListener('click', startGame);
+    stopButton.addEventListener('click', stopGame);
+    
+    setTimeForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        const minutes = parseInt($('#minutesInput').val());
-        const seconds = parseInt($('#secondsInput').val());
-
-        if (isNaN(minutes) || isNaN(seconds) || minutes < 0 || seconds < 0 || seconds >= 60) {
-            alert('Please enter valid time.');
-            return;
-        }
-
-        const totalSeconds = minutes * 60 + seconds;
-        startTimer(totalSeconds);
-        $('#set-time-modal').hide();
+        const minutes = parseInt(document.getElementById('minutesInput').value, 10);
+        const seconds = parseInt(document.getElementById('secondsInput').value, 10);
+        
+        closeModal(setTimeModal);
+        startTimer(minutes, seconds);
+    });
+    
+    // Close modals when clicking the close button
+    document.querySelectorAll('.modal .close').forEach(function(closeButton) {
+        closeButton.addEventListener('click', function() {
+            closeModal(closeButton.closest('.modal'));
+        });
     });
 });
