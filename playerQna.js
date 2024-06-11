@@ -17,12 +17,12 @@ $(document).ready(function() {
     });
 
     const addBox = document.querySelector(".add-box"),
-    popupBox = document.querySelector(".popup-box"),
-    popupTitle = popupBox.querySelector("header p"),
-    closeIcon = popupBox.querySelector(".close-btn"), // Correctly select the close button
-    titleTag = popupBox.querySelector("input"),
-    descTag = popupBox.querySelector("textarea"),
-    addBtn = popupBox.querySelector("button");
+        popupBox = document.querySelector(".popup-box"),
+        popupTitle = popupBox.querySelector("header p"),
+        closeIcon = popupBox.querySelector(".close-btn"),
+        titleTag = popupBox.querySelector("input"),
+        descTag = popupBox.querySelector("textarea"),
+        addBtn = popupBox.querySelector("button");
 
     const notes = JSON.parse(localStorage.getItem("notes") || "[]");
     let isUpdate = false, updateId;
@@ -32,7 +32,7 @@ $(document).ready(function() {
         addBtn.innerText = "Submit";
         popupBox.classList.add("show");
         document.body.style.overflow = "hidden";
-        if(window.innerWidth > 660) titleTag.focus();
+        if (window.innerWidth > 660) titleTag.focus();
     });
 
     closeIcon.addEventListener("click", () => {
@@ -43,13 +43,13 @@ $(document).ready(function() {
     });
 
     function showNotes() {
-        if(!notes) return;
+        if (!notes) return;
         document.querySelectorAll(".note").forEach(li => li.remove());
         notes.forEach((note, id) => {
             let filterDesc = note.description.replaceAll("\n", '<br/>');
             let answeredStatus = note.answer ? 'answered' : 'not-answered';
             let answeredText = note.answer ? 'Sudah Terjawab' : 'Belum Terjawab';
-            let liTag = `<li class="note ${answeredStatus}">
+            let liTag = `<li class="note ${answeredStatus}" onclick="showNoteDetails(${id})">
                             <div class="details">
                                 <p>${note.title}</p>
                                 <span>${filterDesc}</span>
@@ -69,17 +69,17 @@ $(document).ready(function() {
             addBox.insertAdjacentHTML("afterend", liTag);
         });
     }
-    
+
     showNotes();
 
     addBtn.addEventListener("click", e => {
         e.preventDefault();
         let title = titleTag.value.trim(),
-        description = descTag.value.trim();
+            description = descTag.value.trim();
 
-        if(title || description) {
-            let noteInfo = {title, description, answer: ''} // Initial answer is empty
-            if(!isUpdate) {
+        if (title || description) {
+            let noteInfo = { title, description, answer: '' } // Initial answer is empty
+            if (!isUpdate) {
                 notes.push(noteInfo);
             } else {
                 isUpdate = false;
