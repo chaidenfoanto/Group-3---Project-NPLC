@@ -34,7 +34,7 @@ public class TeamController {
     private Response response = new Response();
     List<Team> listTeam = Collections.<Team>emptyList();
 
-    @PostMapping("addTeam")
+    @PostMapping
     public ResponseEntity<Response> addTeam(HttpServletRequest request, @RequestBody TeamDTO teamDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Team Creation");

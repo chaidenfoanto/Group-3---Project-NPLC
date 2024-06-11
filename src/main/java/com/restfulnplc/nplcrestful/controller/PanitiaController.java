@@ -35,7 +35,7 @@ public class PanitiaController {
     private Response response = new Response();
     List<Panitia> panitiaList = Collections.<Panitia>emptyList();
 
-    @PostMapping("/addPanitia")
+    @PostMapping
     public ResponseEntity<Response> addPanitia(HttpServletRequest request,
             @RequestBody PanitiaDTO panitiaDTO) {
         String sessionToken = request.getHeader("Token");

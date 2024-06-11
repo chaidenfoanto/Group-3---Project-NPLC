@@ -35,7 +35,7 @@ public class BoothgamesController {
     private Response response = new Response();
     List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
 
-    @PostMapping("/addBoothgame")
+    @PostMapping
     public ResponseEntity<Response> addBoothgame(HttpServletRequest request,
             @RequestBody BoothgamesDTO boothgamesDTO) {
         String sessionToken = request.getHeader("Token");

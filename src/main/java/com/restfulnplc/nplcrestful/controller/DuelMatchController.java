@@ -35,7 +35,7 @@ public class DuelMatchController {
     private Response response = new Response();
     List<DuelMatch> listDuelMatches = Collections.<DuelMatch>emptyList();
 
-    @PostMapping("/addDuelMatch")
+    @PostMapping
     public ResponseEntity<Response> addDuelMatch(HttpServletRequest request,
             @RequestBody DuelMatchDTO duelMatchDTO) {
         String sessionToken = request.getHeader("Token");

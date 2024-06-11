@@ -35,7 +35,7 @@ public class ListKartuController {
     private Response response = new Response();
     List<ListKartu> listKartuList = Collections.<ListKartu>emptyList();
 
-    @PostMapping("/addListKartu")
+    @PostMapping
     public ResponseEntity<Response> addListKartu(HttpServletRequest request,
             @RequestBody ListKartuDTO listKartuDTO) {
         String sessionToken = request.getHeader("Token");

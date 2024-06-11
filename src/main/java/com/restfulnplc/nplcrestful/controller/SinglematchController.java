@@ -35,7 +35,7 @@ public class SinglematchController {
     private Response response = new Response();
     List<Singlematch> listSingleMatches = Collections.<Singlematch>emptyList();
 
-    @PostMapping("/addSingleMatch")
+    @PostMapping
     public ResponseEntity<Response> addSinglematch(HttpServletRequest request,
             @RequestBody SinglematchDTO singlematchDTO) {
         String sessionToken = request.getHeader("Token");

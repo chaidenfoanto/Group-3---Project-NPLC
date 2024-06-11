@@ -35,7 +35,7 @@ public class CardSkillController {
     private Response response = new Response();
     List<CardSkill> listCardSkills = Collections.<CardSkill>emptyList();
 
-    @PostMapping("/addCardSkill")
+    @PostMapping
     public ResponseEntity<Response> addCardSkill(HttpServletRequest request,
             @RequestBody CardSkillDTO cardSkillDTO) {
         String sessionToken = request.getHeader("Token");

@@ -35,7 +35,7 @@ public class LokasiController {
     private Response response = new Response();
     List<Lokasi> lokasiList = Collections.<Lokasi>emptyList();
 
-    @PostMapping("/addLokasi")
+    @PostMapping
     public ResponseEntity<Response> addLokasi(HttpServletRequest request,
             @RequestBody LokasiDTO lokasiDTO) {
         String sessionToken = request.getHeader("Token");
