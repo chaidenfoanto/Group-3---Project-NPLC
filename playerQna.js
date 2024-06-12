@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    // Load the sidebar and handle the toggle button
     $(".sidebar").load("sidebarplayer.html", function() {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
@@ -16,78 +17,84 @@ $(document).ready(function() {
         }
     });
 
-    const addBox = document.querySelector(".add-box"),
-        popupBox = document.querySelector(".popup-box"),
-        popupTitle = popupBox.querySelector("header p"),
-        closeIcon = popupBox.querySelector(".close-btn"),
-        titleTag = popupBox.querySelector("input"),
-        descTag = popupBox.querySelector("textarea"),
-        addBtn = popupBox.querySelector("button");
-
-    const notes = JSON.parse(localStorage.getItem("notes") || "[]");
-    let isUpdate = false, updateId;
-
-    addBox.addEventListener("click", () => {
-        popupTitle.innerText = "Welcome Players";
-        addBtn.innerText = "Submit";
-        popupBox.classList.add("show");
-        document.body.style.overflow = "hidden";
-        if (window.innerWidth > 660) titleTag.focus();
-    });
-
-    closeIcon.addEventListener("click", () => {
-        isUpdate = false;
-        titleTag.value = descTag.value = "";
-        popupBox.classList.remove("show");
-        document.body.style.overflow = "auto";
-    });
-
-    function showNotes() {
-        if (!notes) return;
-        document.querySelectorAll(".note").forEach(li => li.remove());
-        notes.forEach((note, id) => {
-            let filterDesc = note.description.replaceAll("\n", '<br/>');
-            let answeredStatus = note.answer ? 'answered' : 'not-answered';
-            let answeredText = note.answer ? 'Sudah Terjawab' : 'Belum Terjawab';
-            let liTag = `<li class="note ${answeredStatus}" onclick="showNoteDetails(${id})">
-                            <div class="details">
-                                <p>${note.title}</p>
-                                <span>${filterDesc}</span>
-                                <p class="answer">${note.answer || ''}</p>
-                            </div>
-                            <div class="bottom-content">
-                                <span class="status ${answeredStatus}">${answeredText}</span>
-                                <div class="settings">
-                                    <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
-                                    <ul class="menu">
-                                        <li onclick="updateNote(${id}, '${note.title}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
-                                        <li onclick="deleteNote(${id})"><i class="uil uil-trash"></i>Delete</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>`;
-            addBox.insertAdjacentHTML("afterend", liTag);
-        });
+    // Function to open the main popup
+    function openPopup() {
+        $("#popup").css("display", "flex");
     }
 
-    showNotes();
+    // Function to close the main popup
+    function closePopup() {
+        $("#popup").css("display", "none");
+    }
 
-    addBtn.addEventListener("click", e => {
-        e.preventDefault();
-        let title = titleTag.value.trim(),
-            description = descTag.value.trim();
+    // Event listener for addQuestionBtn to open the main popup
+    $("#addQuestionBtn").on("click", openPopup);
 
-        if (title || description) {
-            let noteInfo = { title, description, answer: '' } // Initial answer is empty
-            if (!isUpdate) {
-                notes.push(noteInfo);
-            } else {
-                isUpdate = false;
-                notes[updateId] = noteInfo;
-            }
-            localStorage.setItem("notes", JSON.stringify(notes));
-            showNotes();
-            closeIcon.click();
+    // Event listener for closePopupBtn to close the main popup
+    $(".close-btn").on("click", closePopup);
+
+    // Close the main popup when clicking outside of it
+    $(window).on("click", function(event) {
+        if (event.target === document.getElementById("popup")) {
+            closePopup();
         }
+    });
+
+    // Handle form submission
+    $("#questionForm").on("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get input values
+        const teamName = $("#Teamname").val();
+        const question = $("#Question").val();
+
+        // Save to localStorage (or send to server via AJAX)
+        const questionData = {
+            teamName: teamName,
+            question: question
+        };
+
+        // You can choose to use an array to store multiple entries
+        let savedQuestions = JSON.parse(localStorage.getItem('questions')) || [];
+        savedQuestions.push(questionData);
+        localStorage.setItem('questions', JSON.stringify(savedQuestions));
+
+        // Display confirmation message
+        alert("Question submitted and saved!");
+
+        // Clear form inputs
+        $("#Teamname").val('');
+        $("#Question").val('');
+
+        // Close the main popup
+        closePopup();
+    });
+
+    // Function to open the content popup with the details of the clicked box
+    function openContentPopup(teamName, questionText, statusText) {
+        $("#popupTeamName").text(teamName);
+        $("#popupQuestionText").text(questionText);
+        $("#popupStatusText").text(statusText);
+        $("#contentPopup").css("display", "flex");
+    }
+
+    // Event listener for closing the content popup
+    $("#closeContentPopup").on("click", function() {
+        $("#contentPopup").css("display", "none");
+    });
+
+    // Close the content popup when clicking outside of it
+    $(window).on("click", function(event) {
+        if (event.target === document.getElementById("contentPopup")) {
+            $("#contentPopup").css("display", "none");
+        }
+    });
+
+    // Event listeners for "sudah terjawab" boxes to open the content popup
+    $(".sudah-terjawab-box").on("click", function() {
+        const teamName = $(this).find("h3").text();
+        const questionText = $(this).find("p").text();
+        const statusText = $(this).find(".status").text();
+        openContentPopup(teamName, questionText, statusText);
     });
 });

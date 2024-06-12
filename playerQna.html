@@ -8,58 +8,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="playerQna.css">
     <link rel="stylesheet" href="sidebarplayer.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="main-container">
         <div class="sidebar"></div>
         <div class="main-content">
             <header>
                 <h1>Question & Answer</h1>
             </header>
-            <div class="popup-box">
-                <div class="popup">
-                    <div class="content">
-                        <header>
-                            <p></p>
-                            <span class="close-btn">&times;</span>
-                        </header>
-                        <form action="#">
-                            <div class="row title">
-                                <label>Team name</label>
-                                <input type="text" spellcheck="false">
-                            </div>
-                            <div class="row description">
-                                <label>Question</label>
-                                <textarea spellcheck="false"></textarea>
-                            </div>
-                            <button>Submit</button>
-                        </form>
-                    </div>
+            <div class="question-box-container">
+                <button id="addQuestionBtn">Add Question</button>
+                <div class="question-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status belum-terjawab">Belum Terjawab</span>
+                </div>
+                <div class="question-box sudah-terjawab-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status sudah-terjawab">Sudah Terjawab</span>
                 </div>
             </div>
-            <div class="popup-box-2">
-                <div class="popup">
-                    <div class="content">
-                        <header>
-                            <p>Submission Received</p>
-                            <span class="close-btn-2">&times;</span>
-                        </header>
-                        <p>Thank you for your submission!</p>
-                        <button class="close-btn-2">Close</button>
+            <div class="popup" id="popup">
+                <div class="popup-content">
+                    <span id="closePopup" class="close-btn">&times;</span>
+                    <div class="header-popup">
+                        <h2>Welcome Players</h2>
                     </div>
+                    <form id="questionForm">
+                        <div class="input-group">
+                            <label for="Teamname">Team Name</label>
+                            <input type="text" id="Teamname" required>
+                            <span class="error-message" id="TeamnameError"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="Question">Question</label>
+                            <textarea id="Question" required></textarea>
+                            <span class="error-message" id="QuestionError"></span>
+                        </div>
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
             </div>
-            <div class="wrapper">
-                <li class="add-box">
-                    <div class="icon"><box-icon name='plus' color='#7b7b7b'></box-icon></div>
-                    <p>Add a question</p>
-                </li>
+            <!-- New Popup for displaying content -->
+            <div class="popup" id="contentPopup">
+                <div class="popup-content">
+                    <span id="closeContentPopup" class="close-btn">&times;</span>
+                    <div class="header-newpopup">
+                        <h4>Submitted Quest</h4>
+                    </div>
+                    <div class="content-wrapper">
+                        <p id="popupTeamName" class="newpopteam">Team A</p>
+                        <p id="popupQuestionText" class="newpopquestion">siapakah saya ini dan dimana?</p>
+                    </div>
+                    <p id="popupAnswerText" class="newpopanswer">kamu ada di uc makassar sekarang. kamu tidak tau siapa semangat!!</p>
+                </div>
             </div>
         </div>
     </div>
-    
-    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="playerQna.js"></script>    
+    <script src="playerQna.js"></script>
 </body>
 </html>
