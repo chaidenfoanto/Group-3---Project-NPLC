@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessageElement.style.display = 'block';
     }
 
-    function hideErrorMessage(inputElement) {
-        const errorMessageElement = document.getElementById(inputElement.id + 'Error');
-        errorMessageElement.textContent = '';
-        errorMessageElement.style.display = 'none';
-    }
+    // function hideErrorMessage(inputElement) {
+    //     const errorMessageElement = document.getElementById(inputElement.id + 'Error');
+    //     errorMessageElement.textContent = '';
+    //     errorMessageElement.style.display = 'none';
+    // }
 
     function showErrorMessage(message) {
         const errorMessageElement = document.getElementById('loginErrorMessage');
@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessageElement.style.display = 'block';
     }
 
-    function hideErrorMessage() {
-        const errorMessageElement = document.getElementById('loginErrorMessage');
-        errorMessageElement.textContent = '';
-        errorMessageElement.style.display = 'none';
-    }
+    // function hideErrorMessage() {
+    //     const errorMessageElement = document.getElementById('loginErrorMessage');
+    //     errorMessageElement.textContent = '';
+    //     errorMessageElement.style.display = 'none';
+    // }
 
     function setCookie(name, value, daysToLive) {
         let cookie = name + "=" + encodeURIComponent(value);
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 setCookie("Token", token, 365);
                 window.location.href = "dashboardplayer.html";
             } else {
-                showErrorMessage('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
+                console.log('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
             }
         } catch (error) {
             showErrorMessage('Login gagal: Harap isi username dan password' );
