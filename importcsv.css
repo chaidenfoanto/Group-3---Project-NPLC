@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        :root{
+        --color-default:#35A2DB;
+        --color-second:#35A2DB;
+        --color-white:#fff;
+        --color-body:#e4e9f7;
+        --color-light:#e0e0e0;
+        }
+
+
+        *{
+        padding: 0%;
+        margin: 0%;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        }
+
+        body{
+        min-height: 100vh;
+        }
+
+        .main-content h1, h3{
+            color: #35A2DB;
+            font-weight:900;
+            margin-left: 10px;
+        }
+        .main-content h2{
+            margin-top: 10px;
+        }
+
+        .main-content{
+            position: relative;
+            /* background-color: var(--color-body); */
+            min-height: 100vh;
+            top:0;
+            /* left:78px; */
+            width: calc(100% - 78px);
+            transition: all .5s ease;
+            z-index: 2;
+            margin-left: 80px;
+            padding: 20px;
+            flex: 1
+        }
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1, h3 {
+            margin-top: 10px;
+            flex: 1 1 60%;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 40px;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            color: #fff;
+            cursor: pointer;
+            background-color: var(--color-default);
+            float: right;
+        }
+
+        button:hover {
+            background-color: var(--color-second);
+        }
+
+        /* Hide the actual file input */
+        #csvFileInput {
+            display: none;
+        }
+
+        /* Style for the custom button */
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .file-upload-container {
+            margin: 10px;
+
+        }
+
+        .custom-file-upload:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style for the chosen file name display */
+        .file-name {
+            font-size: 16px;
+            color: #333;
+        }
+
+        #csvDataContainer {
+            max-height: calc(100vh - 205px);
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .csv-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px
+        }
+        
+        .csv-table th, .csv-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .csv-table th {
+            background-color: #007bff;
+            color: white;
+        }
+        th.sticky-header {
+            position: sticky;
+            top: 0;
+            background-color: #007bff;
+            z-index: 10;
+        }
+    
+    @media (min-height: 320px) and (max-width: 650px) {
+        table, button, .custom-file-upload, .file-name {
+            font-size: 13px;
+            float: none;
+        }
+
+        button {
+            margin: 10px auto;
+        }
+    }
