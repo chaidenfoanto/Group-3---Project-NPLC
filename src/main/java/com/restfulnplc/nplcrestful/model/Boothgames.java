@@ -32,7 +32,7 @@ public class Boothgames {
     private Panitia idPenjaga2;
 
     @Lob
-    @Column(name = "sopgames", nullable = false)
+    @Column(name = "sopgames", nullable = false, columnDefinition = "TEXT")
     private String sopGames;
 
     @OneToOne
