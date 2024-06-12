@@ -99,7 +99,7 @@ public class CardSkillController {
                 } else {
                     response.setMessage("No Card Skills Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -143,7 +143,7 @@ public class CardSkillController {
                 } else {
                     response.setMessage("Card Skill Not Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -189,7 +189,7 @@ public class CardSkillController {
                     } else {
                         response.setMessage("Card Skill Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -233,7 +233,7 @@ public class CardSkillController {
                     } else {
                         response.setMessage("Card Skill Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {

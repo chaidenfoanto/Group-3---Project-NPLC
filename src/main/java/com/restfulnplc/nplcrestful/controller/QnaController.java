@@ -147,7 +147,7 @@ public class QnaController {
                 } else {
                     response.setMessage("Tidak Ada Pertanyaan yang Ditemukan");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -185,7 +185,7 @@ public class QnaController {
                     } else {
                         response.setMessage("Pertanyaan Tidak Ditemukan");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {

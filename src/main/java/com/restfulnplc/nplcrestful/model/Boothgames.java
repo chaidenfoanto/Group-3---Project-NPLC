@@ -28,7 +28,7 @@ public class Boothgames {
     private Panitia idPenjaga1;
 
     @OneToOne
-    @JoinColumn(name = "penjaga2", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_penjaga2"), nullable = false)
+    @JoinColumn(name = "penjaga2", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_penjaga2"), nullable = true)
     private Panitia idPenjaga2;
 
     @Lob
