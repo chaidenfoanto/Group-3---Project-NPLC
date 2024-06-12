@@ -202,8 +202,6 @@ $(document).ready(function() {
         openModal(gameEndModal);
     }
 
-
-    
     // Event Listeners
     startButton.addEventListener('click', startGame);
     stopButton.addEventListener('click', stopGame);
