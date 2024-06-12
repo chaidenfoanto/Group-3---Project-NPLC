@@ -12,7 +12,7 @@ public enum HTTPCode {
     OK(200, HttpStatus.OK, "OK", "Request successfully processed"),
     CREATED(201, HttpStatus.CREATED, "Created", "Resource successfully created"),
     ACCEPTED(202, HttpStatus.ACCEPTED, "Accepted", "Request accepted for processing"),
-    OK(204, HttpStatus.OK, "No Content", "Request successfully processed but no content returned"),
+    NO_CONTENT(204, HttpStatus.OK, "No Content", "Request successfully processed but no content returned"),
     
     // Redirection messages
     MOVED_PERMANENTLY(301, HttpStatus.MOVED_PERMANENTLY, "Moved Permanently", "Resource has been moved to a new URL permanently"),
