@@ -92,10 +92,6 @@ public class Panitia {
         this.spesialisasi = spesialisasi;
     }
 
-    public boolean isIsAdmin() {
-        return this.isAdmin;
-    }
-
     public boolean getIsAdmin() {
         return this.isAdmin;
     }
