@@ -1,286 +1,456 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-        :root{
-        --color-default:#35A2DB;
-        --color-second:#0067ac;
-        --color-white:#fff;
-        --color-body:#e4e9f7;
-        --color-light:#e0e0e0;
-        }
+:root {
+    --color-default: #35A2DB;
+    --color-second: #0067ac;
+    --color-white: #fff;
+    --color-body: #e4e9f7;
+    --color-light: #e0e0e0;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.main-content {
+    position: relative;
+    min-height: 100vh;
+    top: 0;
+    width: calc(100% - 78px);
+    transition: all .5s ease;
+    z-index: 2;
+    margin-left: 80px;
+    padding: 20px;
+    flex: 1;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-default);
+}
+
+header h1 {
+    margin: 10px;
+}
+
+.question-box-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#addQuestionBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 220px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--color-white);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+#addQuestionBtn:hover {
+    background-color: var(--color-light);
+}
+
+#addQuestionBtn::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 80px;
+    border: 2px dashed var(--color-default);
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    text-align: left;
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.popup-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 15px;
+}
+
+.popup-content form label {
+    align-self: flex-start;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.popup-content form input,
+.popup-content form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.popup-content form button {
+    padding: 10px 20px;
+    background-color: var(--color-default);
+    color: var(--color-white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 auto;
+    font-size: 16px;
+    font-weight: 600;
+    width: 50%;
+    max-width: 150px;
+}
+
+.popup-content form button:hover {
+    background-color: var(--color-second);
+}
+
+.header-popup h2 {
+    color: var(--color-default);
+    font-size: 24px;
+    border-bottom: 2px solid #dfdfdf;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.question-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 240px;
+    height: 220px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--color-white);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.question-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: var(--color-default);
+}
+
+.question-box p {
+    flex-grow: 1;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.status {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-align: right;
+    display: inline-block;
+    width: 90%;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.belum-terjawab {
+    color: red;
+}
+
+.sudah-terjawab {
+    color: green;
+}
+
+#contentPopup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#contentPopup .popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 55%;
+}
+
+#contentPopup .close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#contentPopup .close-btn:hover,
+#contentPopup .close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#contentPopup .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 14%;
+    margin-bottom: 25px;
+    margin-left: -5%;
+}
+
+.newpopteam {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopteam::before {
+    content: "Team Name";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+.newpopquestion {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopquestion::before {
+    content: "Question";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+.newpopanswer {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopanswer::before {
+    content: "Answer";
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 15px;
+    color: #666;
+}
+
+.header-newpopup h4 {
+    color:#35A2DB; 
+    font-size: 28px;
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
 
 
-        *{
-        padding: 0%;
-        margin: 0%;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-        }
+#contentPopup .newpopanswer {
+    width: 100%;
+    height: 50%;
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    text-align: center;
+    background-color: #fff;
+}
+.newpopquestion , .newpopteam{
+    width: 90%;
+    text-align: center;
+    justify-content: center;
+    margin-left: 5%;
+}
+/* Add this CSS to your existing CSS file */
 
-        body{
-        min-height: 100vh;
-        }
+.form-group {
+    margin-bottom: 20px;
+}
 
-        .main-content{
-            position: relative;
-            min-height: 100vh;
-            top:0;
-            width: calc(100% - 78px);
-            transition: all .5s ease;
-            z-index: 2;
-            margin-left: 80px;
-            padding: 20px;
-            flex: 1
-        }
+.form-group input.newpopteam,
+.form-group input.newpopquestion {
+    width: 90%;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
 
-        .main-content .text{
+.form-group input.newpopteam::placeholder,
+.form-group input.newpopquestion::placeholder {
+    font-size: 12px;
+    color: #666;
+}
+
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+    }
+
+    header h1 {
+        margin: 10px auto;
+    }
+
+    .question-box-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .question-box {
+        width: 90%;
+    }
+
+    #addQuestionBtn {
+        width: 90%;
+    }
+
+    .popup-content {
+        width: 95%;
+        max-width: 90%;
+    }
+
+    .newpopteam,
+    .newpopquestion,
+    .newpopanswer {
+        width: 100%;
+    }
+
+    .newpopteam::before,
+    .newpopquestion::before,
+    .newpopanswer::before {
+        top: -12px;
+        font-size: 12px;
+    }
+
+    #contentPopup .content-wrapper {
+        flex-direction: column;
+        margin-left: -5%;
+        margin-top: 5%;
+    }
+
+    #contentPopup .newpopteam,
+    #contentPopup .newpopquestion {
+        height: auto;
+        width: 50%;
         display: inline-block;
-        color:var(--color-default);
-        font-size: 25px;
-        font-weight: 500;
-        margin: 18px;
-        }
+    }
 
-        header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            color: #35A2DB;
-        }
-        header h1 {
-            margin: 10px;
-        }
-        ::selection{
-            color: #fff;
-            background: #618cf8;
-          }
-          .wrapper{
-            margin: 50px;
-            display: grid;
-            gap: 25px;
-            grid-template-columns: repeat(auto-fill, 265px);
-          }
-          .wrapper li{
-            height: 250px;
-            list-style: none;
-            border-radius: 5px;
-            padding: 15px 20px 20px;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-          }
-          .add-box, .icon, .bottom-content, 
-          .popup, header, .settings .menu li{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          }
-          .add-box{
-            cursor: pointer;
-            flex-direction: column;
-            justify-content: center;
-          }
-          .add-box .icon{
-            height: 78px;
-            width: 78px;
-            color: #35A2DB;
-            font-size: 40px;
-            border-radius: 50%;
-            justify-content: center;
-            border: 2px dashed #35A2DB;
-          }
-          .add-box p{
-            color: #35A2DB;
-            font-weight: 500;
-            margin-top: 20px;
-          }
-          .note{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-          }
-          .note .details{
-            max-height: 165px;
-            overflow-y: auto;
-          }
-          .note .details::-webkit-scrollbar,
-          .popup textarea::-webkit-scrollbar{
-            width: 0;
-          }
-          .note .details:hover::-webkit-scrollbar,
-          .popup textarea:hover::-webkit-scrollbar{
-            width: 5px;
-          }
-          .note .details:hover::-webkit-scrollbar-track,
-          .popup textarea:hover::-webkit-scrollbar-track{
-            background: #f1f1f1;
-            border-radius: 25px;
-          }
-          .note .details:hover::-webkit-scrollbar-thumb,
-          .popup textarea:hover::-webkit-scrollbar-thumb{
-            background: #e6e6e6;
-            border-radius: 25px;
-          }
-          .note p{
-            font-size: 22px;
-            font-weight: 500;
-          }
-          .note span{
-            display: block;
-            color: #575757;
-            font-size: 16px;
-            margin-top: 5px;
-          }
-          .note .bottom-content{
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
-          }
-          .bottom-content span{
-            color: #6D6D6D;
-            font-size: 14px;
-          }
-          .bottom-content .settings{
-            position: relative;
-          }
-          .bottom-content .settings i{
-            color: #6D6D6D;
-            cursor: pointer;
-            font-size: 15px;
-          }
-          .settings .menu{
-            z-index: 1;
-            bottom: 0;
-            right: -5px;
-            padding: 5px 0;
-            background: #fff;
-            position: absolute;
-            border-radius: 4px;
-            transform: scale(0);
-            transform-origin: bottom right;
-            box-shadow: 0 0 6px rgba(0,0,0,0.15);
-            transition: transform 0.2s ease;
-          }
-          .settings.show .menu{
-            transform: scale(1);
-          }
-          .settings .menu li{
-            height: 25px;
-            font-size: 16px;
-            margin-bottom: 2px;
-            padding: 17px 15px;
-            cursor: pointer;
-            box-shadow: none;
-            border-radius: 0;
-            justify-content: flex-start;
-          }
-          .menu li:last-child{
-            margin-bottom: 0;
-          }
-          .menu li:hover{
-            background: #f5f5f5;
-          }
-          .menu li i{
-            padding-right: 8px;
-          }
-          .popup-box{
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 2;
-            height: 100%;
-            width: 100%;
-            background: rgba(0,0,0,0.4);
-          }
-          .popup-box .popup{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            z-index: 3;
-            width: 100%;
-            max-width: 400px;
-            justify-content: center;
-            transform: translate(-50%, -50%) scale(0.95);
-          }
-          .popup-box, .popup{
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.25s ease;
-          }
-          .popup-box.show, .popup-box.show .popup{
-            opacity: 1;
-            pointer-events: auto;
-          }
-          .popup-box.show .popup{
-            transform: translate(-50%, -50%) scale(1);
-          }
-          .popup .content{
-            border-radius: 5px;
-            background: #fff;
-            width: calc(100% - 15px);
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-          }
-          .content header{
-            padding: 15px 25px;
-            border-bottom: 1px solid #ccc;
-          }
-          .content header p{
-            font-size: 20px;
-            font-weight: 500;
-          }
-          .content header i{
-            color: #8b8989;
-            cursor: pointer;
-            font-size: 23px;
-          }
-          .content form{
-            margin: 15px 25px 35px;
-          }
-          .content form .row{
-            margin-bottom: 20px;
-          }
-          form .row label{
-            font-size: 18px;
-            display: block;
-            margin-bottom: 6px;
-          }
-          form :where(input, textarea){
-            height: 50px;
-            width: 100%;
-            outline: none;
-            font-size: 17px;
-            padding: 0 15px;
-            border-radius: 4px;
-            border: 1px solid #999;
-          }
-          form :where(input, textarea):focus{
-            box-shadow: 0 2px 4px rgba(0,0,0,0.11);
-          }
-          form .row textarea{
-            height: 150px;
-            resize: none;
-            padding: 8px 15px;
-          }
-          form button{
-            width: 35%;
-            height: 40px;
-            color: #fff;
-            outline: none;
-            border: none;
-            cursor: pointer;
-            font-size: 17px;
-            font-weight: 400;
-            border-radius: 10px;
-            background: #35A2DB;
-          }
-          @media (max-width: 660px){
-            .wrapper{
-              margin: 15px;
-              gap: 15px;
-              grid-template-columns: repeat(auto-fill, 100%);
-            }
-            .popup-box .popup{
-              max-width: calc(100% - 15px);
-            }
-            .bottom-content .settings i{
-              font-size: 17px;
-            }
-          }
+    #contentPopup .newpopquestion {
+        margin-top: -21%;
+        margin-left: 55%;
+    }
+
+    #contentPopup .newpopanswer {
+        height: 50%;
+    }
+    .form-group input.newpopteam,
+    .form-group input.newpopquestion {
+        width: 100%;
+    }
+}
+
+
