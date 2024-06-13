@@ -3,59 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panitia Qna</title>
+    <title>HOD Qna</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="PanitiaQna.css">
     <link rel="stylesheet" href="sidebarpanitia.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
-<body>        
+<body>
     <div class="container">
         <div class="sidebar"></div>
         <div class="main-content">
             <header>
-                <h1>Question & Answer</h1>
-            </header> 
-        </div>
-        <div class="questions-container" id="questions-container">
-            <div class="question" data-team="Team 1" data-title="Question 1" data-content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.">
-                <div class="question-footer">
-                    <span> Team 1 </span>
+                <h1>Panitia Question & Answer</h1>
+            </header>
+            <div class="question-box-container">
+                <div class="question-box belum-terjawab-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status belum-terjawab">Belum Terjawab</span>
                 </div>
-                <h3>Question</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.</p>   
-            </div>
-            <div class="question" data-team="Team 2" data-title="Question 2" data-content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.">
-                <div class="question-footer">
-                    <span> Team 2 </span>
+                <div class="question-box sudah-terjawab-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status sudah-terjawab">Sudah Terjawab</span>
                 </div>
-                <h3>Question</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.</p>   
             </div>
-            <div class="question" data-team="Team 3" data-title="Question 3" data-content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.">
-                <div class="question-footer">
-                    <span> Team 3 </span>
+            <!-- New Popup for displaying content -->
+            <div class="popup" id="contentPopup">
+                <div class="popup-content">
+                    <span id="closeContentPopup" class="close-btn">&times;</span>
+                    <div class="header-newpopup">
+                        <h4>Submitted Quest</h4>
+                    </div>
+                    <div class="content-wrapper">
+                        <p id="popupTeamName" class="newpopteam">Team A</p>
+                        <p id="popupQuestionText" class="newpopquestion">siapakah saya ini dan dimana?</p>
+                    </div>
+                    <p id="popupAnswerText" class="newpopanswer">kamu ada di uc makassar sekarang. kamu tidak tau siapa semangat!!</p>
                 </div>
-                <h3>Question</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna.</p>   
             </div>
-        </div>
-    </div> 
-
-    <!-- Modal Pop-up -->
-    <div id="question-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3 id="modal-title">Title</h3>
-            <p id="modal-content">Content</p>
-            <textarea id="answer-input" placeholder="Type your answer here..." rows="4" cols="50"></textarea>
-            <button id="submit-answer">Submit</button>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="PanitiaQna.js"></script>
-    <script src="apiDasboard.js"></script>
 </body>
 </html>

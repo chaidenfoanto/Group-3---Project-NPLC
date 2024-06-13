@@ -4,7 +4,7 @@
     --color-default: #35A2DB;
     --color-second: #0067ac;
     --color-white: #fff;
-    --color-body: #ffffff;
+    --color-body: #e4e9f7;
     --color-light: #e0e0e0;
 }
 
@@ -16,20 +16,19 @@
 }
 
 body {
-    background-color: var(--color-body);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* margin-left: 10%; */
 }
 
 .main-content {
     position: relative;
-    background-color: var(--color-white);
+    min-height: 100vh;
+    top: 0;
+    width: calc(100% - 78px);
+    transition: all .5s ease;
+    z-index: 2;
+    margin-left: 80px;
     padding: 20px;
-    border-radius: 8px;
     flex: 1;
-    width: 100%;
 }
 
 header {
@@ -37,155 +36,553 @@ header {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    color: #35A2DB;
+    color: var(--color-default);
 }
 
 header h1 {
-    font-size: 35px;
-    font-weight: 900;
-    margin-left: -1%;
+    margin: 10px;
 }
 
-.container {
+.question-box-container {
     display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.questions-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    flex-wrap: wrap;
     gap: 20px;
-    max-width: 800px;
-    width: 100%;
-    margin-bottom: 30%;
-}
-
-.question {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-}
-
-.add-question {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    border: 2px dashed #64b5f6;
-    cursor: pointer;
-    text-align: center;
-    color: #64b5f6;
+    margin-top: 20px;
 }
 
-.add-icon {
-    font-size: 48px;
-    margin-bottom: 10px;
-}
-
-.question h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.question p {
-    flex: 1;
-    font-size: 14px;
-    color: #666;
-}
-
-.question-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: #999;
-    margin-top: 10px;
-}
-
-.more-options {
-    font-size: 20px;
-    cursor: pointer;
-}
-
-/* Modal Styles */
-.modal {
+.popup {
     display: none;
     position: fixed;
-    z-index: 1001;
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.modal-content {
-    background-color: var(--color-white);
-    margin: 15% auto;
+.popup-content {
+    background-color: #fff;
+    top: 50%;
+    left: calc(50% + 40px);
+    transform: translate(-50%, -50%);
     padding: 20px;
     border: 1px solid #888;
-    width: 70%;
-    height: 70%;
+    border-radius: 20px;
+    width: 90%;
     max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: absolute;
+    text-align: left;
+    transition: all .5s ease;
 }
 
-.close-button {
+.close-btn {
     color: #aaa;
-    float: right;
+    position: absolute;
+    top: 10px;
+    right: 10px;
     font-size: 28px;
     font-weight: bold;
-    margin-top: -2%;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
     cursor: pointer;
 }
 
-#answer-input {
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.popup-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 15px;
+}
+
+.popup-content form label {
+    align-self: flex-start;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.popup-content form input,
+.popup-content form textarea {
     width: 100%;
-    margin-top: 10px;
     padding: 10px;
-    border-radius: 5px;
     border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
     font-size: 14px;
 }
 
-#submit-answer {
-    margin-top: 10px;
+.popup-content form button {
     padding: 10px 20px;
     background-color: var(--color-default);
     color: var(--color-white);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 auto;
+    width: 50%;
+    max-width: 150px;
+}
+
+.popup-content form button:hover {
+    background-color: var(--color-second);
+}
+
+.header-popup h2 {
+    color: var(--color-default);
+    font-size: 24px;
+    border-bottom: 2px solid #dfdfdf;
+    margin-bottom: 20px;
+}
+
+.question-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 240px;
+    height: 220px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--color-white);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.question-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: var(--color-default);
+}
+
+.question-box p {
+    flex-grow: 1;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.status {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-align: right;
+    display: inline-block;
+    width: 90%;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.belum-terjawab {
+    color: red;
+}
+
+.sudah-terjawab {
+    color: green;
+}
+
+#contentPopup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#contentPopup .popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 55%;
+}
+
+#contentPopup .close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
 }
 
-#submit-answer:hover {
+#contentPopup .close-btn:hover,
+#contentPopup .close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#contentPopup .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 14%;
+    margin-bottom: 25px;
+}
+
+.newpopteam {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopteam::before {
+    content: "Team Name";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+.newpopquestion {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopquestion::before {
+    content: "Question";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+.newpopanswer {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopanswer::before {
+    content: "Answer";
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 15px;
+    color: #666;
+}
+
+.header-newpopup h4 {
+    color:#35A2DB; 
+    font-size: 28px;
+    font-weight: bolder;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+#contentPopup .newpopanswer {
+    width: 100%;
+    height: 50%;
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.sidebar.open ~ .main-content .popup-content {
+    left: calc(125px + 50%);
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        margin: 10px auto;
+        font-size: 14px;
+    }
+
+    .question-box-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .question-box {
+        width: 90%;
+    }
+
+    #addQuestionBtn {
+        width: 90%;
+    }
+
+    .popup-content {
+        width: 95%;
+        max-width: 90%;
+    }
+
+    .newpopteam,
+    .newpopquestion,
+    .newpopanswer {
+        width: 100%;
+    }
+
+    .newpopteam::before,
+    .newpopquestion::before,
+    .newpopanswer::before {
+        top: -12px;
+        font-size: 12px;
+    }
+
+    #contentPopup .content-wrapper {
+        flex-direction: column;
+        margin-left: -5%;
+        margin-top: 5%;
+    }
+
+    #contentPopup .newpopteam,
+    #contentPopup .newpopquestion {
+        height: auto;
+        width: 50%;
+        display: inline-block;
+    }
+
+    #contentPopup .newpopquestion {
+        margin-top: -21%;
+        margin-left: 55%;
+    }
+
+    #contentPopup .newpopanswer {
+        height: 50%;
+    }
+}
+
+@media (max-width: 500px) {
+    .popup-content {
+        left: 50%
+    }
+}
+
+.popup-content form .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 14%;
+    margin-bottom: 25px;
+}
+
+#questionPopup .popup-content .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 14%;
+    margin-bottom: 25px;
+}
+
+.newpopteam,
+.newpopquestion,
+.newpopanswer {
+    width: 48%;
+    height: 50px;
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopteam::before,
+.newpopquestion::before,
+.newpopanswer::before {
+    content: attr(data-before);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+#questionPopup .popup-content .newpopteam::before,
+#questionPopup .popup-content .newpopquestion::before,
+#questionPopup .popup-content .newpopanswer::before {
+    content: attr(data-before);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.popup-content form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.popup-content form input,
+.popup-content form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgb(126, 126, 126);;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    margin-top: -8%;
+    font-size: 14px;
+}
+
+.popup-content form button {
+    padding: 10px 20px;
+    background-color: var(--color-default);
+    color: var(--color-white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 auto;
+    width: 50%;
+    max-width: 150px;
+}
+
+.popup-content form button:hover {
     background-color: var(--color-second);
 }
-@media (max-width: 500px) {
-    .header h1 {
-        flex: 1 1 100%;
-        text-align: left;
-        margin-bottom: 10px;
-    }
-    .header {
-        flex-direction: column;
-    }
-    .main-content {
-        margin-left: 0;
-        left: 75px;
-    }
+
+.header-newpopup h4 {
+    color:#35A2DB; 
+    font-size: 28px;
+    font-weight: bolder;
+    margin-bottom: 20px;
 }
+
+#contentPopup .newpopanswer {
+    width: 100%;
+    height: 50%;
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 5%;
+    font-size: 15px;
+    text-align: center;
+    background-color: #fff;
+}
+.newpopteam {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopteam::before {
+    content: "Team Name";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+.newpopquestion {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopquestion::before {
+    content: "Question";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #666;
+}
+.newpopanswer {
+    width: 48%;
+    height: 50px; /* You can adjust this value to suit your needs */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.newpopanswer::before {
+    content: "Answer";
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background-color: #fff;
+    padding: 0 5px;
+    font-size: 15px;
+    color: #666;
+}
+.newpopanswered {
+    width: 60%; /* Lebar elemen */
+    height: 100px; /* Tinggi elemen */
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+

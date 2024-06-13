@@ -130,11 +130,18 @@
             <p>Silahkan menghubungi HOD yang bertanggung jawab untuk menanyakan passwordnya!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
+
+
+        <div class="popup" id="popup-wrong">
+            <p>Oh Tidak, Login Gagal! Silahkan periksa kembali username dan password anda.</p>
+            <button type="button" onclick="closePopup('popup-wrong')">OK</button>
+        </div>      
+
         <div id="loginErrorMessage" class="error-message" style="display: none;"></div>
     </div>
     <div class="popup-overlay" id="popup-overlay"></div>
     <script src="Login.js"></script>
-    <script src="LoginValidation.js"></script>
+    <script src="LoginValidationPanitia.js"></script>
 </body>
 </html>
 

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".sidebar").load("sidebarpanitia.html", function() {
+    $(".sidebar").load("sidebarHod.html", function() {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {
@@ -44,17 +44,7 @@ $(document).ready(function() {
         modal.removeClass("open");
     });
 
-    $("#addBtn, #editBtn").click(function() {
-        $(".datacontainer").show();
-        $(".modal-overlay").show();
-    });
-
-    $("#cancel").click(function() {
-        $(".datacontainer").hide();
-        $(".modal-overlay").hide();
-    });
-
-    $('.datacontainer input, .datacontainer textarea').each(function() {
+    $('.inner-container input, .inner-container textarea, .inner-container select').each(function() {
         // Check if the input is not empty on page load
         if ($(this).val() !== '') {
             $(this).addClass('not-empty');
