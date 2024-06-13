@@ -190,10 +190,11 @@ $(document).ready(function() {
     function closeModal(modal) {
         modal.style.display = 'none';
     }
-
+    
     // Fungsi untuk memulai permainan
     function startGame() {
-        openModal(setTimeModal);
+        startTimer();
+        // openModal(setTimeModal);
     }
 
     // Fungsi untuk menghentikan permainan
@@ -206,14 +207,14 @@ $(document).ready(function() {
     startButton.addEventListener('click', startGame);
     stopButton.addEventListener('click', stopGame);
     
-    setTimeForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const minutes = parseInt(document.getElementById('minutesInput').value, 10);
-        const seconds = parseInt(document.getElementById('secondsInput').value, 10);
+    // setTimeForm.addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //     const minutes = parseInt(document.getElementById('minutesInput').value, 10);
+    //     const seconds = parseInt(document.getElementById('secondsInput').value, 10);
         
-        closeModal(setTimeModal);
-        startTimer(minutes, seconds);
-    });
+    //     closeModal(setTimeModal);
+    //     startTimer(minutes, seconds);
+    // });
     
     // Close modals when clicking the close button
     document.querySelectorAll('.modal .close').forEach(function(closeButton) {
