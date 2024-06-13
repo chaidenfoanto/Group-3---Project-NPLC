@@ -81,8 +81,8 @@ $(document).ready(function() {
                             <td>0</td>
                         </tr>
                     </table>
-                    </div>
-                        `
+                </div>
+                    `
                     cardsContainer.appendChild(cardList);
                 });
             } else {
