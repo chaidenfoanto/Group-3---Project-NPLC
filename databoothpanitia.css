@@ -279,4 +279,17 @@
             display: block;
         }
 
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: none;
+            position: absolute;
+            top: calc(100% + 5px); /* Adjust distance from input */
+            left: 0;
+            z-index: 1; /* Ensure it's above other content */
+        }
+        
+        .error-message.visible {
+            display: block;
+        }
         
