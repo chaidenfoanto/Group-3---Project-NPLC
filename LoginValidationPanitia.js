@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
     const domain = "http://localhost:8080"
 
+    const popupOverlay = document.getElementById('popup-overlay');
+
+    window.openPopup = function (id) {
+        const popup = document.getElementById(id);
+        popup.classList.add("open-popup");
+        popupOverlay.classList.add("active");
+        popup.style.zIndex = "1500";
+        popupOverlay.style.zIndex = "1000";
+    }
+
+    window.closePopup = function (id) {
+        const popup = document.getElementById(id);
+        popup.classList.remove("open-popup");
+        popupOverlay.classList.remove("active");
+        popup.style.zIndex = "100";
+        popupOverlay.style.zIndex = "100";
+    }
+
     function showErrorMessage(inputElement, message) {
         const errorMessageElement = document.getElementById(inputElement.id + 'Error');
         errorMessageElement.textContent = message;
@@ -33,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
     const loginForm = document.querySelector('.form-container.log-in form');
 
     loginForm.addEventListener('submit', async (event) => {
@@ -56,13 +73,32 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok && result.message === "Login Success") {
                 const token = result.data.token;
                 setCookie("Token", token, 365);
-                window.location.href = "dashboardplayer.html";
+                window.location.href = "DashboardHod.html";
             } else {
                 console.log('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
+                openPopup('popup-wrong');
             }
+
+
+            response = await fetch(domain + '/api/panitia/'+ result.data.idUser, {
+                method: 'GET',
+                headers: {
+                    "Token": token
+                }
+            });
+
+            result = await response.json();
+            switch(result.data.divisi){
+                case ""
+            }
+
+
         } catch (error) {
             showErrorMessage('Login gagal: Harap isi username dan password' );
         }
+        popupOverlay.addEventListener('click', function() {
+            closePopup('popup-wrong');
+        });
     });
 
     
