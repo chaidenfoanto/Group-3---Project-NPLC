@@ -270,7 +270,7 @@
     .sidebar.open .fa-user::before {
         content: "\f007";
     }
-    
+
     .sidebar .profile #log_out {
         display: none;
     }

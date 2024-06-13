@@ -16,6 +16,11 @@ $(document).ready(function() {
       }
   });
 
+  $('#toggle-btn').on('click', function() {
+    $('.sidebar').toggleClass('open');
+    $(this).toggleClass('burger-icon');
+});
+
     $('#addGameButton').on('click', function() {
         window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
     });
