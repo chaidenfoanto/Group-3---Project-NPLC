@@ -16,6 +16,17 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+          closeSidebar();
+        }
+    });
+
+    function closeSidebar() {
+        $('.sidebar').removeClass('open');
+        // $('.main-content').removeClass('shift');
+    }
+
     function setCurrentTime(inputId) {
         var now = new Date();
         var hours = String(now.getHours()).padStart(2, '0');
@@ -61,6 +72,22 @@ $(document).ready(function() {
     }
 
     checkHistory();
+
+    function checkTeams() {
+        const team1 = $('#team1').val();
+        const team2 = $('#team2').val();
+        if (team1 && team2) {
+            $('#startButton').prop('disabled', false);
+        } else {
+            $('#startButton').prop('disabled', true);
+        }
+    }
+
+    // Check on page load
+    checkTeams();
+
+    // Check when either select element changes
+    $('#team1, #team2').on('change', checkTeams);
 
     $('.matchup-container select, .modal-content select, .modal-content input').each(function() {
         // Check if the input is not empty on page load

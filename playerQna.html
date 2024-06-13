@@ -8,24 +8,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="playerQna.css">
     <link rel="stylesheet" href="sidebarplayer.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>        
-    <div class="container">
+<body>
+    <div class="main-container">
         <div class="sidebar"></div>
-            <div class="main-content">
-                <header>
-                    <h1>Question & Answer</h1>
-                </header> 
+        <div class="main-content">
+            <header>
+                <h1>Question & Answer</h1>
+            </header>
+            <div class="question-box-container">
+                <button id="addQuestionBtn">Add Question</button>
+                <div class="question-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status belum-terjawab">Belum Terjawab</span>
+                </div>
+                <div class="question-box sudah-terjawab-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status sudah-terjawab">Sudah Terjawab</span>
+                </div>
             </div>
-        <div id="questionsContainer">
-            <div class="sticky-input-container">
-                <input type="text" id="questionInput" placeholder="Tuliskan kendala dikolom ini">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAA2tJREFUWEftmEtsDHEcx7+/2W20dfAIB9JKsK2WxKs7WxKEIwmRSCoV202FCok0EdIHeirqeSBEPbuzqSIcnISEOkiqL0SEdmd6YOORegTxqG53fjJrNWs6M1vtbu3BnDb7n/19P/t7zxCS7KIk48F/oFgRGeghZhJ9sodh625zT7sBIo5lJJ7nA4BcXsXDxHURET+Ia0ZnvPTdXbasL57CZrYGADm98gYinNP9IMDA0ZTU1NqmgszviQQbAJRf35WlhlS/ieg7MB8LqinHHxVP/ZgIMMMqEyXlFcCTIoKa8Fid+DcAp1UKHmx3z3wdTzBDIJdXucjEhZoQgbeohE/EVAZgjk68FwwpJNCBB26HEg8wQyCnTykh5towEFNDi8exTvvs9CrLSeByMJboxFUGroGxv82T9XA4YIZAeRc6cwSb8Cxi+E1rUdbv8IW/ckldTmZ1Dwgrw06Muphwy6ZSTbPH0TgUMNNOLUryewDjNaNMoZw2d06nXmC+T3EIzHsI0MKbEn1OQDOIalrWT7/+N73MCugSgLVhEaKdrW7HYbN/LJ5XMmHnCgDFAFJ193UQU036lED9YHqZOZBX3grCiSjjdwQBu5rXZ903A1tU/3xcb19vKRO2/fZu1L0vAD5iT007Y9XLzIHq5FkQ8MRAPCZYXu2rdEr7WkLAdgCZOhuWvcxy2ouS/BbABCOPMNDILFS1e6bfM/PY0sZG+5dARiEBlQByjHoZcV91iydXy9df2WFVCaIkXwWwxrJamG8LNtptFUowk0vqWs3gKhDm/lGV4MdtRdn9/c0ayCtfBqHACmgwntKAnJKySiBUMJA/dCBJ7gYw0QTopspCdayQfQtkeBjYYRQyJpxK+dG7t2njrA8xQyYOI6kXXgmkBXt6Nsc1qUV92Q8iVxJb9lH5Q+CylqLsg2a5NK+hY7I9aC8DuMSgMfqJad/wG2PU6FBDam578YwOPZDT1zEDbKtM+OhYIPlzQ6CnEYB/P1xFn7wFjJO/gPhSa1F2eDdySl0rCFwO8GKdtxK7foiS3D9YtQUNwGcVKCPQbB3IyCxoYnT/YXwCYYy+7Ws9hBE8nPAVVrec6fN45Jd8UVI2AXxaRxIgpkO2tFFnR/wxKOkeFMOD0KeUAoI/KR6lLVeNETj8/zomlpOTzkM/AbHXpjSbmyggAAAAAElFTkSuQmCC"/>    </div>
+            <div class="popup" id="popup">
+                <div class="popup-content">
+                    <span id="closePopup" class="close-btn">&times;</span>
+                    <div class="header-popup">
+                        <h2>Welcome Players</h2>
+                    </div>
+                    <form id="questionForm">
+                <div class="content-wrapper">
+                    <div class="form-group">
+                        <input type="text" id="popupTeamNameInput" class="newpopteam" placeholder="Team Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="popupQuestionTextInput" class="newpopquestion" placeholder="Question">
+                    </div>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+
+                </div>
+            </div>
+            <!-- New Popup for displaying content -->
+            <div class="popup" id="contentPopup">
+                <div class="popup-content">
+                    <span id="closeContentPopup" class="close-btn">&times;</span>
+                    <div class="header-newpopup">
+                        <h4>Submitted Quest</h4>
+                    </div>
+                    <div class="content-wrapper">
+                        <p id="popupTeamName" class="newpopteam">Team A</p>
+                        <p id="popupQuestionText" class="newpopquestion">siapakah saya ini dan dimana?</p>
+                    </div>
+                    <p id="popupAnswerText" class="newpopanswer">kamu ada di uc makassar sekarang. kamu tidak tau siapa semangat!!</p>
+                </div>
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="playerQna.js"></script>
-    <script src="apiDasboard.js"></script>
 </body>
 </html>

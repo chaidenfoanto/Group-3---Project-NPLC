@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panitia Single Dashboard</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="importcsv.css">
+    <link rel="stylesheet" href="sidebarketua.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="importcsv.js"></script>
+    <script src="sidebarketua.js"></script>
+        
+    <div class = "container">    
+<div class="sidebar"></div>
+  <div class="main-content">
+    <header>
+        <h1>Selamat Datang Ketua Panitia!</h1>
+    </header>
+    <h3>Import your Committee Data</h3>
+        <div class="file-upload-container">
+            <label for="csvFileInput" class="custom-file-upload">
+                Choose File
+            </label>
+            <input id="csvFileInput" type="file" accept=".csv">
+            <span class="file-name">No file chosen</span>
+            <button id="uploadButton">Upload CSV</button>
+        </div>
+        <div id="csvDataContainer">
+            <!-- CSV data will be displayed here -->
+        </div>
+  </div>
+</div>
+</body>

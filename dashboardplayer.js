@@ -15,6 +15,17 @@ $(document).ready(async function() {
         }
     });
 
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+          closeSidebar();
+        }
+    });
+
+    function closeSidebar() {
+        $('.sidebar').removeClass('open');
+        // $('.main-content').removeClass('shift');
+    }
+
     const openBtn = $(".game-card");
     const closeBtn = $("#closePopup");
     const modal = $(".gamedetails");
@@ -25,6 +36,16 @@ $(document).ready(async function() {
 
     closeBtn.click(function() {
         modal.removeClass("open");
+    });
+
+    $(".game-card").click(function() {
+        $(".gamedetails").show();
+        $(".modal-overlay").show();
+    });
+
+    $("#closePopup").click(function() {
+        $(".gamedetails").hide();
+        $(".modal-overlay").hide();
     });
 
 });

@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $(".sidebar").load("sidebarplayer.html", function() {
         const toggleBtn = $("#toggle-btn");
-        const logo = $(".logo_details .logo").eq(1); // Select the second logo
+        const logo = $(".logo_details .logo").eq(1);
         toggleBtn.on("click", function() {
             $(".sidebar").toggleClass("open");
             menuBtnChange();
@@ -15,6 +15,17 @@ $(document).ready(function() {
             }
         }
     });
+
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+          closeSidebar();
+        }
+    });
+
+    function closeSidebar() {
+        $('.sidebar').removeClass('open');
+        // $('.main-content').removeClass('shift');
+    }
 
     const dice = $('.dice');
     const rollBtn = $('.roll');
@@ -82,6 +93,16 @@ $(document).ready(function() {
 
     closeresult.click(function() {
         $(".gacharesult").removeClass("open");
+    });
+
+    $("#rollButton").click(function() {
+        $(".container-dice").show();
+        $(".modal-overlay").show();
+    });
+
+    $("#closeResult, #closeGacha").click(function() {
+        $(".container-dice").hide();
+        $(".modal-overlay").hide();
     });
 });
 
