@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Load the sidebar and handle the toggle button
-    $(".sidebar").load("sidebarplayer.html", function() {
+    $(".sidebar").load("sidebarpanitia.html", function() {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {

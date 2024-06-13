@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $(".sidebar").load("sidebarpanitia.html", function() {
+  $(".sidebar").load("sidebarHod.html", function() {
       const toggleBtn = $("#toggle-btn");
       const logo = $(".logo_details .logo").eq(1); // Select the second logo
       toggleBtn.on("click", function() {
@@ -15,6 +15,10 @@ $(document).ready(function() {
           }
       }
   });
+
+    $('#addGameButton').on('click', function() {
+        window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
+    });
 
   function adjustMainContent() {
       if ($(".sidebar").hasClass("open")) {
@@ -48,18 +52,18 @@ $(document).ready(function() {
   });
 
   $(".edit-btn").click(function() {
-      $("#popup").css("display", "block");
+    window.location.href = 'databoothpanitiahod.html';
   });
 
-  $(".close-btn").click(function() {
-      $("#popup").css("display", "none");
-  });
+//   $(".close-btn").click(function() {
+//       $("#popup").css("display", "none");
+//   });
 
-  $(window).click(function(event) {
-      if ($(event.target).is("#popup")) {
-          $("#popup").css("display", "none");
-      }
-  });
+//   $(window).click(function(event) {
+//       if ($(event.target).is("#popup")) {
+//           $("#popup").css("display", "none");
+//       }
+//   });
 
   adjustMainContent();
 });
