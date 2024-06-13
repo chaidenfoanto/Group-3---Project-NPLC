@@ -14,6 +14,10 @@ $(document).ready(function() {
                 logo.show();
             }
         }
+
+        $('#profileDetails').on('click', function() {
+            window.location.href = 'profiluser.html'; // Replace with the actual profile user page
+        });
     });
 
     $(document).on('click', function (e) {
