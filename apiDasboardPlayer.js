@@ -25,6 +25,29 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+    for (let i = 0; i < cookieArr.length; i++) {
+      let cookiePair = cookieArr[i].split("=");
+      if (name == cookiePair[0].trim()) {
+        return decodeURIComponent(cookiePair[1]);
+      }
+    }
+    return null;
+  }
+
+  function setCookie(name, value, daysToLive) {
+    let cookie = name + "=" + encodeURIComponent(value);
+    if (typeof daysToLive === "number") {
+      cookie += "; max-age=" + (daysToLive * 24 * 60 * 60) + "; path=/";
+      document.cookie = cookie;
+    }
+  }
+
+  function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
+  }
+
   function fetchBoothGames() {
     const listContainer = document.getElementsByClassName("games-list")[0];
     fetch(domain + 'api/boothgames', {
@@ -97,24 +120,5 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteCookie("Token");
         window.location.href = "Login.html";
       });
-  }
-
-  function getCookie(name) {
-    let cookieArr = document.cookie.split(";");
-    for (let i = 0; i < cookieArr.length; i++) {
-      let cookiePair = cookieArr[i].split("=");
-      if (name == cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1]);
-      }
-    }
-    return null;
-  }
-
-  function setCookie(name, value, daysToLive) {
-    let cookie = name + "=" + encodeURIComponent(value);
-    if (typeof daysToLive === "number") {
-      cookie += "; max-age=" + (daysToLive * 24 * 60 * 60) + "; path=/";
-      document.cookie = cookie;
-    }
   }
 });

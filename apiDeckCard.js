@@ -43,6 +43,10 @@ $(document).ready(function() {
             document.cookie = cookie;
         }
     }
+
+    function deleteCookie(name) {
+        document.cookie = name + '=; Max-Age=-99999999;';
+    }
       
     // Function to fetch deck cards data
     function fetchDeckCard() {
@@ -55,8 +59,53 @@ $(document).ready(function() {
         .then(data => {
             if (!data.error) {
                 data.body.forEach(cardData => {
-                    const cardElement = createCardElement(cardData);
-                    cardsContainer.appendChild(cardElement);
+                    var cardlist = `
+                    <div class="card" id="doublePoint">
+                  <img src="img/kartu1.png" alt="Double Point" class="card-image">
+                  <p><b>Double Point</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single. Jika tim berhasil mendapatkan bintang
+                    <span class="dots">...</span>
+                    <span class="more">(bintang 1-3), maka point x2. Jika tim gagal (bintang 0), maka point -30.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <table>
+                    <tr>
+                        <td>Total Owned</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Total Used</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+              </div>
+              <div class="card" id="time+3">
+                  <img src="img/kartu2.png" alt="Time +3" class="card-image">
+                  <p><b>Time +3</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It.
+                    <span class="dots">...</span>
+                    <span class="more">Tim mendapatkan tambahan waktu 3 Menit dari durasi normal permainan.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <table>
+                    <tr>
+                        <td>Total Owned</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Total Used</td>
+                        <td>:</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+              </div>
+                    `
+                    cardsContainer.appendChild(cardList);
                 });
             } else {
                 console.log('Error fetching cards:', data.message);
@@ -66,40 +115,4 @@ $(document).ready(function() {
             console.error('Error occurred while fetching cards:', error);
         });
     }
-
-    // Function to create card HTML element
-    function createCardElement(cardData) {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.id = cardData.id; // Assuming cardData has an id field
-
-        // Set image
-        const img = document.createElement('img');
-        img.src = cardData.image_url; // Replace with actual image URL field from API
-        img.alt = cardData.name; // Replace with actual alt text
-        img.classList.add('card-image');
-        card.appendChild(img);
-
-        // Set card description
-        const description = document.createElement('p');
-        description.innerHTML = `<b>${cardData.name}</b><br>${cardData.description}`;
-        description.classList.add('card-description');
-        card.appendChild(description);
-
-        // Set total owned
-        const totalOwned = document.createElement('td');
-        totalOwned.textContent = cardData.total_owned;
-        totalOwned.classList.add('total-owned');
-        card.querySelector('.total-owned').appendChild(totalOwned);
-
-        // Set total used
-        const totalUsed = document.createElement('td');
-        totalUsed.textContent = cardData.total_used;
-        totalUsed.classList.add('total-used');
-        card.querySelector('.total-used').appendChild(totalUsed);
-
-        return card;
-    }
-
-    fetchDeckCard(); // Fetch deck cards when document is ready
 });
