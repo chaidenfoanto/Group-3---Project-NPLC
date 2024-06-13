@@ -37,15 +37,9 @@
                         <h2>Welcome Players</h2>
                     </div>
                     <form id="questionForm">
-                        <div class="input-group">
-                            <label for="Teamname">Team Name</label>
-                            <input type="text" id="Teamname" required>
-                            <span class="error-message" id="TeamnameError"></span>
-                        </div>
-                        <div class="input-group">
-                            <label for="Question">Question</label>
-                            <textarea id="Question" required></textarea>
-                            <span class="error-message" id="QuestionError"></span>
+                        <div class="content-wrapper">
+                            <p id="popupTeamName" class="newpopteam"></p>
+                            <p id="popupQuestionText" class="newpopquestion"></p>
                         </div>
                         <button type="submit">Submit</button>
                     </form>

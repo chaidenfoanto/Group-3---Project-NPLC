@@ -54,17 +54,19 @@ header {
 
 header h1 {
     margin: 10px;
-    margin-right: 55%;
+    flex: 1;
 }
+
 .timer {
     align-items: right;
     padding: 10px 20px 10px 20px;
     border-radius: 10px;
     border: 0.5px solid #9a9a9a;
     margin: 10px;
-    background-color: #35A2DB;
+    background-color: #B57F80;
     color: white;
 }
+
 .timer .timeleft {
     font-size: xx-large;
     text-align: center;
@@ -170,6 +172,39 @@ select {
     background-color: white;
 }
 
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    header h1 {
+        width: 100%;
+        text-align: left;
+        font-size: 35px;
+    }
+    .timer {
+        padding: 10px;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .timer .timeleft {
+        font-size: larger;
+    }
+    .inner-container {
+        width: 80%;
+    }
+    .input-group {
+        flex: 1 100%;
+        padding: 10px 0;
+    }
+    #Question {
+        height: 100px;
+    }
+    .time {
+        flex: 1 1 100%;
+    }
+}
+
 @media (max-width: 500px) {
     header h1 {
         font-size: 28px;
@@ -178,7 +213,10 @@ select {
         margin-left: 0;
         left: 75px;
     }
-
+    .inner-container {
+        width: 90%;
+        margin-top: 20%;
+    }
     .inner-container input,
     .inner-container select,
     .inner-container textarea,
@@ -188,33 +226,25 @@ select {
     .inner-container button {
         font-size: 12px;
     }
-
     .btn {
         padding: 10px 20px;
     }
+    .inner-container button {
+       width: 150%;;
+    }
 }
 
-@media (max-width: 768px) {
-    h1 {
-        font-size: 35px;
+@media (max-width: 375px) {
+    .sidebar {
+        flex-direction: row;
+        height: auto;
+        width: 100%;
+        position: fixed;
+        justify-content: space-around;
     }
-    .card {
-        font-size: 15px;
-    }
-    .form-group {
-        flex-direction: column;
-    }
-
-    .input-group {
-        flex: 1 100%;
-        padding: 10px 0;
-    }
-
-    #Question {
-        height: 100px;
-    }
-    .time {
-        flex: 1 1 100%;
+    .points, .timer {
+        font-size: 14px;
+        margin: 2px;
     }
 }
 

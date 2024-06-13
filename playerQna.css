@@ -352,6 +352,12 @@ header h1 {
     text-align: center;
     background-color: #fff;
 }
+.newpopquestion , .newpopteam{
+    width: 90%;
+    text-align: center;
+    justify-content: center;
+    margin-left: 5%;
+}
 @media (max-width: 768px) {
     .main-content {
         margin-left: 0;

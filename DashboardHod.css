@@ -266,6 +266,7 @@ select.not-empty + .placeholder {
   color: #35A2DB;
   font-weight: 900;
   font-size: 30px;
+  text-align: center;
 }
 
 .input-popup {
@@ -319,7 +320,8 @@ select.not-empty + .placeholder {
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin: auto;
-  width: 20%;
+  margin-left: 35%;
+  width: 30%;
   margin-top: 5%;
 }
 
@@ -423,7 +425,7 @@ select.not-empty + .placeholder {
     padding: 8px 16px;
     width: 50%;
     height: auto;
-    margin-left: auto;
+    margin-left: 25%;
     margin-right: auto;
   }
 }

@@ -16,37 +16,52 @@
             <header>
                 <h1>HOD Question & Answer</h1>
             </header>
-                  
-            </div>
-            <div class="popup-box">
-                <div class="popup">
-                  <div class="content">
-                    <header>
-                      <p>Answer Question</p>
-                      <span class="close-btn">&times;</span>    
-                    </header>
-                    <form action="#">
-                      <div class="form-row">
-                        <div class="row-question">
-                          <label>Team Name</label>
-                          <textarea id="team-name" readonly></textarea>
-                        </div>
-                        <div class="row-question">
-                          <label>Question</label>
-                          <textarea id="question-text" readonly></textarea>
-                        </div>
-                      </div>
-                      <div class="row-answer">
-                        <label>Answer</label>
-                        <textarea id="answer-text" spellcheck="false"></textarea>
-                      </div>
-                      <button id="submit-answer">Submit Answer</button>
-                    </form>
-                  </div>
+            <div class="question-box-container">
+                <div class="question-box belum-terjawab-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status belum-terjawab">Belum Terjawab</span>
                 </div>
-              </div>
+                <div class="question-box sudah-terjawab-box">
+                    <h3>Team A</h3>
+                    <p>siapakah saya ini dan dimana?</p>
+                    <span class="status sudah-terjawab">Sudah Terjawab</span>
+                </div>
+            </div>
+            <!-- New Popup for displaying content -->
+            <div class="popup" id="contentPopup">
+                <div class="popup-content">
+                    <span id="closeContentPopup" class="close-btn">&times;</span>
+                    <div class="header-newpopup">
+                        <h4>Submitted Quest</h4>
+                    </div>
+                    <div class="content-wrapper">
+                        <p id="popupTeamName" class="newpopteam">Team A</p>
+                        <p id="popupQuestionText" class="newpopquestion">siapakah saya ini dan dimana?</p>
+                    </div>
+                    <p id="popupAnswerText" class="newpopanswer">kamu ada di uc makassar sekarang. kamu tidak tau siapa semangat!!</p>
+                </div>
+            </div>
+            
+            <div class="popup" id="questionPopup">
+                <div class="popup-content">
+                    <span id="closeQuestionPopup" class="close-btn">&times;</span>
+                    <div class="header-newpopup">
+                        <h4>Welcome Chaiden</h4>
+                    </div>
+                    <form id="questionForm">
+                        <div class="content-wrapper">
+                            <p id="popupTeamName" class="newpopteam">Team A</p>
+                            <p id="popupQuestionText" class="newpopquestion">siapakah saya ini dan dimana?</p>
+                        </div>
+                         <!-- Input untuk jawaban -->
+                         <textarea id="popupAnswerInput" class="newpopanswer" placeholder="Masukkan jawaban..."></textarea>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="HodQna.js"></script>
 </body>
