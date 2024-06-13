@@ -101,13 +101,17 @@ header h1 {
 .popup-content {
     background-color: #fff;
     padding: 20px;
+    top: 50%;
+    left: calc(50% + 40px);
+    transform: translate(-50%, -50%);
     border: 1px solid #888;
     border-radius: 20px;
-    width: 90%;
+    width: 70%;
     max-width: 500px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: relative;
+    position: absolute;
     text-align: left;
+    transition: all .5s ease;
 }
 
 .close-btn {
@@ -385,6 +389,10 @@ header h1 {
     color: #666;
 }
 
+.sidebar.open ~ .main-content .popup-content {
+    left: calc(125px + 50%);
+}
+
 
 @media (max-width: 768px) {
     .main-content {
@@ -409,8 +417,7 @@ header h1 {
     }
 
     .popup-content {
-        width: 95%;
-        max-width: 90%;
+        max-width: 80%;
     }
 
     .newpopteam,
@@ -449,7 +456,13 @@ header h1 {
     }
     .form-group input.newpopteam,
     .form-group input.newpopquestion {
-        width: 100%;
+        width: 90%;
+    }
+}
+
+@media (max-width: 500px) {
+    .popup-content {
+        left: 50%
     }
 }
 

@@ -257,13 +257,20 @@
     width: 50px;
 }
 
-.sidebar.open ~ .main-content {
+.sidebar.open ~ .main-content{
     transition: all .5s ease;
-    left: 170px;
+    left:170px;
     width: calc(100% - 250px);
 }
 
 @media (max-width: 500px) {
+    .sidebar .fa-user::before {
+        content: "";
+    }
+    .sidebar.open .fa-user::before {
+        content: "\f007";
+    }
+    
     .sidebar .profile #log_out {
         display: none;
     }

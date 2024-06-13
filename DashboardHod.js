@@ -20,36 +20,36 @@ $(document).ready(function() {
         window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
     });
 
-  function adjustMainContent() {
-      if ($(".sidebar").hasClass("open")) {
-          $(".main-content").css({
-              "margin-left": "250px",
-              "width": "calc(100% - 250px)"
-          });
-      } else {
-          $(".main-content").css({
-              "margin-left": "80px",
-              "width": "calc(100% - 80px)"
-          });
-      }
-  }
+//   function adjustMainContent() {
+//       if ($(".sidebar").hasClass("open")) {
+//           $(".main-content").css({
+//               "margin-left": "250px",
+//               "width": "calc(100% - 250px)"
+//           });
+//       } else {
+//           $(".main-content").css({
+//               "margin-left": "80px",
+//               "width": "calc(100% - 80px)"
+//           });
+//       }
+//   }
 
-  $(window).resize(function() {
-      if ($(window).width() <= 768) {
-          $(".main-content").css({
-              "margin-left": "0",
-              "width": "100%"
-          });
-          if ($(".sidebar").hasClass("open")) {
-              $(".main-content").css({
-                  "margin-left": "250px",
-                  "width": "calc(100% - 250px)"
-              });
-          }
-      } else {
-          adjustMainContent();
-      }
-  });
+//   $(window).resize(function() {
+//       if ($(window).width() <= 768) {
+//           $(".main-content").css({
+//               "margin-left": "0",
+//               "width": "100%"
+//           });
+//           if ($(".sidebar").hasClass("open")) {
+//               $(".main-content").css({
+//                   "margin-left": "250px",
+//                   "width": "calc(100% - 250px)"
+//               });
+//           }
+//       } else {
+//           adjustMainContent();
+//       }
+//   });
 
   $(".edit-btn").click(function() {
     window.location.href = 'databoothpanitiahod.html';

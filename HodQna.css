@@ -321,6 +321,10 @@ header h1 {
     text-align: center;
     background-color: #fff;
 }
+
+.sidebar.open ~ .main-content #contentPopup {
+    left: calc(125px + 50%);
+}
 @media (max-width: 768px) {
     .main-content {
         margin-left: 0;

@@ -68,14 +68,18 @@ header h1 {
 
 .popup-content {
     background-color: #fff;
+    top: 50%;
+    left: calc(50% + 40px);
+    transform: translate(-50%, -50%);
     padding: 20px;
     border: 1px solid #888;
     border-radius: 20px;
     width: 90%;
     max-width: 500px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: relative;
+    position: absolute;
     text-align: left;
+    transition: all .5s ease;
 }
 
 .close-btn {
@@ -321,13 +325,15 @@ header h1 {
     text-align: center;
     background-color: #fff;
 }
-@media (max-width: 768px) {
-    .main-content {
-        margin-left: 0;
-    }
 
+.sidebar.open ~ .main-content .popup-content {
+    left: calc(125px + 50%);
+}
+
+@media (max-width: 768px) {
     header h1 {
         margin: 10px auto;
+        font-size: 14px;
     }
 
     .question-box-container {
@@ -383,6 +389,13 @@ header h1 {
         height: 50%;
     }
 }
+
+@media (max-width: 500px) {
+    .popup-content {
+        left: 50%
+    }
+}
+
 .popup-content form .content-wrapper {
     display: flex;
     justify-content: space-between;
@@ -566,6 +579,7 @@ header h1 {
     position: relative;
     margin-bottom: 20px;
 }
+
 
 
 

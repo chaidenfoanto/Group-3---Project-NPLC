@@ -340,9 +340,10 @@
             }
             .gamedetails {
                 width: 70%;
+                left: calc(50%);
             }
 
             .sidebar.open ~ .main-content .gamedetails {
-                left: calc(50% + 40px)
+                left: calc(50%);
             }
         }
