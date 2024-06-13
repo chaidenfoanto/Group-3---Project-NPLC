@@ -4,6 +4,7 @@ $(document).ready(async function() {
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {
             $(".sidebar").toggleClass("open");
+            updateLogo();
             menuBtnChange();
         });
         function menuBtnChange() {
@@ -23,6 +24,7 @@ $(document).ready(async function() {
 
     function closeSidebar() {
         $('.sidebar').removeClass('open');
+        updateLogo();
         // $('.main-content').removeClass('shift');
     }
 

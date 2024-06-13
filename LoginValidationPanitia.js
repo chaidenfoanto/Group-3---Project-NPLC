@@ -73,24 +73,23 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok && result.message === "Login Success") {
                 const token = result.data.token;
                 setCookie("Token", token, 365);
-                window.location.href = "DashboardHod.html";
+                switch(result.data.role){
+                    case "ADMIN" :
+                        window.location.href = "DashboardHod.html";
+                        break;
+                    case "KETUA" :
+                        window.location.href = "HodStartGame.html"
+                    case "PANITIA" :
+                        window.location.href = "HodStartGame.html"
+                }
+
+                // window.location.href = "DashboardHod.html";
             } else {
                 console.log('Login gagal: ' + (result.message || 'Periksa kembali username dan password Anda.'));
                 openPopup('popup-wrong');
             }
 
 
-            response = await fetch(domain + '/api/panitia/'+ result.data.idUser, {
-                method: 'GET',
-                headers: {
-                    "Token": token
-                }
-            });
-
-            result = await response.json();
-            switch(result.data.divisi){
-                case ""
-            }
 
 
         } catch (error) {
