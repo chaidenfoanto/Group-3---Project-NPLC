@@ -131,6 +131,7 @@ header h1 {
 .startButton:hover {
   background-color: #2c8ec1;
 }
+
 .modal {
   display: none;
   position: fixed;
