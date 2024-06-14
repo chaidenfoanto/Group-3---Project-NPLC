@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
@@ -20,8 +19,7 @@ public class Players implements Serializable {
     @Column(name = "nama", length = 50, nullable = false)
     private String nama;
 
-    @Lob
-    @Column(name = "foto")
+    @Column(name = "foto",  columnDefinition = "BLOB", nullable = false)
     private byte[] foto;
 
     @ManyToOne

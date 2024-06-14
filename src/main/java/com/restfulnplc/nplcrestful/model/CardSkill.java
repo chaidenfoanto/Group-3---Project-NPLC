@@ -3,7 +3,6 @@ package com.restfulnplc.nplcrestful.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,15 +16,13 @@ public class CardSkill {
     @Column(name = "namakartu", length = 20, nullable = false)
     private String namaKartu;
 
-    @Lob
-    @Column(name = "rules", nullable = false)
+    @Column(name = "rules", columnDefinition = "TINYTEXT",nullable = false)
     private String rules;
 
     @Column(name = "totalkartu", nullable = false)
     private int totalKartu;
 
-    @Lob
-    @Column(name = "gambarkartu")
+    @Column(name = "gambarkartu",  columnDefinition = "BLOB", nullable = false)
     private byte[] gambarKartu;
 
 

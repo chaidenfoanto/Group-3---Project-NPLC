@@ -46,8 +46,7 @@ public class Boothgames {
     @Column(name = "durasipermainan", nullable = false)
     private Time durasiPermainan;
 
-    @Lob
-    @Column(name = "fotobooth", nullable = false)
+    @Column(name = "fotobooth", columnDefinition = "BLOB", nullable = false)
     private byte[] fotobooth;
 
 
