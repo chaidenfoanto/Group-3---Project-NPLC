@@ -56,7 +56,8 @@ public class BoothgamesController {
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
-                            "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                            "durasiPermainan", boothgame.getDurasiPermainan(),
+                            "fotoBooth", boothgame.getFotoBooth())).collect(Collectors.toList()));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -101,7 +102,8 @@ public class BoothgamesController {
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
-                            "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                            "durasiPermainan", boothgame.getDurasiPermainan(),
+                            "fotoBooth", boothgame.getFotoBooth())).collect(Collectors.toList()));
                 } else {
                     response.setMessage("No Boothgames Found");
                     response.setError(true);
@@ -148,7 +150,8 @@ public class BoothgamesController {
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
-                            "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                            "durasiPermainan", boothgame.getDurasiPermainan(),
+                            "fotoBooth", boothgame.getFotoBooth())).collect(Collectors.toList()));
                 } else {
                     response.setMessage("Boothgame Not Found");
                     response.setError(true);
@@ -196,7 +199,8 @@ public class BoothgamesController {
                                 "sopGame", boothgame.getSopGames(),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),
-                                "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                                "durasiPermainan", boothgame.getDurasiPermainan(),
+                                "fotoBooth", boothgame.getFotoBooth())).collect(Collectors.toList())); //update
                     } else {
                         response.setMessage("Boothgame Not Found");
                         response.setError(true);

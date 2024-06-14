@@ -46,6 +46,10 @@ public class Boothgames {
     @Column(name = "durasipermainan", nullable = false)
     private Time durasiPermainan;
 
+    @Lob
+    @Column(name = "fotobooth", nullable = false)
+    private byte[] fotobooth;
+
 
     public String getIdBooth() {
         return this.idBooth;
@@ -111,4 +115,11 @@ public class Boothgames {
         this.durasiPermainan = durasiPermainan;
     }
     
+    public byte[] getFotoBooth() {
+        return this.fotobooth;
+    }
+
+    public void setFotoBooth(byte[] fotobooth) {
+        this.fotobooth = fotobooth;
+    }
 }
