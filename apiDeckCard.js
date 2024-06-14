@@ -51,7 +51,7 @@ $(document).ready(function() {
     // Function to fetch deck cards data
     function fetchDeckCard() {
         const cardsContainer = document.querySelector('.cards-list');
-        fetch(domain + 'api/listkartu', {
+        fetch(domain + 'api/cardskill', {
             method: 'GET',
             headers: { 'Token': getCookie('Token') }
         })
