@@ -117,4 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.cookie = cookie;
     }
   }
+
+  fetchSession();
 });
