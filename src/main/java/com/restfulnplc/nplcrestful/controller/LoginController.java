@@ -22,6 +22,7 @@ import com.restfulnplc.nplcrestful.util.Response;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.restfulnplc.nplcrestful.model.Login;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -38,8 +39,13 @@ public class LoginController {
         try {
             Optional<Login> sessionOptional = loginService.LoginPanitia(loginDTO);
             if (sessionOptional.isPresent()) {
+                Login sessionData = sessionOptional.get();
                 response.setMessage("Login Success");
-                response.setData(sessionOptional.get());
+                response.setData(Map.of(
+                    "userId", sessionData.getIdUser(),
+                    "token", sessionData.getToken(),
+                    "role", sessionData.getRole().toString()
+                ));
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
             } else {
@@ -66,8 +72,13 @@ public class LoginController {
         try {
             Optional<Login> sessionOptional = loginService.LoginPlayer(loginDTO);
             if (sessionOptional.isPresent()) {
+                Login sessionData = sessionOptional.get();
                 response.setMessage("Login Success");
-                response.setData(sessionOptional.get());
+                response.setData(Map.of(
+                    "userId", sessionData.getIdUser(),
+                    "token", sessionData.getToken(),
+                    "role", sessionData.getRole().toString()
+                ));
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
             } else {
@@ -96,7 +107,11 @@ public class LoginController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Login sessionActive = loginService.getLoginSession(sessionToken);
                 response.setMessage("Authorization Success");
-                response.setData(sessionActive);
+                response.setData(Map.of(
+                    "userId", sessionActive.getIdUser(),
+                    "token", sessionActive.getToken(),
+                    "role", sessionActive.getRole().toString()
+                ));
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
             } else {

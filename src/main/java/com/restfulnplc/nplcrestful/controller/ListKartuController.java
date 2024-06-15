@@ -15,11 +15,10 @@ import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -33,7 +32,6 @@ public class ListKartuController {
     private LoginService loginService;
 
     private Response response = new Response();
-    List<ListKartu> listKartuList = Collections.<ListKartu>emptyList();
 
     @PostMapping
     public ResponseEntity<Response> addListKartu(HttpServletRequest request,
@@ -44,15 +42,14 @@ public class ListKartuController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     ListKartu newListKartu = listKartuService.addListKartu(listKartuDTO);
-                    listKartuList.add(newListKartu);
                     response.setMessage("List Kartu Successfully Added");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(listKartuList.stream().map(listKartu -> Map.of(
-                            "noKartu", listKartu.getNoKartu(),
-                            "cardSkill", listKartu.getCardSkill(),
-                            "ownedBy", listKartu.getOwnedBy(),
-                            "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+                    response.setData(Map.of(
+                            "noKartu", newListKartu.getNoKartu(),
+                            "cardSkill", newListKartu.getCardSkill(),
+                            "ownedBy", newListKartu.getOwnedBy(),
+                            "isUsed", newListKartu.getIsUsed()));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -71,7 +68,6 @@ public class ListKartuController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listKartuList.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -80,8 +76,8 @@ public class ListKartuController {
 
     @GetMapping
     public ResponseEntity<Response> getAllListKartu(HttpServletRequest request) {
-        response.setService("Get All List Kartu");
         String sessionToken = request.getHeader("Token");
+        response.setService("Get All List Kartu");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<ListKartu> listKartuList = listKartuService.getAllListKartu();
@@ -89,15 +85,19 @@ public class ListKartuController {
                     response.setMessage("All List Kartu Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(listKartuList.stream().map(listKartu -> Map.of(
+                    ArrayList<Object> listData = new ArrayList<Object>();
+                    for (ListKartu listKartu : listKartuList) {
+                        listData.add(Map.of(
                             "noKartu", listKartu.getNoKartu(),
                             "cardSkill", listKartu.getCardSkill(),
                             "ownedBy", listKartu.getOwnedBy(),
-                            "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+                            "isUsed", listKartu.getIsUsed()));
+                    }
+                    response.setData(listData);
                 } else {
                     response.setMessage("No List Kartu Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -112,7 +112,6 @@ public class ListKartuController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listKartuList.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -128,19 +127,19 @@ public class ListKartuController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Optional<ListKartu> listKartuOptional = listKartuService.getListKartuById(id);
                 if (listKartuOptional.isPresent()) {
-                    listKartuList.add(listKartuOptional.get());
+                    ListKartu listKartu = listKartuOptional.get();
                     response.setMessage("List Kartu Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(listKartuList.stream().map(listKartu -> Map.of(
+                    response.setData(Map.of(
                             "noKartu", listKartu.getNoKartu(),
                             "cardSkill", listKartu.getCardSkill(),
                             "ownedBy", listKartu.getOwnedBy(),
-                            "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+                            "isUsed", listKartu.getIsUsed()));
                 } else {
                     response.setMessage("List Kartu Not Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -155,7 +154,6 @@ public class ListKartuController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listKartuList.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -171,21 +169,21 @@ public class ListKartuController {
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
-                    Optional<ListKartu> updateKartu = listKartuService.getListKartuById(id);
-                    if (updateKartu.isPresent()) {
-                        listKartuList.add(listKartuService.updateListKartu(id, listKartuDTO));
+                    Optional<ListKartu> updatedKartu = listKartuService.getListKartuById(id);
+                    if (updatedKartu.isPresent()) {
+                        ListKartu listKartu = listKartuService.updateListKartu(id, listKartuDTO);
                         response.setMessage("List Kartu Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        response.setData(listKartuList.stream().map(listKartu -> Map.of(
+                        response.setData(Map.of(
                                 "noKartu", listKartu.getNoKartu(),
                                 "cardSkill", listKartu.getCardSkill(),
                                 "ownedBy", listKartu.getOwnedBy(),
-                                "isUsed", listKartu.getIsUsed())).collect(Collectors.toList()));
+                                "isUsed", listKartu.getIsUsed()));
                     } else {
                         response.setMessage("List Kartu Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -206,7 +204,6 @@ public class ListKartuController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listKartuList.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -229,7 +226,7 @@ public class ListKartuController {
                     } else {
                         response.setMessage("List Kartu Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -250,7 +247,6 @@ public class ListKartuController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listKartuList.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

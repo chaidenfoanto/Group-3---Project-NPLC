@@ -31,6 +31,7 @@ public class BoothgamesService {
         newBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
         newBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
         newBoothgame.setDurasiPermainan(boothgamesDTO.getDurasiPermainan());
+        newBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); //update
         return boothgamesRepository.save(newBoothgame);
     }
 
@@ -53,6 +54,7 @@ public class BoothgamesService {
             existingBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
             existingBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
             existingBoothgame.setDurasiPermainan(boothgamesDTO.getDurasiPermainan());
+            existingBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); //update
             boothgamesRepository.save(existingBoothgame);
             return Optional.of(existingBoothgame);
         }

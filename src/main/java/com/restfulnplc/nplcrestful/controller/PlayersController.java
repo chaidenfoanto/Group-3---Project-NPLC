@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/players")
 public class PlayersController {
 
@@ -44,7 +45,7 @@ public class PlayersController {
                 } else {
                     response.setMessage("No Players Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {

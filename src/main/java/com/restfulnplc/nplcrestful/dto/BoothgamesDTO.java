@@ -13,6 +13,7 @@ public class BoothgamesDTO {
     private String lokasi;
     private String tipeGame;
     private Time durasiPermainan;
+    private byte[] fotoBooth;
 
     public int getIdBooth() {
         return idBooth;
@@ -80,5 +81,13 @@ public class BoothgamesDTO {
 
     public void setDurasiPermainan(Time durasiPermainan) {
         this.durasiPermainan = durasiPermainan;
+    }
+
+    public byte[] getFotoBooth() {
+        return this.fotoBooth;
+    }
+
+    public void setFotoBooth(byte[] fotoBooth) {
+        this.fotoBooth = fotoBooth;
     }
 }

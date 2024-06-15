@@ -15,11 +15,10 @@ import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -33,7 +32,6 @@ public class BoothgamesController {
     private LoginService loginService;
 
     private Response response = new Response();
-    List<Boothgames> listBoothGames = Collections.<Boothgames>emptyList();
 
     @PostMapping
     public ResponseEntity<Response> addBoothgame(HttpServletRequest request,
@@ -44,19 +42,19 @@ public class BoothgamesController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
-                    listBoothGames.add(newBoothgame);
                     response.setMessage("Boothgame Successfully Added");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(listBoothGames.stream().map(boothgame -> Map.of(
-                            "idBoothGame", boothgame.getIdBooth(),
-                            "namaBoothGame", boothgame.getNama(),
-                            "panitia1", boothgame.getIdPenjaga1(),
-                            "panitia2", boothgame.getIdPenjaga2(),
-                            "sopGame", boothgame.getSopGames(),
-                            "lokasi", boothgame.getLokasi(),
-                            "tipeGame", boothgame.getTipegame().toString(),
-                            "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                    response.setData(Map.of(
+                            "idBoothGame", newBoothgame.getIdBooth(),
+                            "namaBoothGame", newBoothgame.getNama(),
+                            "panitia1", newBoothgame.getIdPenjaga1(),
+                            "panitia2", newBoothgame.getIdPenjaga2(),
+                            "sopGame", newBoothgame.getSopGames(),
+                            "lokasi", newBoothgame.getLokasi(),
+                            "tipeGame", newBoothgame.getTipegame().toString(),
+                            "durasiPermainan", newBoothgame.getDurasiPermainan(),
+                            "fotoBooth", newBoothgame.getFotoBooth()));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -75,7 +73,6 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +90,9 @@ public class BoothgamesController {
                     response.setMessage("All Boothgames Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(boothgamesList.stream().map(boothgame -> Map.of(
+                    ArrayList<Object> listData = new ArrayList<Object>();
+                    for(Boothgames boothgame : boothgamesList) {
+                        listData.add(Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
                             "panitia1", boothgame.getIdPenjaga1(),
@@ -101,11 +100,15 @@ public class BoothgamesController {
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
-                            "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                            "durasiPermainan", boothgame.getDurasiPermainan(),
+                            "fotoBooth", boothgame.getFotoBooth()
+                        ));
+                    }
+                    response.setData(listData);
                 } else {
                     response.setMessage("No Boothgames Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -120,7 +123,6 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -136,11 +138,11 @@ public class BoothgamesController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
                 if (boothgameOptional.isPresent()) {
-                    listBoothGames.add(boothgameOptional.get());
+                    Boothgames boothgame = boothgameOptional.get();
                     response.setMessage("Boothgame Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+                    response.setData(Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
                             "panitia1", boothgame.getIdPenjaga1(),
@@ -148,11 +150,12 @@ public class BoothgamesController {
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
-                            "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                            "durasiPermainan", boothgame.getDurasiPermainan(),
+                            "fotoBooth", boothgame.getFotoBooth()));
                 } else {
                     response.setMessage("Boothgame Not Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -167,7 +170,6 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -184,11 +186,11 @@ public class BoothgamesController {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     Optional<Boothgames> updatedBoothgame = boothgamesService.updateBoothgame(id, boothgamesDTO);
                     if (updatedBoothgame.isPresent()) {
-                        listBoothGames.add(updatedBoothgame.get());
+                        Boothgames boothgame = updatedBoothgame.get();
                         response.setMessage("Boothgame Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        response.setData(listBoothGames.stream().map(boothgame -> Map.of(
+                        response.setData(Map.of(
                                 "idBoothGame", boothgame.getIdBooth(),
                                 "namaBoothGame", boothgame.getNama(),
                                 "panitia1", boothgame.getIdPenjaga1(),
@@ -196,11 +198,12 @@ public class BoothgamesController {
                                 "sopGame", boothgame.getSopGames(),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),
-                                "durasiPermainan", boothgame.getDurasiPermainan())).collect(Collectors.toList()));
+                                "durasiPermainan", boothgame.getDurasiPermainan(),
+                                "fotoBooth", boothgame.getFotoBooth())); //update
                     } else {
                         response.setMessage("Boothgame Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -221,7 +224,6 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -244,7 +246,7 @@ public class BoothgamesController {
                     } else {
                         response.setMessage("Boothgame Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -266,7 +268,6 @@ public class BoothgamesController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listBoothGames.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

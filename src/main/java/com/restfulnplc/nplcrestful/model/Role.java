@@ -2,6 +2,8 @@ package com.restfulnplc.nplcrestful.model;
 
 public enum Role{
     PANITIA("Panitia"),
+    ADMIN("Admin"),
+    KETUA("Ketua"),
     PLAYERS("Players");
 
     private final String role;

@@ -15,11 +15,10 @@ import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -33,7 +32,6 @@ public class DuelMatchController {
     private LoginService loginService;
 
     private Response response = new Response();
-    List<DuelMatch> listDuelMatches = Collections.<DuelMatch>emptyList();
 
     @PostMapping
     public ResponseEntity<Response> addDuelMatch(HttpServletRequest request,
@@ -44,19 +42,18 @@ public class DuelMatchController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     DuelMatch newDuelMatch = duelMatchService.addDuelMatch(duelMatchDTO);
-                    listDuelMatches.add(newDuelMatch);
                     response.setMessage("Duel Match Successfully Added");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(listDuelMatches.stream().map(duelMatch -> Map.of(
-                            "noMatch", duelMatch.getNoMatch(),
-                            "team1", duelMatch.getTeam1(),
-                            "team2", duelMatch.getTeam2(),
-                            "waktuMulai", duelMatch.getWaktuMulai(),
-                            "waktuSelesai", duelMatch.getWaktuSelesai(),
-                            "inputBy", duelMatch.getInputBy(),
-                            "timMenang", duelMatch.getTimMenang(),
-                            "boothgames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+                    response.setData(Map.of(
+                            "noMatch", newDuelMatch.getNoMatch(),
+                            "team1", newDuelMatch.getTeam1(),
+                            "team2", newDuelMatch.getTeam2(),
+                            "waktuMulai", newDuelMatch.getWaktuMulai(),
+                            "waktuSelesai", newDuelMatch.getWaktuSelesai(),
+                            "inputBy", newDuelMatch.getInputBy(),
+                            "timMenang", newDuelMatch.getTimMenang(),
+                            "boothgames", newDuelMatch.getBoothGames()));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -75,7 +72,6 @@ public class DuelMatchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listDuelMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -84,8 +80,8 @@ public class DuelMatchController {
 
     @GetMapping
     public ResponseEntity<Response> getAllDuelMatches(HttpServletRequest request) {
-        response.setService("Get All Duel Matches");
         String sessionToken = request.getHeader("Token");
+        response.setService("Get All Duel Matches");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<DuelMatch> duelMatchList = duelMatchService.getAllDuelMatches();
@@ -93,19 +89,24 @@ public class DuelMatchController {
                     response.setMessage("All Duel Matches Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(duelMatchList.stream().map(duelMatch -> Map.of(
-                            "noMatch", duelMatch.getNoMatch(),
-                            "team1", duelMatch.getTeam1(),
-                            "team2", duelMatch.getTeam2(),
-                            "waktuMulai", duelMatch.getWaktuMulai(),
-                            "waktuSelesai", duelMatch.getWaktuSelesai(),
-                            "inputBy", duelMatch.getInputBy(),
-                            "timMenang", duelMatch.getTimMenang(),
-                            "boothGames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+                    ArrayList<Object> listData = new ArrayList<Object>();
+                    for (DuelMatch duelMatch : duelMatchList) {
+                        listData.add(Map.of(
+                                "noMatch", duelMatch.getNoMatch(),
+                                "team1", duelMatch.getTeam1(),
+                                "team2", duelMatch.getTeam2(),
+                                "waktuMulai", duelMatch.getWaktuMulai(),
+                                "waktuSelesai", duelMatch.getWaktuSelesai(),
+                                "inputBy", duelMatch.getInputBy(),
+                                "timMenang", duelMatch.getTimMenang(),
+                                "boothgames", duelMatch.getBoothGames()
+                        ));
+                    }
+                    response.setData(listData);
                 } else {
                     response.setMessage("No Duel Matches Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -120,7 +121,6 @@ public class DuelMatchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listDuelMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -136,11 +136,11 @@ public class DuelMatchController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Optional<DuelMatch> duelMatchOptional = duelMatchService.getDuelMatchById(id);
                 if (duelMatchOptional.isPresent()) {
-                    listDuelMatches.add(duelMatchOptional.get());
+                    DuelMatch duelMatch = duelMatchOptional.get();
                     response.setMessage("Duel Match Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(listDuelMatches.stream().map(duelMatch -> Map.of(
+                    response.setData(Map.of(
                             "noMatch", duelMatch.getNoMatch(),
                             "team1", duelMatch.getTeam1(),
                             "team2", duelMatch.getTeam2(),
@@ -148,11 +148,11 @@ public class DuelMatchController {
                             "waktuSelesai", duelMatch.getWaktuSelesai(),
                             "inputBy", duelMatch.getInputBy(),
                             "timMenang", duelMatch.getTimMenang(),
-                            "boothGames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+                            "boothgames", duelMatch.getBoothGames()));
                 } else {
                     response.setMessage("Duel Match Not Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.NO_CONTENT);
+                    response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -167,7 +167,6 @@ public class DuelMatchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listDuelMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -176,8 +175,7 @@ public class DuelMatchController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateDuelMatch(HttpServletRequest request,
-            @PathVariable("id") String id,
-            @RequestBody DuelMatchDTO duelMatchDTO) {
+            @PathVariable("id") String id, @RequestBody DuelMatchDTO duelMatchDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Update Duel Match");
         try {
@@ -185,11 +183,11 @@ public class DuelMatchController {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     Optional<DuelMatch> updatedDuelMatch = duelMatchService.updateDuelMatch(id, duelMatchDTO);
                     if (updatedDuelMatch.isPresent()) {
-                        listDuelMatches.add(updatedDuelMatch.get());
+                        DuelMatch duelMatch = updatedDuelMatch.get();
                         response.setMessage("Duel Match Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        response.setData(listDuelMatches.stream().map(duelMatch -> Map.of(
+                        response.setData(Map.of(
                                 "noMatch", duelMatch.getNoMatch(),
                                 "team1", duelMatch.getTeam1(),
                                 "team2", duelMatch.getTeam2(),
@@ -197,11 +195,11 @@ public class DuelMatchController {
                                 "waktuSelesai", duelMatch.getWaktuSelesai(),
                                 "inputBy", duelMatch.getInputBy(),
                                 "timMenang", duelMatch.getTimMenang(),
-                                "boothGames", duelMatch.getBoothGames())).collect(Collectors.toList()));
+                                "boothgames", duelMatch.getBoothGames()));
                     } else {
                         response.setMessage("Duel Match Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -222,7 +220,6 @@ public class DuelMatchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listDuelMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -245,7 +242,7 @@ public class DuelMatchController {
                     } else {
                         response.setMessage("Duel Match Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NO_CONTENT);
+                        response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -254,6 +251,7 @@ public class DuelMatchController {
                     response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
+
             } else {
                 response.setMessage("Authorization Failed");
                 response.setError(true);
@@ -266,7 +264,6 @@ public class DuelMatchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listDuelMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

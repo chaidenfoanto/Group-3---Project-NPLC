@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.restfulnplc.nplcrestful.dto.LoginDTO;
 import com.restfulnplc.nplcrestful.dto.AccessDTO;
+import com.restfulnplc.nplcrestful.model.Divisi;
 import com.restfulnplc.nplcrestful.model.Login;
 import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.model.Role;
@@ -38,8 +39,15 @@ public class LoginService {
                 if (sessionActive.isPresent()) {
                     deleteSession(sessionActive.get().getToken());
                 }
+                Role role = Role.PANITIA;
+                if(panitia.getIsAdmin()) {
+                    role = Role.ADMIN;
+                }
+                if(panitia.getDivisi().equals(Divisi.KETUAACARA)) {
+                    role = Role.KETUA;
+                }
                 Login session = new Login(panitia.getIdPanitia(), passwordMaker.hashPassword(panitia.getIdPanitia()),
-                        Role.PANITIA);
+                        role);
                 loginRepository.save(session);
                 return Optional.of(session);
             }

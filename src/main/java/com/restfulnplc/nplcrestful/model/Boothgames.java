@@ -28,11 +28,11 @@ public class Boothgames {
     private Panitia idPenjaga1;
 
     @OneToOne
-    @JoinColumn(name = "penjaga2", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_penjaga2"), nullable = false)
+    @JoinColumn(name = "penjaga2", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_penjaga2"), nullable = true)
     private Panitia idPenjaga2;
 
     @Lob
-    @Column(name = "sopgames", nullable = false)
+    @Column(name = "sopgames", nullable = false, columnDefinition = "TEXT")
     private String sopGames;
 
     @OneToOne
@@ -45,6 +45,9 @@ public class Boothgames {
 
     @Column(name = "durasipermainan", nullable = false)
     private Time durasiPermainan;
+
+    @Column(name = "fotobooth", columnDefinition = "BLOB", nullable = false)
+    private byte[] fotobooth;
 
 
     public String getIdBooth() {
@@ -111,4 +114,11 @@ public class Boothgames {
         this.durasiPermainan = durasiPermainan;
     }
     
+    public byte[] getFotoBooth() {
+        return this.fotobooth;
+    }
+
+    public void setFotoBooth(byte[] fotobooth) {
+        this.fotobooth = fotobooth;
+    }
 }
