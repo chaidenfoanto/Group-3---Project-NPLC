@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -94,9 +93,6 @@ public class BoothgamesController {
                     ArrayList<Object> listData = new ArrayList<Object>();
                     for(Boothgames boothgame : boothgamesList) {
                         listData.add(Map.of(
-                    ArrayList<Object> listData = new ArrayList<Object>();
-                    for(Boothgames boothgame : boothgamesList) {
-                        listData.add(Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
                             "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
@@ -109,15 +105,9 @@ public class BoothgamesController {
                         ));
                     }
                     response.setData(listData);
-                            "durasiPermainan", boothgame.getDurasiPermainan(),
-                            "fotoBooth", boothgame.getFotoBooth()
-                        ));
-                    }
-                    response.setData(listData);
                 } else {
                     response.setMessage("No Boothgames Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.OK);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
@@ -149,11 +139,9 @@ public class BoothgamesController {
                 Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
                 if (boothgameOptional.isPresent()) {
                     Boothgames boothgame = boothgameOptional.get();
-                    Boothgames boothgame = boothgameOptional.get();
                     response.setMessage("Boothgame Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(Map.of(
                     response.setData(Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
@@ -164,12 +152,9 @@ public class BoothgamesController {
                             "tipeGame", boothgame.getTipegame().toString(),
                             "durasiPermainan", boothgame.getDurasiPermainan(),
                             "fotoBooth", boothgame.getFotoBooth()));
-                            "durasiPermainan", boothgame.getDurasiPermainan(),
-                            "fotoBooth", boothgame.getFotoBooth()));
                 } else {
                     response.setMessage("Boothgame Not Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.OK);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
@@ -202,11 +187,9 @@ public class BoothgamesController {
                     Optional<Boothgames> updatedBoothgame = boothgamesService.updateBoothgame(id, boothgamesDTO);
                     if (updatedBoothgame.isPresent()) {
                         Boothgames boothgame = updatedBoothgame.get();
-                        Boothgames boothgame = updatedBoothgame.get();
                         response.setMessage("Boothgame Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        response.setData(Map.of(
                         response.setData(Map.of(
                                 "idBoothGame", boothgame.getIdBooth(),
                                 "namaBoothGame", boothgame.getNama(),
@@ -217,12 +200,9 @@ public class BoothgamesController {
                                 "tipeGame", boothgame.getTipegame().toString(),
                                 "durasiPermainan", boothgame.getDurasiPermainan(),
                                 "fotoBooth", boothgame.getFotoBooth())); //update
-                                "durasiPermainan", boothgame.getDurasiPermainan(),
-                                "fotoBooth", boothgame.getFotoBooth())); //update
                     } else {
                         response.setMessage("Boothgame Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.OK);
                         response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
@@ -266,7 +246,6 @@ public class BoothgamesController {
                     } else {
                         response.setMessage("Boothgame Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.OK);
                         response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
