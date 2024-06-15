@@ -15,11 +15,10 @@ import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -33,7 +32,6 @@ public class CardSkillController {
     private LoginService loginService;
 
     private Response response = new Response();
-    List<CardSkill> listCardSkills = Collections.<CardSkill>emptyList();
 
     @PostMapping
     public ResponseEntity<Response> addCardSkill(HttpServletRequest request,
@@ -44,16 +42,16 @@ public class CardSkillController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     CardSkill newCardSkill = cardSkillService.addCardSkill(cardSkillDTO);
-                    listCardSkills.add(newCardSkill);
                     response.setMessage("Card Skill Successfully Added");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
-                            "idCard", cardSkill.getIdCard(),
-                            "namaKartu", cardSkill.getNamaKartu(),
-                            "rules", cardSkill.getRules(),
-                            "totalKartu", cardSkill.getTotalKartu(),
-                            "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+                    response.setData(Map.of(
+                            "idCard", newCardSkill.getIdCard(),
+                            "namaKartu", newCardSkill.getNamaKartu(),
+                            "rules", newCardSkill.getRules(),
+                            "totalKartu", newCardSkill.getTotalKartu(),
+                            "gambarKartu", newCardSkill.getGambarKartu()
+                    ));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -72,7 +70,6 @@ public class CardSkillController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listCardSkills.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -81,8 +78,8 @@ public class CardSkillController {
 
     @GetMapping
     public ResponseEntity<Response> getAllCardSkills(HttpServletRequest request) {
-        response.setService("Get All CardSkills");
         String sessionToken = request.getHeader("Token");
+        response.setService("Get All CardSkills");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<CardSkill> cardSkillList = cardSkillService.getAllCardSkills();
@@ -90,12 +87,17 @@ public class CardSkillController {
                     response.setMessage("All Card Skills Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(cardSkillList.stream().map(cardSkill -> Map.of(
-                            "idCard", cardSkill.getIdCard(),
-                            "namaKartu", cardSkill.getNamaKartu(),
-                            "rules", cardSkill.getRules(),
-                            "totalKartu", cardSkill.getTotalKartu(),
-                            "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+                    ArrayList<Object> listData = new ArrayList<>();
+                    for (CardSkill cardSkill : cardSkillList) {
+                        listData.add(Map.of(
+                                "idCard", cardSkill.getIdCard(),
+                                "namaKartu", cardSkill.getNamaKartu(),
+                                "rules", cardSkill.getRules(),
+                                "totalKartu", cardSkill.getTotalKartu(),
+                                "gambarKartu", cardSkill.getGambarKartu()
+                        ));
+                    }
+                    response.setData(listData);
                 } else {
                     response.setMessage("No Card Skills Found");
                     response.setError(true);
@@ -114,7 +116,6 @@ public class CardSkillController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listCardSkills.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -130,16 +131,17 @@ public class CardSkillController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Optional<CardSkill> cardSkillOptional = cardSkillService.getCardSkillById(id);
                 if (cardSkillOptional.isPresent()) {
-                    listCardSkills.add(cardSkillOptional.get());
+                    CardSkill cardSkill = cardSkillOptional.get();
                     response.setMessage("Card Skill Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
+                    response.setData(Map.of(
                             "idCard", cardSkill.getIdCard(),
                             "namaKartu", cardSkill.getNamaKartu(),
                             "rules", cardSkill.getRules(),
                             "totalKartu", cardSkill.getTotalKartu(),
-                            "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+                            "gambarKartu", cardSkill.getGambarKartu()
+                    ));
                 } else {
                     response.setMessage("Card Skill Not Found");
                     response.setError(true);
@@ -158,7 +160,6 @@ public class CardSkillController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listCardSkills.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -176,16 +177,17 @@ public class CardSkillController {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     Optional<CardSkill> updatedCardSkill = cardSkillService.updateCardSkill(id, cardSkillDTO);
                     if (updatedCardSkill.isPresent()) {
-                        listCardSkills.add(updatedCardSkill.get());
+                        CardSkill cardSkill = updatedCardSkill.get();
                         response.setMessage("Card Skill Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        response.setData(listCardSkills.stream().map(cardSkill -> Map.of(
+                        response.setData(Map.of(
                                 "idCard", cardSkill.getIdCard(),
                                 "namaKartu", cardSkill.getNamaKartu(),
                                 "rules", cardSkill.getRules(),
                                 "totalKartu", cardSkill.getTotalKartu(),
-                                "gambarKartu", cardSkill.getGambarKartu())).collect(Collectors.toList()));
+                                "gambarKartu", cardSkill.getGambarKartu()
+                        ));
                     } else {
                         response.setMessage("Card Skill Not Found");
                         response.setError(true);
@@ -210,7 +212,6 @@ public class CardSkillController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listCardSkills.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -255,7 +256,6 @@ public class CardSkillController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listCardSkills.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

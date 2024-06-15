@@ -15,11 +15,10 @@ import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -33,7 +32,6 @@ public class SinglematchController {
     private LoginService loginService;
 
     private Response response = new Response();
-    List<Singlematch> listSingleMatches = Collections.<Singlematch>emptyList();
 
     @PostMapping
     public ResponseEntity<Response> addSinglematch(HttpServletRequest request,
@@ -44,19 +42,18 @@ public class SinglematchController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     Singlematch newSinglematch = singlematchService.addSinglematch(singlematchDTO);
-                    listSingleMatches.add(newSinglematch);
                     response.setMessage("Single Match Successfully Added");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
-                            "noMatch", singleMatch.getNoMatch(),
-                            "idTeam", singleMatch.getTeam(),
-                            "waktuMulai", singleMatch.getWaktuMulai(),
-                            "waktuSelesai", singleMatch.getWaktuSelesai(),
-                            "noKartu", singleMatch.getListKartu(),
-                            "inputBy", singleMatch.getInputBy(),
-                            "totalPoin", singleMatch.getTotalPoin(),
-                            "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                    response.setData(Map.of(
+                            "noMatch", newSinglematch.getNoMatch(),
+                            "idTeam", newSinglematch.getTeam(),
+                            "waktuMulai", newSinglematch.getWaktuMulai(),
+                            "waktuSelesai", newSinglematch.getWaktuSelesai(),
+                            "noKartu", newSinglematch.getListKartu(),
+                            "inputBy", newSinglematch.getInputBy(),
+                            "totalPoin", newSinglematch.getTotalPoin(),
+                            "boothgames", newSinglematch.getBoothGames()));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -75,7 +72,6 @@ public class SinglematchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listSingleMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -84,8 +80,8 @@ public class SinglematchController {
 
     @GetMapping
     public ResponseEntity<Response> getAllSingleMatches(HttpServletRequest request) {
-        response.setService("Get All Single Matches");
         String sessionToken = request.getHeader("Token");
+        response.setService("Get All Single Matches");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 List<Singlematch> singleMatchList = singlematchService.getAllSinglematches();
@@ -93,7 +89,9 @@ public class SinglematchController {
                     response.setMessage("All Single Matches Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(singleMatchList.stream().map(singleMatch -> Map.of(
+                    ArrayList<Object> listData = new ArrayList<>();
+                    for (Singlematch singleMatch : singleMatchList) {
+                        listData.add(Map.of(
                             "noMatch", singleMatch.getNoMatch(),
                             "idTeam", singleMatch.getTeam(),
                             "waktuMulai", singleMatch.getWaktuMulai(),
@@ -101,7 +99,10 @@ public class SinglematchController {
                             "noKartu", singleMatch.getListKartu(),
                             "inputBy", singleMatch.getInputBy(),
                             "totalPoin", singleMatch.getTotalPoin(),
-                            "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                            "boothgames", singleMatch.getBoothGames()
+                        ));
+                    }
+                    response.setData(listData);
                 } else {
                     response.setMessage("No Single Matches Found");
                     response.setError(true);
@@ -120,7 +121,6 @@ public class SinglematchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listSingleMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -136,11 +136,11 @@ public class SinglematchController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Optional<Singlematch> singleMatchOptional = singlematchService.getSinglematchById(id);
                 if (singleMatchOptional.isPresent()) {
-                    listSingleMatches.add(singleMatchOptional.get());
+                    Singlematch singleMatch = singleMatchOptional.get();
                     response.setMessage("Single Match Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
+                    response.setData(Map.of(
                             "noMatch", singleMatch.getNoMatch(),
                             "idTeam", singleMatch.getTeam(),
                             "waktuMulai", singleMatch.getWaktuMulai(),
@@ -148,7 +148,7 @@ public class SinglematchController {
                             "noKartu", singleMatch.getListKartu(),
                             "inputBy", singleMatch.getInputBy(),
                             "totalPoin", singleMatch.getTotalPoin(),
-                            "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                            "boothgames", singleMatch.getBoothGames()));
                 } else {
                     response.setMessage("Single Match Not Found");
                     response.setError(true);
@@ -167,7 +167,6 @@ public class SinglematchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listSingleMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -185,11 +184,11 @@ public class SinglematchController {
                 if (loginService.checkSessionAdmin(sessionToken)) {
                     Optional<Singlematch> updatedSingleMatch = singlematchService.updateSinglematch(id, singlematchDTO);
                     if (updatedSingleMatch.isPresent()) {
-                        listSingleMatches.add(updatedSingleMatch.get());
+                        Singlematch singleMatch = updatedSingleMatch.get();
                         response.setMessage("Single Match Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        response.setData(listSingleMatches.stream().map(singleMatch -> Map.of(
+                        response.setData(Map.of(
                                 "noMatch", singleMatch.getNoMatch(),
                                 "idTeam", singleMatch.getTeam(),
                                 "waktuMulai", singleMatch.getWaktuMulai(),
@@ -197,7 +196,7 @@ public class SinglematchController {
                                 "noKartu", singleMatch.getListKartu(),
                                 "inputBy", singleMatch.getInputBy(),
                                 "totalPoin", singleMatch.getTotalPoin(),
-                                "boothgames", singleMatch.getBoothGames())).collect(Collectors.toList()));
+                                "boothgames", singleMatch.getBoothGames()));
                     } else {
                         response.setMessage("Single Match Not Found");
                         response.setError(true);
@@ -222,7 +221,6 @@ public class SinglematchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listSingleMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -235,13 +233,29 @@ public class SinglematchController {
         String sessionToken = request.getHeader("Token");
         response.setService("Delete Single Match");
         try {
-            if (loginService.checkSessionAlive(sessionToken)) {
+            if (loginService.checkSessionPanitia(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
-                    boolean isDeleted = singlematchService.deleteSinglematch(id);
-                    if (isDeleted) {
+                    Optional<Singlematch> singleMatch = singlematchService.getSinglematchById(id);
+                    if (singleMatch.isPresent()) {
+                        if(singlematchService.deleteSinglematch(id)) {
                         response.setMessage("Single Match Deleted Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
+                        response.setData(Map.of(
+                                "noMatch", singleMatch.get().getNoMatch(),
+                                "idTeam", singleMatch.get().getTeam(),
+                                "waktuMulai", singleMatch.get().getWaktuMulai(),
+                                "waktuSelesai", singleMatch.get().getWaktuSelesai(),
+                                "noKartu", singleMatch.get().getListKartu(),
+                                "inputBy", singleMatch.get().getInputBy(),
+                                "totalPoin", singleMatch.get().getTotalPoin(),
+                                "boothgames", singleMatch.get().getBoothGames()));
+                        } else {
+                            response.setMessage("Single Match Deletion Failed");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.NOT_IMPLEMENTED);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
                     } else {
                         response.setMessage("Single Match Not Found");
                         response.setError(true);
@@ -266,7 +280,6 @@ public class SinglematchController {
             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
             response.setData(new ErrorMessage(response.getHttpCode()));
         }
-        listSingleMatches.clear();
         return ResponseEntity
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
