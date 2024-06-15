@@ -58,8 +58,8 @@ $(document).ready(function() {
         .then(response => response.json())
         .then(data => {
             if (!data.error) {
-                data.body.forEach(cardData => {
-                    var cardlist = `
+                data.data.forEach(cardData => {
+                    var cardList = `
                     <div class="card" id="doublePoint">
                     <img src="${cardData.foto}" alt="${cardData.nama}" class="card-image">
                     <p><b>${cardData.nama}</b></p>
@@ -83,7 +83,9 @@ $(document).ready(function() {
                     </table>
                 </div>
                     `
-                    cardsContainer.appendChild(cardList);
+                    var tempElement = document.createElement('div');
+                    tempElement.innerHTML = cardList.trim();
+                    cardsContainer.appendChild(tempElement.firstChild);
                 });
             } else {
                 console.log('Error fetching cards:', data.message);
@@ -93,4 +95,10 @@ $(document).ready(function() {
             console.error('Error occurred while fetching cards:', error);
         });
     }
+
+    fetchSession();
+
+    setInterval(function() {
+        fetchSession(); 
+    }, 5000);
 });

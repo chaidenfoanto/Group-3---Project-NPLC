@@ -15,13 +15,13 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           console.log('Authorization Failed');
           deleteCookie("Token");
-          window.location.href = "Login.html";
+          window.location.href = "Loginplayer.html";
         }
       })
       .catch(error => {
         console.error('Error occurred while fetching session:', error);
         deleteCookie("Token");
-        window.location.href = "Login.html";
+        window.location.href = "Loginplayer.html";
       });
   }
 
@@ -57,27 +57,42 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(response => response.json())
       .then(data => {
         if (!data.error) {
-          data.body.forEach((boothData) => {
+          data.data.forEach(boothData => {
+          //   `<div class="gamedetails" id="modal">
+          //     <div class="gamedetails-inner">
+          //         <h2>Nama Game</h2>
+          //         <div class="game-content">
+          //             <img src="${boothData.fotoBooth}" alt="${boothData.namaBoothGame}">
+          //             <div class="game-details">
+          //                 <p><strong>Cara Bermain:</strong> </p>
+          //                 <div class="cara-bermain">
+          //                   <p>${boothData.sopGame}</p>
+          //                 </div>
+          //               </div>
+          //         </div>
+          //         <button id="closePopup" class="btn-ok">OK</button>
+          //     </div>
+          // </div>`
             if(boothData.tipeGame == "Duel") {
               var gameCard = `
               <div class="game-card">  
               <img
-                src="${boothData.foto}"
-                alt="${boothData.nama}"
+                src="${boothData.fotoBooth}"
+                alt="${boothData.namaBoothGame}"
                 class="game-image"
               />
               <div class="badgeduel">DUEL</div>
-              <p><b>${boothData.nama}</b></p>
+              <p><b>${boothData.namaBoothGame}</b></p>
               <table class="duel">
                 <tr>
                   <td>Match 1</td>
                   <td>:</td>
-                  <td>WIN</td>
+                  <td>${boothData.gameResult.match1}</td>
                 </tr>
                 <tr>
                   <td>Match 2</td>
                   <td>:</td>
-                  <td>LOSE</td>
+                  <td>${boothData.gameResult.match2}</td>
                 </tr>
               </table>
             </div>
@@ -86,39 +101,50 @@ document.addEventListener("DOMContentLoaded", function () {
               var gameCard = `
               <div class="game-card">  
               <img
-                src="${boothData.foto}"
-                alt="${boothData.nama}"
+                src="${boothData.fotoBooth}"
+                alt="${boothData.namaBoothGame}"
                 class="game-image"
               />
               <div class="badgesingle">SINGLE</div>
-              <p><b>${boothData.nama}</b></p>
+              <p><b>${boothData.namaBoothGame}</b></p>
               <table class="single">
                 <tr>
                   <td>Star</td>
                   <td>:</td>
-                  <td>0</td>
+                  <td>${boothData.gameResult.totalBintang}</td>
                 </tr>
                 <tr>
                   <td>Points</td>
                   <td>:</td>
-                  <td>0</td>
+                  <td>${boothData.gameResult.totalPoin}</td>
                 </tr>
               </table>
             </div>
               `
             }
-            listContainer.appendChild(gameCard);
+            var tempElement = document.createElement('div');
+            tempElement.innerHTML = gameCard.trim();
+            listContainer.appendChild(tempElement.firstChild);
           });
         } else {
-          console.log('Authorization Failed');
-          deleteCookie("Token");
-          window.location.href = "Login.html";
+          console.log('fetch Failed');
+          // deleteCookie("Token");
+          // window.location.href = "Loginplayer.html";
         }
       })
       .catch(error => {
         console.error('Error occurred while fetching session:', error);
-        deleteCookie("Token");
-        window.location.href = "Login.html";
+        // deleteCookie("Token");
+        // window.location.href = "Loginplayer.html";
       });
   }
+
+  
+
+  fetchSession();
+
+  // setInterval(function() {
+  //     fetchSession(); 
+  // }, 5000); 
+
 });
