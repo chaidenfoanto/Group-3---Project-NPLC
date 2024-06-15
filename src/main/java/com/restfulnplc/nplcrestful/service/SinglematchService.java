@@ -35,6 +35,7 @@ public class SinglematchService {
         singlematch.setWaktuSelesai(singlematchDTO.getWaktuSelesai());
         singlematch.setInputBy(panitiaService.getPanitiaById(singlematchDTO.getInputBy()).get());
         singlematch.setTotalPoin(singlematchDTO.getTotalPoin());
+        singlematch.setTotalBintang(singlematchDTO.getTotalBintang());
 
         Optional<Team> team = teamService.getTeamById(singlematchDTO.getIdTeam());
         if (team.isPresent()) {
@@ -64,6 +65,15 @@ public class SinglematchService {
         return singlematchArray;
     }
 
+    public Optional<Singlematch> getSinglematchesByUserAndBooth(String userId, String boothId) {
+        for(Singlematch singlematch : getAllSinglematches()) {
+            if(singlematch.getTeam().getIdTeam().equals(userId) && singlematch.getBoothGames().getIdBooth().equals(boothId)) {
+                return Optional.of(singlematch);
+            }
+        }
+        return Optional.empty();
+    }
+
     public List<Singlematch> getAllSinglematches() {
         return singlematchRepository.findAll();
     }
@@ -81,6 +91,7 @@ public class SinglematchService {
             singlematch.setWaktuSelesai(singlematchDTO.getWaktuSelesai());
             singlematch.setInputBy(panitiaService.getPanitiaById(singlematchDTO.getInputBy()).get());
             singlematch.setTotalPoin(singlematchDTO.getTotalPoin());
+            singlematch.setTotalBintang(singlematchDTO.getTotalBintang());
 
             Optional<Team> team = teamService.getTeamById(singlematchDTO.getIdTeam());
             if (team.isPresent()) {

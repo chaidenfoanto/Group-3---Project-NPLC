@@ -53,6 +53,7 @@ public class SinglematchController {
                             "noKartu", newSinglematch.getListKartu(),
                             "inputBy", newSinglematch.getInputBy(),
                             "totalPoin", newSinglematch.getTotalPoin(),
+                            "totalBintang", newSinglematch.getTotalBintang(),
                             "boothgames", newSinglematch.getBoothGames()));
                 } else {
                     response.setMessage("Access Denied");
@@ -99,6 +100,7 @@ public class SinglematchController {
                                 "noKartu", singleMatch.getListKartu(),
                                 "inputBy", singleMatch.getInputBy(),
                                 "totalPoin", singleMatch.getTotalPoin(),
+                                "totalBintang", singleMatch.getTotalBintang(),
                                 "boothgames", singleMatch.getBoothGames()));
                     }
                     response.setData(listData);
@@ -147,6 +149,7 @@ public class SinglematchController {
                             "noKartu", singleMatch.getListKartu(),
                             "inputBy", singleMatch.getInputBy(),
                             "totalPoin", singleMatch.getTotalPoin(),
+                            "totalBintang", singleMatch.getTotalBintang(),
                             "boothgames", singleMatch.getBoothGames()));
                 } else {
                     response.setMessage("Single Match Not Found");
@@ -195,6 +198,7 @@ public class SinglematchController {
                                 "noKartu", singleMatch.getListKartu(),
                                 "inputBy", singleMatch.getInputBy(),
                                 "totalPoin", singleMatch.getTotalPoin(),
+                                "totalBintang", singleMatch.getTotalBintang(),
                                 "boothgames", singleMatch.getBoothGames()));
                     } else {
                         response.setMessage("Single Match Not Found");
@@ -248,6 +252,7 @@ public class SinglematchController {
                                 "noKartu", singleMatch.getListKartu(),
                                 "inputBy", singleMatch.getInputBy(),
                                 "totalPoin", singleMatch.getTotalPoin(),
+                                "totalBintang", singleMatch.getTotalBintang(),
                                 "boothgames", singleMatch.getBoothGames()));
                     }
                     response.setData(listData);
@@ -297,6 +302,7 @@ public class SinglematchController {
                                     "noKartu", singleMatch.get().getListKartu(),
                                     "inputBy", singleMatch.get().getInputBy(),
                                     "totalPoin", singleMatch.get().getTotalPoin(),
+                                    "totalBintang", singleMatch.get().getTotalBintang(),
                                     "boothgames", singleMatch.get().getBoothGames()));
                         } else {
                             response.setMessage("Single Match Deletion Failed");

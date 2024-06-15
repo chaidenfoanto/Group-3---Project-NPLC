@@ -39,6 +39,9 @@ public class Singlematch {
     @Column(name = "totalpoin")
     private int totalPoin;
 
+    @Column(name = "totalBintang")
+    private int totalBintang;
+
     @ManyToOne
     @JoinColumn(name = "idbooth", referencedColumnName = "idbooth", nullable = false, foreignKey = @ForeignKey(name = "fk_idboothsingle"))
     private Boothgames boothGames;
@@ -98,6 +101,14 @@ public class Singlematch {
 
     public void setTotalPoin(int totalPoin) {
         this.totalPoin = totalPoin;
+    }
+
+    public int getTotalBintang() {
+        return this.totalBintang;
+    }
+
+    public void setTotalBintang(int totalBintang) {
+        this.totalBintang = totalBintang;
     }
 
     public Boothgames getBoothGames() {

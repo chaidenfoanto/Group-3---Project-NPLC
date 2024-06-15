@@ -11,6 +11,7 @@ public class SinglematchDTO {
     private String noKartu;
     private String inputBy;
     private int totalPoin;
+    private int totalBintang;
     private String idBooth;
 
     // Getter dan Setter
@@ -68,6 +69,14 @@ public class SinglematchDTO {
 
     public void setTotalPoin(int totalPoin) {
         this.totalPoin = totalPoin;
+    }
+
+    public int getTotalBintang() {
+        return this.totalBintang;
+    }
+
+    public void setTotalBintang(int totalBintang) {
+        this.totalBintang = totalBintang;
     }
 
     public String getIdBooth() {

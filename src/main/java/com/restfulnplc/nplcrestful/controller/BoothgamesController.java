@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.*;
 
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
+import com.restfulnplc.nplcrestful.model.DuelMatch;
+import com.restfulnplc.nplcrestful.model.Singlematch;
+import com.restfulnplc.nplcrestful.model.Tipegame;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
+import com.restfulnplc.nplcrestful.service.DuelMatchService;
+import com.restfulnplc.nplcrestful.service.SinglematchService;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
@@ -27,6 +32,12 @@ public class BoothgamesController {
 
     @Autowired
     private BoothgamesService boothgamesService;
+
+    @Autowired
+    private SinglematchService singlematchService;
+
+    @Autowired
+    private DuelMatchService duelMatchService;
 
     @Autowired
     private LoginService loginService;
@@ -102,6 +113,87 @@ public class BoothgamesController {
                             "tipeGame", boothgame.getTipegame().toString(),
                             "durasiPermainan", boothgame.getDurasiPermainan(),
                             "fotoBooth", boothgame.getFotoBooth()
+                        ));
+                    }
+                    response.setData(listData);
+                } else {
+                    response.setMessage("No Boothgames Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/getWithResult")
+    public ResponseEntity<Response> getAllBoothgamesResult(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get All Boothgames");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                String userid = loginService.getLoginSession(sessionToken).getIdUser();
+                List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
+                if (boothgamesList.size() > 0) {
+                    response.setMessage("All Boothgames Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    ArrayList<Object> listData = new ArrayList<Object>();
+                    for(Boothgames boothgame : boothgamesList) {
+                        Object resultData;
+                        if(boothgame.getTipegame().equals(Tipegame.SINGLE)){
+                            Optional<Singlematch> singlematchDataOptional = singlematchService.getSinglematchesByUserAndBooth(userid, boothgame.getIdBooth());
+                            int totalBintang = 0;
+                            int totalPoin = 0;
+                            if(singlematchDataOptional.isPresent()){
+                                totalBintang = singlematchDataOptional.get().getTotalBintang();
+                                totalPoin = singlematchDataOptional.get().getTotalPoin();
+                            }
+                            resultData = Map.of(
+                                "totalBintang", totalBintang,
+                                "totalPoin", totalPoin
+                            );
+                        } else {
+                            ArrayList<DuelMatch> duelMatches = duelMatchService.getDuelMatchesByUserAndBooth(userid, boothgame.getIdBooth());
+                            String match1 = "-";
+                            String match2 = "-";
+                            if(duelMatches.size() > 0) {
+                                match1 = (duelMatches.get(0).getTimMenang().getIdTeam().equals(userid)) ? "Menang" : "Kalah";
+                            }
+                            if(duelMatches.size() > 1) {
+                                match2 = (duelMatches.get(1).getTimMenang().getIdTeam().equals(userid)) ? "Menang" : "Kalah";
+                            }
+                            resultData = Map.of(
+                                "match1", match1,
+                                "match2", match2
+                            );
+                        }
+
+                        listData.add(Map.of(
+                            "idBoothGame", boothgame.getIdBooth(),
+                            "namaBoothGame", boothgame.getNama(),
+                            "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                            "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
+                            "sopGame", boothgame.getSopGames(),
+                            "lokasi", boothgame.getLokasi(),
+                            "tipeGame", boothgame.getTipegame().toString(),
+                            "durasiPermainan", boothgame.getDurasiPermainan(),
+                            "fotoBooth", boothgame.getFotoBooth(),
+                            "gameResult", resultData
                         ));
                     }
                     response.setData(listData);

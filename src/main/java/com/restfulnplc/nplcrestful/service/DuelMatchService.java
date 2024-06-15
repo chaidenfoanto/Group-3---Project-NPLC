@@ -72,6 +72,16 @@ public class DuelMatchService {
         return duelMatchArray;
     }
 
+    public ArrayList<DuelMatch> getDuelMatchesByUserAndBooth(String userId, String boothId) {
+        ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
+        for(DuelMatch duelMatch : getAllDuelMatches()) {
+            if((duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) && duelMatch.getBoothGames().getIdBooth().equals(boothId)) {
+                duelMatchArray.add(duelMatch);
+            }
+        }
+        return duelMatchArray;
+    }
+
     public boolean deleteDuelMatch(String id) {
         Optional<DuelMatch> optionalDuelMatch = duelMatchRepository.findById(id);
         if (optionalDuelMatch.isPresent()) {
