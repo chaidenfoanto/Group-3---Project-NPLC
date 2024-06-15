@@ -6,6 +6,7 @@ import com.restfulnplc.nplcrestful.repository.DuelMatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,16 @@ public class DuelMatchService {
             return Optional.of(duelMatchRepository.save(duelMatch));
         }
         return Optional.empty();
+    }
+
+    public ArrayList<DuelMatch> getDuelMatchesByUser(String userId) {
+        ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
+        for(DuelMatch duelMatch : getAllDuelMatches()) {
+            if(duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) {
+                duelMatchArray.add(duelMatch);
+            }
+        }
+        return duelMatchArray;
     }
 
     public boolean deleteDuelMatch(String id) {
