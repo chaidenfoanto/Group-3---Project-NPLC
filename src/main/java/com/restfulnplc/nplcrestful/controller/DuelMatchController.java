@@ -173,7 +173,7 @@ public class DuelMatchController {
     }
 
     @GetMapping("/getByTeam/{id}")
-    public ResponseEntity<Response> getSingleMatchByTeamId(HttpServletRequest request,
+    public ResponseEntity<Response> getDuelMatchByTeamId(HttpServletRequest request,
             @PathVariable("id") String id) {
         String sessionToken = request.getHeader("Token");
         response.setService("Get DuelMatch By Team ID");
