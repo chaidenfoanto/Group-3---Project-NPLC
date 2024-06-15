@@ -48,8 +48,8 @@ public class BoothgamesController {
                     response.setData(Map.of(
                             "idBoothGame", newBoothgame.getIdBooth(),
                             "namaBoothGame", newBoothgame.getNama(),
-                            "panitia1", newBoothgame.getIdPenjaga1(),
-                            "panitia2", newBoothgame.getIdPenjaga2(),
+                            "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
+                            "panitia2", newBoothgame.getIdPenjaga2().getIdPanitia(),
                             "sopGame", newBoothgame.getSopGames(),
                             "lokasi", newBoothgame.getLokasi(),
                             "tipeGame", newBoothgame.getTipegame().toString(),
@@ -95,8 +95,8 @@ public class BoothgamesController {
                         listData.add(Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
-                            "panitia1", boothgame.getIdPenjaga1(),
-                            "panitia2", boothgame.getIdPenjaga2(),
+                            "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                            "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
@@ -145,8 +145,8 @@ public class BoothgamesController {
                     response.setData(Map.of(
                             "idBoothGame", boothgame.getIdBooth(),
                             "namaBoothGame", boothgame.getNama(),
-                            "panitia1", boothgame.getIdPenjaga1(),
-                            "panitia2", boothgame.getIdPenjaga2(),
+                            "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                            "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
                             "sopGame", boothgame.getSopGames(),
                             "lokasi", boothgame.getLokasi(),
                             "tipeGame", boothgame.getTipegame().toString(),
@@ -193,8 +193,8 @@ public class BoothgamesController {
                         response.setData(Map.of(
                                 "idBoothGame", boothgame.getIdBooth(),
                                 "namaBoothGame", boothgame.getNama(),
-                                "panitia1", boothgame.getIdPenjaga1(),
-                                "panitia2", boothgame.getIdPenjaga2(),
+                                "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
                                 "sopGame", boothgame.getSopGames(),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),
