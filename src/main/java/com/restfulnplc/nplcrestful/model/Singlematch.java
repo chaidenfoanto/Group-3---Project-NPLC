@@ -36,10 +36,10 @@ public class Singlematch {
     @JoinColumn(name = "inputby", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_inputby"), nullable = false)
     private Panitia inputBy;
 
-    @Column(name = "totalpoin")
+    @Column(name = "totalpoin", nullable = false)
     private int totalPoin;
 
-    @Column(name = "totalBintang")
+    @Column(name = "totalBintang", nullable = false)
     private int totalBintang;
 
     @ManyToOne
