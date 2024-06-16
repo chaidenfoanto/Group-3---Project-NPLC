@@ -12,6 +12,7 @@ import com.restfulnplc.nplcrestful.model.Login;
 import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.model.Role;
 import com.restfulnplc.nplcrestful.model.Team;
+import com.restfulnplc.nplcrestful.model.Tipegame;
 import com.restfulnplc.nplcrestful.repository.LoginRepository;
 import com.restfulnplc.nplcrestful.util.PasswordHasherMatcher;
 
@@ -28,6 +29,9 @@ public class LoginService {
     private PanitiaService panitiaService;
 
     @Autowired
+    private BoothgamesService boothgamesService;
+
+    @Autowired
     private TeamService teamService;
 
     public Optional<Login> LoginPanitia(LoginDTO loginDTO) {
@@ -40,6 +44,9 @@ public class LoginService {
                     deleteSession(sessionActive.get().getToken());
                 }
                 Role role = Role.PANITIA;
+                if(boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).isPresent()) {
+                    role = (boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).get().getTipegame().equals(Tipegame.SINGLE)) ? Role.LOSINGLE : Role.LODUEL;
+                }
                 if(panitia.getIsAdmin()) {
                     role = Role.ADMIN;
                 }

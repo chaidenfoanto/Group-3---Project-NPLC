@@ -2,6 +2,7 @@ package com.restfulnplc.nplcrestful.service;
 
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
+import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.repository.BoothgamesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,16 @@ public class BoothgamesService {
 
     public Optional<Boothgames> getBoothgameById(String id) {
         return boothgamesRepository.findById(id);
+    }
+
+    public Optional<Boothgames> getBoothgameByPanitia(String id) {
+        Panitia panitia = panitiaService.getPanitiaById(id).get();
+        for(Boothgames boothgame : getAllBoothgames()) {
+            if(boothgame.getIdPenjaga1().equals(panitia) || boothgame.getIdPenjaga2().equals(panitia)) {
+                return Optional.of(boothgame);
+            }
+        }
+        return Optional.empty();
     }
 
     public Optional<Boothgames> updateBoothgame(String id, BoothgamesDTO boothgamesDTO) {

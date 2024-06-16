@@ -4,8 +4,10 @@ public enum Role{
     PANITIA("Panitia"),
     ADMIN("Admin"),
     KETUA("Ketua"),
-    PLAYERS("Players");
-
+    PLAYERS("Players"),
+    LOSINGLE("Penjaga Single"),
+    LODUEL("Penjaga Duel");
+    
     private final String role;
 
     Role(String role) {
