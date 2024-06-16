@@ -49,6 +49,30 @@
         h2 {
             margin: 10px;
         }
+        .ranking {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 0.5px solid black;
+            margin: 5px;
+            background-color: var(--color-default); /* Sesuaikan dengan warna tema Anda */
+            color: white;
+            margin-left: -10%;
+        }
+        
+        .ranking p {
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .ranking .rank {
+            font-size: xx-large;
+            text-align: center;
+            font-weight: bold;
+            margin-left: 10px; /* Sesuaikan jarak antara ranking dan nomornya */
+        }
+        
         .points, .timer {
             align-items: center;
             padding: 10px 20px 10px 20px;
@@ -268,6 +292,14 @@
         }
 
         @media (max-width: 768px) {
+            .ranking {
+                font-size: 14px; /* Sesuaikan ukuran teks untuk perangkat berukuran lebih kecil */
+                padding: 8px 16px; /* Sesuaikan padding */
+            }
+        
+            .ranking .rank {
+                font-size: larger; /* Sesuaikan ukuran teks nomor ranking */
+            }        
             table.duel {
                 width: 100%;
                 /* margin-top: 10px; */
