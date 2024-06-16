@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 
@@ -48,19 +47,26 @@ public class ListKartuService {
         return listKartuRepository.findById(id);
     }
 
-    public ListKartu teamGetCard(String idTeam) {
+    public Optional<ListKartu> teamGetCard(String idTeam) {
         Random rand = new Random();
-        List<ListKartu> listAvailables = getAvailableCard();
-        ListKartu selectedCard = listAvailables.get(rand.nextInt((listAvailables.size() - 1) - 0 + 1) + 0);
-        selectedCard.setOwnedBy(teamService.getTeamById(idTeam).get());
-        listKartuRepository.save(selectedCard);
-        return selectedCard;
+        ArrayList<ListKartu> listAvailables = getAvailableCard();
+        Team team = teamService.getTeamById(idTeam).get();
+        System.out.println("Selecting a random card from " + listAvailables.size() + " available card(s)");
+        if(listAvailables.size() > 0) {
+            ListKartu selectedCard = (listAvailables.size() > 1) ? listAvailables.get(rand.nextInt(listAvailables.size() - 1)) : listAvailables.get(0);
+            selectedCard.setOwnedBy(team);
+            selectedCard.setIsUsed(false);
+            teamService.teamRolled(idTeam);
+            listKartuRepository.save(selectedCard);
+            return Optional.of(selectedCard);
+        }
+        return Optional.empty();
     }
 
-    public List<ListKartu> getAvailableCard() {
-        List<ListKartu> listKartu = Collections.<ListKartu>emptyList();
+    public ArrayList<ListKartu> getAvailableCard() {
+        ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
         for (ListKartu kartu : getAllListKartu()) {
-            if (kartu.getOwnedBy() == null) {
+            if (!(kartu.getOwnedBy() != null)) {
                 listKartu.add(kartu);
             }
         }

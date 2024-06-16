@@ -49,6 +49,13 @@ public class TeamService {
         return Optional.empty();
     }
 
+    public void teamRolled(String id)
+    {
+        Team team = getTeamById(id).get();
+        team.setChanceRoll(team.getChanceRoll() - 1);
+        teamRepository.save(team);
+    }
+
     public Team addTeam(TeamDTO teamDTO)
     {
         String teamID = getNextTeamID();

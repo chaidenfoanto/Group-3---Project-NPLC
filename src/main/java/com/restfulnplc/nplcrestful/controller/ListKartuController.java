@@ -175,19 +175,25 @@ public class ListKartuController {
                     String idUser = loginService.getLoginSession(sessionToken).getIdUser();
                     Team team = teamService.getTeamById(idUser).get();
                     if (team.getChanceRoll() > 0) {
-                        ListKartu listKartu = listKartuService.teamGetCard(idUser);
-                        response.setMessage("List Kartu Retrieved Successfully");
-                        response.setError(false);
-                        response.setHttpCode(HTTPCode.OK);
-                        response.setData(Map.of(
-                                "noKartu", listKartu.getNoKartu(),
-                                "cardSkill", listKartu.getCardSkill(),
-                                "ownedBy", listKartu.getOwnedBy(),
-                                "isUsed", listKartu.getIsUsed()));
+                        Optional<ListKartu> listKartuOptional = listKartuService.teamGetCard(idUser);
+                        if (listKartuOptional.isPresent()) {
+                            ListKartu listKartu = listKartuOptional.get();
+                            response.setMessage("List Kartu Retrieved Successfully");
+                            response.setError(false);
+                            response.setHttpCode(HTTPCode.OK);
+                            response.setData(Map.of(
+                                    "noKartu", listKartu.getNoKartu(),
+                                    "cardSkill", listKartu.getCardSkill()));
+                        } else {
+                            response.setMessage("All Cards Are Taken!");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.OK);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
                     } else {
                         response.setMessage("Chance Roll Insufficient");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.OK);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
