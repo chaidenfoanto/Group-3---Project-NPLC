@@ -198,7 +198,7 @@ public class BoothgamesController {
                     }
                     response.setData(listData);
                 } else {
-                    response.setMessage("No Boothgames Found");
+                    response.setMessage("Boothgames Data Empty");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
@@ -245,7 +245,7 @@ public class BoothgamesController {
                             "durasiPermainan", boothgame.getDurasiPermainan(),
                             "fotoBooth", boothgame.getFotoBooth()));
                 } else {
-                    response.setMessage("Boothgame Not Found");
+                    response.setMessage("Boothgame With That ID Not Found");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
