@@ -1,7 +1,7 @@
 $(document).ready(function () {
     const domain = "http://localhost:8080/"
     $(".sidebar").load("sidebarplayer.html", function () {
-        const toggleBtn = $("#toggle-btn");
+        const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1);
         toggleBtn.on("click", function () {
             $(".sidebar").toggleClass("open");
