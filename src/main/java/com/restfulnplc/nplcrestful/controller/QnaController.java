@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-// import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -74,23 +73,31 @@ public class QnaController {
     }
 
     @PostMapping("/answer/{id}")
-    public ResponseEntity<Response> answerQuestion(HttpServletRequest request, @RequestBody QnaPanitiaDTO qnapanitiaDTO, @PathVariable String id) {
+    public ResponseEntity<Response> answerQuestion(HttpServletRequest request, @RequestBody QnaPanitiaDTO qnapanitiaDTO,
+            @PathVariable String id) {
         String sessionToken = request.getHeader("Token");
         response.setService("Answer Question");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
-                    Qna answeredQna = qnaService.answerQuestion(id, qnapanitiaDTO);
-                    response.setMessage("Question Answered Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(Map.of(
-                            "idPertanyaan", answeredQna.getIdPertanyaan(),
-                            "pertanyaan", answeredQna.getPertanyaan(),
-                            "waktuInput", answeredQna.getWaktuInput(),
-                            "jawaban", answeredQna.getJawaban(),
-                            "panitia", answeredQna.getPanitia(),
-                            "team", answeredQna.getTeam()));
+                    if (qnaService.getQuestionById(id).isPresent()) {
+                        Qna answeredQna = qnaService.answerQuestion(id, qnapanitiaDTO);
+                        response.setMessage("Question Answered Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.CREATED);
+                        response.setData(Map.of(
+                                "idPertanyaan", answeredQna.getIdPertanyaan(),
+                                "pertanyaan", answeredQna.getPertanyaan(),
+                                "waktuInput", answeredQna.getWaktuInput(),
+                                "jawaban", answeredQna.getJawaban(),
+                                "panitia", answeredQna.getPanitia(),
+                                "team", answeredQna.getTeam()));
+                    } else {
+                        response.setMessage("Question Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NOT_FOUND);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
