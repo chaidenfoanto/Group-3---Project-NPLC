@@ -37,22 +37,3 @@
         <i class="bx bx-log-out" id="log_out"></i>
       </li>
     </ul>
-    <script>
-      function updateLogo() {
-        const logoImg = $('#toggle-btn');
-        const sidebar = $('.sidebar');
-      
-        if (window.innerWidth <= 500) {
-          if (!sidebar.classList.contains('open')) {
-            logoImg.src = 'img/burger-menu.png';
-          } else {
-            logoImg.src = 'img/logo.png';
-          }
-        } else {
-          logoImg.src = 'img/logo.png';
-        }
-      }
-      
-      window.onload = updateLogo;
-      window.onresize = updateLogo;
-    </script>

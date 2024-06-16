@@ -263,6 +263,14 @@
     width: calc(100% - 250px);
 }
 
+.sidebar .logo_details .burger-icon {
+    display: none;
+}
+
+.sidebar:not(.open) .logo_details .burger-icon {
+    display: none;
+}
+
 @media (max-width: 500px) {
     .sidebar .fa-user::before {
         content: "";

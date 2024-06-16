@@ -45,16 +45,3 @@
     <i class="bx bx-log-out" id="log_out"></i>
   </li>
 </ul>
-<script>
-  function updateLogo() {
-      const logoImg = document.getElementById('logo-img');
-      if (window.innerWidth <= 500) {
-          logoImg.src = 'img/burger-list.png';
-      } else {
-          logoImg.src = 'img/logo.png';
-      }
-    }
-
-    window.onload = updateLogo;
-    window.onresize = updateLogo;
-</script>
