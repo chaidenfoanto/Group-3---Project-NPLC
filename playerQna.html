@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="playerQna.css">
     <link rel="stylesheet" href="sidebarplayer.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="main-container">
@@ -19,49 +18,27 @@
             </header>
             <div class="question-box-container">
                 <button id="addQuestionBtn">Add Question</button>
-                <div class="question-box">
-                    <h3>Team A</h3>
-                    <p>siapakah saya ini dan dimana?</p>
-                    <span class="status belum-terjawab">Belum Terjawab</span>
-                </div>
-                <div class="question-box sudah-terjawab-box">
-                    <h3>Team A</h3>
-                    <p>siapakah saya ini dan dimana?</p>
-                    <span class="status sudah-terjawab">Sudah Terjawab</span>
-                </div>
+                <div id="questionList"></div> <!-- Container for the list of questions -->
+                <span class="status"></span>
             </div>
             <div class="popup" id="popup">
                 <div class="popup-content">
-                    <span id="closePopup" class="close-btn">&times;</span>
-                    <div class="header-popup">
-                        <h2>Welcome Players</h2>
-                    </div>
+                    <span id="closeContentPopup" class="close-btn">&times;</span>
+                    <h2>Add Question</h2>
                     <form id="questionForm">
-                <div class="content-wrapper">
-                    <div class="form-group">
-                        <input type="text" id="popupTeamNameInput" class="newpopteam" placeholder="Team Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="popupQuestionTextInput" class="newpopquestion" placeholder="Question">
-                    </div>
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-
+                        <label for="teamName"></label>
+                        <input type="text" id="teamName" name="teamName" placeholder="Enter team name" required>
+                        <label for="question"></label>
+                        <textarea id="question" name="question" rows="4" placeholder="Enter your question" required></textarea>
+                        <button type="submit">Submit</button>
+                    </form> 
                 </div>
             </div>
-            <!-- New Popup for displaying content -->
-            <div class="popup" id="contentPopup">
+            <div class="popup" id="answerPopup">
                 <div class="popup-content">
-                    <span id="closeContentPopup" class="close-btn">&times;</span>
-                    <div class="header-newpopup">
-                        <h4>Submitted Quest</h4>
-                    </div>
-                    <div class="content-wrapper">
-                        <p id="popupTeamName" class="newpopteam">Team A</p>
-                        <p id="popupQuestionText" class="newpopquestion">siapakah saya ini dan dimana?</p>
-                    </div>
-                    <p id="popupAnswerText" class="newpopanswer">kamu ada di uc makassar sekarang. kamu tidak tau siapa semangat!!</p>
+                    <span id="closeAnswerPopup" class="close-btn">&times;</span>
+                    <h2>Answer</h2>
+                    <p id="answerContent"></p>
                 </div>
             </div>
         </div>
