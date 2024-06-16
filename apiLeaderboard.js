@@ -87,8 +87,7 @@ const domain = "http://localhost:8080/";
 
     fetchSession();
     
-    // Contoh untuk mengupdate leaderboard secara berkala (misalnya setiap 10 detik)
     setInterval(function() {
-        fetchSession(); // Ambil data leaderboard kembali
-    }, 10000); // Ambil setiap 10 detik (sesuaikan interval sesuai kebutuhan)
+        fetchSession(); 
+    }, 10000); 
 });

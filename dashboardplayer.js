@@ -1,8 +1,8 @@
-$(document).ready(async function() {
-    $(".sidebar").load("sidebarplayer.html", function() {
+$(document).ready(function () {
+    $(".sidebar").load("sidebarplayer.html", function () {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
-        toggleBtn.on("click", function() {
+        toggleBtn.on("click", function () {
             $(".sidebar").toggleClass("open");
             updateLogo();
             menuBtnChange();
@@ -18,7 +18,7 @@ $(document).ready(async function() {
 
     $(document).on('click', function (e) {
         if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
-          closeSidebar();
+            closeSidebar();
         }
     });
 
@@ -27,25 +27,15 @@ $(document).ready(async function() {
         updateLogo();
         // $('.main-content').removeClass('shift');
     }
-
-    const openBtn = $(".game-card");
+    
     const closeBtn = $("#closePopup");
     const modal = $(".gamedetails");
 
-    openBtn.click(function() {
-        modal.addClass("open");
-    });
-
-    closeBtn.click(function() {
+    closeBtn.click(function () {
         modal.removeClass("open");
     });
 
-    $(".game-card").click(function() {
-        $(".gamedetails").show();
-        $(".modal-overlay").show();
-    });
-
-    $("#closePopup").click(function() {
+    $("#closePopup").click(function () {
         $(".gamedetails").hide();
         $(".modal-overlay").hide();
     });

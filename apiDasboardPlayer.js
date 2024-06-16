@@ -1,81 +1,80 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const domain = "http://localhost:8080/";
+const domain = "http://localhost:8080/";
+var gameData = {};
 
-  function fetchSession() {
-    fetch(domain + 'api/login/getSession', {
-      method: 'GET',
-      headers: { 'Token': getCookie('Token') }
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.service === "Auth Token" && data.message === "Authorization Success") {
-          console.log("authorized success");
-          setCookie("Token", getCookie("Token"), 365);
-          fetchBoothGames();
-        } else {
-          console.log('Authorization Failed');
-          deleteCookie("Token");
-          window.location.href = "Loginplayer.html";
-        }
-      })
-      .catch(error => {
-        console.error('Error occurred while fetching session:', error);
-        deleteCookie("Token");
-        window.location.href = "Loginplayer.html";
-      });
-  }
-
-  function getCookie(name) {
-    let cookieArr = document.cookie.split(";");
-    for (let i = 0; i < cookieArr.length; i++) {
-      let cookiePair = cookieArr[i].split("=");
-      if (name == cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1]);
-      }
-    }
-    return null;
-  }
-
-  function setCookie(name, value, daysToLive) {
-    let cookie = name + "=" + encodeURIComponent(value);
-    if (typeof daysToLive === "number") {
-      cookie += "; max-age=" + (daysToLive * 24 * 60 * 60) + "; path=/";
-      document.cookie = cookie;
-    }
-  }
-
-  function deleteCookie(name) {
-    document.cookie = name + '=; Max-Age=-99999999;';
-  }
-
-  function fetchBoothGames() {
-    const listContainer = document.getElementsByClassName("games-list")[0];
-    fetch(domain + 'api/boothgames', {
-      method: 'GET',
-      headers: { 'Token': getCookie('Token') }
-    })
+async function fetchSession() {
+  await fetch(domain + 'api/login/getSession', {
+    method: 'GET',
+    headers: { 'Token': getCookie('Token') }
+  })
     .then(response => response.json())
-      .then(data => {
-        if (!data.error) {
-          data.data.forEach(boothData => {
-          //   `<div class="gamedetails" id="modal">
-          //     <div class="gamedetails-inner">
-          //         <h2>Nama Game</h2>
-          //         <div class="game-content">
-          //             <img src="${boothData.fotoBooth}" alt="${boothData.namaBoothGame}">
-          //             <div class="game-details">
-          //                 <p><strong>Cara Bermain:</strong> </p>
-          //                 <div class="cara-bermain">
-          //                   <p>${boothData.sopGame}</p>
-          //                 </div>
-          //               </div>
-          //         </div>
-          //         <button id="closePopup" class="btn-ok">OK</button>
-          //     </div>
-          // </div>`
-            if(boothData.tipeGame == "Duel") {
-              var gameCard = `
-              <div class="game-card">  
+    .then(data => {
+      if (!data.error) {
+        console.log("authorized success");
+        setCookie("Token", getCookie("Token"), 365);
+        fetchBoothGames();
+        fetchTotalPoin();
+      } else {
+        console.log('Authorization Failed');
+        deleteCookie("Token");
+        window.location.href = "LogIn.html";
+      }
+    })
+    .catch(error => {
+      console.error('Error occurred while fetching session:', error);
+      deleteCookie("Token");
+      window.location.href = "LogIn.html";
+    });
+}
+
+function getCookie(name) {
+  let cookieArr = document.cookie.split(";");
+  for (let i = 0; i < cookieArr.length; i++) {
+    let cookiePair = cookieArr[i].split("=");
+    if (name == cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
+
+function setCookie(name, value, daysToLive) {
+  let cookie = name + "=" + encodeURIComponent(value);
+  if (typeof daysToLive === "number") {
+    cookie += "; max-age=" + (daysToLive * 24 * 60 * 60) + "; path=/";
+    document.cookie = cookie;
+  }
+}
+
+function deleteCookie(name) {
+  document.cookie = name + '=; Max-Age=-99999999;';
+}
+
+function fetchTotalPoin() {
+  const allPoin = document.querySelector('.points');
+  fetch(domain + 'api/team/getTeamGeneral', {
+    method: 'GET',
+    headers: { 'TOken': getCookie('Token') }
+  })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("total").innerHTML = data.data.totalPoin
+    })
+}
+
+async function fetchBoothGames() {
+  const listContainer = document.getElementsByClassName("games-list")[0];
+  await fetch(domain + 'api/boothgames/getWithResult', {
+    method: 'GET',
+    headers: { 'Token': getCookie('Token') }
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.error) {
+        data.data.forEach(boothData => {
+          gameData[boothData.idBoothGame] = boothData;
+          if (boothData.tipeGame == "Duel") {
+            var gameCard = `
+              <div class="game-card" onclick="gameCardClick(${boothData.idBoothGame})">  
               <img
                 src="${boothData.fotoBooth}"
                 alt="${boothData.namaBoothGame}"
@@ -97,9 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
               </table>
             </div>
               `
-            } else {
-              var gameCard = `
-              <div class="game-card">  
+          } else {
+            var gameCard = `
+              <div class="game-card" onclick="gameCardClick(${boothData.idBoothGame})">  
               <img
                 src="${boothData.fotoBooth}"
                 alt="${boothData.namaBoothGame}"
@@ -121,30 +120,38 @@ document.addEventListener("DOMContentLoaded", function () {
               </table>
             </div>
               `
-            }
-            var tempElement = document.createElement('div');
-            tempElement.innerHTML = gameCard.trim();
-            listContainer.appendChild(tempElement.firstChild);
-          });
-        } else {
-          console.log('fetch Failed');
-          // deleteCookie("Token");
-          // window.location.href = "Loginplayer.html";
-        }
-      })
-      .catch(error => {
-        console.error('Error occurred while fetching session:', error);
+          }
+          var tempElement = document.createElement('div');
+          tempElement.innerHTML = gameCard.trim();
+          listContainer.appendChild(tempElement.firstChild);
+        });
+      } else {
+        console.log('fetch Failed');
+        console.log(data.message)
         // deleteCookie("Token");
-        // window.location.href = "Loginplayer.html";
-      });
-  }
+        // window.location.href = "LogIn.html";
+      }
+    })
+    .catch(error => {
+      console.error('Error occurred while fetching session:', error);
+      // deleteCookie("Token");
+      // window.location.href = "LogIn.html";
+    });
+}
 
-  
+function gameCardClick(boothId) {
+  const modal = $(".gamedetails");
+  modal.addClass("open");
+  $(".gamedetails").show();
+  $(".modal-overlay").show();
+  $("#nama-game").html(gameData[boothId].namaBoothGame);
+  $("#rules-game").html(gameData[boothId].sopGame);
+  $("#foto-game").prop("src", gameData[boothId].fotoBooth);
+  $("#foto-game").prop("alt", gameData[boothId].namaBoothGame);
+}
 
-  fetchSession();
+fetchSession();
 
-  // setInterval(function() {
-  //     fetchSession(); 
-  // }, 5000); 
-
-});
+// setInterval(function() {
+//     fetchSession();
+// }, 5000); 

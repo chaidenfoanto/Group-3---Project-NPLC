@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     const domain = "http://localhost:8080"
+    
+    deleteCookie("Token");
+
+    function deleteCookie(name) {
+        document.cookie = name + '=; Max-Age=-99999999;';
+    }
 
     const popupOverlay = document.getElementById('popup-overlay');
 
@@ -79,8 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         break;
                     case "KETUA" :
                         window.location.href = "HodStartGame.html"
-                    case "PANITIA" :
-                        window.location.href = "HodStartGame.html"
+                    case "LOSINGLE" :
+                        window.location.href = "PanitiaSingleInput.html"
+                    case "LODUEL" :
+                        window.location.href = "PanitiaDuelFinish.html"
                 }
 
                 // window.location.href = "DashboardHod.html";
