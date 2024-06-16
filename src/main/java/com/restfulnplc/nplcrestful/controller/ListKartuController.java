@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.restfulnplc.nplcrestful.dto.ListKartuDTO;
 import com.restfulnplc.nplcrestful.model.ListKartu;
+import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.service.ListKartuService;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.TeamService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
@@ -27,6 +29,9 @@ public class ListKartuController {
 
     @Autowired
     private ListKartuService listKartuService;
+
+    @Autowired
+    private TeamService teamService;
 
     @Autowired
     private LoginService loginService;
@@ -88,10 +93,10 @@ public class ListKartuController {
                     ArrayList<Object> listData = new ArrayList<Object>();
                     for (ListKartu listKartu : listKartuList) {
                         listData.add(Map.of(
-                            "noKartu", listKartu.getNoKartu(),
-                            "cardSkill", listKartu.getCardSkill(),
-                            "ownedBy", listKartu.getOwnedBy(),
-                            "isUsed", listKartu.getIsUsed()));
+                                "noKartu", listKartu.getNoKartu(),
+                                "cardSkill", listKartu.getCardSkill(),
+                                "ownedBy", listKartu.getOwnedBy(),
+                                "isUsed", listKartu.getIsUsed()));
                     }
                     response.setData(listData);
                 } else {
@@ -140,6 +145,55 @@ public class ListKartuController {
                     response.setMessage("List Kartu Not Found");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.OK);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/roll")
+    public ResponseEntity<Response> getListKartuRoll(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Roll Card");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionTeam(sessionToken)) {
+                    String idUser = loginService.getLoginSession(sessionToken).getIdUser();
+                    Team team = teamService.getTeamById(idUser).get();
+                    if (team.getChanceRoll() > 0) {
+                        ListKartu listKartu = listKartuService.teamGetCard(idUser);
+                        response.setMessage("List Kartu Retrieved Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(Map.of(
+                                "noKartu", listKartu.getNoKartu(),
+                                "cardSkill", listKartu.getCardSkill(),
+                                "ownedBy", listKartu.getOwnedBy(),
+                                "isUsed", listKartu.getIsUsed()));
+                    } else {
+                        response.setMessage("Chance Roll Insufficient");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {

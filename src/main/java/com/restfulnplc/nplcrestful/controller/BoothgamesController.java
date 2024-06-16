@@ -56,27 +56,27 @@ public class BoothgamesController {
                     response.setMessage("Boothgame Successfully Added");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    if(newBoothgame.getIdPenjaga2() != null) {
-                    response.setData(Map.of(
-                            "idBoothGame", newBoothgame.getIdBooth(),
-                            "namaBoothGame", newBoothgame.getNama(),
-                            "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
-                            "panitia2", newBoothgame.getIdPenjaga2().getIdPanitia(),
-                            "sopGame", newBoothgame.getSopGames(),
-                            "lokasi", newBoothgame.getLokasi(),
-                            "tipeGame", newBoothgame.getTipegame().toString(),
-                            "durasiPermainan", newBoothgame.getDurasiPermainan(),
-                            "fotoBooth", newBoothgame.getFotoBooth()));
+                    if (newBoothgame.getIdPenjaga2() != null) {
+                        response.setData(Map.of(
+                                "idBoothGame", newBoothgame.getIdBooth(),
+                                "namaBoothGame", newBoothgame.getNama(),
+                                "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
+                                "panitia2", newBoothgame.getIdPenjaga2().getIdPanitia(),
+                                "sopGame", newBoothgame.getSopGames(),
+                                "lokasi", newBoothgame.getLokasi(),
+                                "tipeGame", newBoothgame.getTipegame().toString(),
+                                "durasiPermainan", newBoothgame.getDurasiPermainan(),
+                                "fotoBooth", newBoothgame.getFotoBooth()));
                     } else {
                         response.setData(Map.of(
-                            "idBoothGame", newBoothgame.getIdBooth(),
-                            "namaBoothGame", newBoothgame.getNama(),
-                            "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
-                            "sopGame", newBoothgame.getSopGames(),
-                            "lokasi", newBoothgame.getLokasi(),
-                            "tipeGame", newBoothgame.getTipegame().toString(),
-                            "durasiPermainan", newBoothgame.getDurasiPermainan(),
-                            "fotoBooth", newBoothgame.getFotoBooth()));
+                                "idBoothGame", newBoothgame.getIdBooth(),
+                                "namaBoothGame", newBoothgame.getNama(),
+                                "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
+                                "sopGame", newBoothgame.getSopGames(),
+                                "lokasi", newBoothgame.getLokasi(),
+                                "tipeGame", newBoothgame.getTipegame().toString(),
+                                "durasiPermainan", newBoothgame.getDurasiPermainan(),
+                                "fotoBooth", newBoothgame.getFotoBooth()));
                     }
                 } else {
                     response.setMessage("Access Denied");
@@ -114,8 +114,8 @@ public class BoothgamesController {
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
                     ArrayList<Object> listData = new ArrayList<Object>();
-                    for(Boothgames boothgame : boothgamesList) {
-                        if(boothgame.getIdPenjaga2() != null) {
+                    for (Boothgames boothgame : boothgamesList) {
+                        if (boothgame.getIdPenjaga2() != null) {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
@@ -126,8 +126,8 @@ public class BoothgamesController {
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", boothgame.getDurasiPermainan(),
                                     "fotoBooth", boothgame.getFotoBooth()));
-                            } else {
-                                listData.add(Map.of(
+                        } else {
+                            listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
@@ -136,7 +136,7 @@ public class BoothgamesController {
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", boothgame.getDurasiPermainan(),
                                     "fotoBooth", boothgame.getFotoBooth()));
-                            }
+                        }
                     }
                     response.setData(listData);
                 } else {
@@ -169,69 +169,78 @@ public class BoothgamesController {
         response.setService("Get All Boothgames");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
-                String userid = loginService.getLoginSession(sessionToken).getIdUser();
-                List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
-                if (boothgamesList.size() > 0) {
-                    response.setMessage("All Boothgames Retrieved Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
-                    ArrayList<Object> listData = new ArrayList<Object>();
-                    for(Boothgames boothgame : boothgamesList) {
-                        Object resultData;
-                        if(boothgame.getTipegame().equals(Tipegame.SINGLE)){
-                            Optional<Singlematch> singlematchDataOptional = singlematchService.getSinglematchesByUserAndBooth(userid, boothgame.getIdBooth());
-                            int totalBintang = 0;
-                            int totalPoin = 0;
-                            if(singlematchDataOptional.isPresent()){
-                                totalBintang = singlematchDataOptional.get().getTotalBintang();
-                                totalPoin = singlematchDataOptional.get().getTotalPoin();
+                if (loginService.checkSessionTeam(sessionToken)) {
+                    String userid = loginService.getLoginSession(sessionToken).getIdUser();
+                    List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
+                    if (boothgamesList.size() > 0) {
+                        response.setMessage("All Boothgames Retrieved Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        ArrayList<Object> listData = new ArrayList<Object>();
+                        for (Boothgames boothgame : boothgamesList) {
+                            Object resultData;
+                            if (boothgame.getTipegame().equals(Tipegame.SINGLE)) {
+                                Optional<Singlematch> singlematchDataOptional = singlematchService
+                                        .getSinglematchesByUserAndBooth(userid, boothgame.getIdBooth());
+                                int totalBintang = 0;
+                                int totalPoin = 0;
+                                if (singlematchDataOptional.isPresent()) {
+                                    totalBintang = singlematchDataOptional.get().getTotalBintang();
+                                    totalPoin = singlematchDataOptional.get().getTotalPoin();
+                                }
+                                resultData = Map.of(
+                                        "totalBintang", totalBintang,
+                                        "totalPoin", totalPoin);
+                            } else {
+                                ArrayList<DuelMatch> duelMatches = duelMatchService.getDuelMatchesByUserAndBooth(userid,
+                                        boothgame.getIdBooth());
+                                String match1 = "-";
+                                String match2 = "-";
+                                if (duelMatches.size() > 0) {
+                                    match1 = (duelMatches.get(0).getTimMenang().getIdTeam().equals(userid)) ? "Menang"
+                                            : "Kalah";
+                                }
+                                if (duelMatches.size() > 1) {
+                                    match2 = (duelMatches.get(1).getTimMenang().getIdTeam().equals(userid)) ? "Menang"
+                                            : "Kalah";
+                                }
+                                resultData = Map.of(
+                                        "match1", match1,
+                                        "match2", match2);
                             }
-                            resultData = Map.of(
-                                "totalBintang", totalBintang,
-                                "totalPoin", totalPoin
-                            );
-                        } else {
-                            ArrayList<DuelMatch> duelMatches = duelMatchService.getDuelMatchesByUserAndBooth(userid, boothgame.getIdBooth());
-                            String match1 = "-";
-                            String match2 = "-";
-                            if(duelMatches.size() > 0) {
-                                match1 = (duelMatches.get(0).getTimMenang().getIdTeam().equals(userid)) ? "Menang" : "Kalah";
-                            }
-                            if(duelMatches.size() > 1) {
-                                match2 = (duelMatches.get(1).getTimMenang().getIdTeam().equals(userid)) ? "Menang" : "Kalah";
-                            }
-                            resultData = Map.of(
-                                "match1", match1,
-                                "match2", match2
-                            );
-                        }
 
-                        if(boothgame.getIdPenjaga2() != null) {
-                            listData.add(Map.of(
-                                    "idBoothGame", boothgame.getIdBooth(),
-                                    "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
-                                    "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
-                                    "sopGame", boothgame.getSopGames(),
-                                    "lokasi", boothgame.getLokasi(),
-                                    "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", boothgame.getDurasiPermainan(),
-                                    "fotoBooth", boothgame.getFotoBooth(),
-                                    "gameResult", resultData));
+                            if (boothgame.getIdPenjaga2() != null) {
+                                listData.add(Map.of(
+                                        "idBoothGame", boothgame.getIdBooth(),
+                                        "namaBoothGame", boothgame.getNama(),
+                                        "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                        "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
+                                        "sopGame", boothgame.getSopGames(),
+                                        "lokasi", boothgame.getLokasi(),
+                                        "tipeGame", boothgame.getTipegame().toString(),
+                                        "durasiPermainan", boothgame.getDurasiPermainan(),
+                                        "fotoBooth", boothgame.getFotoBooth(),
+                                        "gameResult", resultData));
                             } else {
                                 listData.add(Map.of(
-                                    "idBoothGame", boothgame.getIdBooth(),
-                                    "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
-                                    "sopGame", boothgame.getSopGames(),
-                                    "lokasi", boothgame.getLokasi(),
-                                    "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", boothgame.getDurasiPermainan(),
-                                    "fotoBooth", boothgame.getFotoBooth(),
-                                    "gameResult", resultData));
+                                        "idBoothGame", boothgame.getIdBooth(),
+                                        "namaBoothGame", boothgame.getNama(),
+                                        "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                        "sopGame", boothgame.getSopGames(),
+                                        "lokasi", boothgame.getLokasi(),
+                                        "tipeGame", boothgame.getTipegame().toString(),
+                                        "durasiPermainan", boothgame.getDurasiPermainan(),
+                                        "fotoBooth", boothgame.getFotoBooth(),
+                                        "gameResult", resultData));
                             }
+                        }
+                        response.setData(listData);
+                    } else {
+                        response.setMessage("Access Denied");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.FORBIDDEN);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
                     }
-                    response.setData(listData);
                 } else {
                     response.setMessage("Boothgames Data Empty");
                     response.setError(true);
@@ -269,7 +278,7 @@ public class BoothgamesController {
                     response.setMessage("Boothgame Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.CREATED);
-                    if(boothgame.getIdPenjaga2() != null) {
+                    if (boothgame.getIdPenjaga2() != null) {
                         response.setData(Map.of(
                                 "idBoothGame", boothgame.getIdBooth(),
                                 "namaBoothGame", boothgame.getNama(),
@@ -280,8 +289,8 @@ public class BoothgamesController {
                                 "tipeGame", boothgame.getTipegame().toString(),
                                 "durasiPermainan", boothgame.getDurasiPermainan(),
                                 "fotoBooth", boothgame.getFotoBooth()));
-                        } else {
-                            response.setData(Map.of(
+                    } else {
+                        response.setData(Map.of(
                                 "idBoothGame", boothgame.getIdBooth(),
                                 "namaBoothGame", boothgame.getNama(),
                                 "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
@@ -290,7 +299,7 @@ public class BoothgamesController {
                                 "tipeGame", boothgame.getTipegame().toString(),
                                 "durasiPermainan", boothgame.getDurasiPermainan(),
                                 "fotoBooth", boothgame.getFotoBooth()));
-                        }
+                    }
                 } else {
                     response.setMessage("Boothgame With That ID Not Found");
                     response.setError(true);
@@ -329,7 +338,7 @@ public class BoothgamesController {
                         response.setMessage("Boothgame Updated Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        if(boothgame.getIdPenjaga2() != null) {
+                        if (boothgame.getIdPenjaga2() != null) {
                             response.setData(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
@@ -340,8 +349,8 @@ public class BoothgamesController {
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", boothgame.getDurasiPermainan(),
                                     "fotoBooth", boothgame.getFotoBooth()));
-                            } else {
-                                response.setData(Map.of(
+                        } else {
+                            response.setData(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
@@ -350,7 +359,7 @@ public class BoothgamesController {
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", boothgame.getDurasiPermainan(),
                                     "fotoBooth", boothgame.getFotoBooth()));
-                            }
+                        }
                     } else {
                         response.setMessage("Boothgame Not Found");
                         response.setError(true);

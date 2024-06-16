@@ -132,6 +132,47 @@ public class TeamController {
                 .body(response);
     }
 
+    @GetMapping("/getTeamGeneral")
+    public ResponseEntity<Response> getTeamTeamGeneral(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get Team Chance Roll");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                String id = loginService.getLoginSession(sessionToken).getIdUser();
+                Optional<Team> teamOptional = teamService.getTeamById(id);
+                if (teamOptional.isPresent()) {
+                    Team team = teamOptional.get();
+                    response.setMessage("Team Chane Roll Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(Map.of(
+                            "idTeam", team.getIdTeam(),
+                            "chanceRoll", team.getChanceRoll(),
+                            "totalPoin", team.getTotalPoin()));
+                } else {
+                    response.setMessage("Team Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response> getTeamById(HttpServletRequest request, @PathVariable("id") String id) {
         String sessionToken = request.getHeader("Token");
