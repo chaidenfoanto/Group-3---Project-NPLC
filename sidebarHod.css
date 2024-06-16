@@ -344,4 +344,20 @@
     .sidebar li.profile .designation {
         display: none;
     }
+
+    .sidebar .logo_details .burger-icon {
+        display: none; /* Sembunyikan ikon burger secara default */
+    }
+
+    .sidebar:not(.open) .logo_details .burger-icon {
+        display: block; /* Tampilkan ikon burger ketika sidebar tidak terbuka */
+    }
+
+    .sidebar:not(.open) .logo_details .logo {
+        display: none; /* Sembunyikan logo ketika sidebar tidak terbuka */
+    }
+
+    .sidebar.open .logo_details .logo {
+        display: block; /* Pastikan logo ditampilkan ketika sidebar terbuka */
+    }
 }
