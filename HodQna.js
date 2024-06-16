@@ -1,144 +1,98 @@
 $(document).ready(function() {
-    // Load the sidebar and handle the toggle button
-    $(".sidebar").load("sidebarHod.html", function() {
+    $(".sidebar").load("sidebarketua.html", function() {
         const toggleBtn = $("#toggle-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {
             $(".sidebar").toggleClass("open");
             menuBtnChange();
         });
-
+  
         function menuBtnChange() {
-            if ($(".sidebar").hasClass("open")) {
+            if (sidebar.hasClass("open")) {
                 logo.hide();
             } else {
                 logo.show();
             }
         }
     });
+    var questions = [
+        {
+            teamName: "Team A",
+            question: "What is the strategy?",
+            answer: "",
+            status: "Not Answered"
+        },
+        {
+            teamName: "Team B",
+            question: "Who is the best player?",
+            answer: "All players are valuable.",
+            status: "Answered"
+        }
+    ];
 
-    // Function to open the main popup
-    function openPopup() {
-        $("#popup").css("display", "flex");
+    function renderQuestions() {
+        var questionList = $("#questionList");
+        questionList.empty();
+
+        questions.forEach(function(q) {
+            var questionItem = $('<div class="question-item"></div>');
+            var questionTitle = $('<h3></h3>').text('Team Name: ' + q.teamName);
+            var questionText = $('<p></p>').text('Question: ' + q.question);
+            var statusContainer = $('<div class="status-container"></div>');
+            var status = $('<span class="status"></span>').text(q.status);
+            var seeAnswer = $('<span class="see-answer"></span>').text('See Answer');
+            var editAnswer = $('<span class="edit-answer"></span>').text('Answer');
+
+            if (q.status === "Answered") {
+                status.css('color', 'green');
+                seeAnswer.click(function() {
+                    closeAllPopups();
+                    $("#answerContent").text(q.answer);
+                    $("#answerPopup").fadeIn();
+                });
+                statusContainer.append(status, seeAnswer);
+            } else {
+                status.css('color', 'red');
+                editAnswer.click(function() {
+                    closeAllPopups();
+                    $("#editTeamName").val(q.teamName);
+                    $("#editQuestion").val(q.question);
+                    $("#editAnswer").val(q.answer);
+                    $("#editAnswerPopup").fadeIn();
+                });
+                statusContainer.append(status, editAnswer);
+            }
+
+            questionItem.append(questionTitle, questionText, statusContainer);
+            questionList.append(questionItem);
+        });
     }
 
-    // Function to close the main popup
-    function closePopup() {
-        $("#popup").css("display", "none");
+    function closeAllPopups() {
+        $(".popup").fadeOut();
     }
 
-    // Event listener for addQuestionBtn to open the main popup
-    $("#addQuestionBtn").on("click", openPopup);
+    renderQuestions();
 
-    // Event listener for closePopupBtn to close the main popup
-    $(".close-btn").on("click", closePopup);
+    $(".close-btn").click(function() {
+        closeAllPopups();
+    });
 
-    // Close the main popup when clicking outside of it
-    $(window).on("click", function(event) {
-        if (event.target === document.getElementById("popup")) {
-            closePopup();
+    $("#editAnswerForm").submit(function(event) {
+        event.preventDefault();
+        var teamName = $("#editTeamName").val();
+        var question = $("#editQuestion").val();
+        var answer = $("#editAnswer").val();
+
+        var questionIndex = questions.findIndex(function(q) {
+            return q.teamName === teamName && q.question === question;
+        });
+
+        if (questionIndex !== -1) {
+            questions[questionIndex].answer = answer;
+            questions[questionIndex].status = "Answered";
+            renderQuestions();
+            $("#editAnswerPopup").fadeOut();
         }
     });
-
-    // Handle form submission
-    $("#questionForm").on("submit", function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Get input values
-        const teamName = $("#Teamname").val();
-        const question = $("#Question").val();
-
-        // Save to localStorage (or send to server via AJAX)
-        const questionData = {
-            teamName: teamName,
-            question: question
-        };
-
-        // You can choose to use an array to store multiple entries
-        let savedQuestions = JSON.parse(localStorage.getItem('questions')) || [];
-        savedQuestions.push(questionData);
-        localStorage.setItem('questions', JSON.stringify(savedQuestions));
-
-        // Display confirmation message
-        alert("Question submitted and saved!");
-
-        // Clear form inputs
-        $("#Teamname").val('');
-        $("#Question").val('');
-
-        // Close the main popup
-        closePopup();
-    });
-
-    // Function to open the content popup with the details of the clicked box
-    function openContentPopup(teamName, questionText, statusText) {
-        $("#popupTeamName").text(teamName);
-        $("#popupQuestionText").text(questionText);
-        $("#popupStatusText").text(statusText);
-        $("#contentPopup").css("display", "flex");
-    }
-
-    // Event listener for closing the content popup
-    $("#closeContentPopup").on("click", function() {
-        $("#contentPopup").css("display", "none");
-    });
-
-    // Close the content popup when clicking outside of it
-    $(window).on("click", function(event) {
-        if (event.target === document.getElementById("contentPopup")) {
-            $("#contentPopup").css("display", "none");
-        }
-    });
-
-    // Event listeners for "sudah terjawab" boxes to open the content popup
-    $(".sudah-terjawab-box").on("click", function() {
-        const teamName = $(this).find("h3").text();
-        const questionText = $(this).find("p").text();
-        const statusText = $(this).find(".status").text();
-        openContentPopup(teamName, questionText, statusText);
-    });
-
-    // Function to open the question popup
-    function openQuestionPopup() {
-        $("#questionPopup").css("display", "flex");
-    }
-
-    // Event listener for opening the question popup
-    $(".belum-terjawab-box").on("click", openQuestionPopup);
-
-    // Event listener for closing the question popup
-    $("#closeQuestionPopup").on("click", function() {
-        $("#questionPopup").css("display", "none");
-    });
-
-    // Handle form submission for the question popup
-    $("#questionForm").on("submit", function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Get input values
-        const teamName = $("#Teamname").val();
-        const question = $("#Question").val();
-
-        // Save to localStorage (or send to server via AJAX)
-        const questionData = {
-            teamName: teamName,
-            question: question
-        };
-
-        // You can choose to use an array to store multiple entries
-        let savedQuestions = JSON.parse(localStorage.getItem('questions')) || [];
-        savedQuestions.push(questionData);
-        localStorage.setItem('questions', JSON.stringify(savedQuestions));
-
-        // Display confirmation message
-        alert("Question submitted and saved!");
-
-        // Clear form inputs
-        $("#Teamname").val('');
-        $("#Question").val('');
-
-        // Close the question popup
-        $("#questionPopup").css("display", "none");
-    });
-    
 });
