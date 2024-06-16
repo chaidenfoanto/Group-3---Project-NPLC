@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.restfulnplc.nplcrestful.dto.CardSkillDTO;
 import com.restfulnplc.nplcrestful.model.CardSkill;
 import com.restfulnplc.nplcrestful.service.CardSkillService;
+import com.restfulnplc.nplcrestful.service.ListKartuService;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
@@ -27,6 +28,9 @@ public class CardSkillController {
 
     @Autowired
     private CardSkillService cardSkillService;
+    
+    @Autowired
+    private ListKartuService listKartuService;
 
     @Autowired
     private LoginService loginService;
@@ -100,6 +104,55 @@ public class CardSkillController {
                     response.setData(listData);
                 } else {
                     response.setMessage("No Card Skills Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/getWithUser")
+    public ResponseEntity<Response> getAllCardSkillsAndUser(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get All CardSkills");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                String userid = loginService.getLoginSession(sessionToken).getIdUser();
+                List<CardSkill> cardSkillList = cardSkillService.getAllCardSkills();
+                if (cardSkillList.size() > 0) {
+                    response.setMessage("All Card Skills With User Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    ArrayList<Object> listData = new ArrayList<>();
+                    for (CardSkill cardSkill : cardSkillList) {
+                        listData.add(Map.of(
+                                "idCard", cardSkill.getIdCard(),
+                                "namaKartu", cardSkill.getNamaKartu(),
+                                "rules", cardSkill.getRules(),
+                                "totalKartu", cardSkill.getTotalKartu(),
+                                "gambarKartu", cardSkill.getGambarKartu(),
+                                "totalCard", listKartuService.getCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size(),
+                                "totalUsed", listKartuService.getUsedCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size()
+                        ));
+                    }
+                    response.setData(listData);
+                } else {
+                    response.setMessage("No Card Skills Data Found");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));

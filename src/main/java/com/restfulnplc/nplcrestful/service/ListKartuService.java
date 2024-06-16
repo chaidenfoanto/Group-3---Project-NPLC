@@ -2,12 +2,14 @@ package com.restfulnplc.nplcrestful.service;
 
 import com.restfulnplc.nplcrestful.dto.ListKartuDTO;
 import com.restfulnplc.nplcrestful.model.ListKartu;
+import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.repository.ListKartuRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
@@ -75,13 +77,37 @@ public class ListKartuService {
         return Optional.empty();
     }
 
-    public Optional<ListKartu> getCardByTeamId(String id) {
+    public ArrayList<ListKartu> getCardsByTeamId(String id) {
+        ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
+        Team team = teamService.getTeamById(id).get();
         for(ListKartu kartu : getAllListKartu()) {
-            if(kartu.getOwnedBy().equals(teamService.getTeamById(id).get())) {
-                return Optional.of(kartu);
+            if(kartu.getOwnedBy().equals(team)) {
+                listKartu.add(kartu);
             }
         }
-        return Optional.empty();
+        return listKartu;
+    }
+
+    public ArrayList<ListKartu> getCardsByTeamIdAndCardID(String id, String cardid) {
+        ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
+        Team team = teamService.getTeamById(id).get();
+        for(ListKartu kartu : getAllListKartu()) {
+            if(kartu.getOwnedBy().equals(team) && kartu.getCardSkill().getIdCard().equals(cardid)) {
+                listKartu.add(kartu);
+            }
+        }
+        return listKartu;
+    }
+
+    public ArrayList<ListKartu> getUsedCardsByTeamIdAndCardID(String id, String cardid) {
+        ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
+        Team team = teamService.getTeamById(id).get();
+        for(ListKartu kartu : getAllListKartu()) {
+            if(kartu.getOwnedBy().equals(team) && kartu.getCardSkill().getIdCard().equals(cardid) && kartu.getIsUsed()) {
+                listKartu.add(kartu);
+            }
+        }
+        return listKartu;
     }
 
     public boolean deleteListKartu(String id) {
