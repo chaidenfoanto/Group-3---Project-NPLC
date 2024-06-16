@@ -1,4 +1,4 @@
-<h1 align="center">Group-3---Project-NPLC</h>
+<h1 align="center">Group-6---Project-NPLC</h>
 
 # Introduction👋
 NPLC adalah kompetisi nasional bergengsi yang diselenggarakan oleh Universitas Ciputra, di bawah naungan Student Union dari Departemen Informatika. Kompetisi ini bertujuan sebagai platform untuk mengumpulkan tim-tim dari sekolah menengah atas di seluruh negeri, bersaing dalam Competitive Logic. Peserta berasal dari tingkat SMA yang setara dan bertujuan untuk menjadi juara di wilayah mereka masing-masing: Wilayah Timur dan Wilayah Barat. Dimana Competitive logic ini dirancang dalam bentuk Rally Games. Rally Games ini mencakup dua jenis permainan yaitu: Duel dan Tunggal.
