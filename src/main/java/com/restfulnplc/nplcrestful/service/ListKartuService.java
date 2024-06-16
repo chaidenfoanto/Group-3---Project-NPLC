@@ -72,6 +72,16 @@ public class ListKartuService {
         return listKartu;
     }
 
+    public ArrayList<ListKartu> getUsedCards() {
+        ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
+        for (ListKartu kartu : getAllListKartu()) {
+            if (kartu.getIsUsed()) {
+                listKartu.add(kartu);
+            }
+        }
+        return listKartu;
+    }
+
     public Optional<ListKartu> useCard(String id) {
         Optional<ListKartu> optionalListKartu = listKartuRepository.findById(id);
         if (optionalListKartu.isPresent()) {

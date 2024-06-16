@@ -165,6 +165,33 @@ public class ListKartuController {
                 .body(response);
     }
 
+    @GetMapping("/cardStat")
+    public ResponseEntity<Response> getListKartuStat(HttpServletRequest request) {
+        response.setService("Card Stats");
+        try {
+            int totalCards = listKartuService.getAllListKartu().size();
+            int availableCards = listKartuService.getAvailableCard().size();
+            int usedCards = listKartuService.getUsedCards().size();
+            response.setMessage("Card Stats Retrieved Successfully");
+            response.setError(false);
+            response.setHttpCode(HTTPCode.OK);
+            response.setData(Map.of(
+                    "cardTotal", totalCards,
+                    "cardUsed", usedCards,
+                    "cardAvailable", availableCards,
+                    "cardTaken", totalCards - availableCards));
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/roll")
     public ResponseEntity<Response> getListKartuRoll(HttpServletRequest request) {
         String sessionToken = request.getHeader("Token");
