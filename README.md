@@ -49,6 +49,9 @@ NPLC adalah kompetisi nasional bergengsi yang diselenggarakan oleh Universitas C
  - 📜 SOP Games: Panitia dapat menambah dan mengedit SOP games, dan menambah detail poin bintang untuk games di boothnya.
  - 💬 QnA: Panitia bisa melihat daftar pertanyaan dari pemain melalui QnA.
 
+# Objective🤗
+Tujuan kami membuat website NPLC ini agar NPLC Makassar bisa berdiri sendiri dengan tujuan mempermudah komunikasi antara panitia dan player. Melalui platform ini, kami berharap dapat meningkatkan efisiensi koordinasi, memberikan informasi secara real-time, dan memastikan pengalaman kompetisi yang lebih terorganisir dan lancar bagi semua pihak yang terlibat.
+
 # Installation👌
 1. Clone the repo
    ```sh
