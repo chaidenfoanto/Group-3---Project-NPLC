@@ -116,7 +116,7 @@ public class BoothgamesController {
                     ArrayList<Object> listData = new ArrayList<Object>();
                     for(Boothgames boothgame : boothgamesList) {
                         if(boothgame.getIdPenjaga2() != null) {
-                            response.setData(Map.of(
+                            listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
@@ -127,7 +127,7 @@ public class BoothgamesController {
                                     "durasiPermainan", boothgame.getDurasiPermainan(),
                                     "fotoBooth", boothgame.getFotoBooth()));
                             } else {
-                                response.setData(Map.of(
+                                listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
@@ -207,7 +207,7 @@ public class BoothgamesController {
                         }
 
                         if(boothgame.getIdPenjaga2() != null) {
-                            response.setData(Map.of(
+                            listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
@@ -219,7 +219,7 @@ public class BoothgamesController {
                                     "fotoBooth", boothgame.getFotoBooth(),
                                     "gameResult", resultData));
                             } else {
-                                response.setData(Map.of(
+                                listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
