@@ -51,7 +51,6 @@ public class ListKartuService {
         Random rand = new Random();
         ArrayList<ListKartu> listAvailables = getAvailableCard();
         Team team = teamService.getTeamById(idTeam).get();
-        System.out.println("Selecting a random card from " + listAvailables.size() + " available card(s)");
         if(listAvailables.size() > 0) {
             ListKartu selectedCard = (listAvailables.size() > 1) ? listAvailables.get(rand.nextInt(listAvailables.size() - 1)) : listAvailables.get(0);
             selectedCard.setOwnedBy(team);
