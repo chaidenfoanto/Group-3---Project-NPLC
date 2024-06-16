@@ -17,7 +17,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', function (e) {
-        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn, #burger-btn').length) {
             closeSidebar();
         }
     });
