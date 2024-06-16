@@ -221,7 +221,7 @@ public class BoothgamesController {
                 .body(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("getById/{id}")
     public ResponseEntity<Response> getBoothgameById(HttpServletRequest request,
             @PathVariable("id") String id) {
         String sessionToken = request.getHeader("Token");
