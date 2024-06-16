@@ -146,7 +146,7 @@ public class CardSkillController {
                                 "rules", cardSkill.getRules(),
                                 "totalKartu", cardSkill.getTotalKartu(),
                                 "gambarKartu", cardSkill.getGambarKartu(),
-                                "totalCard", listKartuService.getCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size(),
+                                "totalOwned", listKartuService.getCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size(),
                                 "totalUsed", listKartuService.getUsedCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size()
                         ));
                     }
