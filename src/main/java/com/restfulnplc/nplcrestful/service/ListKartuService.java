@@ -59,8 +59,8 @@ public class ListKartuService {
 
     public List<ListKartu> getAvailableCard() {
         List<ListKartu> listKartu = Collections.<ListKartu>emptyList();
-        for(ListKartu kartu : getAllListKartu()) {
-            if(kartu.getOwnedBy() == null) {
+        for (ListKartu kartu : getAllListKartu()) {
+            if (kartu.getOwnedBy() == null) {
                 listKartu.add(kartu);
             }
         }
@@ -80,8 +80,8 @@ public class ListKartuService {
     public ArrayList<ListKartu> getCardsByTeamId(String id) {
         ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
         Team team = teamService.getTeamById(id).get();
-        for(ListKartu kartu : getAllListKartu()) {
-            if(kartu.getOwnedBy().equals(team)) {
+        for (ListKartu kartu : getAllListKartu()) {
+            if (kartu.getOwnedBy().equals(team)) {
                 listKartu.add(kartu);
             }
         }
@@ -91,9 +91,11 @@ public class ListKartuService {
     public ArrayList<ListKartu> getCardsByTeamIdAndCardID(String id, String cardid) {
         ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
         Team team = teamService.getTeamById(id).get();
-        for(ListKartu kartu : getAllListKartu()) {
-            if(kartu.getOwnedBy().equals(team) && kartu.getCardSkill().getIdCard().equals(cardid)) {
-                listKartu.add(kartu);
+        for (ListKartu kartu : getAllListKartu()) {
+            if (kartu.getOwnedBy() != null) {
+                if (kartu.getOwnedBy().equals(team) && kartu.getCardSkill().getIdCard().equals(cardid)) {
+                    listKartu.add(kartu);
+                }
             }
         }
         return listKartu;
@@ -102,9 +104,12 @@ public class ListKartuService {
     public ArrayList<ListKartu> getUsedCardsByTeamIdAndCardID(String id, String cardid) {
         ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
         Team team = teamService.getTeamById(id).get();
-        for(ListKartu kartu : getAllListKartu()) {
-            if(kartu.getOwnedBy().equals(team) && kartu.getCardSkill().getIdCard().equals(cardid) && kartu.getIsUsed()) {
-                listKartu.add(kartu);
+        for (ListKartu kartu : getAllListKartu()) {
+            if (kartu.getOwnedBy() != null) {
+                if (kartu.getOwnedBy().equals(team) && kartu.getCardSkill().getIdCard().equals(cardid)
+                        && kartu.getIsUsed()) {
+                    listKartu.add(kartu);
+                }
             }
         }
         return listKartu;
@@ -119,9 +124,8 @@ public class ListKartuService {
         return false;
     }
 
-    public void reset()
-    {
-        for(ListKartu kartu : getAllListKartu()) {
+    public void reset() {
+        for (ListKartu kartu : getAllListKartu()) {
             kartu.setIsUsed(false);
             kartu.setOwnedBy(null);
         }
