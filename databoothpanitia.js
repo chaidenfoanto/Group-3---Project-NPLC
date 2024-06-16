@@ -8,7 +8,7 @@ $(document).ready(function() {
         });
 
         function menuBtnChange() {
-            if (sidebar.hasClass("open")) {
+            if ($(".sidebar").hasClass("open")) {
                 logo.hide();
             } else {
                 logo.show();
@@ -24,7 +24,6 @@ $(document).ready(function() {
 
     function closeSidebar() {
         $('.sidebar').removeClass('open');
-        // $('.main-content').removeClass('shift');
     }
 
     const openBtn = $("#addBtn");
@@ -73,18 +72,19 @@ $(document).ready(function() {
     });
 });
 
-function readMore(btn) {
-    var card = $(btn).closest('.card');
-    var dots = card.find('.dots');
-    var moreText = card.find('.more');
+// function readMore(btn) {
+//     var card = $(btn).closest('.card');
+//     var dots = card.find('.dots');
+//     var moreText = card.find('.more');
 
-    if (dots.css("display") === "none") {
-        dots.css("display", "inline");
-        $(btn).text("Read more");
-        moreText.css("display", "none");
-    } else {
-        dots.css("display", "none");
-        $(btn).text("Read less");
-        moreText.css("display", "inline");
-    }
-}
+//     if (dots.css("display") === "none") {
+//         dots.css("display", "inline");
+//         $(btn).text("Read more");
+//         moreText.css("display", "none");
+//     } else {
+//         dots.css("display", "none");
+//         $(btn).text("Read less");
+//         moreText.css("display", "inline");
+//     }
+// }
+
