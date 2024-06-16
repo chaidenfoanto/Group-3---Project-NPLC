@@ -13,8 +13,8 @@ NPLC adalah kompetisi nasional bergengsi yang diselenggarakan oleh Universitas C
 #### System 
 - Permainan dimainkan oleh 2 tim yang akan saling beradu.
 - Tim yang menang tidak bisa bermain lagi di game duel yang sama, sedangkan tim yang kalah masih punya 1 kesempatan main.
-- Tim yang menang akan mendapatkan bintang 3 dan 1 ticket.
-- Tim yang menang yang telah mendapatkan tiket bisa gacha untuk mendapatkan sebuah skill card.
+- Tim yang menang akan mendapatkan poin sejumlah 100 dan 1 ticket.
+- Tim yang menang dan telah mendapatkan ticket dapat melakukan gacha untuk mendapatkan sebuah skill card random.
 
 
 # Fitur-Fitur
