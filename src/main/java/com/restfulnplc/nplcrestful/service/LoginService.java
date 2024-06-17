@@ -44,13 +44,14 @@ public class LoginService {
                     deleteSession(sessionActive.get().getToken());
                 }
                 Role role = Role.PANITIA;
-                if(boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).isPresent()) {
-                    role = (boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).get().getTipegame().equals(Tipegame.SINGLE)) ? Role.LOSINGLE : Role.LODUEL;
+                if (boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).isPresent()) {
+                    role = (boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).get().getTipegame()
+                            .equals(Tipegame.SINGLE)) ? Role.LOSINGLE : Role.LODUEL;
                 }
-                if(panitia.getIsAdmin()) {
+                if (panitia.getIsAdmin()) {
                     role = Role.ADMIN;
                 }
-                if(panitia.getDivisi().equals(Divisi.KETUAACARA)) {
+                if (panitia.getDivisi().equals(Divisi.KETUAACARA)) {
                     role = Role.KETUA;
                 }
                 Login session = new Login(panitia.getIdPanitia(), passwordMaker.hashPassword(panitia.getIdPanitia()),
@@ -81,8 +82,10 @@ public class LoginService {
 
     public boolean checkSessionAlive(String token) {
         if (token != null) {
-            if(!checkUserExist(token)) {
-                deleteSession(token);
+            if (loginRepository.findById(token).isPresent()) {
+                if (!checkUserExist(token)) {
+                    deleteSession(token);
+                }
             }
             return loginRepository.findById(token).isPresent();
         }
@@ -91,7 +94,8 @@ public class LoginService {
 
     public boolean checkUserExist(String token) {
         Login session = getLoginSession(token);
-        return (panitiaService.getPanitiaById(session.getIdUser()).isPresent() || teamService.getTeamById(session.getIdUser()).isPresent());
+        return (panitiaService.getPanitiaById(session.getIdUser()).isPresent()
+                || teamService.getTeamById(session.getIdUser()).isPresent());
     }
 
     public boolean checkSessionSelf(String token, String idUser) {
@@ -155,7 +159,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if(panitiaService.checkPanitia(session.getIdUser())) return session.getRole().equals(Role.LOSINGLE);
+                if (panitiaService.checkPanitia(session.getIdUser()))
+                    return session.getRole().equals(Role.LOSINGLE);
             }
         }
         return false;
@@ -165,7 +170,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if(panitiaService.checkPanitia(session.getIdUser())) session.getRole().equals(Role.LODUEL);
+                if (panitiaService.checkPanitia(session.getIdUser()))
+                    session.getRole().equals(Role.LODUEL);
             }
         }
         return false;
@@ -175,7 +181,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if(panitiaService.checkPanitia(session.getIdUser())) return (session.getRole().equals(Role.LODUEL) || session.getRole().equals(Role.LOSINGLE));
+                if (panitiaService.checkPanitia(session.getIdUser()))
+                    return (session.getRole().equals(Role.LODUEL) || session.getRole().equals(Role.LOSINGLE));
             }
         }
         return false;
@@ -215,8 +222,7 @@ public class LoginService {
         return accessDetails;
     }
 
-    public void reset()
-    {
+    public void reset() {
         loginRepository.deleteAll();
     }
 }

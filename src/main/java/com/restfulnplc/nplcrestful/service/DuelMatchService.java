@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,11 +40,8 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getAllDuelMatches() {
         ArrayList<DuelMatch> duelMatchList = new ArrayList<DuelMatch>();
-        List<DuelMatch> duelMatches = duelMatchRepository.findAll();
-        if (duelMatches.size() > 0) {
-            for (DuelMatch duelMatch : duelMatches) {
-                duelMatchList.add(duelMatch);
-            }
+        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+            duelMatchList.add(duelMatch);
         }
         return duelMatchList;
     }
