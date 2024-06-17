@@ -65,6 +65,22 @@ public class SinglematchService {
         return singlematchArray;
     }
 
+    public ArrayList<Team> getTeamPerBooth(String id) {
+        ArrayList<Team> teamsPlayed = new ArrayList<Team>();
+        for(Singlematch singlematch : getAllSinglematches()) {
+            if(singlematch.getBoothGames().getIdBooth().equals(id)) {
+                teamsPlayed.add(singlematch.getTeam());
+            }
+        }
+        return teamsPlayed;
+    }
+
+    public ArrayList<Team> getAvailableTeamPerBooth(String id) {
+        ArrayList<Team> teamList = teamService.getAllTeam();
+        teamList.removeAll(getTeamPerBooth(id));
+        return teamList;
+    }
+
     public Optional<Singlematch> getSinglematchesByUserAndBooth(String userId, String boothId) {
         for(Singlematch singlematch : getAllSinglematches()) {
             if(singlematch.getTeam().getIdTeam().equals(userId) && singlematch.getBoothGames().getIdBooth().equals(boothId)) {

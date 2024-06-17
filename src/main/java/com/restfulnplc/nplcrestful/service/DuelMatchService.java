@@ -2,12 +2,12 @@ package com.restfulnplc.nplcrestful.service;
 
 import com.restfulnplc.nplcrestful.dto.DuelMatchDTO;
 import com.restfulnplc.nplcrestful.model.DuelMatch;
+import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.repository.DuelMatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,12 +38,46 @@ public class DuelMatchService {
         return duelMatchRepository.save(duelMatch);
     }
 
-    public List<DuelMatch> getAllDuelMatches() {
-        return duelMatchRepository.findAll();
+    public ArrayList<DuelMatch> getAllDuelMatches() {
+        ArrayList<DuelMatch> duelMatchList = new ArrayList<DuelMatch>();
+        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+            duelMatchList.add(duelMatch);
+        }
+        return duelMatchList;
     }
 
     public Optional<DuelMatch> getDuelMatchById(String id) {
         return duelMatchRepository.findById(id);
+    }
+
+    public ArrayList<Team> getWinningTeams() {
+        ArrayList<Team> winningTeams = new ArrayList<Team>();
+        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+            winningTeams.add(duelMatch.getTimMenang());
+        }
+        return winningTeams;
+    }
+
+    public ArrayList<Team> getWinningTeamsByBooth(String id) {
+        ArrayList<Team> winningTeams = new ArrayList<Team>();
+        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+            if (duelMatch.getBoothGames().getIdBooth().equals(id)) {
+                winningTeams.add(duelMatch.getTimMenang());
+            }
+        }
+        return winningTeams;
+    }
+
+    public ArrayList<Team> getAvailableTeamPerBooth(String id) {
+        ArrayList<Team> availableTeam = new ArrayList<Team>();
+        ArrayList<Team> teamList = teamService.getAllTeam();
+        teamList.removeAll(getWinningTeamsByBooth(id));
+        for(Team team : teamList) {
+            if(getDuelMatchesByUser(team.getIdTeam()).size() < 2) {
+                availableTeam.add(team);
+            }
+        }
+        return availableTeam;
     }
 
     public Optional<DuelMatch> updateDuelMatch(String id, DuelMatchDTO duelMatchDTO) {
@@ -64,8 +98,8 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getDuelMatchesByUser(String userId) {
         ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
-        for(DuelMatch duelMatch : getAllDuelMatches()) {
-            if(duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) {
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
+            if (duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) {
                 duelMatchArray.add(duelMatch);
             }
         }
@@ -74,8 +108,9 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getDuelMatchesByUserAndBooth(String userId, String boothId) {
         ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
-        for(DuelMatch duelMatch : getAllDuelMatches()) {
-            if((duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) && duelMatch.getBoothGames().getIdBooth().equals(boothId)) {
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
+            if ((duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId))
+                    && duelMatch.getBoothGames().getIdBooth().equals(boothId)) {
                 duelMatchArray.add(duelMatch);
             }
         }
@@ -90,9 +125,8 @@ public class DuelMatchService {
         }
         return false;
     }
-    
-    public void reset()
-    {
+
+    public void reset() {
         duelMatchRepository.deleteAll();
     }
 }

@@ -143,6 +143,42 @@ public class LoginService {
         return false;
     }
 
+    public boolean checkSessionLOSingle(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login session = loginRepository.findById(token).get();
+                if (session.getRole().equals(Role.LOSINGLE)) {
+                    return panitiaService.checkKetua(session.getIdUser());
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSessionLODuel(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login session = loginRepository.findById(token).get();
+                if (session.getRole().equals(Role.LODUEL)) {
+                    return panitiaService.checkKetua(session.getIdUser());
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSessionLOGame(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login session = loginRepository.findById(token).get();
+                if (session.getRole().equals(Role.LODUEL) || session.getRole().equals(Role.LOSINGLE)) {
+                    return panitiaService.checkKetua(session.getIdUser());
+                }
+            }
+        }
+        return false;
+    }
+
     public Login getLoginSession(String token) {
         return loginRepository.findById(token).get();
     }

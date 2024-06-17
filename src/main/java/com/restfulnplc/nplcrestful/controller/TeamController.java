@@ -6,9 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.restfulnplc.nplcrestful.dto.TeamDTO;
+import com.restfulnplc.nplcrestful.model.Boothgames;
+import com.restfulnplc.nplcrestful.service.DuelMatchService;
 import com.restfulnplc.nplcrestful.model.Team;
+import com.restfulnplc.nplcrestful.model.Tipegame;
 import com.restfulnplc.nplcrestful.service.TeamService;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.SinglematchService;
+import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
@@ -30,6 +35,15 @@ public class TeamController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private SinglematchService singlematchService;
+
+    @Autowired
+    private DuelMatchService duelMatchService;
+
+    @Autowired
+    private BoothgamesService boothgamesService;
 
     private Response response = new Response();
 
@@ -133,9 +147,9 @@ public class TeamController {
     }
 
     @GetMapping("/getTeamGeneral")
-    public ResponseEntity<Response> getTeamTeamGeneral(HttpServletRequest request) {
+    public ResponseEntity<Response> getTeamGeneral(HttpServletRequest request) {
         String sessionToken = request.getHeader("Token");
-        response.setService("Get Team Chance Roll");
+        response.setService("Get Team General Info");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 String id = loginService.getLoginSession(sessionToken).getIdUser();
@@ -218,99 +232,66 @@ public class TeamController {
                 .body(response);
     }
 
-//     @PutMapping("/{id}")
-//     public ResponseEntity<Response> updateTeam(HttpServletRequest request,
-//             @PathVariable("id") String id, @RequestBody TeamDTO teamDTO) {
-//         String sessionToken = request.getHeader("Token");
-//         response.setService("Update Team");
-//         try {
-//             if (loginService.checkSessionPanitia(sessionToken)) {
-//                 if (loginService.checkSessionAdmin(sessionToken)) {
-//                     Optional<Team> updatedTeam = teamService.updateTeam(id, teamDTO);
-//                     if (updatedTeam.isPresent()) {
-//                         Team team = updatedTeam.get();
-//                         response.setMessage("Team Updated Successfully");
-//                         response.setError(false);
-//                         response.setHttpCode(HTTPCode.OK);
-//                         response.setData(Map.of(
-//                                 "idTeam", team.getIdTeam(),
-//                                 "namaTeam", team.getNama(),
-//                                 "usernameTeam", team.getUsername(),
-//                                 "asalSekolah", team.getAsalSekolah(),
-//                                 "kategoriTeam", team.getKategoriTeam().toString(),
-//                                 "chanceRoll", team.getChanceRoll(),
-//                                 "totalPoin", team.getTotalPoin(),
-//                                 "players", team.getPlayers()));
-//                     } else {
-//                         response.setMessage("Team Not Found");
-//                         response.setError(true);
-//                         response.setHttpCode(HTTPCode.OK);
-//                         response.setData(new ErrorMessage(response.getHttpCode()));
-//                     }
-//                 } else {
-//                     response.setMessage("Access Denied");
-//                     response.setError(true);
-//                     response.setHttpCode(HTTPCode.FORBIDDEN);
-//                     response.setData(new ErrorMessage(response.getHttpCode()));
-//                 }
-//             } else {
-//                 response.setMessage("Authorization Failed");
-//                 response.setError(true);
-//                 response.setHttpCode(HTTPCode.BAD_REQUEST);
-//                 response.setData(new ErrorMessage(response.getHttpCode()));
-//             }
-//         } catch (Exception e) {
-//             response.setMessage(e.getMessage());
-//             response.setError(true);
-//             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
-//             response.setData(new ErrorMessage(response.getHttpCode()));
-//         }
-//         return ResponseEntity
-//                 .status(response.getHttpCode().getStatus())
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
-
-//     @DeleteMapping("/{id}")
-//     public ResponseEntity<Response> deleteTeam(HttpServletRequest request, @PathVariable("id") String id) {
-//         String sessionToken = request.getHeader("Token");
-//         response.setService("Delete Team");
-//         try {
-//             if (loginService.checkSessionAlive(sessionToken)) {
-//                 if (loginService.checkSessionAdmin(sessionToken)) {
-//                     boolean isDeleted = teamService.deleteTeam(id);
-//                     if (isDeleted) {
-//                         response.setMessage("Team Deleted Successfully");
-//                         response.setError(false);
-//                         response.setHttpCode(HTTPCode.OK);
-//                     } else {
-//                         response.setMessage("Team Not Found");
-//                         response.setError(true);
-//                         response.setHttpCode(HTTPCode.OK);
-//                         response.setData(new ErrorMessage(response.getHttpCode()));
-//                     }
-//                 } else {
-//                     response.setMessage("Access Denied");
-//                     response.setError(true);
-//                     response.setHttpCode(HTTPCode.FORBIDDEN);
-//                     response.setData(new ErrorMessage(response.getHttpCode()));
-//                 }
-
-//             } else {
-//                 response.setMessage("Authorization Failed");
-//                 response.setError(true);
-//                 response.setHttpCode(HTTPCode.BAD_REQUEST);
-//                 response.setData(new ErrorMessage(response.getHttpCode()));
-//             }
-//         } catch (Exception e) {
-//             response.setMessage(e.getMessage());
-//             response.setError(true);
-//             response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
-//             response.setData(new ErrorMessage(response.getHttpCode()));
-//         }
-//         return ResponseEntity
-//                 .status(response.getHttpCode().getStatus())
-//                 .contentType(MediaType.APPLICATION_JSON)
-//                 .body(response);
-//     }
+    @GetMapping("/getTeamPerGame")
+    public ResponseEntity<Response> getTeamPerGame(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get Team For Boothgame Data");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionLOGame(sessionToken)) {
+                    String id = loginService.getLoginSession(sessionToken).getIdUser();
+                    Boothgames boothGame = boothgamesService.getBoothgameByPanitia(id).get();
+                    Tipegame tipeGame = boothGame.getTipegame();
+                    ArrayList<Object> listData = new ArrayList<>();
+                    ArrayList<Team> teamList = new ArrayList<Team>();
+                    if (tipeGame.equals(Tipegame.SINGLE)) {
+                        teamList = singlematchService.getAvailableTeamPerBooth(boothGame.getIdBooth());
+                    } else {
+                        teamList = duelMatchService.getAvailableTeamPerBooth(boothGame.getIdBooth());
+                    }
+                    if (teamList.size() > 0) {
+                        for (Team team : teamList) {
+                            listData.add(Map.of(
+                                    "idTeam", team.getIdTeam(),
+                                    "namaTeam", team.getNama(),
+                                    "usernameTeam", team.getUsername(),
+                                    "asalSekolah", team.getAsalSekolah(),
+                                    "kategoriTeam", team.getKategoriTeam().toString(),
+                                    "chanceRoll", team.getChanceRoll(),
+                                    "totalPoin", team.getTotalPoin(),
+                                    "players", team.getPlayers()));
+                        }
+                    } else {
+                        response.setMessage("All Teams Have Played!");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                    response.setMessage("Team Datas Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(listData);
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 }

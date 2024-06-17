@@ -7,6 +7,8 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Base64;
 
 import com.restfulnplc.nplcrestful.model.Team;
@@ -122,9 +124,13 @@ public class TeamService {
         return teamRepository.findById(id).isPresent();
     }
 
-    public List<Team> getAllTeam()
+    public ArrayList<Team> getAllTeam()
     {
-        return teamRepository.findAll();
+        ArrayList<Team> teamList = new ArrayList<Team>();
+        for(Team team : teamRepository.findAll()) {
+            teamList.add(team);
+        }
+        return teamList;
     }
     
     public boolean checkUsernameExists(String username) {
