@@ -137,12 +137,12 @@ public class ListKartuController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Object result = listKartuService.getCardStatsByTeam(id);
                 if (result != null) {
-                    response.setMessage("All List Kartu Retrieved Successfully");
+                    response.setMessage("Card Stats Retrieved");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(result);
                 } else {
-                    response.setMessage("No List Kartu Found");
+                    response.setMessage("No Cards Owned");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(new ErrorMessage(response.getHttpCode()));
