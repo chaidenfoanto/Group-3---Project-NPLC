@@ -32,7 +32,7 @@ public class BoothgamesService {
         newBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
         newBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
         newBoothgame.setDurasiPermainan(boothgamesDTO.getDurasiPermainan());
-        newBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); //update
+        newBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); // update
         return boothgamesRepository.save(newBoothgame);
     }
 
@@ -46,9 +46,15 @@ public class BoothgamesService {
 
     public Optional<Boothgames> getBoothgameByPanitia(String id) {
         Panitia panitia = panitiaService.getPanitiaById(id).get();
-        for(Boothgames boothgame : getAllBoothgames()) {
-            if(boothgame.getIdPenjaga1().equals(panitia) || boothgame.getIdPenjaga2().equals(panitia)) {
-                return Optional.of(boothgame);
+        for (Boothgames boothgame : getAllBoothgames()) {
+            if (boothgame.getIdPenjaga2() != null) {
+                if (boothgame.getIdPenjaga1().equals(panitia) || boothgame.getIdPenjaga2().equals(panitia)) {
+                    return Optional.of(boothgame);
+                }
+            } else {
+                if (boothgame.getIdPenjaga1().equals(panitia)) {
+                    return Optional.of(boothgame);
+                }
             }
         }
         return Optional.empty();
@@ -65,7 +71,7 @@ public class BoothgamesService {
             existingBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
             existingBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
             existingBoothgame.setDurasiPermainan(boothgamesDTO.getDurasiPermainan());
-            existingBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); //update
+            existingBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); // update
             boothgamesRepository.save(existingBoothgame);
             return Optional.of(existingBoothgame);
         }
@@ -81,15 +87,15 @@ public class BoothgamesService {
         return false;
     }
 
-    public String getNextBoothgameID()
-    {
+    public String getNextBoothgameID() {
         List<Boothgames> boothgames = boothgamesRepository.findAll();
-        if(boothgames.size() > 0) return "BOOTHGAME" + (Integer.parseInt(boothgames.get(boothgames.size()-1).getIdBooth().split("BOOTHGAME")[1]) + 1);
+        if (boothgames.size() > 0)
+            return "BOOTHGAME"
+                    + (Integer.parseInt(boothgames.get(boothgames.size() - 1).getIdBooth().split("BOOTHGAME")[1]) + 1);
         return "BOOTHGAME1";
     }
 
-    public void reset()
-    {
+    public void reset() {
         boothgamesRepository.deleteAll();
     }
 }
