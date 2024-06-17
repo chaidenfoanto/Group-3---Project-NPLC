@@ -261,16 +261,16 @@ public class TeamController {
                                     "totalPoin", team.getTotalPoin(),
                                     "players", team.getPlayers()));
                         }
+                        response.setMessage("Team Datas Retrieved Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(listData);
                     } else {
                         response.setMessage("All Teams Have Played!");
                         response.setError(true);
                         response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
-                    response.setMessage("Team Datas Retrieved Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.OK);
-                    response.setData(listData);
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
