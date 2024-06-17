@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Base64;
 
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.model.Players;
@@ -80,7 +79,7 @@ public class TeamService {
             newPlayer1.setIdPlayer(playerID);
             newPlayer1.setTeam(newTeam);
             newPlayer1.setNama(teamDTO.getNamaPlayer1());
-            newPlayer1.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer1()));
+            newPlayer1.setFoto(teamDTO.getFotoPlayer1());
             newPlayers.add(newPlayer1);
             playerRepository.save(newPlayer1);
         }
@@ -91,7 +90,7 @@ public class TeamService {
             newPlayer2.setIdPlayer(playerID);
             newPlayer2.setTeam(newTeam);
             newPlayer2.setNama(teamDTO.getNamaPlayer2());
-            newPlayer2.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer2()));
+            newPlayer2.setFoto(teamDTO.getFotoPlayer2());
             newPlayers.add(newPlayer2);
             playerRepository.save(newPlayer2);
         }
@@ -102,7 +101,7 @@ public class TeamService {
             newPlayer3.setIdPlayer(playerID);
             newPlayer3.setTeam(newTeam);
             newPlayer3.setNama(teamDTO.getNamaPlayer3());
-            newPlayer3.setFoto(Base64.getDecoder().decode(teamDTO.getFotoPlayer3()));
+            newPlayer3.setFoto(teamDTO.getFotoPlayer3());
             newPlayers.add(newPlayer3);
             playerRepository.save(newPlayer3);
         }

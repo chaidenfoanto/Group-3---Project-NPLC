@@ -20,7 +20,7 @@ public class Players implements Serializable {
     private String nama;
 
     @Column(name = "foto",  columnDefinition = "MEDIUMBLOB", nullable = false)
-    private byte[] foto;
+    private String foto;
 
     @ManyToOne
     @JoinColumn(name = "idteam", referencedColumnName = "idteam", nullable = false)
@@ -43,11 +43,11 @@ public class Players implements Serializable {
         this.nama = nama;
     }
 
-    public byte[] getFoto() {
+    public String getFoto() {
         return this.foto;
     }
 
-    public void setFoto(byte[] foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 

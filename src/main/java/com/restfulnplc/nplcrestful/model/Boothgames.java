@@ -48,7 +48,7 @@ public class Boothgames {
     private Time durasiPermainan;
 
     @Column(name = "fotobooth", columnDefinition = "MEDIUMBLOB", nullable = false)
-    private byte[] fotobooth;
+    private String fotobooth;
 
 
     public String getIdBooth() {
@@ -115,15 +115,11 @@ public class Boothgames {
         this.durasiPermainan = durasiPermainan;
     }
     
-    public byte[] getFotoBooth() {
+    public String getFotoBooth() {
         return this.fotobooth;
     }
 
-    public void setFotoBooth(byte[] fotobooth) {
+    public void setFotoBooth(String fotobooth) {
         this.fotobooth = fotobooth;
     }
-
-//     public void setFotoBooth(String fotobooth) {
-//         this.fotobooth = Base64.encodeBase64(fotobooth);
-//     }
 }
