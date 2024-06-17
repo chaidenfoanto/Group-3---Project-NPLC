@@ -39,43 +39,102 @@
             <i class="fa-regular fa-user"></i>
           <!-- </a> -->
           <div class="profile_content">
-            <div class="name">Chaiden Foanto</div>
-            <div class="designation">Penjaga Booth</div>
+            <div class="name"></div>
+            <div class="designation"></div>
           </div>
         </div>
         <i class="bx bx-log-out" id="log_out" onclick="logout()"></i>
       </li>
     </ul>
     <script>
-        async function fetchSession() {
-          await fetch(domain + 'api/login/getSession', {
-              method: 'GET',
-              headers: { 'Token': getCookie('Token') }
-          })
-              .then(response => response.json())
-              .then(data => {
-                  if (!data.error) {
-                      console.log("authorized success");
-                      setCookie("Token", getCookie("Token"), 365);
-                      switch(data.data.Role){
-                        case "LOSINGLE":
-                          document.getElementById('SBP-navigatebyRole').href = 'PanitiaSingleInput.html';
-                        
-                      }
-                  } else {
-                      console.log('Authorization Failed');
-                      deleteCookie("Token");
-                      window.location.href = "LoginPanitia.html";
-                  }
-              })
-              .catch(error => {
-                  console.error('Error occurred while fetching session:', error);
-                  deleteCookie("Token");
-                  window.location.href = "LoginPanitia.html";
-              });
+      const domain = "http://localhost:8080/";
 
-              function logout() {
-                window.location.href = "LoginPanitia.html"
-              }
+      function getCookie(name) {
+    let cookieArr = document.cookie.split(';');
+    for (let i = 0; i < cookieArr.length; i++) {
+      let cookiePair = cookieArr[i].split('=');
+      if (name == cookiePair[0].trim()) {
+        return decodeURIComponent(cookiePair[1]);
       }
+    }
+    return null;
+  }
+
+  function setCookie(name, value, daysToLive) {
+    let cookie = name + '=' + encodeURIComponent(value);
+    if (typeof daysToLive === 'number') {
+      cookie += '; max-age=' + daysToLive * 24 * 60 * 60 + '; path=/';
+      document.cookie = cookie;
+    }
+  }
+
+  function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
+  }
+  async function fetchSession() {
+    await fetch(domain + 'api/login/getSession', {
+      method: 'GET',
+      headers: { 'Token': getCookie('Token') }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.error) {
+        console.log("authorized success");
+        setCookie("Token", getCookie("Token"), 365);
+        const arrayNama = data.data.namaUser.split(" ");
+        const namaUser = (arrayNama.length > 1 ) ? (arrayNama[0] + " " + arrayNama[arrayNama.length-1]) : (arrayNama[0]);
+        $(".name").html(namaUser);
+        $(".designation").html(data.data.role);
+        switch(data.data.role){
+          case "Penjaga Single":
+            document.getElementById('SBP-navigatebyRole').href = 'PanitiaSingleInput.html';
+            break;
+          case "Admin":
+            document.getElementById('SBP-navigatebyRole').href = 'DashboardHod.html';
+            break;
+          case "Ketua":
+            document.getElementById('SBP-navigatebyRole').href = 'HodStartGame.html';
+            break;
+          case "Penjaga Duel": 
+            document.getElementById('SBP-navigatebyRole').href = 'PanitiaDuelFinish.html';
+            break;
+        }
+        } else {
+            console.log('Authorization Failed');
+            deleteCookie("Token");
+              window.location.href = "LoginPanitia.html";
+          }
+          })
+          .catch(error => {
+            console.error('Error occurred while fetching session:', error);
+            deleteCookie("Token");
+            window.location.href = "LoginPanitia.html";
+          });
+
+        }
+        function logout() {
+          window.location.href = "LoginPanitia.html"
+        }
+        fetchSession();
+  //         document.addEventListener('keydown', function (e) {
+  //   if (e.which === 123) {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.shiftKey && e.key == 'I') {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.shiftKey && e.key == 'C') {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.shiftKey && e.key == 'J') {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.key == 'U') {
+  //     e.preventDefault();
+  //   }
+  // });
+
+  // document.addEventListener('contextmenu', function (e) {
+  //   e.preventDefault();
+  // });
     </script>

@@ -11,7 +11,7 @@
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="PanitiaSingleInput.js"></script>
-        
+    
     <div class = "container">    
 <div class="sidebar"></div>
   <div class="main-content">
@@ -32,18 +32,15 @@
           <div class="input-group">
               <select id="teamname">
                   <option value=""></option>
-                  <option value="Anak Pak Dengklek">Anak Pak Dengklek</option>
-                  <option value="Notionaries">Notionaries</option>
+                  <!-- <option value="Anak Pak Dengklek">Anak Pak Dengklek</option> -->
               </select>
               <label class = "placeholder" for = "teamname">Team Name</label>
           </div>
         </div>
         <div class="card">
           <div class="input-group">
-            <select id="cardskill">
+            <select id="cardskill" name="cardskill">
                 <option value=""></option>
-                <option value="Double Point">Double Point</option>
-                <option value="Time +3">Time +3</option>
             </select>
             <label class = "placeholder" for = "cardskill">Card Skill</label>
             <!-- <span class = "error"></span> -->
@@ -66,8 +63,6 @@
               <div class = "input-group">
                 <select id="teamPlayed" disabled>
                     <option value=""></option>
-                    <option value="Anak Pak Dengklek">Anak Pak Dengklek</option>
-                    <option value="Notionaries">Notionaries</option>
                 </select>
                 <label class = "placeholder" for="teamplayed">Team Name</label>
                 <span class = "errorteam"></span>

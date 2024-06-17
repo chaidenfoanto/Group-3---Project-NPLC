@@ -73,9 +73,8 @@ $(document).ready(function() {
                 clearInterval(interval);
                 $('#startButton').text("Start Game");
                 if (totalSeconds <= 0)
-                    alert('Waktu telah habis dan Game telah berakhir!');
+                    showModal();
                 else
-                    alert('Game telah diakhiri!');
                 clearform();
                 // showModal();
             }
@@ -199,20 +198,22 @@ $(document).ready(function() {
         }
     });
 
+    const teamName = teamData[teamId] ||
+
     $('#starEarned').on('change', function() {
         const team = $('#teamPlayed').val();
         const star = $('#starEarned').val();
         if (star === "1") {
-            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${team}`);
+            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${teamName}`);
         }
         else if (star === "2") {
-            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${team}`);
+            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${teamName}`);
         }
         else if (star === "3") {
-            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
+            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${teamName}`);
         }
         else {
-            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
+            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${teamName}`);
         }
     });
 
