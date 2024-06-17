@@ -22,7 +22,7 @@ public class CardSkill {
     @Column(name = "totalkartu", nullable = false)
     private int totalKartu;
 
-    @Column(name = "gambarkartu",  columnDefinition = "BLOB", nullable = false)
+    @Column(name = "gambarkartu",  columnDefinition = "MEDIUMBLOB", nullable = false)
     private String gambarKartu;
 
 
