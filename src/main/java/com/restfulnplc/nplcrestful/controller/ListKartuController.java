@@ -53,7 +53,10 @@ public class ListKartuController {
                     response.setData(Map.of(
                             "noKartu", newListKartu.getNoKartu(),
                             "cardSkill", newListKartu.getCardSkill(),
-                            "ownedBy", newListKartu.getOwnedBy(),
+                            "ownedBy", Map.of(
+                                "idTeam", newListKartu.getOwnedBy().getIdTeam(),
+                                "namaTeam", newListKartu.getOwnedBy().getNama()
+                            ),
                             "isUsed", newListKartu.getIsUsed()));
                 } else {
                     response.setMessage("Access Denied");
@@ -95,7 +98,10 @@ public class ListKartuController {
                         listData.add(Map.of(
                                 "noKartu", listKartu.getNoKartu(),
                                 "cardSkill", listKartu.getCardSkill(),
-                                "ownedBy", listKartu.getOwnedBy(),
+                                "ownedBy", Map.of(
+                                    "idTeam", listKartu.getOwnedBy().getIdTeam(),
+                                    "namaTeam", listKartu.getOwnedBy().getNama()
+                                ),
                                 "isUsed", listKartu.getIsUsed()));
                     }
                     response.setData(listData);
@@ -139,7 +145,10 @@ public class ListKartuController {
                     response.setData(Map.of(
                             "noKartu", listKartu.getNoKartu(),
                             "cardSkill", listKartu.getCardSkill(),
-                            "ownedBy", listKartu.getOwnedBy(),
+                            "ownedBy", Map.of(
+                                "idTeam", listKartu.getOwnedBy().getIdTeam(),
+                                "namaTeam", listKartu.getOwnedBy().getNama()
+                            ),
                             "isUsed", listKartu.getIsUsed()));
                 } else {
                     response.setMessage("List Kartu Not Found");
@@ -265,7 +274,10 @@ public class ListKartuController {
                         response.setData(Map.of(
                                 "noKartu", listKartu.getNoKartu(),
                                 "cardSkill", listKartu.getCardSkill(),
-                                "ownedBy", listKartu.getOwnedBy(),
+                                "ownedBy", Map.of(
+                                    "idTeam", listKartu.getOwnedBy().getIdTeam(),
+                                    "namaTeam", listKartu.getOwnedBy().getNama()
+                                ),
                                 "isUsed", listKartu.getIsUsed()));
                     } else {
                         response.setMessage("List Kartu Not Found");

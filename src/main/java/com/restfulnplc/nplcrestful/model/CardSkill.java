@@ -13,7 +13,7 @@ public class CardSkill {
     @Column(name = "idcard", length = 11, nullable = false)
     private String idCard;
 
-    @Column(name = "namakartu", length = 20, nullable = false)
+    @Column(name = "namakartu", length = 20, nullable = false, unique = true)
     private String namaKartu;
 
     @Column(name = "rules", columnDefinition = "TINYTEXT",nullable = false)

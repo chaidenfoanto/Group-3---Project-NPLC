@@ -20,7 +20,7 @@ public class Boothgames {
     @Column(name = "idbooth", nullable = false)
     private String idBooth;
 
-    @Column(name = "nama", length = 50, nullable = false)
+    @Column(name = "nama", length = 50, nullable = false, unique = true)
     private String nama;
 
     @OneToOne
