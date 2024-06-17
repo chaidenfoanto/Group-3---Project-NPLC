@@ -51,18 +51,23 @@ public class ListKartuService {
 
     public Optional<ListKartu> teamGetCard(String idTeam) {
         Random rand = new Random();
+        int zonkRate = 35;
         ArrayList<ListKartu> listAvailables = getAvailableCard();
         Team team = teamService.getTeamById(idTeam).get();
         if (listAvailables.size() > 0) {
-            int randVal = rand.nextInt(listAvailables.size());
             ListKartu selectedCard;
-            if (randVal > listAvailables.size()) {
-                selectedCard = new ListKartu();
+            if (rand.nextInt(100) > zonkRate) {
+                int randVal = rand.nextInt(listAvailables.size());
+                if (randVal > listAvailables.size()) {
+                    selectedCard = new ListKartu();
+                } else {
+                    selectedCard = listAvailables.get(randVal);
+                    selectedCard.setOwnedBy(team);
+                    selectedCard.setIsUsed(false);
+                    listKartuRepository.save(selectedCard);
+                }
             } else {
-                selectedCard = listAvailables.get(randVal);
-                selectedCard.setOwnedBy(team);
-                selectedCard.setIsUsed(false);
-                listKartuRepository.save(selectedCard);
+                selectedCard = new ListKartu();
             }
             teamService.teamRolled(idTeam);
             return Optional.of(selectedCard);
