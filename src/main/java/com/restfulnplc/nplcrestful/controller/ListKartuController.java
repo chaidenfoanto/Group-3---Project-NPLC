@@ -259,7 +259,7 @@ public class ListKartuController {
                                     "cardSkill", listKartu.getCardSkill()));
                             } else {
                                 response.setData(Map.of(
-                                    "noKartu", "Zonk",
+                                    "noKartu", "ZONK",
                                     "cardSkill", Map.of(
                                         "namaKartu", "ZONK",
                                         "rules", "Hahay Kasian Deh",
