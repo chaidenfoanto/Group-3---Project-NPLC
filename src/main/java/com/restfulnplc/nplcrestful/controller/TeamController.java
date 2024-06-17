@@ -256,10 +256,8 @@ public class TeamController {
                                     "namaTeam", team.getNama(),
                                     "usernameTeam", team.getUsername(),
                                     "asalSekolah", team.getAsalSekolah(),
-                                    "kategoriTeam", team.getKategoriTeam().toString(),
                                     "chanceRoll", team.getChanceRoll(),
-                                    "totalPoin", team.getTotalPoin(),
-                                    "players", team.getPlayers()));
+                                    "totalPoin", team.getTotalPoin()));
                         }
                         response.setMessage("Team Datas Retrieved Successfully");
                         response.setError(false);
