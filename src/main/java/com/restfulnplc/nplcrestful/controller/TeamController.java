@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.restfulnplc.nplcrestful.dto.TeamDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
+import com.restfulnplc.nplcrestful.model.Players;
 import com.restfulnplc.nplcrestful.service.DuelMatchService;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.model.Tipegame;
@@ -59,6 +60,14 @@ public class TeamController {
                         response.setMessage("Team Successfully Created");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.CREATED);
+                        ArrayList<Object> playerList = new ArrayList<Object>();
+                        for(Players player : newTeam.getPlayers()) {
+                            playerList.add(Map.of(
+                                "idPlayer", player.getIdPlayer(),
+                                "nama", player.getNama(),
+                                "foto", player.getFoto()
+                            ));
+                        }
                         response.setData(Map.of(
                                 "idTeam", newTeam.getIdTeam(),
                                 "namaTeam", newTeam.getNama(),
@@ -67,7 +76,7 @@ public class TeamController {
                                 "kategoriTeam", newTeam.getKategoriTeam().toString(),
                                 "chanceRoll", newTeam.getChanceRoll(),
                                 "totalPoin", newTeam.getTotalPoin(),
-                                "players", newTeam.getPlayers()));
+                                "players", playerList));
                     } else {
                         response.setMessage("Username Exists");
                         response.setError(true);
@@ -111,6 +120,14 @@ public class TeamController {
                     response.setHttpCode(HTTPCode.OK);
                     ArrayList<Object> listData = new ArrayList<>();
                     for (Team team : teamList) {
+                        ArrayList<Object> playerList = new ArrayList<Object>();
+                        for(Players player : team.getPlayers()) {
+                            playerList.add(Map.of(
+                                "idPlayer", player.getIdPlayer(),
+                                "nama", player.getNama(),
+                                "foto", player.getFoto()
+                            ));
+                        }
                         listData.add(Map.of(
                                 "idTeam", team.getIdTeam(),
                                 "namaTeam", team.getNama(),
@@ -119,7 +136,7 @@ public class TeamController {
                                 "kategoriTeam", team.getKategoriTeam().toString(),
                                 "chanceRoll", team.getChanceRoll(),
                                 "totalPoin", team.getTotalPoin(),
-                                "players", team.getPlayers()));
+                                "players", playerList));
                     }
                     response.setData(listData);
                 } else {
@@ -199,6 +216,14 @@ public class TeamController {
                     response.setMessage("Team Retrieved Successfully");
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
+                    ArrayList<Object> playerList = new ArrayList<Object>();
+                        for(Players player : team.getPlayers()) {
+                            playerList.add(Map.of(
+                                "idPlayer", player.getIdPlayer(),
+                                "nama", player.getNama(),
+                                "foto", player.getFoto()
+                            ));
+                        }
                     response.setData(Map.of(
                             "idTeam", team.getIdTeam(),
                             "namaTeam", team.getNama(),
@@ -207,7 +232,7 @@ public class TeamController {
                             "kategoriTeam", team.getKategoriTeam().toString(),
                             "chanceRoll", team.getChanceRoll(),
                             "totalPoin", team.getTotalPoin(),
-                            "players", team.getPlayers()));
+                            "players", playerList));
                 } else {
                     response.setMessage("Team Not Found");
                     response.setError(true);
