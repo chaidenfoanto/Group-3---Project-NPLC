@@ -1,8 +1,6 @@
+var interval;
+var timer = '01:00';
 $(document).ready(function() {
-
-    var interval;
-    var timestart;
-
     $(".sidebar").load("sidebarpanitia.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
@@ -20,6 +18,14 @@ $(document).ready(function() {
         }
     });
 
+    function setCurrentTimeForTimeInput(selector) {
+        var now = new Date();
+        var formattedTime = ('0' + now.getHours()).slice(-2) + ':' +
+                            ('0' + now.getMinutes()).slice(-2) + ':' +
+                            ('0' + now.getSeconds()).slice(-2);
+        $(selector).val(formattedTime);
+    }
+
     $(document).on('click', function (e) {
         if (!$(e.target).closest('.sidebar, #toggle-btn, #burger-btn').length) {
           closeSidebar();
@@ -28,17 +34,18 @@ $(document).ready(function() {
 
     function showModal() {
         $('#gameEndModal').show();
-        $('#timeStarted').val(timestart);
-        setCurrentTime('#timeFinished');
+        setCurrentTimeForTimeInput('#timeFinished');
         calculateDuration();
         $('#teamPlayed').val($('#teamname').val());
         $('#teamPlayed').addClass('not-empty');
+        const team = $('#teamname').val();
+        $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
     }
 
     $('#startButton').click(function() {
         if ($(this).text() === "Start Game") {
             $(this).text("Finish Game");
-            timestart = setCurrentTime();
+            setCurrentTimeForTimeInput('#timeStarted');
             startTimer(); // Fungsi untuk memulai timer
         } else {
             $(this).text("Start Game");
@@ -48,7 +55,7 @@ $(document).ready(function() {
 
     function startTimer() {
         // Implementasi timer
-        var timer = $('.timeleft').text();
+        timestart = new Date();
         var timeArray = timer.split(':');
         var minutes = parseInt(timeArray[0]);
         var seconds = parseInt(timeArray[1]);
@@ -62,21 +69,30 @@ $(document).ready(function() {
 
             $('.timeleft').text(pad(minutes) + ':' + pad(seconds));
 
-            if (totalSeconds <= 0) {
+            if (totalSeconds <= 0 || $('#startButton').text() === "Start Game") {
                 clearInterval(interval);
                 $('#startButton').text("Start Game");
-                alert('Waktu telah habis!');
-                showModal();
+                if (totalSeconds <= 0)
+                    alert('Waktu telah habis dan Game telah berakhir!');
+                else
+                    alert('Game telah diakhiri!');
+                clearform();
+                // showModal();
             }
         }, 1000);
     }
 
     function stopTimer() {
         // Menghentikan timer
-        var currentTimer = $('.timeleft').text();
-        clearInterval(interval); // Pastikan 'interval' dapat diakses untuk menghentikan timer
-        $('.timeleft').text(currentTimer);
-        showModal(); // Opsi untuk mengatur ulang timer atau membiarkannya seperti saat dihentikan
+        clearInterval(interval);
+        showModal();
+        clearform();
+    }
+
+    function clearform() {
+        $('.timeleft').text(timer);
+        $('#teamname').val("");
+        $('#cardskill').val("");
     }
 
     function pad(val) {
@@ -183,9 +199,21 @@ $(document).ready(function() {
         }
     });
 
-    $('#teamPlayed').on('change', function() {
+    $('#starEarned').on('change', function() {
         const team = $('#teamPlayed').val();
-        $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
+        const star = $('#starEarned').val();
+        if (star === "1") {
+            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else if (star === "2") {
+            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else if (star === "3") {
+            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else {
+            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
+        }
     });
 
     $('#gameEndForm').on('submit', function(event) {
