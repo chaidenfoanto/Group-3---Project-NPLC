@@ -1,57 +1,72 @@
-
-    <div class="logo_details">
-        <img src="img/logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
-        <div class="logo_name">NPLC 12th</div>
+<div class="logo_details">
+  <img
+    src="img/logo.png"
+    alt="NPLC Logo"
+    class="logo"
+    id="toggle-btn"
+  />
+  <div class="logo_name">NPLC 12th</div>
+</div>
+<ul class="nav-list">
+  <li>
+    <a href="dashboardplayer.html">
+      <i class="fa-solid fa-house"></i>
+      <span class="link_name">Home</span>
+    </a>
+    <span class="tooltip">Home</span>
+  </li>
+  <li>
+    <a href="deckcardplayer.html">
+      <i class="fa-regular fa-clone"></i>
+      <span class="link_name">Deck Card</span>
+    </a>
+    <span class="tooltip">Deck Cards</span>
+  </li>
+  <li>
+    <a href="playerQna.html">
+      <i class="fa-regular fa-circle-question"></i>
+      <span class="link_name">QnA</span>
+    </a>
+    <span class="tooltip">QnA</span>
+  </li>
+  <li class="profile">
+    <div
+      class="profile_details"
+      id="profile-details"
+    >
+      <i class="fa-regular fa-user"></i>
+      <div class="profile_content">
+        <div class="name">Anna Jhon</div>
+        <div class="designation">Admin</div>
+      </div>
     </div>
-    <ul class="nav-list">
-      <li>
-        <a href="dashboardplayer.html">
-          <i class="fa-solid fa-house"></i>
-          <span class="link_name">Home</span>
-        </a>
-        <span class="tooltip">Home</span>
-      </li>
-      <li>
-        <a href="deckcardplayer.html">
-          <i class="fa-regular fa-clone"></i>
-          <span class="link_name">Deck Card</span>
-        </a>
-        <span class="tooltip">Deck Cards</span>
-      </li>
-      <li>
-        <a href="playerQna.html">
-          <i class="fa-regular fa-circle-question"></i>
-          <span class="link_name">QnA</span>
-        </a>
-        <span class="tooltip">QnA</span>
-      </li>
-      <li class="profile">
-        <div class="profile_details" id="profile-details">
-          <i class="fa-regular fa-user"></i>
-          <div class="profile_content">
-            <div class="name">Anna Jhon</div>
-            <div class="designation">Admin</div>
-          </div>
-        </div>
-        <i class="bx bx-log-out" id="log_out"></i>
-      </li>
-    </ul>
-    <script>
-      function updateLogo() {
-        const logoImg = $('#toggle-btn');
-        const sidebar = $('.sidebar');
-      
-        if (window.innerWidth <= 500) {
-          if (!sidebar.classList.contains('open')) {
-            logoImg.src = 'img/burger-menu.png';
-          } else {
-            logoImg.src = 'img/logo.png';
-          }
-        } else {
-          logoImg.src = 'img/logo.png';
-        }
+    <i
+      class="bx bx-log-out"
+      id="log_out"
+      onclick="logout()"
+    ></i>
+  </li>
+</ul>
+<script>
+  function updateLogo() {
+    const logoImg = $('#toggle-btn');
+    const sidebar = $('.sidebar');
+
+    if (window.innerWidth <= 500) {
+      if (!sidebar.classList.contains('open')) {
+        logoImg.src = 'img/burger-menu.png';
+      } else {
+        logoImg.src = 'img/logo.png';
       }
-      
-      window.onload = updateLogo;
-      window.onresize = updateLogo;
-    </script>
+    } else {
+      logoImg.src = 'img/logo.png';
+    }
+  }
+
+  function logout() {
+    window.location.href = "LogIn.html"
+  }
+
+  window.onload = updateLogo;
+  window.onresize = updateLogo;
+</script>

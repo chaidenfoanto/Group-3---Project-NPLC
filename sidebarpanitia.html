@@ -42,7 +42,7 @@
             <div class="designation">Penjaga Booth</div>
           </div>
         </div>
-        <i class="bx bx-log-out" id="log_out"></i>
+        <i class="bx bx-log-out" id="log_out" onclick="logout()"></i>
       </li>
     </ul>
     <script>
@@ -85,5 +85,9 @@
                   deleteCookie("Token");
                   window.location.href = "LoginPanitia.html";
               });
+
+              function logout() {
+    window.location.href = "LoginPanitia.html"
+  }
       }
     </script>

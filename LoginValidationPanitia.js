@@ -80,15 +80,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 const token = result.data.token;
                 setCookie("Token", token, 365);
                 switch(result.data.role){
-                    case "ADMIN" :
+                    case "Admin" :
                         window.location.href = "DashboardHod.html";
                         break;
-                    case "KETUA" :
+                    case "Ketua" :
                         window.location.href = "HodStartGame.html"
-                    case "LOSINGLE" :
+                        break;
+                    case "Penjaga Single" :
                         window.location.href = "PanitiaSingleInput.html"
-                    case "LODUEL" :
+                        break;
+                    case "Penjaga Duel" :
                         window.location.href = "PanitiaDuelFinish.html"
+                        break;
                 }
 
                 // window.location.href = "DashboardHod.html";
