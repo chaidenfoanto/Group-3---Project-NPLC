@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,8 +41,11 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getAllDuelMatches() {
         ArrayList<DuelMatch> duelMatchList = new ArrayList<DuelMatch>();
-        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
-            duelMatchList.add(duelMatch);
+        List<DuelMatch> duelMatches = duelMatchRepository.findAll();
+        if (duelMatches.size() > 0) {
+            for (DuelMatch duelMatch : duelMatches) {
+                duelMatchList.add(duelMatch);
+            }
         }
         return duelMatchList;
     }
@@ -52,7 +56,7 @@ public class DuelMatchService {
 
     public ArrayList<Team> getWinningTeams() {
         ArrayList<Team> winningTeams = new ArrayList<Team>();
-        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
             winningTeams.add(duelMatch.getTimMenang());
         }
         return winningTeams;
@@ -60,7 +64,7 @@ public class DuelMatchService {
 
     public ArrayList<Team> getWinningTeamsByBooth(String id) {
         ArrayList<Team> winningTeams = new ArrayList<Team>();
-        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
             if (duelMatch.getBoothGames().getIdBooth().equals(id)) {
                 winningTeams.add(duelMatch.getTimMenang());
             }
@@ -98,7 +102,7 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getDuelMatchesByUser(String userId) {
         ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
-        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
             if (duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) {
                 duelMatchArray.add(duelMatch);
             }
@@ -108,7 +112,7 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getDuelMatchesByUserAndBooth(String userId, String boothId) {
         ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
-        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
             if ((duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId))
                     && duelMatch.getBoothGames().getIdBooth().equals(boothId)) {
                 duelMatchArray.add(duelMatch);

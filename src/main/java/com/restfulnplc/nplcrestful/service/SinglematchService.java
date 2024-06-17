@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -104,8 +105,11 @@ public class SinglematchService {
 
     public ArrayList<Singlematch> getAllSinglematches() {
         ArrayList<Singlematch> singlematchList = new ArrayList<Singlematch>();
-        for (Singlematch singlematch : singlematchRepository.findAll()) {
-            singlematchList.add(singlematch);
+        List<Singlematch> singlematches = singlematchRepository.findAll();
+        if (singlematches.size() > 0) {
+            for (Singlematch singlematch : singlematches) {
+                singlematchList.add(singlematch);
+            }
         }
         return singlematchList;
     }
