@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,9 +56,12 @@ public class SinglematchService {
 
     public ArrayList<Singlematch> getSinglematchesByUser(String userId) {
         ArrayList<Singlematch> singlematchArray = new ArrayList<Singlematch>();
-        for(Singlematch singlematch : getAllSinglematches()) {
-            if(singlematch.getTeam().getIdTeam().equals(userId)) {
-                singlematchArray.add(singlematch);
+        ArrayList<Singlematch> listMatch = getAllSinglematches();
+        if (listMatch.size() > 0) {
+            for (Singlematch singlematch : listMatch) {
+                if (singlematch.getTeam().getIdTeam().equals(userId)) {
+                    singlematchArray.add(singlematch);
+                }
             }
         }
         return singlematchArray;
@@ -67,9 +69,12 @@ public class SinglematchService {
 
     public ArrayList<Team> getTeamPerBooth(String id) {
         ArrayList<Team> teamsPlayed = new ArrayList<Team>();
-        for(Singlematch singlematch : getAllSinglematches()) {
-            if(singlematch.getBoothGames().getIdBooth().equals(id)) {
-                teamsPlayed.add(singlematch.getTeam());
+        ArrayList<Singlematch> listMatch = getAllSinglematches();
+        if (listMatch.size() > 0) {
+            for (Singlematch singlematch : listMatch) {
+                if (singlematch.getBoothGames().getIdBooth().equals(id)) {
+                    teamsPlayed.add(singlematch.getTeam());
+                }
             }
         }
         return teamsPlayed;
@@ -77,21 +82,32 @@ public class SinglematchService {
 
     public ArrayList<Team> getAvailableTeamPerBooth(String id) {
         ArrayList<Team> teamList = teamService.getAllTeam();
-        teamList.removeAll(getTeamPerBooth(id));
+        ArrayList<Team> teamPerBooth = getTeamPerBooth(id);
+        if (teamPerBooth.size() > 0) {
+            teamList.removeAll(teamPerBooth);
+        }
         return teamList;
     }
 
     public Optional<Singlematch> getSinglematchesByUserAndBooth(String userId, String boothId) {
-        for(Singlematch singlematch : getAllSinglematches()) {
-            if(singlematch.getTeam().getIdTeam().equals(userId) && singlematch.getBoothGames().getIdBooth().equals(boothId)) {
-                return Optional.of(singlematch);
+        ArrayList<Singlematch> listMatch = getAllSinglematches();
+        if (listMatch.size() > 0) {
+            for (Singlematch singlematch : listMatch) {
+                if (singlematch.getTeam().getIdTeam().equals(userId)
+                        && singlematch.getBoothGames().getIdBooth().equals(boothId)) {
+                    return Optional.of(singlematch);
+                }
             }
         }
         return Optional.empty();
     }
 
-    public List<Singlematch> getAllSinglematches() {
-        return singlematchRepository.findAll();
+    public ArrayList<Singlematch> getAllSinglematches() {
+        ArrayList<Singlematch> singlematchList = new ArrayList<Singlematch>();
+        for (Singlematch singlematch : singlematchRepository.findAll()) {
+            singlematchList.add(singlematch);
+        }
+        return singlematchList;
     }
 
     public Optional<Singlematch> getSinglematchById(String id) {
@@ -136,9 +152,8 @@ public class SinglematchService {
         }
         return false;
     }
-    
-    public void reset()
-    {
+
+    public void reset() {
         singlematchRepository.deleteAll();
     }
 }

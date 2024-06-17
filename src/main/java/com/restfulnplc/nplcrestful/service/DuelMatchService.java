@@ -72,8 +72,8 @@ public class DuelMatchService {
         ArrayList<Team> availableTeam = new ArrayList<Team>();
         ArrayList<Team> teamList = teamService.getAllTeam();
         teamList.removeAll(getWinningTeamsByBooth(id));
-        for(Team team : teamList) {
-            if(getDuelMatchesByUser(team.getIdTeam()).size() < 2) {
+        for (Team team : teamList) {
+            if (getDuelMatchesByUser(team.getIdTeam()).size() < 2) {
                 availableTeam.add(team);
             }
         }
@@ -98,7 +98,7 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getDuelMatchesByUser(String userId) {
         ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
-        for (DuelMatch duelMatch : getAllDuelMatches()) {
+        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
             if (duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) {
                 duelMatchArray.add(duelMatch);
             }
@@ -108,7 +108,7 @@ public class DuelMatchService {
 
     public ArrayList<DuelMatch> getDuelMatchesByUserAndBooth(String userId, String boothId) {
         ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
-        for (DuelMatch duelMatch : getAllDuelMatches()) {
+        for (DuelMatch duelMatch : duelMatchRepository.findAll()) {
             if ((duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId))
                     && duelMatch.getBoothGames().getIdBooth().equals(boothId)) {
                 duelMatchArray.add(duelMatch);
