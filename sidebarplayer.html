@@ -69,4 +69,24 @@
 
   window.onload = updateLogo;
   window.onresize = updateLogo;
+
+  async function fetchTeamName() {
+    const listTeam = document.getElementsByClassName("name")[0];
+    await fetch(domain + 'api/team', {
+    method: 'GET',
+    headers: { 'Token': getCookie('Token') }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (!data.error) {
+      data.data.forEach(team => {
+        `<div class="name">${team.team.nama}</div>`
+      })
+
+    }
+  })
+}
+
+fetchTeamName();
+
 </script>

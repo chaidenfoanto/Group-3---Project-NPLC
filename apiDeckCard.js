@@ -90,7 +90,7 @@ $(document).ready(function() {
                     <div class="card" id="${cardData.idCard}">
                     <img src="${cardData.gambarKartu}" alt="${cardData.namaKartu}" class="card-image">
                     <p><b>${cardData.namaKartu}</b></p>
-                    <p style="text-align: left;">
+                    <p style="text-align: justify;">
                         Effect: ${cardRulesLess}
                         <span class="dots">...</span>
                         <span class="more">${cardRulesMore}</span>
