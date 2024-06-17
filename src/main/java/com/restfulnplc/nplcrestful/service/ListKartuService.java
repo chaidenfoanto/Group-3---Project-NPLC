@@ -55,18 +55,16 @@ public class ListKartuService {
         ArrayList<ListKartu> listAvailables = getAvailableCard();
         Team team = teamService.getTeamById(idTeam).get();
         if (listAvailables.size() > 0) {
-            ListKartu selectedCard; // Predeclaring selected card
-            if (rand.nextInt(100) > zonkRate) {
+            ListKartu selectedCard = new ListKartu(); // Predeclaring selected card to be zonk on start
+            if (rand.nextInt(100) > zonkRate) { // Checking if rate is passed to get a card
                 listAvailables.add(new ListKartu()); // Adding 1 Zonk card to the list
-                int randVal = rand.nextInt(listAvailables.size() - 1);
-                selectedCard = listAvailables.get(randVal);
+                int randVal = rand.nextInt(listAvailables.size() - 1); // Randoming card in list
+                selectedCard = listAvailables.get(randVal); // Getting result card
                 if (selectedCard.getCardSkill() != null) { // Checking if it's a zonk card
                     selectedCard.setOwnedBy(team);
                     selectedCard.setIsUsed(false);
                     listKartuRepository.save(selectedCard);
                 }
-            } else {
-                selectedCard = new ListKartu();
             }
             teamService.teamRolled(idTeam);
             return Optional.of(selectedCard);
