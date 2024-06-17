@@ -4,7 +4,7 @@ public class CardSkillDTO {
     private String namaKartu;
     private String rules;
     private int totalKartu;
-    private byte[] gambarKartu;
+    private String gambarKartu;
 
     public String getNamaKartu() {
         return namaKartu;
@@ -30,11 +30,11 @@ public class CardSkillDTO {
         this.totalKartu = totalKartu;
     }
 
-    public byte[] getGambarKartu() {
+    public String getGambarKartu() {
         return gambarKartu;
     }
 
-    public void setGambarKartu(byte[] gambarKartu) {
+    public void setGambarKartu(String gambarKartu) {
         this.gambarKartu = gambarKartu;
     }
 }

@@ -23,7 +23,7 @@ public class CardSkill {
     private int totalKartu;
 
     @Column(name = "gambarkartu",  columnDefinition = "BLOB", nullable = false)
-    private byte[] gambarKartu;
+    private String gambarKartu;
 
 
     public String getIdCard() {
@@ -58,11 +58,11 @@ public class CardSkill {
         this.totalKartu = totalKartu;
     }
 
-    public byte[] getGambarKartu() {
+    public String getGambarKartu() {
         return this.gambarKartu;
     }
 
-    public void setGambarKartu(byte[] gambarKartu) {
+    public void setGambarKartu(String gambarKartu) {
         this.gambarKartu = gambarKartu;
     }
     
