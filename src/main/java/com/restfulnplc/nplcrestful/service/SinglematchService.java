@@ -1,8 +1,11 @@
 package com.restfulnplc.nplcrestful.service;
 
 import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
-import com.restfulnplc.nplcrestful.model.*;
-import com.restfulnplc.nplcrestful.repository.*;
+import com.restfulnplc.nplcrestful.model.Boothgames;
+import com.restfulnplc.nplcrestful.model.ListKartu;
+import com.restfulnplc.nplcrestful.model.Singlematch;
+import com.restfulnplc.nplcrestful.model.Team;
+import com.restfulnplc.nplcrestful.repository.SinglematchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
