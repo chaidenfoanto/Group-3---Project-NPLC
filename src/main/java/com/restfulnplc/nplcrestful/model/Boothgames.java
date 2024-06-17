@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.EnumType;
+
 import java.sql.Time;
 
 @Entity
@@ -46,7 +47,7 @@ public class Boothgames {
     @Column(name = "durasipermainan", nullable = false)
     private Time durasiPermainan;
 
-    @Column(name = "fotobooth", columnDefinition = "BLOB", nullable = false)
+    @Column(name = "fotobooth", columnDefinition = "MEDIUMBLOB", nullable = false)
     private byte[] fotobooth;
 
 
@@ -121,4 +122,8 @@ public class Boothgames {
     public void setFotoBooth(byte[] fotobooth) {
         this.fotobooth = fotobooth;
     }
+
+//     public void setFotoBooth(String fotobooth) {
+//         this.fotobooth = Base64.encodeBase64(fotobooth);
+//     }
 }
