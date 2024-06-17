@@ -91,7 +91,7 @@ public class LoginService {
 
     public boolean checkUserExist(String token) {
         Login session = getLoginSession(token);
-        return (panitiaService.getPanitiaById(session.getIdUser()).isPresent() && teamService.getTeamById(session.getIdUser()).isPresent());
+        return (panitiaService.getPanitiaById(session.getIdUser()).isPresent() || teamService.getTeamById(session.getIdUser()).isPresent());
     }
 
     public boolean checkSessionSelf(String token, String idUser) {
