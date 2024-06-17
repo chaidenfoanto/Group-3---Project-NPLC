@@ -272,15 +272,14 @@
             margin-top: 4px; /* Atur jarak dari input di atasnya */
         }
 
-        .input-group input,
+        /* .input-group input,
         .input-group select,
         .input-group textarea {
             width: 100%;
             padding: 8px;
             margin-top: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
+            font-size: 16px;;
             border-radius: 4px;
             box-sizing: border-box;
-        }
+        } */
         

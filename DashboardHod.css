@@ -96,19 +96,24 @@ header h1 {
 
 .form-group {
   display: flex;
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
+  margin-left: 20px;
+}
+
+.form-group div {
+  flex: 1;
+  margin-right: 10px;
 }
 
 .input-group {
-  flex: 1;
   position: relative;
-  padding: 0 10px;
+  width: 100%;
 }
 
 .input-group input,
 .input-group select {
-  width: 90%;
+  width: 100%;
   padding: 10px 15px;
   font-size: 16px;
   margin-bottom: 5%;
@@ -116,20 +121,22 @@ header h1 {
   border: 1px solid #212b27;
 }
 
-.placeholder {
-  position: absolute;
-  top: 10px;
-  left: 18px;
-  font-size: 16px;
-  color: #666;
-  transition: 0.3s;
+.form-group .placeholder {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 16px;
+    padding: 0px 5px;
+    color: #666;
+    transition: 0.3s;
+    pointer-events: none;
 }
 
-input:focus + .placeholder,
-select:focus + .placeholder,
-input.not-empty + .placeholder,
-select.not-empty + .placeholder {
-  top: -6px;
+.form-group input:focus + .placeholder,
+.form-group select:focus + .placeholder,
+.form-group input.not-empty + .placeholder,
+.form-group select.not-empty + .placeholder {
+  top: -12px;
   color: #000000;
   background-color: white;
 }
@@ -137,7 +144,7 @@ select.not-empty + .placeholder {
 .buttons {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .btn-primary,
@@ -156,6 +163,10 @@ select.not-empty + .placeholder {
 .btn-secondary {
   background-color: var(--color-default);
   color: var(--color-white);
+}
+
+.btn-secondary:hover, .btn-primary:hover, .edit-btn:hover {
+  background-color: var(--color-second);
 }
 
 .booth-list {
@@ -384,7 +395,7 @@ select.not-empty + .placeholder {
 
   .input-group {
     padding: 10px 0;
-    width: 80%;
+    width: 90%;
   }
 
   .popup-content {
@@ -427,5 +438,25 @@ select.not-empty + .placeholder {
     height: auto;
     margin-left: 25%;
     margin-right: auto;
+  }
+
+  @media (max-width: 500px) {
+      .form-group .placeholder {
+        top: 10px;
+    }
+    
+    .form-group input:focus + .placeholder,
+    .form-group select:focus + .placeholder,
+    .form-group input.not-empty + .placeholder,
+    .form-group select.not-empty + .placeholder {
+      top: -12px;
+    }
+    .buttons {
+      display: block;
+    }
+
+    .input-group {
+      padding: 0;
+    }
   }
 }

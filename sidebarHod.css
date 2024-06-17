@@ -260,7 +260,7 @@
 .sidebar.open ~ .main-content{
     transition: all .5s ease;
     left:170px;
-    width: calc(100% - 250px);
+    max-width: calc(100% - 250px);
 }
 
 .sidebar .logo_details .burger-icon {
