@@ -1,6 +1,10 @@
 $(document).ready(function() {
+
+    var interval;
+    var timestart;
+
     $(".sidebar").load("sidebarpanitia.html", function() {
-        const toggleBtn = $("#toggle-btn");
+        const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {
             $(".sidebar").toggleClass("open");
@@ -17,10 +21,72 @@ $(document).ready(function() {
     });
 
     $(document).on('click', function (e) {
-        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn, #burger-btn').length) {
           closeSidebar();
         }
     });
+
+    function showModal() {
+        $('#gameEndModal').show();
+        $('#timeStarted').val(timestart);
+        setCurrentTime('#timeFinished');
+        calculateDuration();
+        $('#teamPlayed').val($('#teamname').val());
+        $('#teamPlayed').addClass('not-empty');
+    }
+
+    $('#startButton').click(function() {
+        if ($(this).text() === "Start Game") {
+            $(this).text("Finish Game");
+            timestart = setCurrentTime();
+            startTimer(); // Fungsi untuk memulai timer
+        } else {
+            $(this).text("Start Game");
+            stopTimer(); // Fungsi untuk menghentikan timer
+        }
+    });
+
+    function startTimer() {
+        // Implementasi timer
+        var timer = $('.timeleft').text();
+        var timeArray = timer.split(':');
+        var minutes = parseInt(timeArray[0]);
+        var seconds = parseInt(timeArray[1]);
+
+        var totalSeconds = minutes * 60 + seconds;
+
+        var interval = setInterval(function() {
+            totalSeconds--;
+            var minutes = Math.floor(totalSeconds / 60);
+            var seconds = totalSeconds % 60;
+
+            $('.timeleft').text(pad(minutes) + ':' + pad(seconds));
+
+            if (totalSeconds <= 0) {
+                clearInterval(interval);
+                $('#startButton').text("Start Game");
+                alert('Waktu telah habis!');
+                showModal();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        // Menghentikan timer
+        var currentTimer = $('.timeleft').text();
+        clearInterval(interval); // Pastikan 'interval' dapat diakses untuk menghentikan timer
+        $('.timeleft').text(currentTimer);
+        showModal(); // Opsi untuk mengatur ulang timer atau membiarkannya seperti saat dihentikan
+    }
+
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+            return "0" + valString;
+        } else {
+            return valString;
+        }
+    }
 
     function closeSidebar() {
         $('.sidebar').removeClass('open');
@@ -105,15 +171,6 @@ $(document).ready(function() {
                 $('.input-group .error').text('Team should be filled.');
             }
         });
-    });
-
-    $('.startButton').on('click', function() {
-        $('#gameEndModal').show();
-        setCurrentTime('#timeStarted');
-        setCurrentTime('#timeFinished');
-        calculateDuration();
-        $('#teamPlayed').val($('#teamname').val());
-        $('#teamPlayed').addClass('not-empty');
     });
 
     $('.close').on('click', function() {

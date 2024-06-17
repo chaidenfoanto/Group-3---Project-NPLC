@@ -19,9 +19,9 @@
         <h1>Selamat datang Penjaga Booth!</h1>
         <div class="timer">
           <p>Remaining Time:</p>
-          <p class="timeleft">
+          <p class="timefill">
             <i class="fa-regular fa-clock" style="color: #000000"></i>
-            00:00
+            <span class = "timeleft">01:00</span>
           </p>
         </div>
     </header>
@@ -85,11 +85,11 @@
             </div>
                 <div class="modal-inner-container">
                     <div class = "input-group">
-                        <input type="time" id="timeStarted" step = "1">
+                        <input type="time" id="timeStarted" step = "1" disabled>
                         <label class = "placeholder" for="timeStarted">Time Started</label>
                     </div>
                     <div class = "input-group">
-                        <input type="time" id="timeFinished" step = "1">
+                        <input type="time" id="timeFinished" step = "1" disabled>
                         <label class = "placeholder" for="timeFinished">Time Finished</label>
                     </div>
                     <div class = "input-group">

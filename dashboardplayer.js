@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(".sidebar").load("sidebarplayer.html", function () {
-        const toggleBtn = $("#toggle-btn");
+        const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function () {
             $(".sidebar").toggleClass("open");
@@ -17,7 +17,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', function (e) {
-        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn, #burger-btn').length) {
             closeSidebar();
         }
     });
