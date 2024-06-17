@@ -19,7 +19,7 @@ public class Players implements Serializable {
     @Column(name = "nama", length = 50, nullable = false)
     private String nama;
 
-    @Column(name = "foto",  columnDefinition = "BLOB", nullable = false)
+    @Column(name = "foto",  columnDefinition = "MEDIUMBLOB", nullable = false)
     private byte[] foto;
 
     @ManyToOne
