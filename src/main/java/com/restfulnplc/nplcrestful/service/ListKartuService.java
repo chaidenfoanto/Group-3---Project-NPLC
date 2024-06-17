@@ -168,7 +168,7 @@ public class ListKartuService {
                 ));
             }
         }
-        if(listUsed.size() > 0 && listUnused.size() > 0) {
+        if(listUsed.size() > 0 || listUnused.size() > 0) {
             return Map.of(
                 "usedCards", listUsed,
                 "availableCards", listUnused
