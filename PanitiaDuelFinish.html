@@ -18,7 +18,7 @@
             <p>Remaining Time:</p>
             <p class="timeleft">
               <i class="fa-regular fa-clock" style="color: #000000"></i>
-              00:00
+              <span id="timefill">01:00</span>
             </p>
           </div>
       </header>
@@ -66,15 +66,15 @@
                 </div>
                   <div class="time-container">
                       <div class = "input-group">
-                          <input type="time" id="timeStarted" step = "1">
+                          <input type="time" id="timeStarted" step = "1" disabled>
                           <label class = "placeholder" for="timeStarted">Time Started</label>
                       </div>
                       <div class = "input-group">
-                          <input type="time" id="timeFinished" step = "1">
+                          <input type="time" id="timeFinished" step = "1" disabled>
                           <label class = "placeholder" for="timeFinished">Time Finished</label>
                       </div>
                       <div class = "input-group">
-                          <input type="text" id="duration">
+                          <input type="text" id="duration" disabled>
                           <label class = "placeholder" for="duration">Duration</label>
                       </div>
                   </div>

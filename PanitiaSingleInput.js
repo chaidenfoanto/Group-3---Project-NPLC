@@ -36,9 +36,9 @@ $(document).ready(function() {
         $('#gameEndModal').show();
         setCurrentTimeForTimeInput('#timeFinished');
         calculateDuration();
-        $('#teamPlayed').val($('#teamname').val());
-        $('#teamPlayed').addClass('not-empty');
         const team = $('#teamname').val();
+        $('#teamplayed').val(team);
+        $('#teamplayed').addClass('not-empty');
         $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
     }
 
@@ -198,7 +198,7 @@ $(document).ready(function() {
         }
     });
 
-    const teamName = teamData[teamId] ||
+    const teamName = teamData[teamId] 
 
     $('#starEarned').on('change', function() {
         const team = $('#teamPlayed').val();
