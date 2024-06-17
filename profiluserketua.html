@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Card Skill Panitia</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="profilpanitia.css">
+    <link rel="stylesheet" href="sidebarketua.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="profiluserketua.js"></script>
+        
+    <div class = "container">
+      <div class="sidebar"></div>
+        <div class="main-content">
+          <header>
+              <h1>Profile</h1>
+          </header>
+          <h4>Fill in the blanks!</h4>
+          <div class="inner-container">
+            <form id="booth-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" id="Name">
+                  <label class = "placeholder">Nama</label>
+                  <span class="error-message" id="NameError"></span>
+                </div>
+                <div class="input-group">
+                  <input type="text" id="NIM">
+                  <label class = "placeholder">NIM</label>
+                  <span class="error-message" id="NIMError"></span>
+                </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <select id="divisi" name="divisi">
+                      <option value=""></option>
+                      <option value="Acara">Acara</option>
+                      <option value="Penjaga Booth">Penjaga Booth</option>
+                      <option value="Publikasi Dokumentasi">Publikasi Dokumentasi</option>
+                      <option value="Kesehatan">Kesehatan</option>
+                    </select>
+                    <label class = "placeholder">Divisi</label>
+                    <span class="error-message" id="divisiError"></span>
+                  </div>
+                  <div class="input-group">
+                    <select id="jurusan" name="jurusan" disabled>
+                      <option value="Informatika">Informatika</option>
+                    </select>
+                    <label class = "placeholder">Jurusan</label>
+                    <span class="error-message" id="jurusanError"></span>
+                  </div>
+                  </div>
+                  <div class="form-group">
+                  <div class="input-group">
+                    <select id="spesialisasi" name="spesialisasi">
+                      <option value=""></option>
+                      <option value="Artificial Intelligence">Artificial Intelligence</option>
+                      <option value="Full Stack Developer">Full Stack Developer</option>
+                    </select>
+                    <label class = "placeholder">Spesialisasi</label>
+                    <span class="error-message" id="spesialisasiError"></span>
+                  </div>
+                  <div class="input-group">
+                    <select id="angkatan" name="angkatan">
+                      <option value=""></option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                    <label class = "placeholder">Angkatan</label>
+                    <span class="error-message" id="angkatanError"></span>
+                  </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="save" class = "btn ok">Simpan</button>
+                </div>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</body>

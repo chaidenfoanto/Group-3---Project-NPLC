@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player's Deck Card</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="listkartuhod.css">
+    <link rel="stylesheet" href="sidebarHod.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="listkartuhod.js"></script>
+        
+    <div class = "container">
+      <div class="sidebar"></div>
+        <div class="main-content">
+          <div class="inner-container">
+              <h2>Card List</h2>
+              <button id="addBtn">Tambah Kartu</button>
+          </div>
+          <div class = "modal-overlay">
+              <div class="datacontainer" id="modal">
+                <div class="datacontainer-inner">
+                    <h2>Data Kartu</h2>
+                    <div class="card-content">
+                      <div class = "image-upload">
+                        <img src="img/kartu2.png" alt="Hasil Gacha" id="cardImage">
+                        <label for="imageInput" class="upload-button">Upload File</label>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <p id="fileSource"></p>
+                      </div>
+                        <div class="card-details">
+                          <div class="input-group">
+                            <input type="text" id="cardName">
+                            <label class = "placeholder">Nama Kartu</label>
+                            <span class="error-message" id="cardNameError"></span>
+                          </div>
+                          <div class="input-group">
+                            <textarea rows="4" id="cardEffect"></textarea>
+                            <label class = "placeholder">Efek Kartu</label>
+                            <span class="error-message" id="cardEffectError"></span>
+                          </div>
+                          <div class="input-group">
+                            <input type="text" id="cardTotal">
+                            <label class = "placeholder">Jumlah Kartu</label>
+                            <span class="error-message" id="cardTotalError"></span>
+                          </div>
+                        </div>
+                    </div>
+                    <button id="closeResult" class="btn ok">Simpan</button>
+                    <button id="cancel" class="btn cancel">Cancel</button>
+                </div>
+            </div>
+          </div>
+          <div class="cards-list">
+              <div class="card" id="doublePoint">
+                  <img src="img/kartu1.png" alt="Double Point" class="card-image">
+                  <p><b>Double Point</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single. Jika tim berhasil mendapatkan
+                    <span class="dots">...</span>
+                    <span class="more">bintang (bintang 1-3), maka point x2. Jika tim gagal (bintang 0), maka point -30.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <div class = "twocol">
+                    <table>
+                      <tr>
+                          <td>Total Card</td>
+                          <td>:</td>
+                          <td>0</td>
+                      </tr>
+                  </table>
+                  <button id = "editBtn">Edit</button>
+                </div>
+              </div>
+              <div class="card" id="time+3">
+                  <img src="img/kartu2.png" alt="Time +3" class="card-image">
+                  <p><b>Time +3</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It.
+                    <span class="dots">...</span>
+                    <span class="more">Tim mendapatkan tambahan waktu 3 Menit dari durasi normal permainan.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <div class = "twocol">
+                    <table>
+                      <tr>
+                          <td>Total Card</td>
+                          <td>:</td>
+                          <td>0</td>
+                      </tr>
+                  </table>
+                  <button id = "editBtn">Edit</button>
+                </div>
+              </div>
+              <div class="card" id="time+5">
+                  <img src="img/kartu3.png" alt="Time +5" class="card-image">
+                  <p><b>Time +5</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It.
+                    <span class="dots">...</span>
+                    <span class="more">Tim mendapatkan tambahan waktu 5 Menit dari durasi normal permainan.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <div class = "twocol">
+                    <table>
+                      <tr>
+                          <td>Total Card</td>
+                          <td>:</td>
+                          <td>0</td>
+                      </tr>
+                  </table>
+                  <button id = "editBtn">Edit</button>
+                </div>
+              </div>
+              <div class="card" id="secondChance">
+                  <img src="img/kartu4.png" alt="Second Chance" class="card-image">
+                  <p><b>Second Chance</b></p>
+                  <p style="text-align: justify;">
+                    Effect: Hanya dapat digunakan di game single. Tim mendapatkan tambahan 1 kali
+                    <span class="dots">...</span>
+                    <span class="more">kesempatan bermain lagi. Poin yang akan diperoleh adalah poin dari permainan terakhir.</span>
+                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
+                  </p>
+                  <div class = "twocol">
+                    <table>
+                      <tr>
+                          <td>Total Card</td>
+                          <td>:</td>
+                          <td>0</td>
+                      </tr>
+                  </table>
+                  <button id = "editBtn">Edit</button>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+</body>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player's Deck Card</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="deckcardplayer.css">
+    <link rel="stylesheet" href="sidebarplayer.css">
+    <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+    <div class = "container">
+      <div class="sidebar"></div>
+        <div class="main-content">
+          <header>
+              <h1>Your Deck Card</h1>
+          </header>
+          <div class="ticket-container">
+            <div>
+                <i class="fas fa-ticket-alt"></i>
+                <span>Tickets Owned</span>
+            </div>
+            <div>
+                <span style="margin-right: 10px" id="chanceroll"></span>
+                <button id="rollButton">ROLL</button>
+            </div>
+          </div>
+              <div class = "container-dice">
+                <h2>Gacha your Card</h2>
+                  <div class = "dice">
+                      <div class = "face front"></div>
+                      <div class = "face back"></div>
+                      <div class = "face top"></div>
+                      <div class = "face bottom"></div>
+                      <div class = "face right"></div>
+                      <div class = "face left"></div>
+                  </div>
+                  <div class = "buttons">
+                    <button class = "roll">Start</button>
+                    <button id = "closeGacha">Cancel</button>
+                  </div>
+              </div> 
+              <div class="container-error">
+                <p>Maaf, tidak bisa lagi untuk gacha kartu! Semua kartu sudah habis.</p>
+                <button type="button" id="closeError">OK</button>
+              </div>
+              <div class = "modal-overlay">
+                <div class="gacharesult" id="modal">
+                  <div class="gacharesult-inner">
+                      <h2 id="card-code"></h2>
+                      <div class="card-content">
+                          <img id="card-img">
+                          <div class="card-details">
+                              <p id="card-name"></p>
+                              <p><strong>Card  Description :</strong> </p>
+                              <p id="card-desc"></p>
+                          </div>
+                      </div>
+                      <button id="closeResult" class="btn-ok">OK</button>
+                  </div>
+              </div>
+            </div>
+          <div class="cards-list">
+            
+          </div>
+      </div>
+    </div>
+    <script src="apiDeckCard.js"></script>
+    <script src="deckcardplayer.js"></script>
+</body>

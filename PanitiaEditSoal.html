@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Card Skill Panitia</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="PanitiaEditSoal.css">
+    <link rel="stylesheet" href="sidebarpanitia.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="PanitiaEditSoal.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar"></div>
+        <div class="main-content">
+            <header>
+                <h1>Data Soal Penyisihan</h1>
+            </header>
+            <div class="inner-container">
+                <form id="booth-form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" id="QuestionNumber">
+                            <label class="placeholder">Nomor Pertanyaan</label>
+                            <span class="error-message" id="QuestionNumberError"></span>
+                        </div>
+                        <div class="input-group">
+                            <select id="jenissoal" name="jenissoal">
+                                <option value=""></option>
+                            </select>
+                            <label class="placeholder">Jenis Soal</label>
+                            <span class="error-message" id="jenissoalError"></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="poin">
+                            <label class="placeholder">Jumlah Poin</label>
+                            <span class="error-message" id="poinError"></span>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" id="save" class="btn ok">Simpan</button>
+                            <button type="button" id="delete" class="btn cancel">Hapus</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <textarea type="text" id="Question"></textarea>
+                            <label class="placeholder">Pertanyaan</label>
+                            <span class="error-message" id="QuestionError"></span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="QuestionNumber">
+                        <label class="placeholder">Pilihan 1</label>
+                        <span class="error-message" id="QuestionNumberError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="QuestionNumber">
+                        <label class="placeholder">Pilihan 2</label>
+                        <span class="error-message" id="QuestionNumberError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="QuestionNumber">
+                        <label class="placeholder">Pilihan 3</label>
+                        <span class="error-message" id="QuestionNumberError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="QuestionNumber">
+                        <label class="placeholder">Pilihan 4</label>
+                        <span class="error-message" id="QuestionNumberError"></span>
+                    </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

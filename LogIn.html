@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="LogIn.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Login</title>
+</head>
+<body>
+    <div class="container" id="container">
+        <!-- <div class="form-container register">
+            <form>
+                <h1 style="text-align: right;">Register</h1>
+                <span>Silakan daftarkan tim anda!</span>
+                <div class="input-register">
+                    <div class="input-group">
+                        <input type="text" id="teamName">
+                        <label class="placeholder">Nama Tim</label>
+                        <span class="error-message" id="teamNameError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="schoolName">
+                        <label class="placeholder">Nama Sekolah</label>
+                        <span class="error-message" id="schoolNameError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="player1">
+                        <label class="placeholder">Player 1</label>
+                        <span class="error-message" id="player1Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="photo1" name="photo1">
+                        <label class="placeholder">Foto Player 1</label>
+                        <span class="error-message" id="photo1Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="player2">
+                        <label class="placeholder">Player 2</label>
+                        <span class="error-message" id="player2Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="photo2" name="photo2">
+                        <label class="placeholder">Foto Player 2</label>
+                        <span class="error-message" id="photo2Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="player3">
+                        <label class="placeholder">Player 3</label>
+                        <span class="error-message" id="player3Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="photo3" name="photo3">
+                        <label class="placeholder">Foto Player 3</label>
+                        <span class="error-message" id="photo3Error"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="guruPendamping">
+                        <label class="placeholder">Nama Guru Pendamping</label>
+                        <span class="error-message" id="guruPendampingError"></span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="whatsapp">
+                        <label class="placeholder">No. Whatsapp Perwakilan</label>
+                        <span class="error-message" id="whatsappError"></span>
+                    </div>
+                    <div class="input-group">
+                        <select id="category" name="category">
+                            <option value="Kategori 1"></option>
+                            <option value="Kategori 2"></option>
+                          </select>
+                          <label class="placeholder">Kategori</label>
+                          <span class="error-message" id="categoryError"></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="file" id="paymentProof" name="paymentProof">
+                            <label class="placeholder">Bukti Pembayaran</label>
+                            <span class="error-message" id="paymentProofError"></span>
+                        </div>
+                        <button type="submit">Register</button>
+                    </div>
+                </form>
+            </div> -->
+            <div class="form-container log-in">
+                <form>  
+                    <!-- ganti diatas jadi loginplayer! -->
+                    <h1>Log In</h1>
+                    <span>Silahkan masukkan username dan password.</span>
+                    <div class="input-login">
+                        <div class="input-group">
+                            <input type="text" id="username">
+                            <label class="placeholder">Username</label>
+                            <i class="bx bxs-user" ></i>
+                            <div id="usernameError" class="error-message" style="display: none;">Username harus terisi.</div>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="password">
+                            <label class="placeholder">Password</label>
+                            <i class="bx bxs-lock-alt"></i>
+                            <div id="passwordError" class="error-message" style="display: none;">Password harus terisi.</div>
+                    </div>
+                    <div id="loginErrorMessage" class="error-message" style="display: none;"></div>
+                </div>
+                <a style="margin-top: 3%;" href="#" onclick="openPopup('popup')">Forget Your Password?</a>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <!-- <div class="toggle-panel toggle-left">
+                    <h1 style="text-align: left; margin-right: auto;">Selamat datang Players!</h1>
+                    <p style="text-align: left;">Siapkan dirimu untuk tantangan terbesar dalam logika dan pemrograman! 
+                    Bergabunglah di lomba 11th National Programming & Logic Competition sekarang!</p>
+                    <p style="text-align: left;">Tunjukkan kemampuanmu, temukan inspirasimu, dan jadilah bagian dari komunitas coder yang hebat! 
+                    Mari bersama-sama menciptakan masa depan teknologi yang lebih cerah dan menyenangkan!</p>
+                    <button class="hidden" id="login">Log In</button>
+                </div> -->
+                <div class="toggle-panel toggle-right">
+                    <h1 style="text-align: right; margin-left: auto;">Selamat datang Players!</h1>
+                    <p style="text-align: right;">Siapkan dirimu untuk tantangan terbesar dalam logika dan pemrograman! 
+                    Bergabunglah di lomba 11th National Programming & Logic Competition sekarang!</p>
+                    <p style="text-align: right;">Tunjukkan kemampuanmu, temukan inspirasimu, dan jadilah bagian dari komunitas coder yang hebat! 
+                    Mari bersama-sama menciptakan masa depan teknologi yang lebih cerah dan menyenangkan!</p>
+                    <!-- <button class="hidden" id="register">Register</button> -->
+                </div>
+            </div>
+        </div>
+        <div class="new-toggle">
+            <h1 style="text-align: center; margin-top: 0px;">Selamat datang Players!</h1>
+        </div>
+
+        <div class="popup" id="popup">
+            <p>Silahkan menghubungi kakak panitia yang mendampingi untuk menanyakan passwordnya!</p>
+            <button type="button" onclick="closePopup('popup')">OK</button>
+        </div>
+
+        <div class="popup" id="popup-wrong">
+            <p>Oh Tidak, Login Gagal! Silahkan periksa kembali username dan password mu.</p>
+            <button type="button" onclick="closePopup('popup-wrong')">OK</button>
+        </div>
+        </div>
+    <div class="popup-overlay" id="popup-overlay"></div>
+    <script src="Login.js"></script>
+    <script src="LoginValidationPlayer.js"></script>
+</body>
+</html>
+

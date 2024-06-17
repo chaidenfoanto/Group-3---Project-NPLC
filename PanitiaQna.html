@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player's Qna</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="PanitiaQna.css">
+    <link rel="stylesheet" href="sidebarpanitia.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar"></div>
+        <div class="main-content">
+            <header>
+                <h1>Question & Answer</h1>
+            </header>
+            <div class="question-box-container">
+                <div id="questionList"></div> <!-- Container for the list of questions -->
+                <span class="status"></span>
+            </div>
+    
+            <div class="popup" id="answerPopup">
+                <div class="popup-content">
+                    <span id="closeAnswerPopup" class="close-btn">&times;</span>
+                    <h2>Answer</h2>
+                    <p id="answerContent"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="PanitiaQna.js"></script>
+</body>
+</html>

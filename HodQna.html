@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player's Qna</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="HodQna.css">
+    <link rel="stylesheet" href="sidebarHod.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar"></div>
+        <div class="main-content">
+            <header>
+                <h1>Question & Answer</h1>
+            </header>
+            <div class="question-box-container">
+                <div id="questionList"></div>
+                <span class="status"></span>
+            </div>
+
+            <div class="popup" id="answerPopup">
+                <div class="popup-content">
+                    <span id="closeAnswerPopup" class="close-btn">&times;</span>
+                    <h2>Answer</h2>
+                    <p id="answerContent"></p>
+                </div>
+            </div>
+
+            <div class="popup" id="editAnswerPopup">
+                <div class="popup-content">
+                    <span id="closeEditAnswerPopup" class="close-btn">&times;</span>
+                    <h2>Answered!</h2>
+                    <form id="editAnswerForm">
+                        <label for="editTeamName">Team Name</label>
+                        <input type="text" id="editTeamName" readonly>
+                        <label for="editQuestion">Question</label>
+                        <input type="text" id="editQuestion" readonly>
+                        <label for="editAnswer">Answer</label>
+                        <textarea id="editAnswer"></textarea>
+                        <button type="submit" class="save-changes-btn">Save Answer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="HodQna.js"></script>
+</body>
+</html>

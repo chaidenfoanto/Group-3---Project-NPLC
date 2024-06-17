@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Player Dashboard</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="dashboardplayer.css">
+<link rel="stylesheet" href="sidebarplayer.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar"></div>
+    <div class="main-content">
+      <header>
+        <h1>Selamat Datang Player!</h1>
+        <div class="points">
+          <p>Total Points:</p>
+          <p class="total" id="total"></p>
+        </div>
+        <div class="timer">
+          <p>Remaining Time:</p>
+          <p class="timeleft">
+            <i class="fa-regular fa-clock" style="color: #000000"></i>
+            00:00:00
+          </p>
+        </div>
+      </header>
+      <div class="modal-overlay">
+        <div class="gamedetails" id="modal">
+          <div class="gamedetails-inner">
+            <h2 id="nama-game"></h2>
+            <div class="game-content">
+              <img id="foto-game">
+              <div class="game-details">
+                <p><strong>Cara Bermain:</strong> </p>
+                <div class="cara-bermain">
+                  <p id="rules-game"></p>
+                </div>
+              </div>
+            </div>
+            <button id="closePopup" class="btn-ok">OK</button>
+          </div>
+        </div>
+      </div>
+      <h2>List Games</h2>
+      <div class="games-list"></div>
+    </div>
+  </div>
+  <script src="apiDasboardPlayer.js"></script>
+  <script src="dashboardplayer.js"></script>
+</body>
+
+</html>
