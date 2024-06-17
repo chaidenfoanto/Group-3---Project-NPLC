@@ -3,6 +3,9 @@
 # Introduction👋
 NPLC adalah kompetisi nasional bergengsi yang diselenggarakan oleh Universitas Ciputra, di bawah naungan Student Union dari Departemen Informatika. Kompetisi ini bertujuan sebagai platform untuk mengumpulkan tim-tim dari sekolah menengah atas di seluruh negeri, bersaing dalam Competitive Logic. Peserta berasal dari tingkat SMA yang setara dan bertujuan untuk menjadi juara di wilayah mereka masing-masing: Wilayah Timur dan Wilayah Barat. Dimana Competitive logic ini dirancang dalam bentuk Rally Games. Rally Games ini mencakup dua jenis permainan yaitu: Duel dan Tunggal.
 
+# Objective🤗
+Tujuan kami membuat website NPLC ini agar NPLC UC Makassar bisa berdiri sendiri dengan tujuan mempermudah komunikasi antara panitia dan player. Melalui platform ini, kami berharap dapat meningkatkan efisiensi koordinasi, memberikan informasi secara real-time, dan memastikan pengalaman kompetisi yang lebih terorganisir dan lancar bagi semua pihak yang terlibat.
+
 ### Games Single🧍‍♀️
 #### System 
 - Permainan dimainkan oleh 1 tim.
@@ -16,8 +19,7 @@ NPLC adalah kompetisi nasional bergengsi yang diselenggarakan oleh Universitas C
 - Tim yang menang akan mendapatkan poin sejumlah 100 dan 1 ticket.
 - Tim yang menang dan telah mendapatkan ticket dapat melakukan gacha untuk mendapatkan sebuah skill card random.
 
-
-# Fitur-Fitur
+# Our Features
 ### POV Player
 - 🏁 Dashboard: Player dapat melihat daftar booth (nama permainan, lokasi permainan, jenis booth (single/duel)).
 - 🃏 Deck Card: Player dapat melihat daftar kartu dan jumlah kartu yang mereka miliki selama waktu permainan.
@@ -49,8 +51,8 @@ NPLC adalah kompetisi nasional bergengsi yang diselenggarakan oleh Universitas C
  - 📜 SOP Games: Panitia dapat menambah dan mengedit SOP games, dan menambah detail poin bintang untuk games di boothnya.
  - 💬 QnA: Panitia bisa melihat daftar pertanyaan dari pemain melalui QnA.
 
-# Objective🤗
-Tujuan kami membuat website NPLC ini agar NPLC Makassar bisa berdiri sendiri dengan tujuan mempermudah komunikasi antara panitia dan player. Melalui platform ini, kami berharap dapat meningkatkan efisiensi koordinasi, memberikan informasi secara real-time, dan memastikan pengalaman kompetisi yang lebih terorganisir dan lancar bagi semua pihak yang terlibat.
+### Project Status
+Saat ini, proyek website NPLC kami sedang dalam tahap pengembangan aktif. Tim kami bekerja keras untuk mengimplementasikan fitur-fitur utama dan meningkatkan fungsionalitas keseluruhan. Fokus utama saat ini adalah membangun komponen inti dari aplikasi, agar fitur-fitur yang sudah kami rancang dapat digunakan dengan mudah oleh user sesuai peran mereka masing-masing sehingga tujuan pembuatan Website dapat tercapai.
 
 # Installation👌
 1. Clone the repo
@@ -73,7 +75,12 @@ Tujuan kami membuat website NPLC ini agar NPLC Makassar bisa berdiri sendiri den
 2. Buka browser Anda dan navigasikan ke http://localhost:3000.
 3. Masuk sebagai pemain, ketua panitia, HOD NPLC, atau panitia untuk menggunakan fitur-fitur yang sesuai dengan peran Anda.
 
-
+### Contributors
+- Alicia Juanita Lisal
+- Aurelia Davine Putri Nata
+- Chaiden Richardo Foanto
+- Derick Norlan
+- Gilbert De Foucauld Winardy
 
 
 
