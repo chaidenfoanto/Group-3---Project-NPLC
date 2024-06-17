@@ -253,9 +253,20 @@ public class ListKartuController {
                             response.setMessage("List Kartu Retrieved Successfully");
                             response.setError(false);
                             response.setHttpCode(HTTPCode.OK);
+                            if(listKartu.getCardSkill() != null) {
                             response.setData(Map.of(
                                     "noKartu", listKartu.getNoKartu(),
                                     "cardSkill", listKartu.getCardSkill()));
+                            } else {
+                                response.setData(Map.of(
+                                    "noKartu", "Zonk",
+                                    "cardSkill", Map.of(
+                                        "namaKartu", "ZONK",
+                                        "rules", "Hahay Kasian Deh",
+                                        "totalKartu", 1,
+                                        "gambarKartu" , "ZONK.png"
+                                    )));
+                            }
                         } else {
                             response.setMessage("All Cards Are Taken!");
                             response.setError(true);

@@ -53,12 +53,18 @@ public class ListKartuService {
         Random rand = new Random();
         ArrayList<ListKartu> listAvailables = getAvailableCard();
         Team team = teamService.getTeamById(idTeam).get();
-        if(listAvailables.size() > 0) {
-            ListKartu selectedCard = (listAvailables.size() > 1) ? listAvailables.get(rand.nextInt(listAvailables.size() - 1)) : listAvailables.get(0);
-            selectedCard.setOwnedBy(team);
-            selectedCard.setIsUsed(false);
+        if (listAvailables.size() > 0) {
+            int randVal = rand.nextInt(listAvailables.size());
+            ListKartu selectedCard;
+            if (randVal > listAvailables.size()) {
+                selectedCard = new ListKartu();
+            } else {
+                selectedCard = listAvailables.get(randVal);
+                selectedCard.setOwnedBy(team);
+                selectedCard.setIsUsed(false);
+                listKartuRepository.save(selectedCard);
+            }
             teamService.teamRolled(idTeam);
-            listKartuRepository.save(selectedCard);
             return Optional.of(selectedCard);
         }
         return Optional.empty();
@@ -135,44 +141,37 @@ public class ListKartuService {
     public Object getCardStatsByTeam(String id) {
         ArrayList<Object> listUsed = new ArrayList<Object>();
         ArrayList<Object> listUnused = new ArrayList<Object>();
-        for(CardSkill cardSkill : cardSkillService.getAllCardSkills()) {
+        for (CardSkill cardSkill : cardSkillService.getAllCardSkills()) {
             ArrayList<Object> cardNumbersUsed = new ArrayList<Object>();
             ArrayList<Object> cardNumbersUnused = new ArrayList<Object>();
-            for(ListKartu listKartu : getCardsByTeamIdAndCardID(id, cardSkill.getIdCard())) {
-                if(listKartu.getIsUsed()) {
+            for (ListKartu listKartu : getCardsByTeamIdAndCardID(id, cardSkill.getIdCard())) {
+                if (listKartu.getIsUsed()) {
                     cardNumbersUsed.add(
-                        Map.of(
-                            "cardNumber", listKartu.getNoKartu()
-                        )
-                    );
+                            Map.of(
+                                    "cardNumber", listKartu.getNoKartu()));
                 } else {
                     cardNumbersUnused.add(
-                        Map.of(
-                            "cardNumber", listKartu.getNoKartu()
-                        )
-                    );
+                            Map.of(
+                                    "cardNumber", listKartu.getNoKartu()));
                 }
             }
-            if(cardNumbersUsed.size() > 0) {
+            if (cardNumbersUsed.size() > 0) {
                 listUsed.add(Map.of(
-                    "cardSkill", cardSkill,
-                    "total", cardNumbersUsed.size(),
-                    "cardNumbers", cardNumbersUsed
-                ));
+                        "cardSkill", cardSkill,
+                        "total", cardNumbersUsed.size(),
+                        "cardNumbers", cardNumbersUsed));
             }
-            if(cardNumbersUnused.size() > 0) {
+            if (cardNumbersUnused.size() > 0) {
                 listUnused.add(Map.of(
-                    "cardSkill", cardSkill,
-                    "total", cardNumbersUnused.size(),
-                    "cardNumbers", cardNumbersUnused
-                ));
+                        "cardSkill", cardSkill,
+                        "total", cardNumbersUnused.size(),
+                        "cardNumbers", cardNumbersUnused));
             }
         }
-        if(listUsed.size() > 0 || listUnused.size() > 0) {
+        if (listUsed.size() > 0 || listUnused.size() > 0) {
             return Map.of(
-                "usedCards", listUsed,
-                "availableCards", listUnused
-            );
+                    "usedCards", listUsed,
+                    "availableCards", listUnused);
         }
         return null;
     }
