@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.restfulnplc.nplcrestful.dto.LoginDTO;
 import com.restfulnplc.nplcrestful.dto.AccessDTO;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.PanitiaService;
+import com.restfulnplc.nplcrestful.service.TeamService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
@@ -22,6 +24,8 @@ import com.restfulnplc.nplcrestful.util.Response;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.restfulnplc.nplcrestful.model.Login;
+import com.restfulnplc.nplcrestful.model.Role;
+
 import java.util.Map;
 
 @RestController
@@ -30,6 +34,12 @@ import java.util.Map;
 public class LoginController {
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private TeamService teamService;
+
+    @Autowired
+    private PanitiaService panitiaService;
 
     private Response response = new Response();
 
@@ -107,10 +117,17 @@ public class LoginController {
             if (loginService.checkSessionAlive(sessionToken)) {
                 Login sessionActive = loginService.getLoginSession(sessionToken);
                 response.setMessage("Authorization Success");
+                String namaUser;
+                if(sessionActive.getRole().equals(Role.PLAYERS)){
+                    namaUser = teamService.getTeamById(sessionActive.getIdUser()).get().getNama();
+                } else {
+                    namaUser = panitiaService.getPanitiaById(sessionActive.getIdUser()).get().getNama();
+                }
                 response.setData(Map.of(
                     "userId", sessionActive.getIdUser(),
                     "token", sessionActive.getToken(),
-                    "role", sessionActive.getRole().toString()
+                    "role", sessionActive.getRole().toString(),
+                    "namaUser", namaUser
                 ));
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);

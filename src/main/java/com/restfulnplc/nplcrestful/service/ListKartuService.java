@@ -1,6 +1,7 @@
 package com.restfulnplc.nplcrestful.service;
 
 import com.restfulnplc.nplcrestful.dto.ListKartuDTO;
+import com.restfulnplc.nplcrestful.model.CardSkill;
 import com.restfulnplc.nplcrestful.model.ListKartu;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.repository.ListKartuRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
@@ -128,6 +130,51 @@ public class ListKartuService {
             }
         }
         return listKartu;
+    }
+
+    public Object getCardStatsByTeam(String id) {
+        ArrayList<Object> listUsed = new ArrayList<Object>();
+        ArrayList<Object> listUnused = new ArrayList<Object>();
+        for(CardSkill cardSkill : cardSkillService.getAllCardSkills()) {
+            ArrayList<Object> cardNumbersUsed = new ArrayList<Object>();
+            ArrayList<Object> cardNumbersUnused = new ArrayList<Object>();
+            for(ListKartu listKartu : getCardsByTeamIdAndCardID(id, cardSkill.getIdCard())) {
+                if(listKartu.getIsUsed()) {
+                    cardNumbersUsed.add(
+                        Map.of(
+                            "cardNumber", listKartu.getNoKartu()
+                        )
+                    );
+                } else {
+                    cardNumbersUnused.add(
+                        Map.of(
+                            "cardNumber", listKartu.getNoKartu()
+                        )
+                    );
+                }
+            }
+            if(cardNumbersUsed.size() > 0) {
+                listUsed.add(Map.of(
+                    "cardSkill", cardSkill,
+                    "total", cardNumbersUsed.size(),
+                    "cardNumbers", cardNumbersUsed
+                ));
+            }
+            if(cardNumbersUnused.size() > 0) {
+                listUnused.add(Map.of(
+                    "cardSkill", cardSkill,
+                    "total", cardNumbersUnused.size(),
+                    "cardNumbers", cardNumbersUnused
+                ));
+            }
+        }
+        if(listUsed.size() > 0 && listUnused.size() > 0) {
+            return Map.of(
+                "usedCards", listUsed,
+                "availableCards", listUnused
+            );
+        }
+        return null;
     }
 
     public boolean deleteListKartu(String id) {

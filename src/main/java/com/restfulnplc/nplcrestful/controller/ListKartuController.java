@@ -129,6 +129,42 @@ public class ListKartuController {
                 .body(response);
     }
 
+    @GetMapping("/getByTeam/{id}")
+    public ResponseEntity<Response> getListKartuByTeam(HttpServletRequest request, @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get List Kartu By Team");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                Object result = listKartuService.getCardStatsByTeam(id);
+                if (result != null) {
+                    response.setMessage("All List Kartu Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(result);
+                } else {
+                    response.setMessage("No List Kartu Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response> getListKartuById(HttpServletRequest request,
             @PathVariable("id") String id) {
