@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     dice.css('animation', 'rolling 4s');
 
-    dice.one('animationend', function () {
+    dice.one('animationend', async function () {
       switch (random) {
         case 1:
           dice.css('transform', 'rotateX(0deg) rotateY(0deg)');
@@ -72,29 +72,29 @@ $(document).ready(function () {
       }
 
       dice.css('animation', 'none');
+      await fetch(domain + 'api/listkartu/roll', {
+        method: 'GET',
+        headers: { Token: getCookie('Token') },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.error) {
+            $('#card-code').html('Card ' + data.data.noKartu);
+            $('#card-name').html('<strong>Card Name : </strong>' + data.data.cardSkill.namaKartu);
+            $('#card-desc').html(data.data.cardSkill.rules);
+            $('#card-img').prop('src', data.data.cardSkill.gambarKartu);
+            $('#card-img').prop('alt', data.data.cardSkill.namaKartu);
+          }
+        });
       $('.container-dice').removeClass('open');
       $('.gacharesult').addClass('open');
       closeBtn.prop('disabled', false);
+      
     });
   };
 
-  rollBtn.click(async function () {
+  rollBtn.click(function () {
     randomDice();
-
-    await fetch(domain + 'api/listkartu/roll', {
-      method: 'GET',
-      headers: { Token: getCookie('Token') },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.error) {
-          $('#card-code').html('Card ' + data.data.noKartu);
-          $('#card-name').html('<strong>Card Name : </strong>' + data.data.cardSkill.namaKartu);
-          $('#card-desc').html(data.data.cardSkill.rules);
-          $('#card-img').prop('src', data.data.cardSkill.gambarKartu);
-          $('#card-img').prop('alt', data.data.cardSkill.namaKartu);
-        }
-      });
   });
 
   const openBtn = $('#rollButton');

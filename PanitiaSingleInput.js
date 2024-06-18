@@ -37,9 +37,9 @@ $(document).ready(function() {
         $(".sidebar").toggleClass("disable");
         setCurrentTimeForTimeInput('#timeFinished');
         calculateDuration();
-        $('#teamPlayed').val($('#teamname').val());
-        $('#teamPlayed').addClass('not-empty');
         const team = $('#teamname').val();
+        $('#teamplayed').val(team);
+        $('#teamplayed').addClass('not-empty');
         $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
     }
 
@@ -74,7 +74,7 @@ $(document).ready(function() {
                 clearInterval(interval);
                 $('#startButton').text("Start Game");
                 if (totalSeconds <= 0)
-                    alert('Waktu telah habis dan Game telah berakhir!');
+                    showModal();
                 else
                     alert('Game telah diakhiri!');
                 showModal();
@@ -200,9 +200,12 @@ $(document).ready(function() {
     //     }
     // });
 
+    // const teamName = teamData[teamId] 
+
     $('#starEarned').on('change', function() {
-        const team = $('#teamPlayed').val();
+        const team = $('#teamplayed').val();
         const star = $('#starEarned').val();
+
         if (star === "1") {
             $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${team}`);
         }
