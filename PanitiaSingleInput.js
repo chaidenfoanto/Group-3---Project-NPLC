@@ -198,22 +198,23 @@ $(document).ready(function() {
         }
     });
 
-    const teamName = teamData[teamId] 
+    // const teamName = teamData[teamId] 
 
     $('#starEarned').on('change', function() {
-        const team = $('#teamPlayed').val();
+        const team = $('#teamplayed').val();
         const star = $('#starEarned').val();
+
         if (star === "1") {
-            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${teamName}`);
+            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${team}`);
         }
         else if (star === "2") {
-            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${teamName}`);
+            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${team}`);
         }
         else if (star === "3") {
-            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${teamName}`);
+            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
         }
         else {
-            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${teamName}`);
+            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
         }
     });
 
