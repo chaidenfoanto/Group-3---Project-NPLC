@@ -51,7 +51,7 @@ $(document).ready(function () {
       try {
         await postQuestion(question);
         // Refresh the page after successful submission
-        // window.location.reload();
+        window.location.reload();
       } catch (error) {
         console.log('Error submitting question:', error);
       }
@@ -63,9 +63,7 @@ $(document).ready(function () {
   // Function to send the question to the server
   async function postQuestion(question) {
     const newQuestion = {
-      question: question,
-      answer: '', // Assuming answer is initially empty
-      status: 'Not Answered', // Initial status
+      "pertanyaan": question,
     };
 
     try {

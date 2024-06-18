@@ -47,7 +47,7 @@ $(document).ready(function () {
   }
 
   // Function to fetch available cards for a team by team ID
-  function fetchAvailableCards(teamId, teamName) {
+  function fetchAvailableCards(teamId) {
     fetch(domain + 'api/listkartu/getByTeam/' + teamId, {
       method: 'GET',
       headers: { Token: getCookie('Token') },
