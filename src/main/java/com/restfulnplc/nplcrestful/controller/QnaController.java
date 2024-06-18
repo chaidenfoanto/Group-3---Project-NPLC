@@ -39,7 +39,8 @@ public class QnaController {
     private Response response = new Response();
 
     @PostMapping("/ask")
-    public ResponseEntity<Response> askQuestion(HttpServletRequest request, @RequestParam(name = "pertanyaan") String pertanyaan) {
+    public ResponseEntity<Response> askQuestion(HttpServletRequest request,
+            @RequestParam(name = "pertanyaan") String pertanyaan) {
         String sessionToken = request.getHeader("Token");
         response.setService("Ask Question");
         try {
@@ -54,7 +55,9 @@ public class QnaController {
                             "idPertanyaan", newQna.getIdPertanyaan(),
                             "pertanyaan", newQna.getPertanyaan(),
                             "waktuInput", newQna.getWaktuInput(),
-                            "team", newQna.getTeam()));
+                            "jawaban", newQna.getJawaban(),
+                            "namaPanitia", newQna.getPanitia().getNama(),
+                            "namaTeam", newQna.getTeam().getNama()));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -80,7 +83,8 @@ public class QnaController {
     }
 
     @PostMapping("/answer/{id}")
-    public ResponseEntity<Response> answerQuestion(HttpServletRequest request, @RequestParam(name = "jawaban") String jawaban,
+    public ResponseEntity<Response> answerQuestion(HttpServletRequest request,
+            @RequestParam(name = "jawaban") String jawaban,
             @PathVariable String id) {
         String sessionToken = request.getHeader("Token");
         response.setService("Answer Question");
@@ -98,8 +102,8 @@ public class QnaController {
                                 "pertanyaan", answeredQna.getPertanyaan(),
                                 "waktuInput", answeredQna.getWaktuInput(),
                                 "jawaban", answeredQna.getJawaban(),
-                                "panitia", answeredQna.getPanitia(),
-                                "team", answeredQna.getTeam()));
+                                "namaPanitia", answeredQna.getPanitia().getNama(),
+                                "namaTeam", answeredQna.getTeam().getNama()));
                     } else {
                         response.setMessage("Question Not Found");
                         response.setError(true);
