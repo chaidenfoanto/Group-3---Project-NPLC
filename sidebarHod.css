@@ -102,6 +102,14 @@
     display: none;
 }
 
+.sidebar.disable li, a{
+    cursor: not-allowed;
+}
+
+.sidebar li, a{
+    cursor:pointer;
+}
+
 .sidebar input {
     font-size: 15px;
     color: var(--color-white);

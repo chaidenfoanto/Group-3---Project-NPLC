@@ -1,3 +1,5 @@
+var interval;
+var timer = '01:00';
 $(document).ready(function() {
     $(".sidebar").load("sidebarpanitia.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");
@@ -16,11 +18,91 @@ $(document).ready(function() {
         }
     });
 
+    function setCurrentTimeForTimeInput(selector) {
+        var now = new Date();
+        var formattedTime = ('0' + now.getHours()).slice(-2) + ':' +
+                            ('0' + now.getMinutes()).slice(-2) + ':' +
+                            ('0' + now.getSeconds()).slice(-2);
+        $(selector).val(formattedTime);
+    }
+
     $(document).on('click', function (e) {
         if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
           closeSidebar();
         }
     });
+
+    function showModal() {
+        $('#gameEndModal').show();
+        setCurrentTimeForTimeInput('#timeFinished');
+        calculateDuration();
+    }
+
+    $('#startButton').click(function() {
+        if ($(this).text() === "Start Game") {
+            $(this).text("Finish Game");
+            setCurrentTimeForTimeInput('#timeStarted');
+            startTimer(); // Fungsi untuk memulai timer
+            disableSidebar();
+        } else {
+            $(this).text("Start Game");
+            stopTimer();
+            enableSidebar(); // Fungsi untuk menghentikan timer
+        }
+    });
+
+    function startTimer() {
+        // Implementasi timer
+        timestart = new Date();
+        var timeArray = timer.split(':');
+        var minutes = parseInt(timeArray[0]);
+        var seconds = parseInt(timeArray[1]);
+
+        var totalSeconds = minutes * 60 + seconds;
+
+        var interval = setInterval(function() {
+            totalSeconds--;
+            var minutes = Math.floor(totalSeconds / 60);
+            var seconds = totalSeconds % 60;
+
+            $('.timeleft').text(pad(minutes) + ':' + pad(seconds));
+
+            if (totalSeconds <= 0 || $('#startButton').text() === "Start Game") {
+                clearInterval(interval);
+                $('#startButton').text("Start Game");
+                if (totalSeconds <= 0)
+                    alert('Waktu telah habis dan Game telah berakhir!');
+                else
+                    alert('Game telah diakhiri!');
+                showModal();
+                // showModal();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        // Menghentikan timer
+        clearInterval(interval);
+        showModal();
+    }
+
+    function clearform() {
+        $('.timeleft').text(timer);
+        $('#team1').val("");
+        $('#team2').val("");
+        $('#winningTeam').val("");
+        checkTeams();
+        enableSidebar();
+    }
+
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+            return "0" + valString;
+        } else {
+            return valString;
+        }
+    }
 
     function closeSidebar() {
         $('.sidebar').removeClass('open');
@@ -108,22 +190,15 @@ $(document).ready(function() {
         });
     });
 
-    $('.startButton').on('click', function() {
-        $('#gameEndModal').show();
-        setCurrentTime('#timeStarted');
-        setCurrentTime('#timeFinished');
-        calculateDuration();
-    });
+    // $('.close').on('click', function() {
+    //     $('#gameEndModal').hide();
+    // });
 
-    $('.close').on('click', function() {
-        $('#gameEndModal').hide();
-    });
-
-    $(window).on('click', function(event) {
-        if (event.target == modal[0]) {
-            $('#gameEndModal').hide();
-        }
-    });
+    // $(window).on('click', function(event) {
+    //     if (event.target == modal[0]) {
+    //         $('#gameEndModal').hide();
+    //     }
+    // });
 
     $('#winningTeam').on('change', function() {
         const winningTeam = $('#winningTeam').val();
@@ -170,6 +245,7 @@ $(document).ready(function() {
     `);
 
         $('#history').append(historyItem);
+        clearform();
 
         $('#gameEndModal').hide();
         $('#gameEndForm')[0].reset();

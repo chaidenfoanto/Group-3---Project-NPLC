@@ -45,3 +45,18 @@
     <i class="bx bx-log-out" id="log_out"></i>
   </li>
 </ul>
+
+<script>
+  function disableSidebar() {
+      $('.sidebar').addClass('disable');
+      $('.sidebar.disable li, .sidebar.disable a').on('click', function(event) {
+          event.preventDefault(); // Mencegah semua aksi klik
+          return false; // Menghentikan propagasi lebih lanjut
+      });
+  }
+
+  function enableSidebar() {
+      $('.sidebar').removeClass('disable');
+      $('.sidebar li, .sidebar a').off('click'); // Menghapus event handler yang mencegah klik
+  }
+</script>

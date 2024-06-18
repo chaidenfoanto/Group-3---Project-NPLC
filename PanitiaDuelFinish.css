@@ -65,7 +65,7 @@
             background-color: #B57F80;
             color: white;
         }
-        .timer .timeleft {
+        .timer .timefill {
             font-size: xx-large;
             text-align: center;
             font-weight: bold;
@@ -373,7 +373,7 @@
         .vs {
             margin: 0;
         }
-        .timer .timeleft{
+        .timer .timefill{
             font-size: 25px;
         }
         .time-container {
