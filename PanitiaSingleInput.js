@@ -34,6 +34,7 @@ $(document).ready(function() {
 
     function showModal() {
         $('#gameEndModal').show();
+        $(".sidebar").toggleClass("disable");
         setCurrentTimeForTimeInput('#timeFinished');
         calculateDuration();
         const team = $('#teamname').val();
@@ -75,7 +76,8 @@ $(document).ready(function() {
                 if (totalSeconds <= 0)
                     showModal();
                 else
-                clearform();
+                    alert('Game telah diakhiri!');
+                showModal();
                 // showModal();
             }
         }, 1000);
@@ -85,13 +87,13 @@ $(document).ready(function() {
         // Menghentikan timer
         clearInterval(interval);
         showModal();
-        clearform();
     }
 
     function clearform() {
         $('.timeleft').text(timer);
         $('#teamname').val("");
         $('#cardskill').val("");
+        checkTeams();
     }
 
     function pad(val) {
@@ -188,15 +190,15 @@ $(document).ready(function() {
         });
     });
 
-    $('.close').on('click', function() {
-        $('#gameEndModal').hide();
-    });
+    // $('.close').on('click', function() {
+    //     $('#gameEndModal').hide();
+    // });
 
-    $(window).on('click', function(event) {
-        if (event.target == modal[0]) {
-            $('#gameEndModal').hide();
-        }
-    });
+    // $(window).on('click', function(event) {
+    //     if (event.target == modal[0]) {
+    //         $('#gameEndModal').hide();
+    //     }
+    // });
 
     // const teamName = teamData[teamId] 
 
@@ -257,6 +259,7 @@ $(document).ready(function() {
     `);
 
         $('#history').append(historyItem);
+        clearform();
 
         $('#gameEndModal').hide();
         $('#gameEndForm')[0].reset();

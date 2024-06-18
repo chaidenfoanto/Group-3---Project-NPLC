@@ -47,6 +47,49 @@
       </li>
     </ul>
     <script>
+      function disableSidebar() {
+          $('.sidebar').addClass('disable');
+          $('.sidebar.disable li, .sidebar.disable a').on('click', function(event) {
+              event.preventDefault(); // Mencegah semua aksi klik
+              return false; // Menghentikan propagasi lebih lanjut
+          });
+      }
+
+      function enableSidebar() {
+          $('.sidebar').removeClass('disable');
+          $('.sidebar li, .sidebar a').off('click'); // Menghapus event handler yang mencegah klik
+      }
+        async function fetchSession() {
+          await fetch(domain + 'api/login/getSession', {
+              method: 'GET',
+              headers: { 'Token': getCookie('Token') }
+          })
+              .then(response => response.json())
+              .then(data => {
+                  if (!data.error) {
+                      console.log("authorized success");
+                      setCookie("Token", getCookie("Token"), 365);
+                      switch(data.data.Role){
+                        case "LOSINGLE":
+                          document.getElementById('SBP-navigatebyRole').href = 'PanitiaSingleInput.html';
+                        
+                      }
+                  } else {
+                      console.log('Authorization Failed');
+                      deleteCookie("Token");
+                      window.location.href = "LoginPanitia.html";
+                  }
+              })
+              .catch(error => {
+                  console.error('Error occurred while fetching session:', error);
+                  deleteCookie("Token");
+                  window.location.href = "LoginPanitia.html";
+              });
+
+              function logout() {
+      window.location.href = "LoginPanitia.html"
+    }
+  }
       const domain = "http://localhost:8080/";
 
       function getCookie(name) {
