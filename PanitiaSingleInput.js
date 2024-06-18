@@ -1,3 +1,5 @@
+var interval;
+var timer = '01:00';
 $(document).ready(function() {
     $(".sidebar").load("sidebarpanitia.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");
@@ -16,11 +18,90 @@ $(document).ready(function() {
         }
     });
 
+    function setCurrentTimeForTimeInput(selector) {
+        var now = new Date();
+        var formattedTime = ('0' + now.getHours()).slice(-2) + ':' +
+                            ('0' + now.getMinutes()).slice(-2) + ':' +
+                            ('0' + now.getSeconds()).slice(-2);
+        $(selector).val(formattedTime);
+    }
+
     $(document).on('click', function (e) {
-        if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
+        if (!$(e.target).closest('.sidebar, #toggle-btn, #burger-btn').length) {
           closeSidebar();
         }
     });
+
+    function showModal() {
+        $('#gameEndModal').show();
+        setCurrentTimeForTimeInput('#timeFinished');
+        calculateDuration();
+        const team = $('#teamname').val();
+        $('#teamplayed').val(team);
+        $('#teamplayed').addClass('not-empty');
+        $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
+    }
+
+    $('#startButton').click(function() {
+        if ($(this).text() === "Start Game") {
+            $(this).text("Finish Game");
+            setCurrentTimeForTimeInput('#timeStarted');
+            startTimer(); // Fungsi untuk memulai timer
+        } else {
+            $(this).text("Start Game");
+            stopTimer(); // Fungsi untuk menghentikan timer
+        }
+    });
+
+    function startTimer() {
+        // Implementasi timer
+        timestart = new Date();
+        var timeArray = timer.split(':');
+        var minutes = parseInt(timeArray[0]);
+        var seconds = parseInt(timeArray[1]);
+
+        var totalSeconds = minutes * 60 + seconds;
+
+        var interval = setInterval(function() {
+            totalSeconds--;
+            var minutes = Math.floor(totalSeconds / 60);
+            var seconds = totalSeconds % 60;
+
+            $('.timeleft').text(pad(minutes) + ':' + pad(seconds));
+
+            if (totalSeconds <= 0 || $('#startButton').text() === "Start Game") {
+                clearInterval(interval);
+                $('#startButton').text("Start Game");
+                if (totalSeconds <= 0)
+                    showModal();
+                else
+                clearform();
+                // showModal();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        // Menghentikan timer
+        clearInterval(interval);
+        showModal();
+        clearform();
+    }
+
+    function clearform() {
+        $('.timeleft').text(timer);
+        $('#teamname').val("");
+        $('#cardskill').val("");
+    }
+
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+            return "0" + valString;
+        } else {
+            return valString;
+        }
+    }
 
     function closeSidebar() {
         $('.sidebar').removeClass('open');
@@ -107,15 +188,6 @@ $(document).ready(function() {
         });
     });
 
-    $('.startButton').on('click', function() {
-        $('#gameEndModal').show();
-        setCurrentTime('#timeStarted');
-        setCurrentTime('#timeFinished');
-        calculateDuration();
-        $('#teamPlayed').val($('#teamname').val());
-        $('#teamPlayed').addClass('not-empty');
-    });
-
     $('.close').on('click', function() {
         $('#gameEndModal').hide();
     });
@@ -126,9 +198,23 @@ $(document).ready(function() {
         }
     });
 
-    $('#teamPlayed').on('change', function() {
+    const teamName = teamData[teamId] 
+
+    $('#starEarned').on('change', function() {
         const team = $('#teamPlayed').val();
-        $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
+        const star = $('#starEarned').val();
+        if (star === "1") {
+            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${teamName}`);
+        }
+        else if (star === "2") {
+            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${teamName}`);
+        }
+        else if (star === "3") {
+            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${teamName}`);
+        }
+        else {
+            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${teamName}`);
+        }
     });
 
     $('#gameEndForm').on('submit', function(event) {

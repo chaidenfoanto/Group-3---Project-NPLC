@@ -11,7 +11,7 @@
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="PanitiaSingleInput.js"></script>
-        
+    
     <div class = "container">    
 <div class="sidebar"></div>
   <div class="main-content">
@@ -19,9 +19,9 @@
         <h1>Selamat datang Penjaga Booth!</h1>
         <div class="timer">
           <p>Remaining Time:</p>
-          <p class="timeleft">
+          <p class="timefill">
             <i class="fa-regular fa-clock" style="color: #000000"></i>
-            00:00
+            <span class = "timeleft">01:00</span>
           </p>
         </div>
     </header>
@@ -32,19 +32,14 @@
           <div class="input-group">
               <select id="teamname">
                   <option value=""></option>
-                  <option value="Anak Pak Dengklek">Anak Pak Dengklek</option>
-                  <option value="Notionaries">Notionaries</option>
               </select>
               <label class = "placeholder" for = "teamname">Team Name</label>
-              <!-- <span class = "error"></span> -->
           </div>
         </div>
         <div class="card">
           <div class="input-group">
-            <select id="cardskill">
+            <select id="cardskill" name="cardskill">
                 <option value=""></option>
-                <option value="Double Point">Double Point</option>
-                <option value="Time +3">Time +3</option>
             </select>
             <label class = "placeholder" for = "cardskill">Card Skill</label>
             <!-- <span class = "error"></span> -->
@@ -65,12 +60,8 @@
             <form id = "gameEndForm">
               <div class="modal-inner-container">
               <div class = "input-group">
-                <select id="teamPlayed">
-                    <option value=""></option>
-                    <option value="Anak Pak Dengklek">Anak Pak Dengklek</option>
-                    <option value="Notionaries">Notionaries</option>
-                </select>
-                <label class = "placeholder" for="teamplayed">Team Name</label>
+                  <input type="text" id="teamplayed" disabled>
+                  <label class = "placeholder" for="teamplayed">Nama Tim</label>
                 <span class = "errorteam"></span>
               </div>
               <div class = "input-group">
@@ -86,11 +77,11 @@
             </div>
                 <div class="modal-inner-container">
                     <div class = "input-group">
-                        <input type="time" id="timeStarted" step = "1">
+                        <input type="time" id="timeStarted" step = "1" disabled>
                         <label class = "placeholder" for="timeStarted">Time Started</label>
                     </div>
                     <div class = "input-group">
-                        <input type="time" id="timeFinished" step = "1">
+                        <input type="time" id="timeFinished" step = "1" disabled>
                         <label class = "placeholder" for="timeFinished">Time Finished</label>
                     </div>
                     <div class = "input-group">
@@ -98,11 +89,12 @@
                         <label class = "placeholder" for="duration">Duration</label>
                     </div>
                 </div>
-                <p id="pointsMessage">100 POINTS WILL BE GIVEN TO ...</p>
+                <p id="pointsMessage">0 POINTS WILL BE GIVEN TO ...</p>
                 <button type="submit">Save Changes</button>
             </form>
         </div>
     </div>
   </div>
 </div>
+<script src="apiPanitiaSingle.js"></script>
 </body>

@@ -1,58 +1,148 @@
-
-    <div class="logo_details">
-        <img src="img/logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
-        <i class="fa fa-bars burger-icon" aria-hidden="true" id="burger-btn"></i> 
-        <div class="logo_name">NPLC 12th</div>
+<div class="logo_details">
+  <img
+    src="img/logo.png"
+    alt="NPLC Logo"
+    class="logo"
+    id="toggle-btn"
+  />
+  <div class="logo_name">NPLC 12th</div>
+</div>
+<ul class="nav-list">
+  <li>
+    <a href="dashboardplayer.html">
+      <i class="fa-solid fa-house"></i>
+      <span class="link_name">Home</span>
+    </a>
+    <span class="tooltip">Home</span>
+  </li>
+  <li>
+    <a href="deckcardplayer.html">
+      <i class="fa-regular fa-clone"></i>
+      <span class="link_name">Deck Card</span>
+    </a>
+    <span class="tooltip">Deck Cards</span>
+  </li>
+  <li>
+    <a href="playerQna.html">
+      <i class="fa-regular fa-circle-question"></i>
+      <span class="link_name">QnA</span>
+    </a>
+    <span class="tooltip">QnA</span>
+  </li>
+  <li class="profile">
+    <div
+      class="profile_details"
+      id="profile-details"
+    >
+      <i class="fa-regular fa-user"></i>
+      <div class="profile_content">
+        <div class="name"></div>
+        <div class="designation">Admin</div>
+      </div>
     </div>
-    <ul class="nav-list">
-      <li>
-        <a href="dashboardplayer.html">
-          <i class="fa-solid fa-house"></i>
-          <span class="link_name">Home</span>
-        </a>
-        <span class="tooltip">Home</span>
-      </li>
-      <li>
-        <a href="deckcardplayer.html">
-          <i class="fa-regular fa-clone"></i>
-          <span class="link_name">Deck Card</span>
-        </a>
-        <span class="tooltip">Deck Cards</span>
-      </li>
-      <li>
-        <a href="playerQna.html">
-          <i class="fa-regular fa-circle-question"></i>
-          <span class="link_name">QnA</span>
-        </a>
-        <span class="tooltip">QnA</span>
-      </li>
-      <li class="profile">
-        <div class="profile_details" id="profile-details">
-          <i class="fa-regular fa-user"></i>
-          <div class="profile_content">
-            <div class="name">Anna Jhon</div>
-            <div class="designation">Admin</div>
-          </div>
-        </div>
-        <i class="bx bx-log-out" id="log_out"></i>
-      </li>
-    </ul>
-    <script>
-      function updateLogo() {
-        const logoImg = $('#toggle-btn');
-        const sidebar = $('.sidebar');
-      
-        if (window.innerWidth <= 500) {
-          if (!sidebar.classList.contains('open')) {
-            logoImg.src = 'img/burger-menu.png';
-          } else {
-            logoImg.src = 'img/logo.png';
-          }
-        } else {
-          logoImg.src = 'img/logo.png';
-        }
+    <i
+      class="bx bx-log-out"
+      id="log_out"
+      onclick="logout()"
+    ></i>
+  </li>
+</ul>
+<script>
+  function updateLogo() {
+    const logoImg = $('#toggle-btn');
+    const sidebar = $('.sidebar');
+
+    if (window.innerWidth <= 500) {
+      if (!sidebar.classList.contains('open')) {
+        logoImg.src = 'img/burger-menu.png';
+      } else {
+        logoImg.src = 'img/logo.png';
       }
-      
-      window.onload = updateLogo;
-      window.onresize = updateLogo;
-    </script>
+    } else {
+      logoImg.src = 'img/logo.png';
+    }
+  }
+
+  function logout() {
+    window.location.href = 'LogIn.html';
+  }
+
+  window.onload = updateLogo;
+  window.onresize = updateLogo;
+
+  const domain = 'http://localhost:8080/';
+
+  function getCookie(name) {
+    let cookieArr = document.cookie.split(';');
+    for (let i = 0; i < cookieArr.length; i++) {
+      let cookiePair = cookieArr[i].split('=');
+      if (name == cookiePair[0].trim()) {
+        return decodeURIComponent(cookiePair[1]);
+      }
+    }
+    return null;
+  }
+
+  function setCookie(name, value, daysToLive) {
+    let cookie = name + '=' + encodeURIComponent(value);
+    if (typeof daysToLive === 'number') {
+      cookie += '; max-age=' + daysToLive * 24 * 60 * 60 + '; path=/';
+      document.cookie = cookie;
+    }
+  }
+
+  function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
+  }
+
+  async function fetchSession() {
+    await fetch(domain + 'api/login/getSession', {
+      method: 'GET',
+      headers: { Token: getCookie('Token') },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.error) {
+          console.log('authorized success');
+          setCookie('Token', getCookie('Token'), 365);
+          const arrayNama = data.data.namaUser.split(' ');
+          const namaUser = arrayNama.length > 1 ? arrayNama[0] + ' ' + arrayNama[arrayNama.length - 1] : arrayNama[0];
+          $('.name').html(namaUser);
+          $('.designation').html(data.data.role);
+        } else {
+          console.log('Authorization Failed');
+          deleteCookie('Token');
+          window.location.href = 'LogIn.html';
+        }
+      })
+      .catch((error) => {
+        console.error('Error occurred while fetching session:', error);
+        deleteCookie('Token');
+        window.location.href = 'LogIn.html';
+      });
+  }
+
+  fetchSession();
+
+  // document.addEventListener('keydown', function (e) {
+  //   if (e.which === 123) {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.shiftKey && e.key == 'I') {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.shiftKey && e.key == 'C') {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.shiftKey && e.key == 'J') {
+  //     e.preventDefault();
+  //   }
+  //   if (e.ctrlKey && e.key == 'U') {
+  //     e.preventDefault();
+  //   }
+  // });
+
+  // document.addEventListener('contextmenu', function (e) {
+  //   e.preventDefault();
+  // });
+</script>
