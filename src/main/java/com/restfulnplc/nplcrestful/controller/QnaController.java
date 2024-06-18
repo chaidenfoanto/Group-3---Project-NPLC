@@ -140,8 +140,8 @@ public class QnaController {
                                 "pertanyaan", qna.getPertanyaan(),
                                 "waktuInput", qna.getWaktuInput(),
                                 "jawaban", qna.getJawaban(),
-                                "panitia", qna.getPanitia(),
-                                "team", qna.getTeam()));
+                                "namaPanitia", qna.getPanitia().getNama(),
+                                "namaTeam", qna.getTeam().getNama()));
                     }
                     response.setData(listData);
                 } else {
