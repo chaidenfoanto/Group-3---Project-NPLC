@@ -180,9 +180,7 @@ public class ListKartuController {
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(Map.of(
                             "noKartu", listKartu.getNoKartu(),
-                            "cardSkill", Map.of(
-                                "namaKartu", listKartu.getCardSkill().getNamaKartu()
-                            ),
+                            "cardSkill", listKartu.getCardSkill(),
                             "ownedBy", Map.of(
                                 "idTeam", listKartu.getOwnedBy().getIdTeam(),
                                 "namaTeam", listKartu.getOwnedBy().getNama()

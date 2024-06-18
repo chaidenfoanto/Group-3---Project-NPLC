@@ -165,13 +165,17 @@ public class ListKartuService {
                 }
                 if (cardNumbersUsed.size() > 0) {
                     listUsed.add(Map.of(
-                            "cardSkill", cardSkill,
+                            "cardSkill", Map.of(
+                                "namaKartu", cardSkill.getNamaKartu()
+                            ),
                             "total", cardNumbersUsed.size(),
                             "cardNumbers", cardNumbersUsed));
                 }
                 if (cardNumbersUnused.size() > 0) {
                     listUnused.add(Map.of(
-                            "cardSkill", cardSkill,
+                            "cardSkill", Map.of(
+                                "namaKartu", cardSkill.getNamaKartu()
+                            ),
                             "total", cardNumbersUnused.size(),
                             "cardNumbers", cardNumbersUnused));
                 }
