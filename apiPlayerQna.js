@@ -12,47 +12,9 @@ $(document).ready(function () {
     return null;
   }
 
-  // Send the question to the server
-  async function postQuestion(teamName, question) {
-    const newQuestion = {
-      teamName: teamName,
-      question: question,
-      answer: '', // Assuming answer is initially empty
-      status: 'Not Answered', // Initial status
-    };
-
-    await fetch(domain + '/api/qna/ask', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Token: getCookie('Token'), // Retrieve the session token from cookies
-      },
-      body: JSON.stringify(newQuestion),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.error) {
-          console.log('Question successfully added');
-          // Append the new question item to the question list
-          appendQuestion(newQuestion);
-
-          // Reset the form
-          $('#questionForm')[0].reset();
-
-          // Close the popup
-          $('#popup').fadeOut();
-        } else {
-          console.error('Error adding question:', data.message);
-        }
-      })
-      .catch((error) => {
-        console.error('Error occurred while adding question:', error);
-      });
-  }
-
   // Function to load questions from the server
   async function loadQuestions() {
-    await fetch(domain + '/api/qna/questions', {
+    await fetch(domain + 'api/qna/questions', {
       method: 'GET',
       headers: {
         Token: getCookie('Token'), // Retrieve the session token from cookies
@@ -61,13 +23,14 @@ $(document).ready(function () {
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          data.questions.forEach((question) => {
-            appendQuestion({
-              teamName: `${question.namaTeam}`,
-              question: `${question.pertanyaan}`,
-              answer: `${question.jawaban}`,
-              status: question.jawaban ? 'Answered' : 'Not Answered',
-            });
+          const questionList = document.getElementById('questionList');
+
+          // Clear existing content
+          questionList.innerHTML = '';
+
+          // Loop through each question and append to the list
+          data.data.forEach((question) => {
+            appendQuestion(question);
           });
         } else {
           console.error('Error loading questions:', data.message);
@@ -78,17 +41,83 @@ $(document).ready(function () {
       });
   }
 
-  // Event listener for form submission
-  $('#questionForm').submit(function (event) {
-    event.preventDefault(); // Prevent form submission
+  /// Function to handle form submission
+  document.getElementById('questionForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent the default form submission
 
-    // Get the input values
-    var teamName = $('#teamName').val();
-    var question = $('#question').val();
+    const question = document.getElementById('question').value;
 
-    // Call postQuestion function to send data to server
-    postQuestion(teamName, question);
+    if (question) {
+      try {
+        await postQuestion(question);
+        // Refresh the page after successful submission
+        // window.location.reload();
+      } catch (error) {
+        console.log('Error submitting question:', error);
+      }
+    } else {
+      alert('Question is required.');
+    }
   });
+
+  // Function to send the question to the server
+  async function postQuestion(question) {
+    const newQuestion = {
+      question: question,
+      answer: '', // Assuming answer is initially empty
+      status: 'Not Answered', // Initial status
+    };
+
+    try {
+      const response = await fetch(domain + 'api/qna/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Token: getCookie('Token'), // Retrieve the session token from cookies
+        },
+        body: JSON.stringify(newQuestion),
+      });
+
+      const data = await response.json();
+
+      if (!data.error) {
+        console.log('Question successfully added');
+        // Optionally handle success message or UI state
+      } else {
+        console.error('Error adding question:', data.message);
+        // Optionally handle error message or UI state
+      }
+    } catch (error) {
+      console.error('Error occurred while adding question:', error);
+      // Optionally handle error message or UI state
+    }
+  }
+
+  // Function to append a new question item to the question list
+  function appendQuestion(question) {
+    var questionItem = $('<div class="question-item"></div>');
+    questionItem.append('<h3>' + question.namaTeam + '</h3>');
+    questionItem.append('<p>Question: ' + question.pertanyaan + '</p>');
+
+    var statusContainer = $('<div class="status-container"></div>');
+    var status = $('<span class="status">' + question.status + '</span>');
+    statusContainer.append(status);
+
+    if (question.status === 'Answered') {
+      questionItem.addClass('answered'); // Add class for answered questions
+      var seeAnswer = $('<span class="see-answer">See Answer</span>');
+      statusContainer.append(seeAnswer);
+
+      // Add click event to "See Answer"
+      seeAnswer.on('click', function () {
+        $('#answerContent').text(question.jawaban);
+        $('#answerPopup').fadeIn();
+      });
+    }
+
+    questionItem.append(statusContainer);
+    $('#questionList').append(questionItem);
+  }
 
   // Load questions on document ready
   loadQuestions();
