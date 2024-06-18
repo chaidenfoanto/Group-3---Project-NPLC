@@ -1,4 +1,5 @@
 $(document).ready(function() {
+<<<<<<< Updated upstream
     $(".sidebar").load("sidebarHod.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
@@ -41,6 +42,14 @@ $(document).ready(function() {
   
       $('#addGameButton').on('click', function() {
           window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
+=======
+  $(".sidebar").load("sidebarHod.html", function() {
+      const toggleBtn = $("#toggle-btn, #burger-btn");
+      const logo = $(".logo_details .logo").eq(1); // Select the second logo
+      toggleBtn.on("click", function() {
+          $(".sidebar").toggleClass("open");
+          menuBtnChange();
+>>>>>>> Stashed changes
       });
   
   //   function adjustMainContent() {
