@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restfulnplc.nplcrestful.model.Qna;
@@ -39,34 +38,41 @@ public class QnaController {
     private Response response = new Response();
 
     @PostMapping("/ask")
-    public ResponseEntity<Response> askQuestion(HttpServletRequest request,
-            @RequestParam(name = "pertanyaan") String pertanyaan) {
+    public ResponseEntity<Response> askQuestion(HttpServletRequest request) {
+        String pertanyaan = request.getParameter("pertanyaan");
         String sessionToken = request.getHeader("Token");
         response.setService("Ask Question");
         try {
-            if (loginService.checkSessionAlive(sessionToken)) {
-                if (loginService.checkSessionTeam(sessionToken)) {
-                    String userId = loginService.getLoginSession(sessionToken).getIdUser();
-                    Qna newQna = qnaService.addQuestion(pertanyaan, userId);
-                    response.setMessage("Question Asked Successfully");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(Map.of(
-                            "idPertanyaan", newQna.getIdPertanyaan(),
-                            "pertanyaan", newQna.getPertanyaan(),
-                            "waktuInput", newQna.getWaktuInput(),
-                            "jawaban", newQna.getJawaban(),
-                            "namaPanitia", newQna.getPanitia().getNama(),
-                            "namaTeam", newQna.getTeam().getNama(),
-                            "status", "Not Answered"));
+            if (pertanyaan != null && !pertanyaan.equals("") && !pertanyaan.matches("^[\\s]*$")) {
+                if (loginService.checkSessionAlive(sessionToken)) {
+                    if (loginService.checkSessionTeam(sessionToken)) {
+                        String userId = loginService.getLoginSession(sessionToken).getIdUser();
+                        Qna newQna = qnaService.addQuestion(pertanyaan, userId);
+                        response.setMessage("Question Asked Successfully");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.CREATED);
+                        response.setData(Map.of(
+                                "idPertanyaan", newQna.getIdPertanyaan(),
+                                "pertanyaan", newQna.getPertanyaan(),
+                                "waktuInput", newQna.getWaktuInput(),
+                                "jawaban", newQna.getJawaban(),
+                                "namaPanitia", newQna.getPanitia().getNama(),
+                                "namaTeam", newQna.getTeam().getNama(),
+                                "status", "Not Answered"));
+                    } else {
+                        response.setMessage("Access Denied");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.FORBIDDEN);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
                 } else {
-                    response.setMessage("Access Denied");
+                    response.setMessage("Authorization Failed");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setHttpCode(HTTPCode.BAD_REQUEST);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Authorization Failed");
+                response.setMessage("Question isn't provided");
                 response.setError(true);
                 response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
@@ -85,41 +91,48 @@ public class QnaController {
 
     @PostMapping("/answer/{id}")
     public ResponseEntity<Response> answerQuestion(HttpServletRequest request,
-            @RequestParam(name = "jawaban") String jawaban,
             @PathVariable String id) {
+        String jawaban = request.getParameter("jawaban");
         String sessionToken = request.getHeader("Token");
         response.setService("Answer Question");
         try {
-            if (loginService.checkSessionAlive(sessionToken)) {
-                if (loginService.checkSessionAdmin(sessionToken)) {
-                    if (qnaService.getQuestionById(id).isPresent()) {
-                        String userId = loginService.getLoginSession(sessionToken).getIdUser();
-                        Qna answeredQna = qnaService.answerQuestion(id, jawaban, userId);
-                        response.setMessage("Question Answered Successfully");
-                        response.setError(false);
-                        response.setHttpCode(HTTPCode.CREATED);
-                        response.setData(Map.of(
-                                "idPertanyaan", answeredQna.getIdPertanyaan(),
-                                "pertanyaan", answeredQna.getPertanyaan(),
-                                "waktuInput", answeredQna.getWaktuInput(),
-                                "jawaban", answeredQna.getJawaban(),
-                                "namaPanitia", answeredQna.getPanitia().getNama(),
-                                "namaTeam", answeredQna.getTeam().getNama(),
-                                "status", "Answered"));
+            if (jawaban != null && !jawaban.equals("") && !jawaban.matches("^[\\s]*$")) {
+                if (loginService.checkSessionAlive(sessionToken)) {
+                    if (loginService.checkSessionAdmin(sessionToken)) {
+                        if (qnaService.getQuestionById(id).isPresent()) {
+                            String userId = loginService.getLoginSession(sessionToken).getIdUser();
+                            Qna answeredQna = qnaService.answerQuestion(id, jawaban, userId);
+                            response.setMessage("Question Answered Successfully");
+                            response.setError(false);
+                            response.setHttpCode(HTTPCode.CREATED);
+                            response.setData(Map.of(
+                                    "idPertanyaan", answeredQna.getIdPertanyaan(),
+                                    "pertanyaan", answeredQna.getPertanyaan(),
+                                    "waktuInput", answeredQna.getWaktuInput(),
+                                    "jawaban", answeredQna.getJawaban(),
+                                    "namaPanitia", answeredQna.getPanitia().getNama(),
+                                    "namaTeam", answeredQna.getTeam().getNama(),
+                                    "status", "Answered"));
+                        } else {
+                            response.setMessage("Question Not Found");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.NOT_FOUND);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
                     } else {
-                        response.setMessage("Question Not Found");
+                        response.setMessage("Access Denied");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.NOT_FOUND);
+                        response.setHttpCode(HTTPCode.FORBIDDEN);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
-                    response.setMessage("Access Denied");
+                    response.setMessage("Authorization Failed");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setHttpCode(HTTPCode.BAD_REQUEST);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
-                response.setMessage("Authorization Failed");
+                response.setMessage("Answer isn't provided");
                 response.setError(true);
                 response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
