@@ -246,7 +246,6 @@ $(document).ready(function () {
                     <div class="history-cell time" data-label="Time Finished"><p>Time Finished</p><p>${timeFinished}</p></div>
                 </div>
                 <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${duration}</p></div>
-                <div class="history-cell points" data-label="Points"><p>Points</p><p>${winningTeam} (100)</p></div>
             </div>
         </div>
         `);
