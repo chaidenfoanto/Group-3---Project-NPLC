@@ -51,13 +51,13 @@ public class ListKartuService {
 
     public Optional<ListKartu> teamGetCard(String idTeam) {
         Random rand = new Random();
-        int zonkRate = 35; // Base Zonk Rate
+        int zonkRate = 0; // Base Zonk Rate
         ArrayList<ListKartu> listAvailables = getAvailableCard();
         Team team = teamService.getTeamById(idTeam).get();
         if (listAvailables.size() > 0) {
             ListKartu selectedCard = new ListKartu(); // Predeclaring selected card to be zonk on start
-            if (rand.nextInt(100) > zonkRate) { // Checking if rate is passed to get a card
-                listAvailables.add(new ListKartu()); // Adding 1 Zonk card to the list
+            if ((rand.nextInt(100) + 1) > zonkRate) { // Checking if rate is passed to get a card
+                // listAvailables.add(new ListKartu()); // Adding 1 Zonk card to the list
                 int randVal = rand.nextInt(listAvailables.size() - 1); // Randoming card in list
                 selectedCard = listAvailables.get(randVal); // Getting result card
                 if (selectedCard.getCardSkill() != null) { // Checking if it's a zonk card
