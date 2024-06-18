@@ -169,7 +169,7 @@ public class QnaController {
                                 "pertanyaan", qna.getPertanyaan(),
                                 "waktuInput", qna.getWaktuInput(),
                                 "jawaban", ((qna.getJawaban() != null) ? qna.getJawaban() : ""),
-                                "namaPanitia", ((qna.getPanitia() != null ) ? qna.getPanitia().getNama() : ""),
+                                "namaPanitia", ((qna.getPanitia() != null) ? qna.getPanitia().getNama() : ""),
                                 "namaTeam", qna.getTeam().getNama(),
                                 "status", ((qna.getJawaban() != null) ? "Answered" : "Not Answered")));
                     }
