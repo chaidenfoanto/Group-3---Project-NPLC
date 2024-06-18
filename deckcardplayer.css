@@ -150,48 +150,49 @@ table td:first-child {
 }
 
 /* popup start */
-.container-error {
+.popup {
     max-width: 400px;
     width: 80%;
-    background: #2A9BDB !important;
+    background: #2A9BDB;
     border-radius: 6px;
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) scale(0.8) !important;
-    text-align: center !important;
-    padding: 15px !important;
-    color: white !important;
-    transition: transform 0.4s, top 0.4s !important;
-    z-index: 1010 !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35) !important;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    text-align: center;
+    padding: 15px;
+    color: white;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 1010;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 
-.container-error p {
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    margin: 20px 0 !important;
+.popup p {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 20px 0;
 }
 
-.container-error button {
-    width: 50% !important;
-    margin-top: 20px !important;
-    padding: 10px 0 !important;
-    background: white !important;
-    color: #2A9BDB !important;
-    border: 0 !important;
-    outline: none !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    border-radius: 10px !important;
-    cursor: pointer !important;
+.popup button {
+    width: 50%;
+    margin-top: 20px;
+    padding: 10px 0;
+    background: white;
+    color: #2A9BDB;
+    border: 0;
+    outline: none;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 .open-popup {
-    visibility: visible !important;
-    border-radius: 20px !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) scale(1) !important;
+    visibility: visible;
+    border-radius: 20px;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .popup-overlay {
@@ -200,12 +201,12 @@ table td:first-child {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5) !important;
-    visibility: hidden !important;
-    z-index: 1000 !important;
+    background: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    z-index: 1000;
 }
 .popup-overlay.active {
-    visibility: visible !important;
+    visibility: visible;
 }
 
 /* popup end */
