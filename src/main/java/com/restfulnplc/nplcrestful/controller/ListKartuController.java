@@ -214,9 +214,10 @@ public class ListKartuController {
     public ResponseEntity<Response> getListKartuStat(HttpServletRequest request) {
         response.setService("Card Stats");
         try {
+            int zonkCards = listKartuService.getAvailableZonks().size();
             int totalCards = listKartuService.getAllListKartu().size();
-            int availableCards = listKartuService.getAvailableCard().size();
-            int usedCards = listKartuService.getUsedCards().size();
+            int availableCards = listKartuService.getAvailableCard().size() - zonkCards;
+            int usedCards = listKartuService.getUsedCards().size() - zonkCards;
             response.setMessage("Card Stats Retrieved Successfully");
             response.setError(false);
             response.setHttpCode(HTTPCode.OK);
@@ -224,7 +225,8 @@ public class ListKartuController {
                     "cardTotal", totalCards,
                     "cardUsed", usedCards,
                     "cardAvailable", availableCards,
-                    "cardTaken", totalCards - availableCards));
+                    "cardTaken", totalCards - availableCards,
+                    "zonkLeft" , zonkCards));
         } catch (Exception e) {
             response.setMessage(e.getMessage());
             response.setError(true);
@@ -253,20 +255,9 @@ public class ListKartuController {
                             response.setMessage("List Kartu Retrieved Successfully");
                             response.setError(false);
                             response.setHttpCode(HTTPCode.OK);
-                            if(listKartu.getCardSkill() != null) {
                             response.setData(Map.of(
                                     "noKartu", listKartu.getNoKartu(),
                                     "cardSkill", listKartu.getCardSkill()));
-                            } else {
-                                response.setData(Map.of(
-                                    "noKartu", "ZONK",
-                                    "cardSkill", Map.of(
-                                        "namaKartu", "ZONK",
-                                        "rules", "Hahay Kasian Deh",
-                                        "totalKartu", 1,
-                                        "gambarKartu" , "ZONK.png"
-                                    )));
-                            }
                         } else {
                             response.setMessage("All Cards Are Taken!");
                             response.setError(true);

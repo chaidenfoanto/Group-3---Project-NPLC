@@ -51,21 +51,14 @@ public class ListKartuService {
 
     public Optional<ListKartu> teamGetCard(String idTeam) {
         Random rand = new Random();
-        int zonkRate = 0; // Base Zonk Rate
         ArrayList<ListKartu> listAvailables = getAvailableCard();
         Team team = teamService.getTeamById(idTeam).get();
-        if (listAvailables.size() > 0) {
-            ListKartu selectedCard = new ListKartu(); // Predeclaring selected card to be zonk on start
-            if ((rand.nextInt(100) + 1) > zonkRate) { // Checking if rate is passed to get a card
-                // listAvailables.add(new ListKartu()); // Adding 1 Zonk card to the list
-                int randVal = rand.nextInt(listAvailables.size() - 1); // Randoming card in list
-                selectedCard = listAvailables.get(randVal); // Getting result card
-                if (selectedCard.getCardSkill() != null) { // Checking if it's a zonk card
-                    selectedCard.setOwnedBy(team);
-                    selectedCard.setIsUsed(false);
-                    listKartuRepository.save(selectedCard);
-                }
-            }
+        if ((listAvailables.size() - getAvailableZonks().size()) > 0) {
+            int randVal = rand.nextInt(listAvailables.size() - 1); // Randoming card in list
+            ListKartu selectedCard = listAvailables.get(randVal); // Getting result card
+            selectedCard.setOwnedBy(team);
+            selectedCard.setIsUsed(false);
+            listKartuRepository.save(selectedCard);
             teamService.teamRolled(idTeam);
             return Optional.of(selectedCard);
         }
@@ -76,6 +69,16 @@ public class ListKartuService {
         ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
         for (ListKartu kartu : getAllListKartu()) {
             if (!(kartu.getOwnedBy() != null)) {
+                listKartu.add(kartu);
+            }
+        }
+        return listKartu;
+    }
+
+    public ArrayList<ListKartu> getAvailableZonks() {
+        ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
+        for (ListKartu kartu : getAllListKartu()) {
+            if ((!(kartu.getOwnedBy() != null)) && kartu.getCardSkill().getIdCard().equals("ZONK")) {
                 listKartu.add(kartu);
             }
         }
@@ -96,8 +99,10 @@ public class ListKartuService {
         Optional<ListKartu> optionalListKartu = listKartuRepository.findById(id);
         if (optionalListKartu.isPresent()) {
             ListKartu listKartu = optionalListKartu.get();
-            listKartu.setIsUsed(true);
-            return Optional.of(listKartuRepository.save(listKartu));
+            if (!listKartu.getCardSkill().getIdCard().equals("ZONK")) {
+                listKartu.setIsUsed(true);
+                return Optional.of(listKartuRepository.save(listKartu));
+            }
         }
         return Optional.empty();
     }
@@ -144,30 +149,32 @@ public class ListKartuService {
         ArrayList<Object> listUsed = new ArrayList<Object>();
         ArrayList<Object> listUnused = new ArrayList<Object>();
         for (CardSkill cardSkill : cardSkillService.getAllCardSkills()) {
-            ArrayList<Object> cardNumbersUsed = new ArrayList<Object>();
-            ArrayList<Object> cardNumbersUnused = new ArrayList<Object>();
-            for (ListKartu listKartu : getCardsByTeamIdAndCardID(id, cardSkill.getIdCard())) {
-                if (listKartu.getIsUsed()) {
-                    cardNumbersUsed.add(
-                            Map.of(
-                                    "cardNumber", listKartu.getNoKartu()));
-                } else {
-                    cardNumbersUnused.add(
-                            Map.of(
-                                    "cardNumber", listKartu.getNoKartu()));
+            if (!cardSkill.getIdCard().equals("ZONK")) {
+                ArrayList<Object> cardNumbersUsed = new ArrayList<Object>();
+                ArrayList<Object> cardNumbersUnused = new ArrayList<Object>();
+                for (ListKartu listKartu : getCardsByTeamIdAndCardID(id, cardSkill.getIdCard())) {
+                    if (listKartu.getIsUsed()) {
+                        cardNumbersUsed.add(
+                                Map.of(
+                                        "cardNumber", listKartu.getNoKartu()));
+                    } else {
+                        cardNumbersUnused.add(
+                                Map.of(
+                                        "cardNumber", listKartu.getNoKartu()));
+                    }
                 }
-            }
-            if (cardNumbersUsed.size() > 0) {
-                listUsed.add(Map.of(
-                        "cardSkill", cardSkill,
-                        "total", cardNumbersUsed.size(),
-                        "cardNumbers", cardNumbersUsed));
-            }
-            if (cardNumbersUnused.size() > 0) {
-                listUnused.add(Map.of(
-                        "cardSkill", cardSkill,
-                        "total", cardNumbersUnused.size(),
-                        "cardNumbers", cardNumbersUnused));
+                if (cardNumbersUsed.size() > 0) {
+                    listUsed.add(Map.of(
+                            "cardSkill", cardSkill,
+                            "total", cardNumbersUsed.size(),
+                            "cardNumbers", cardNumbersUsed));
+                }
+                if (cardNumbersUnused.size() > 0) {
+                    listUnused.add(Map.of(
+                            "cardSkill", cardSkill,
+                            "total", cardNumbersUnused.size(),
+                            "cardNumbers", cardNumbersUnused));
+                }
             }
         }
         if (listUsed.size() > 0 || listUnused.size() > 0) {
