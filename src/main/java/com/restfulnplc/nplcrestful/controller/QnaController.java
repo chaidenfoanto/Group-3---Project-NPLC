@@ -57,7 +57,8 @@ public class QnaController {
                             "waktuInput", newQna.getWaktuInput(),
                             "jawaban", newQna.getJawaban(),
                             "namaPanitia", newQna.getPanitia().getNama(),
-                            "namaTeam", newQna.getTeam().getNama()));
+                            "namaTeam", newQna.getTeam().getNama(),
+                            "status", "Not Answered"));
                 } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
@@ -103,7 +104,8 @@ public class QnaController {
                                 "waktuInput", answeredQna.getWaktuInput(),
                                 "jawaban", answeredQna.getJawaban(),
                                 "namaPanitia", answeredQna.getPanitia().getNama(),
-                                "namaTeam", answeredQna.getTeam().getNama()));
+                                "namaTeam", answeredQna.getTeam().getNama(),
+                                "status", "Answered"));
                     } else {
                         response.setMessage("Question Not Found");
                         response.setError(true);
@@ -153,7 +155,8 @@ public class QnaController {
                                 "waktuInput", qna.getWaktuInput(),
                                 "jawaban", qna.getJawaban(),
                                 "namaPanitia", qna.getPanitia().getNama(),
-                                "namaTeam", qna.getTeam().getNama()));
+                                "namaTeam", qna.getTeam().getNama(),
+                                "status", ((qna.getJawaban() != null) ? "Answered" : "Not Answered")));
                     }
                     response.setData(listData);
                 } else {
