@@ -17,6 +17,25 @@ $(document).ready(function () {
     }
   });
 
+  const popup = document.getElementById("popup");
+  const popupOverlay = document.getElementById('popup-overlay');
+
+  window.openPopup = function (id) {
+    const popup = document.getElementById(id);
+    popup.classList.add("open-popup");
+    popupOverlay.classList.add("active");
+    popup.style.zIndex = "1500";
+    popupOverlay.style.zIndex = "1000";
+  }
+
+  window.closePopup = function (id) {
+      const popup = document.getElementById(id);
+      popup.classList.remove("open-popup");
+      popupOverlay.classList.remove("active");
+      popup.style.zIndex = "100";
+      popupOverlay.style.zIndex = "100";
+  }
+
   $(document).on('click', function (e) {
     if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
       closeSidebar();
@@ -99,7 +118,6 @@ $(document).ready(function () {
 
   const openBtn = $('#rollButton');
   const modal = $('.container-dice');
-  const modalError = $('.container-error');
   const closeresult = $('#closeResult');
 
   openBtn.click(async function () {
@@ -113,11 +131,8 @@ $(document).ready(function () {
           if (data.data.cardAvailable > 0) {
             modal.addClass('open');
             modal.show();
-            modalError.hide();
           } else {
-            modalError.addClass('open');
-            modalError.show();
-            modal.hide();
+            openPopup('popup-wrong');
           }
           $('.modal-overlay').show();
         }
@@ -126,7 +141,6 @@ $(document).ready(function () {
 
   closeBtn.click(function () {
     modal.removeClass('open');
-    modalError.removeClass('open');
   });
 
   closeresult.click(function () {
@@ -135,11 +149,10 @@ $(document).ready(function () {
 
   $('#closeResult, #closeGacha, #closeError').click(function () {
     modal.hide();
-    modalError.hide();
     $('.modal-overlay').hide();
   });
 
-  $('#closeResult, #closeError').click(function () {
+  $('#closeResult').click(function () {
     location.reload();
   });
 

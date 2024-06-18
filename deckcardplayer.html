@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="sidebarplayer.css">
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        
-    <div class = "container">
+  </head>
+  <body>
+    <div class="container">
       <div class="sidebar"></div>
         <div class="main-content">
           <header>
@@ -42,10 +43,8 @@
                     <button id = "closeGacha">Cancel</button>
                   </div>
               </div> 
-              <div class="container-error">
-                <p>Maaf, tidak bisa lagi untuk gacha kartu! Semua kartu sudah habis.</p>
-                <button type="button" id="closeError">OK</button>
-              </div>
+              
+
               <div class = "modal-overlay">
                 <div class="gacharesult" id="modal">
                   <div class="gacharesult-inner">
@@ -66,7 +65,13 @@
             
           </div>
       </div>
+      <div class="popup" id="popup-wrong">
+        <p>Oh Tidak, Semua kartu telah dimiliki oleh tim-tim lain! Silahkan coba lagi nanti.</p>
+        <button type="button" onclick="closePopup('popup-wrong')" id="closeError">OK</button>
+      </div>
+      <div class="popup-overlay" id="popup-overlay"></div>
     </div>
     <script src="apiDeckCard.js"></script>
     <script src="deckcardplayer.js"></script>
 </body>
+</html>
