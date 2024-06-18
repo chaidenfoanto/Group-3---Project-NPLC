@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +39,8 @@ public class QnaController {
     private Response response = new Response();
 
     @PostMapping("/ask")
-    public ResponseEntity<Response> askQuestion(HttpServletRequest request) {
-        String pertanyaan = request.getParameter("pertanyaan");
+    public ResponseEntity<Response> askQuestion(HttpServletRequest request, @RequestBody Map<String, String> body) {
+        String pertanyaan = (String) body.get("pertanyaan");
         String sessionToken = request.getHeader("Token");
         response.setService("Ask Question");
         try {
@@ -91,8 +92,9 @@ public class QnaController {
 
     @PostMapping("/answer/{id}")
     public ResponseEntity<Response> answerQuestion(HttpServletRequest request,
+            @RequestBody Map<String, String> body,
             @PathVariable String id) {
-        String jawaban = request.getParameter("jawaban");
+        String jawaban = (String) body.get("jawaban");
         String sessionToken = request.getHeader("Token");
         response.setService("Answer Question");
         try {
