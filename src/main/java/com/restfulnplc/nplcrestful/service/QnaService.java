@@ -1,12 +1,11 @@
 package com.restfulnplc.nplcrestful.service;
 
-import com.restfulnplc.nplcrestful.dto.QnaPlayersDTO;
-import com.restfulnplc.nplcrestful.dto.QnaPanitiaDTO;
 import com.restfulnplc.nplcrestful.model.Qna;
 import com.restfulnplc.nplcrestful.repository.QnaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,22 +21,22 @@ public class QnaService {
     @Autowired
     private PanitiaService panitiaService;
 
-    public Qna addQuestion(QnaPlayersDTO qnaplayerDTO) {
+    public Qna addQuestion(String pertanyaan, String idTeam) {
         Qna qna = new Qna();
         qna.setIdPertanyaan(getNextQnaID());
-        qna.setTeam(teamService.getTeamById(qnaplayerDTO.getIdTeam()).get());
-        qna.setPertanyaan(qnaplayerDTO.getPertanyaan());
-        qna.setWaktuInput(qnaplayerDTO.getWaktuInput());
+        qna.setTeam(teamService.getTeamById(idTeam).get());
+        qna.setPertanyaan(pertanyaan);
+        qna.setWaktuInput(LocalDateTime.now());
 
         return qnaRepository.save(qna);
     }
 
-    public Qna answerQuestion(String id, QnaPanitiaDTO qnapanitiaDTO) {
+    public Qna answerQuestion(String id, String jawaban, String idAdmin) {
         Optional<Qna> qnaData = getQuestionById(id);
         if (qnaData.isPresent()) {
             Qna qna = qnaData.get();
-            qna.setJawaban(qnapanitiaDTO.getJawaban());
-            qna.setPanitia(panitiaService.getPanitiaById(qnapanitiaDTO.getIdPanitia()).get());
+            qna.setJawaban(jawaban);
+            qna.setPanitia(panitiaService.getPanitiaById(idAdmin).get());
 
             return qnaRepository.save(qna);
         }

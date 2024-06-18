@@ -27,7 +27,7 @@ public class Qna {
     @JoinColumn(name = "idteam", referencedColumnName = "idteam", nullable = false, foreignKey = @ForeignKey(name = "fk_idteamqna"))
     private Team team;
 
-    @Column(name = "jawaban", length = 5000, nullable = false)
+    @Column(name = "jawaban", columnDefinition = "TEXT", nullable = false)
     private String jawaban;
 
     @ManyToOne
