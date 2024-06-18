@@ -52,7 +52,7 @@ $(document).ready(function () {
 
   // Function to load questions from the server
   async function loadQuestions() {
-    await fetch(domain + 'api/qna/questions', {
+    await fetch(domain + '/api/qna/questions', {
       method: 'GET',
       headers: {
         Token: getCookie('Token'), // Retrieve the session token from cookies
@@ -61,11 +61,11 @@ $(document).ready(function () {
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          data.forEach((question) => {
+          data.questions.forEach((question) => {
             appendQuestion({
-              teamName: question.namaTeam,
-              question: question.pertanyaan,
-              answer: question.jawaban,
+              teamName: `${question.namaTeam}`,
+              question: `${question.pertanyaan}`,
+              answer: `${question.jawaban}`,
               status: question.jawaban ? 'Answered' : 'Not Answered',
             });
           });
@@ -78,7 +78,18 @@ $(document).ready(function () {
       });
   }
 
+  // Event listener for form submission
+  $('#questionForm').submit(function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get the input values
+    var teamName = $('#teamName').val();
+    var question = $('#question').val();
+
+    // Call postQuestion function to send data to server
+    postQuestion(teamName, question);
+  });
+
   // Load questions on document ready
-  // postQuestion();
   loadQuestions();
 });
