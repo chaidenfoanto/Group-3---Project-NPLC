@@ -56,8 +56,8 @@ public class QnaController {
                                 "idPertanyaan", newQna.getIdPertanyaan(),
                                 "pertanyaan", newQna.getPertanyaan(),
                                 "waktuInput", newQna.getWaktuInput(),
-                                "jawaban", newQna.getJawaban(),
-                                "namaPanitia", newQna.getPanitia().getNama(),
+                                "jawaban", "",
+                                "namaPanitia", "",
                                 "namaTeam", newQna.getTeam().getNama(),
                                 "status", "Not Answered"));
                     } else {
@@ -168,8 +168,8 @@ public class QnaController {
                                 "idPertanyaan", qna.getIdPertanyaan(),
                                 "pertanyaan", qna.getPertanyaan(),
                                 "waktuInput", qna.getWaktuInput(),
-                                "jawaban", qna.getJawaban(),
-                                "namaPanitia", qna.getPanitia().getNama(),
+                                "jawaban", ((qna.getJawaban() != null) ? qna.getJawaban() : ""),
+                                "namaPanitia", ((qna.getPanitia() != null ) ? qna.getPanitia().getNama() : ""),
                                 "namaTeam", qna.getTeam().getNama(),
                                 "status", ((qna.getJawaban() != null) ? "Answered" : "Not Answered")));
                     }
