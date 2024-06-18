@@ -166,6 +166,7 @@ public class ListKartuService {
                 if (cardNumbersUsed.size() > 0) {
                     listUsed.add(Map.of(
                             "cardSkill", Map.of(
+                                "idCard", cardSkill.getIdCard(),
                                 "namaKartu", cardSkill.getNamaKartu()
                             ),
                             "total", cardNumbersUsed.size(),
@@ -174,6 +175,7 @@ public class ListKartuService {
                 if (cardNumbersUnused.size() > 0) {
                     listUnused.add(Map.of(
                             "cardSkill", Map.of(
+                                "idCard", cardSkill.getIdCard(),
                                 "namaKartu", cardSkill.getNamaKartu()
                             ),
                             "total", cardNumbersUnused.size(),
