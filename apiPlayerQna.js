@@ -13,20 +13,28 @@ $(document).ready(function () {
   }
 
   // Send the question to the server
-  async function postQuestion() {
-    await fetch(domain + '', {
+  async function postQuestion(teamName, question) {
+    const newQuestion = {
+      teamName: teamName,
+      question: question,
+      answer: '', // Assuming answer is initially empty
+      status: 'Not Answered', // Initial status
+    };
+
+    await fetch(domain + '/api/qna/ask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Token: { Token: getCookie('Token') },
+        Token: getCookie('Token'), // Retrieve the session token from cookies
       },
       body: JSON.stringify(newQuestion),
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
+          console.log('Question successfully added');
           // Append the new question item to the question list
-          appendQuestion({ teamName: teamName, question: question, answer: '', status: 'Not Answered' });
+          appendQuestion(newQuestion);
 
           // Reset the form
           $('#questionForm')[0].reset();
@@ -34,7 +42,6 @@ $(document).ready(function () {
           // Close the popup
           $('#popup').fadeOut();
         } else {
-          // Handle error
           console.error('Error adding question:', data.message);
         }
       })
@@ -45,14 +52,23 @@ $(document).ready(function () {
 
   // Function to load questions from the server
   async function loadQuestions() {
-    await fetch(domain + 'api/questions', {
+    await fetch(domain + 'api/qna/questions', {
       method: 'GET',
-      headers: { Token: getCookie('Token') },
+      headers: {
+        Token: getCookie('Token'), // Retrieve the session token from cookies
+      },
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          data.questions.forEach(appendQuestion);
+          data.forEach((question) => {
+            appendQuestion({
+              teamName: question.namaTeam,
+              question: question.pertanyaan,
+              answer: question.jawaban,
+              status: question.jawaban ? 'Answered' : 'Not Answered',
+            });
+          });
         } else {
           console.error('Error loading questions:', data.message);
         }
@@ -63,6 +79,6 @@ $(document).ready(function () {
   }
 
   // Load questions on document ready
-  postQuestion();
+  // postQuestion();
   loadQuestions();
 });
