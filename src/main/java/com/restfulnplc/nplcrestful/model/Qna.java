@@ -27,13 +27,12 @@ public class Qna {
     @JoinColumn(name = "idteam", referencedColumnName = "idteam", nullable = false, foreignKey = @ForeignKey(name = "fk_idteamqna"))
     private Team team;
 
-    @Column(name = "jawaban", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "jawaban", columnDefinition = "TEXT", nullable = true)
     private String jawaban;
 
     @ManyToOne
-    @JoinColumn(name = "idpanitia", referencedColumnName = "idpanitia", nullable = false, foreignKey = @ForeignKey(name = "fk_idpanitiaqna"))
+    @JoinColumn(name = "idpanitia", referencedColumnName = "idpanitia", nullable = true, foreignKey = @ForeignKey(name = "fk_idpanitiaqna"))
     private Panitia panitia;
-
 
     public String getIdPertanyaan() {
         return this.idPertanyaan;
@@ -82,6 +81,5 @@ public class Qna {
     public void setPanitia(Panitia panitia) {
         this.panitia = panitia;
     }
-    
-}
 
+}
