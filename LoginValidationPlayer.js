@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     const domain = "http://localhost:8080"
 
+    deleteCookie("Token");
+
+    function deleteCookie(name) {
+        document.cookie = name + '=; Max-Age=-99999999;';
+    }
+
     const popupOverlay = document.getElementById('popup-overlay');
 
     window.openPopup = function (id) {

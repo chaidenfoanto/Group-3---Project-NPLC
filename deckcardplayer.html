@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="sidebarplayer.css">
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="deckcardplayer.js"></script>
         
     <div class = "container">
       <div class="sidebar"></div>
@@ -24,7 +23,7 @@
                 <span>Tickets Owned</span>
             </div>
             <div>
-                <span style="margin-right: 10px">9</span>
+                <span style="margin-right: 10px" id="chanceroll"></span>
                 <button id="rollButton">ROLL</button>
             </div>
           </div>
@@ -43,16 +42,20 @@
                     <button id = "closeGacha">Cancel</button>
                   </div>
               </div> 
+              <div class="container-error">
+                <p>Maaf, tidak bisa lagi untuk gacha kartu! Semua kartu sudah habis.</p>
+                <button id="closeError">OK</button>
+              </div>
               <div class = "modal-overlay">
                 <div class="gacharesult" id="modal">
                   <div class="gacharesult-inner">
-                      <h2>Card B209</h2>
+                      <h2 id="card-code"></h2>
                       <div class="card-content">
-                          <img src="img/kartu2.png" alt="Hasil Gacha">
+                          <img id="card-img">
                           <div class="card-details">
-                              <p><strong>Card Name:</strong> Time +3</p>
-                              <p><strong>Card  Description:</strong> </p>
-                              <p>Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It. Tim mendapatkan tambahan waktu 3 Menit dari durasi normal permainan.</p>
+                              <p id="card-name"></p>
+                              <p><strong>Card  Description :</strong> </p>
+                              <p id="card-desc"></p>
                           </div>
                       </div>
                       <button id="closeResult" class="btn-ok">OK</button>
@@ -60,96 +63,10 @@
               </div>
             </div>
           <div class="cards-list">
-              <div class="card" id="doublePoint">
-                  <img src="img/kartu1.png" alt="Double Point" class="card-image">
-                  <p><b>Double Point</b></p>
-                  <p style="text-align: justify;">
-                    Effect: Hanya dapat digunakan di game single. Jika tim berhasil mendapatkan bintang
-                    <span class="dots">...</span>
-                    <span class="more">(bintang 1-3), maka point x2. Jika tim gagal (bintang 0), maka point -30.</span>
-                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
-                  </p>
-                  <table>
-                    <tr>
-                        <td>Total Owned</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>Total Used</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                </table>
-              </div>
-              <div class="card" id="time+3">
-                  <img src="img/kartu2.png" alt="Time +3" class="card-image">
-                  <p><b>Time +3</b></p>
-                  <p style="text-align: justify;">
-                    Effect: Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It.
-                    <span class="dots">...</span>
-                    <span class="more">Tim mendapatkan tambahan waktu 3 Menit dari durasi normal permainan.</span>
-                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
-                  </p>
-                  <table>
-                    <tr>
-                        <td>Total Owned</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>Total Used</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                </table>
-              </div>
-              <div class="card" id="time+5">
-                  <img src="img/kartu3.png" alt="Time +5" class="card-image">
-                  <p><b>Time +5</b></p>
-                  <p style="text-align: justify;">
-                    Effect: Hanya dapat digunakan di game single, kecuali Bottle Bash dan Spread It.
-                    <span class="dots">...</span>
-                    <span class="more">Tim mendapatkan tambahan waktu 5 Menit dari durasi normal permainan.</span>
-                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
-                  </p>
-                  <table>
-                    <tr>
-                        <td>Total Owned</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>Total Used</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                </table>
-              </div>
-              <div class="card" id="secondChance">
-                  <img src="img/kartu4.png" alt="Second Chance" class="card-image">
-                  <p><b>Second Chance</b></p>
-                  <p style="text-align: justify;">
-                    Effect: Hanya dapat digunakan di game single. Tim mendapatkan tambahan 1 kali
-                    <span class="dots">...</span>
-                    <span class="more">kesempatan bermain lagi. Poin yang akan diperoleh adalah poin dari permainan terakhir.</span>
-                    <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
-                  </p>
-                  <table>
-                    <tr>
-                        <td>Total Owned</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>Total Used</td>
-                        <td>:</td>
-                        <td>0</td>
-                    </tr>
-                </table>
-              </div>
+            
           </div>
       </div>
     </div>
     <script src="apiDeckCard.js"></script>
+    <script src="deckcardplayer.js"></script>
 </body>

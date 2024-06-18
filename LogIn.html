@@ -83,7 +83,7 @@
                 </form>
             </div> -->
             <div class="form-container log-in">
-                <form action="http://localhost:8080/api/login/process_login_players" method="post">  
+                <form>  
                     <!-- ganti diatas jadi loginplayer! -->
                     <h1>Log In</h1>
                     <span>Silahkan masukkan username dan password.</span>
@@ -102,7 +102,7 @@
                     </div>
                     <div id="loginErrorMessage" class="error-message" style="display: none;"></div>
                 </div>
-                <a style="margin-top: 3%;" href="#" onclick="openPopup()">Forget Your Password?</a>
+                <a style="margin-top: 3%;" href="#" onclick="openPopup('popup')">Forget Your Password?</a>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -132,15 +132,14 @@
 
         <div class="popup" id="popup">
             <p>Silahkan menghubungi kakak panitia yang mendampingi untuk menanyakan passwordnya!</p>
-            <button type="button" onclick="closePopup()">OK</button>
+            <button type="button" onclick="closePopup('popup')">OK</button>
         </div>
 
         <div class="popup" id="popup-wrong">
             <p>Oh Tidak, Login Gagal! Silahkan periksa kembali username dan password mu.</p>
             <button type="button" onclick="closePopup('popup-wrong')">OK</button>
         </div>
-
-    </div>
+        </div>
     <div class="popup-overlay" id="popup-overlay"></div>
     <script src="Login.js"></script>
     <script src="LoginValidationPlayer.js"></script>

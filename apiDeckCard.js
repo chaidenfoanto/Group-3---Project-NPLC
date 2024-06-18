@@ -12,6 +12,7 @@ $(document).ready(function() {
               console.log("authorized success");
               setCookie("Token", getCookie("Token"), 365);
               fetchDeckCard();
+              fetchRollTicket();
             } else {
               console.log('Authorization Failed');
               deleteCookie("Token");
@@ -48,10 +49,26 @@ $(document).ready(function() {
         document.cookie = name + '=; Max-Age=-99999999;';
     }
       
+    function fetchRollTicket(){
+        fetch(domain + 'api/team/getTeamGeneral',{
+            method: 'GET',
+            headers: { 'Token': getCookie('Token') }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("chanceroll").innerHTML = data.data.chanceRoll
+            if (data.data.chanceRoll > 0) {
+                $('#rollButton').prop('disabled', false);
+            } else {
+                $('#rollButton').prop('disabled', true);
+            }
+        })
+    }
+
     // Function to fetch deck cards data
     function fetchDeckCard() {
         const cardsContainer = document.querySelector('.cards-list');
-        fetch(domain + 'api/listkartu', {
+        fetch(domain + 'api/cardskills/getWithUser', {
             method: 'GET',
             headers: { 'Token': getCookie('Token') }
         })
@@ -59,26 +76,36 @@ $(document).ready(function() {
         .then(data => {
             if (!data.error) {
                 data.data.forEach(cardData => {
+                    var cardRules = cardData.rules.split(" ");
+                    var cardRulesLess = "";
+                    var cardRulesMore = ""
+                    for(var i = 0; i < Math.min(cardRules.length, 9); i++) {
+                        cardRulesLess += cardRules[i] + " ";
+                    }
+                    for(var j = i; j < cardRules.length; j++) {
+                        cardRulesMore += cardRules[j];
+                        if(j < cardRules.length - 1) cardRulesMore += " ";
+                    }
                     var cardList = `
-                    <div class="card" id="doublePoint">
-                    <img src="${cardData.foto}" alt="${cardData.nama}" class="card-image">
-                    <p><b>${cardData.nama}</b></p>
+                    <div class="card" id="${cardData.idCard}">
+                    <img src="${cardData.gambarKartu}" alt="${cardData.namaKartu}" class="card-image">
+                    <p><b>${cardData.namaKartu}</b></p>
                     <p style="text-align: justify;">
-                        Effect: Hanya dapat digunakan di game single. Jika tim berhasil mendapatkan bintang
+                        Effect: ${cardRulesLess}
                         <span class="dots">...</span>
-                        <span class="more">(bintang 1-3), maka point x2. Jika tim gagal (bintang 0), maka point -30.</span>
+                        <span class="more">${cardRulesMore}</span>
                         <button onclick="readMore(this)" class="readMoreBtn">Read more</button>
                     </p>
                     <table>
                         <tr>
                             <td>Total Owned</td>
                             <td>:</td>
-                            <td>0</td>
+                            <td>${cardData.totalOwned}</td>
                         </tr>
                         <tr>
                             <td>Total Used</td>
                             <td>:</td>
-                            <td>0</td>
+                            <td>${cardData.totalUsed}</td>
                         </tr>
                     </table>
                 </div>
@@ -98,7 +125,7 @@ $(document).ready(function() {
 
     fetchSession();
 
-    setInterval(function() {
-        fetchSession(); 
-    }, 5000);
+    // setInterval(function() {
+    //     fetchSession(); 
+    // }, 5000);
 });
