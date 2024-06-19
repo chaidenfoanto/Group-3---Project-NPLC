@@ -192,10 +192,10 @@ public class LoginController {
                     case "admin":
                         access = loginService.checkSessionAdmin(sessionToken);
                         break;
-                    case "penjaga single":
+                    case "penjagasingle":
                         access = loginService.checkSessionLOSingle(sessionToken);
                         break;
-                    case "penjaga duel":
+                    case "penjagaduel":
                         access = loginService.checkSessionLODuel(sessionToken);
                         break;
                     case "player":
