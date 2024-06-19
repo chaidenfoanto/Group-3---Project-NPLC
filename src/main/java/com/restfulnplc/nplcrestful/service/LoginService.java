@@ -111,9 +111,7 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.PANITIA)) {
-                    return panitiaService.checkPanitia(session.getIdUser());
-                }
+                return panitiaService.checkPanitia(session.getIdUser());
             }
         }
         return false;
@@ -123,8 +121,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.PANITIA)) {
-                    return panitiaService.checkAdmin(session.getIdUser());
+                if (panitiaService.checkPanitia(session.getIdUser())) {
+                    return session.getRole().equals(Role.ADMIN);
                 }
             }
         }
@@ -147,8 +145,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.PANITIA)) {
-                    return panitiaService.checkKetua(session.getIdUser());
+                if (panitiaService.checkPanitia(session.getIdUser())) {
+                    return session.getRole().equals(Role.KETUA);
                 }
             }
         }
