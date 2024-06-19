@@ -32,8 +32,6 @@
           <div class="input-group">
               <select id="teamname">
                   <option value=""></option>
-                  <option value="Anak Pak Dengklek">Anak Pak Dengklek</option>
-                  <option value="Notionaries">Notionaries</option>
               </select>
               <label class = "placeholder" for = "teamname">Team Name</label>
           </div>
@@ -63,15 +61,12 @@
             <h1>Game Has Ended</h1>
             <form id = "gameEndForm">
               <div class="modal-inner-container">
-              <div class = "input-group">
-                <select id="teamPlayed" disabled>
-                    <option value=""></option>
-                    <option value="Anak Pak Dengklek">Anak Pak Dengklek</option>
-                    <option value="Notionaries">Notionaries</option>
-                </select>
-                <label class = "placeholder" for="teamplayed">Team Name</label>
-                <span class = "errorteam"></span>
+              
+                <div class = "input-group">
+                  <input type="team" id="teamplayed" disabled>
+                  <label class = "placeholder" for="teamplayed">Team Played</label>
               </div>
+                
               <div class = "input-group">
                 <select id="starEarned">
                   <option value="0">0</option>
@@ -98,7 +93,7 @@
                     </div>
                 </div>
                 <p id="pointsMessage">0 POINTS WILL BE GIVEN TO ...</p>
-                <button type="submit">Save Changes</button>
+                <button type="submit" class="close">Save Changes</button>
             </form>
         </div>
     </div>
