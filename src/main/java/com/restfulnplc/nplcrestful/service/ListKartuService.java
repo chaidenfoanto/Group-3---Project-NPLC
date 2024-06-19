@@ -75,6 +75,16 @@ public class ListKartuService {
         return listKartu;
     }
 
+    public ArrayList<ListKartu> getAvailableCardById(String id) {
+        ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
+        for (ListKartu kartu : getAllListKartu()) {
+            if (!(kartu.getOwnedBy() != null) && kartu.getCardSkill().getIdCard().equals(id)) {
+                listKartu.add(kartu);
+            }
+        }
+        return listKartu;
+    }
+
     public ArrayList<ListKartu> getAvailableZonks() {
         ArrayList<ListKartu> listKartu = new ArrayList<ListKartu>();
         for (ListKartu kartu : getAllListKartu()) {

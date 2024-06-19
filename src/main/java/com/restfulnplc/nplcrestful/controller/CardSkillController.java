@@ -147,7 +147,8 @@ public class CardSkillController {
                                 "totalKartu", cardSkill.getTotalKartu(),
                                 "gambarKartu", cardSkill.getGambarKartu(),
                                 "totalOwned", listKartuService.getCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size(),
-                                "totalUsed", listKartuService.getUsedCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size()
+                                "totalUsed", listKartuService.getUsedCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size(),
+                                "totalRemaining", listKartuService.getAvailableCardById(cardSkill.getIdCard()).size()
                         ));
                     }
                     response.setData(listData);
