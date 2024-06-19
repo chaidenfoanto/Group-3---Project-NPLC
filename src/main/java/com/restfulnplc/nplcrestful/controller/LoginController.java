@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -160,6 +161,56 @@ public class LoginController {
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
                 response.setData(accessDetails);
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.FORBIDDEN);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/check/{role}")
+    public ResponseEntity<Response> getAccess(HttpServletRequest request, @PathVariable("role") String role) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Checking Access For " + role.toUpperCase());
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                response.setError(false);
+                response.setHttpCode(HTTPCode.OK);
+                boolean access = false;
+                switch(role.toLowerCase()) {
+                    case "admin":
+                        access = loginService.checkSessionAdmin(sessionToken);
+                        break;
+                    case "penjaga single":
+                        access = loginService.checkSessionLOSingle(sessionToken);
+                        break;
+                    case "penjaga duel":
+                        access = loginService.checkSessionLODuel(sessionToken);
+                        break;
+                    case "player":
+                        access = loginService.checkSessionTeam(sessionToken);
+                        break;
+                    case "ketua":
+                        access = loginService.checkSessionKetua(sessionToken);
+                        break;
+                    default:
+                        response.setError(true);
+                }
+                response.setMessage(response.isError() ? "Role Unrecognized" : (access ? "Access Granted" : "Access Denied"));
+                response.setData(Map.of(
+                    "accessGranted", access
+                ));
             } else {
                 response.setMessage("Authorization Failed");
                 response.setError(true);
