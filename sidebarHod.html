@@ -14,7 +14,7 @@
 </div>
 <ul class="nav-list">
   <li>
-    <a href="DashboardHod.html">
+    <a href="DashboardHod.html" id="SBP-navigatebyRole">
       <i class="fa-solid fa-house"></i>
       <span class="link_name">Home</span>
     </a>
@@ -53,23 +53,25 @@
     <i
       class="bx bx-log-out"
       id="log_out"
+      onclick="logout()"
     ></i>
   </li>
 </ul>
 
 <script>
   function disableSidebar() {
-      $('.sidebar').addClass('disable');
-      $('.sidebar.disable li, .sidebar.disable a').on('click', function(event) {
-          event.preventDefault(); // Mencegah semua aksi klik
-          return false; // Menghentikan propagasi lebih lanjut
-      });
+    $('.sidebar').addClass('disable');
+    $('.sidebar.disable li, .sidebar.disable a').on('click', function (event) {
+      event.preventDefault(); // Mencegah semua aksi klik
+      return false; // Menghentikan propagasi lebih lanjut
+    });
   }
 
   function enableSidebar() {
-      $('.sidebar').removeClass('disable');
-      $('.sidebar li, .sidebar a').off('click'); // Menghapus event handler yang mencegah klik
+    $('.sidebar').removeClass('disable');
+    $('.sidebar li, .sidebar a').off('click'); // Menghapus event handler yang mencegah klik
   }
+
   const domain = 'http://localhost:8080/';
 
   function getCookie(name) {
@@ -94,6 +96,7 @@
   function deleteCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999;';
   }
+
   async function fetchSession() {
     await fetch(domain + 'api/login/getSession', {
       method: 'GET',
@@ -111,29 +114,35 @@
           switch (data.data.role) {
             case 'Penjaga Single':
               document.getElementById('SBP-navigatebyRole').href = 'PanitiaSingleInput.html';
+              break;
             case 'Admin':
               document.getElementById('SBP-navigatebyRole').href = 'DashboardHod.html';
+              break;
             case 'Ketua':
               document.getElementById('SBP-navigatebyRole').href = 'HodStartGame.html';
+              break;
             case 'Penjaga Duel':
               document.getElementById('SBP-navigatebyRole').href = 'PanitiaDuelFinish.html';
+              break;
           }
         } else {
           console.log('Authorization Failed');
           deleteCookie('Token');
-          window.location.href = 'LoginPanitia.html';
         }
       })
       .catch((error) => {
         console.error('Error occurred while fetching session:', error);
         deleteCookie('Token');
-        window.location.href = 'LoginPanitia.html';
       });
+    if (getCookie('Token') == null) {
+      logout();
+    }
   }
+  fetchSession();
+
   function logout() {
     window.location.href = 'LoginPanitia.html';
   }
-  fetchSession();
   // document.addEventListener('keydown', function (e) {
   //   if (e.which === 123) {
   //     e.preventDefault();

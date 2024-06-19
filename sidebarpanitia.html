@@ -116,15 +116,15 @@
       } else {
         console.log('Authorization Failed');
         deleteCookie("Token");
-        window.location.href = "LoginPanitia.html";
       }
       })
       .catch(error => {
         console.error('Error occurred while fetching session:', error);
         deleteCookie("Token");
-        window.location.href = "LoginPanitia.html";
       });
-
+      if (getCookie('Token') == null) {
+      logout();
+    }
   }
   fetchSession();
 

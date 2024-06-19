@@ -34,7 +34,7 @@ $(document).ready(function () {
 
         // Tambahkan opsi untuk setiap tim dari data yang diterima
         data.data.forEach((booth) => {
-          boothData[booth.penjaga] = booth; // Simpan data tim dalam objek teamData
+          boothData[booth.listPanitia] = booth; // Simpan data tim dalam objek teamData
           const option1 = document.createElement('option');
           option1.value = booth.penjaga; // Isi nilai dan teks opsi dengan nama tim
           option1.textContent = booth.penjaga;

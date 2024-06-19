@@ -1,6 +1,15 @@
 <div class="logo_details">
-  <img src="img/logo.png" alt="NPLC Logo" class="logo" id="toggle-btn">
-  <i class="fa fa-bars burger-icon" aria-hidden="true" id="burger-btn"></i>
+  <img
+    src="img/logo.png"
+    alt="NPLC Logo"
+    class="logo"
+    id="toggle-btn"
+  />
+  <i
+    class="fa fa-bars burger-icon"
+    aria-hidden="true"
+    id="burger-btn"
+  ></i>
   <div class="logo_name">NPLC 12th</div>
 </div>
 <ul class="nav-list">
@@ -108,14 +117,15 @@
         } else {
           console.log('Authorization Failed');
           deleteCookie('Token');
-          window.location.href = 'LogIn.html';
         }
       })
       .catch((error) => {
         console.error('Error occurred while fetching session:', error);
         deleteCookie('Token');
-        window.location.href = 'LogIn.html';
       });
+    if (getCookie('Token') == null) {
+      logout();
+    }
   }
 
   fetchSession();
