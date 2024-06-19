@@ -12,6 +12,7 @@ $(document).ready(function () {
     }
     return null; // Mengembalikan null jika cookie tidak ditemukan
   }
+
   function addDataBooth() {
     // Ambil nilai dari formulir
     var boothName = document.getElementById('boothName').value;

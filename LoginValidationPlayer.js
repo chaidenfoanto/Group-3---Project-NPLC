@@ -35,10 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function deleteCookie(name) {
-        document.cookie = name + '=; Max-Age=-99999999;';
-    }
-
     function setCookie(name, value, daysToLive) {
         let cookie = name + "=" + encodeURIComponent(value);
         if (typeof daysToLive === "number") {
@@ -46,8 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.cookie = cookie;
         }
     }
-
-    deleteCookie("Token");
+})
 
     
     //     const fileInputs = inputs.filter(input => input.type === 'file');
@@ -143,5 +138,3 @@ document.addEventListener('DOMContentLoaded', function () {
     //         console.error('Error:', error);
     //     });
     // });
-    
-});

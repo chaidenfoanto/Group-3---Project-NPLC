@@ -14,6 +14,10 @@ $(document).ready(function () {
     return null; // Mengembalikan null jika cookie tidak ditemukan
   }
 
+  function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
+  }
+
   // Fungsi untuk mengambil dan menampilkan total poin
   function fetchTotalPoin() {
     const allPoin = document.querySelector('.points'); // Memilih elemen poin
@@ -100,26 +104,17 @@ $(document).ready(function () {
           console.log('fetch Failed');
           console.log(data.message);
           // Hapus komentar pada baris berikut jika ingin mengatasi kesalahan dengan mengarahkan pengguna
-          // deleteCookie("Token");
-          // window.location.href = "LogIn.html";
+          deleteCookie('Token');
+          window.location.href = 'LogIn.html';
         }
       })
       .catch((error) => {
         console.error('Error occurred while fetching session:', error);
         // Hapus komentar pada baris berikut jika ingin mengatasi kesalahan dengan mengarahkan pengguna
-        // deleteCookie("Token");
-        // window.location.href = "LogIn.html";
+        deleteCookie('Token');
+        window.location.href = 'LogIn.html';
       });
   }
-
-  // Ambil data permainan booth dan total poin saat dokumen siap
-  fetchBoothGames();
-  fetchTotalPoin();
-
-  // Hapus komentar pada baris berikut jika ingin mengambil sesi secara berkala
-  // setInterval(function() {
-  //     fetchSession();
-  // }, 5000);
 
   // Fungsi untuk menangani klik pada kartu permainan dan menampilkan detail permainan dalam modal
   function gameCardClick(boothId) {
@@ -135,4 +130,13 @@ $(document).ready(function () {
   }
   // Tentukan gameCardClick sebagai fungsi global agar bisa diakses dari HTML
   window.gameCardClick = gameCardClick;
+
+  // Ambil data permainan booth dan total poin saat dokumen siap
+  fetchBoothGames();
+  fetchTotalPoin();
+
+  // Hapus komentar pada baris berikut jika ingin mengambil sesi secara berkala
+  // setInterval(function() {
+  //     fetchSession();
+  // }, 5000);
 });
