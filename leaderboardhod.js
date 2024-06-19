@@ -63,8 +63,8 @@ $(document).ready(function() {
     renderLeaderboard(leaderboardData);
 
     // Example of updating data and re-rendering the leaderboard
-    setTimeout(function() {
-        leaderboardData[1].points = 1100; // Update points for the second team
-        renderLeaderboard(leaderboardData); // Re-render the leaderboard
-    }, 5000); // Update after 5 seconds
+    // setTimeout(function() {
+    //     leaderboardData[1].points = 1100; // Update points for the second team
+    //     renderLeaderboard(leaderboardData); // Re-render the leaderboard
+    // }, 5000); // Update after 5 seconds
 });
