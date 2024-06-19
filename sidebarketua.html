@@ -14,7 +14,7 @@
 </div>
 <ul class="nav-list">
   <li>
-    <a href="HodStartGame.html">
+    <a href="HodStartGame.html"  id="SBP-navigatebyRole">
       <i class="fa-solid fa-house"></i>
       <span class="link_name">Home</span>
     </a>
@@ -91,29 +91,35 @@
           switch (data.data.role) {
             case 'Penjaga Single':
               document.getElementById('SBP-navigatebyRole').href = 'PanitiaSingleInput.html';
+              break;
             case 'Admin':
               document.getElementById('SBP-navigatebyRole').href = 'DashboardHod.html';
+              break;
             case 'Ketua':
               document.getElementById('SBP-navigatebyRole').href = 'HodStartGame.html';
+              break;
             case 'Penjaga Duel':
               document.getElementById('SBP-navigatebyRole').href = 'PanitiaDuelFinish.html';
+              break;
           }
         } else {
           console.log('Authorization Failed');
           deleteCookie('Token');
-          window.location.href = 'LoginPanitia.html';
         }
       })
       .catch((error) => {
         console.error('Error occurred while fetching session:', error);
         deleteCookie('Token');
-        window.location.href = 'LoginPanitia.html';
       });
 
+    if (getCookie('Token') == null) {
+      logout();
     }
-    function logout() {
-      window.location.href = 'LoginPanitia.html';
-    }
+  }
+  function logout() {
+    window.location.href = 'LoginPanitia.html';
+  }
+
   fetchSession();
   // document.addEventListener('keydown', function (e) {
   //   if (e.which === 123) {

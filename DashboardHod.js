@@ -1,57 +1,61 @@
-$(document).ready(function() {
-<<<<<<< Updated upstream
-    $(".sidebar").load("sidebarHod.html", function() {
-        const toggleBtn = $("#toggle-btn, #burger-btn");
-        const logo = $(".logo_details .logo").eq(1); // Select the second logo
-        toggleBtn.on("click", function() {
-            $(".sidebar").toggleClass("open");
-            menuBtnChange();
-        });
-  
-        function menuBtnChange() {
-            if (sidebar.hasClass("open")) {
-                logo.hide();
-            } else {
-                logo.show();
-            }
-        }
-    });
-
-    $('.form-group select, .form-group input').each(function() {
-        // Check if the input is not empty on page load
-        if ($(this).val() !== '') {
-            $(this).addClass('not-empty');
-            $('.input-group .error').text('');
-        }
-
-        $(this).on('input', function() {
-            if ($(this).val() !== '') {
-                $(this).addClass('not-empty');
-                $('.input-group .error').text('');
-            } else {
-                $(this).removeClass('not-empty');
-                // $('.input-group .error').text('Winning team should be filled.');
-            }
-        });
-    });
-  
-    $('#toggle-btn').on('click', function() {
+$(document).ready(function () {
+  $('.sidebar').load('sidebarHod.html', function () {
+    const toggleBtn = $('#toggle-btn, #burger-btn');
+    const logo = $('.logo_details .logo').eq(1); // Select the second logo
+    toggleBtn.on('click', function () {
       $('.sidebar').toggleClass('open');
-      $(this).toggleClass('burger-icon');
+      menuBtnChange();
+    });
+
+    function menuBtnChange() {
+      if (sidebar.hasClass('open')) {
+        logo.hide();
+      } else {
+        logo.show();
+      }
+    }
   });
-  
-      $('#addGameButton').on('click', function() {
-          window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
-=======
-  $(".sidebar").load("sidebarHod.html", function() {
-      const toggleBtn = $("#toggle-btn, #burger-btn");
-      const logo = $(".logo_details .logo").eq(1); // Select the second logo
-      toggleBtn.on("click", function() {
-          $(".sidebar").toggleClass("open");
-          menuBtnChange();
->>>>>>> Stashed changes
+
+  $('.form-group select, .form-group input').each(function () {
+    // Check if the input is not empty on page load
+    if ($(this).val() !== '') {
+      $(this).addClass('not-empty');
+      $('.input-group .error').text('');
+    }
+
+    $(this).on('input', function () {
+      if ($(this).val() !== '') {
+        $(this).addClass('not-empty');
+        $('.input-group .error').text('');
+      } else {
+        $(this).removeClass('not-empty');
+        // $('.input-group .error').text('Winning team should be filled.');
+      }
+    });
+  });
+
+  $('#toggle-btn').on('click', function () {
+    $('.sidebar').toggleClass('open');
+    $(this).toggleClass('burger-icon');
+  });
+
+  $('#addGameButton').on('click', function () {
+    window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
+    $('.sidebar').load('sidebarHod.html', function () {
+      const toggleBtn = $('#toggle-btn, #burger-btn');
+      const logo = $('.logo_details .logo').eq(1); // Select the second logo
+      toggleBtn.on('click', function () {
+        $('.sidebar').toggleClass('open');
+        menuBtnChange();
       });
-  
+    });
+
+    $('.edit-btn').click(function () {
+        window.location.href = 'databoothpanitiahod.html';
+      });
+    });
+  });
+
   //   function adjustMainContent() {
   //       if ($(".sidebar").hasClass("open")) {
   //           $(".main-content").css({
@@ -65,7 +69,7 @@ $(document).ready(function() {
   //           });
   //       }
   //   }
-  
+
   //   $(window).resize(function() {
   //       if ($(window).width() <= 768) {
   //           $(".main-content").css({
@@ -82,21 +86,16 @@ $(document).ready(function() {
   //           adjustMainContent();
   //       }
   //   });
-  
-    $(".edit-btn").click(function() {
-      window.location.href = 'databoothpanitiahod.html';
-    });
-  
+
   //   $(".close-btn").click(function() {
   //       $("#popup").css("display", "none");
   //   });
-  
+
   //   $(window).click(function(event) {
   //       if ($(event.target).is("#popup")) {
   //           $("#popup").css("display", "none");
   //       }
   //   });
-  
-    // adjustMainContent();
-  });
-  
+
+  // adjustMainContent();
+

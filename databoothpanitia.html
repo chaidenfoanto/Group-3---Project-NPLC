@@ -7,11 +7,11 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="databoothpanitia.css">
-    <link rel="stylesheet" href="sidebarHod.css">
+    <link rel="stylesheet" href="sidebarpanitia.css">
     </head>
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="databoothpanitiahod.js"></script>
+    <script src="databoothpanitia.js"></script>
         
     <div class = "container">
       <div class="sidebar"></div>
@@ -35,14 +35,14 @@
                   <span class="error-message" id="boothNameError"></span>
                 </div>
                   <div class="input-group">
-                    <select id="guard1Name" name="guard1Name">
+                    <select id="guard1Name" name="guard1Name" disabled>
                       <option value=""></option>
                     </select>
                     <label class = "placeholder">Penjaga Booth 1</label>
                     <span class="error-message" id="guard1NameError"></span>
                   </div>
                   <div class="input-group">
-                    <select id="guard2Name" name="guard2Name">
+                    <select id="guard2Name" name="guard2Name" disabled>
                       <option value=""></option>
                     </select>
                     <label class = "placeholder">Penjaga Booth 2</label>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="form-group">
                   <div class="input-group">
-                    <select id="noRuangan" name="noRuangan">
+                    <select id="noRuangan" name="noRuangan" disabled>
                       <option value=""></option>
                     </select>
                     <label class = "placeholder">No. Ruangan</label>
@@ -76,12 +76,46 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" id="save" class = "btn ok">Simpan</button>
-                    <button type="button" id="delete" class = "btn cancel">Hapus</button>
-                </div>
+                    <!-- <button type="button" id="delete" class = "btn cancel">Hapus</button>
+                </div> -->
                 
             </form>
         </div>
       </div>
     </div>
     <script src="apiDataBoothPanitia.js"></script>
+    <script>
+      function getCookie(name) {
+        let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
+        for (let i = 0; i < cookieArr.length; i++) {
+          let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
+          if (name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
+          }
+        }
+        return null; // Mengembalikan null jika cookie tidak ditemukan
+      }
+    
+      function logout() {
+        window.location.href = 'LoginPanitia.html';
+      }
+    
+      function fetchRole() {
+        fetch ('http://localhost:8080/api/login/check/penjagasingle', {
+          method: 'GET',
+          headers: { Token: getCookie('Token') },
+        })
+        .then((response) => response.json())
+        .then((data) => { 
+          if (!data.error) {
+            if(data.data.accessGranted) {
+              console.log('access granted');
+            } else {
+              logout();
+            }
+          }
+        })
+      }
+      fetchRole();
+    </script>
 </body>

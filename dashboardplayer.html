@@ -10,19 +10,19 @@
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
-    >
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+    />
     <link
       rel="stylesheet"
       href="dashboardplayer.css"
-    >
+    />
     <link
       rel="stylesheet"
       href="sidebarplayer.css"
-    >
+    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
 
@@ -34,7 +34,12 @@
           <h1>Selamat Datang Player!</h1>
           <div class="points">
             <p>Total Points:</p>
-            <p class="total" id="total">0</p>
+            <p
+              class="total"
+              id="total"
+            >
+              0
+            </p>
           </div>
           <div class="timer">
             <p>Remaining Time:</p>
@@ -79,9 +84,43 @@
         </div>
         <h2>List Games</h2>
         <div class="games-list"></div>
-body      </div>
+      </div>
     </div>
     <script src="apiDasboardPlayer.js"></script>
     <script src="dashboardplayer.js"></script>
+    <script>
+      function getCookie(name) {
+        let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
+        for (let i = 0; i < cookieArr.length; i++) {
+          let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
+          if (name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
+          }
+        }
+        return null; // Mengembalikan null jika cookie tidak ditemukan
+      }
+    
+      function logout() {
+        window.location.href = 'LoginPanitia.html';
+      }
+    
+      function fetchRole() {
+        fetch ('http://localhost:8080/api/login/check/pelayer', {
+          method: 'GET',
+          headers: { Token: getCookie('Token') },
+        })
+        .then((response) => response.json())
+        .then((data) => { 
+          if (!data.error) {
+            if(data.data.accessGranted) {
+              console.log('access granted');
+            } else {
+              logout();
+            }
+          }
+        })
+      }
+      fetchRole();
+    </script>
   </body>
 </html>

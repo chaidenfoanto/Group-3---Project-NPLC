@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".sidebar").load("sidebarHod.html", function() {
+    $(".sidebar").load("sidebarPanitia.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {
@@ -100,19 +100,19 @@ $(document).ready(function() {
             boothNameError.textContent = '';
         }
 
-        if (guard1NameInput.value.trim() === '') {
-            guard1NameError.textContent = 'Penjaga Booth 1 tidak boleh kosong';
-            isError = true;
-        } else {
-            guard1NameError.textContent = '';
-        }
+        // if (guard1NameInput.value.trim() === '') {
+        //     guard1NameError.textContent = 'Penjaga Booth 1 tidak boleh kosong';
+        //     isError = true;
+        // } else {
+        //     guard1NameError.textContent = '';
+        // }
 
-        if (guard2NameInput.value.trim() === '') {
-            guard2NameError.textContent = 'Penjaga Booth 2 tidak boleh kosong';
-            isError = true;
-        } else {
-            guard2NameError.textContent = '';
-        }
+        // if (guard2NameInput.value.trim() === '') {
+        //     guard2NameError.textContent = 'Penjaga Booth 2 tidak boleh kosong';
+        //     isError = true;
+        // } else {
+        //     guard2NameError.textContent = '';
+        // }
 
         if (howtoplayInput.value.trim() === '') {
             howtoplayError.textContent = 'Cara Bermain tidak boleh kosong';
@@ -121,12 +121,12 @@ $(document).ready(function() {
             howtoplayError.textContent = '';
         }
 
-        if (noRuanganInput.value.trim() === '') {
-            noRuanganError.textContent = 'No. Ruangan tidak boleh kosong';
-            isError = true;
-        } else {
-            noRuanganError.textContent = '';
-        }
+        // if (noRuanganInput.value.trim() === '') {
+        //     noRuanganError.textContent = 'No. Ruangan tidak boleh kosong';
+        //     isError = true;
+        // } else {
+        //     noRuanganError.textContent = '';
+        // }
 
         if (tipeGameInput.value === '') {
             tipeGameError.textContent = 'Tipe Game harus dipilih';

@@ -79,8 +79,9 @@
             border-radius: 8px;
             padding: 15px 0;
         }
-        .team {
+        .team, .card {
             display: flex;
+            flex: 1;
             align-items: center;
             flex: 1;
             margin: 0 10px;
@@ -120,7 +121,6 @@
         .start button:hover {
             background-color: #2c8ec1;
         }
-
         .modal {
             display: none; 
             position: fixed; 
@@ -132,21 +132,6 @@
             overflow: auto; 
             background-color: rgb(0,0,0); 
             background-color: rgba(0,0,0,0.4); 
-            padding-top: 60px;
-        }
-
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
-            padding-top: 60px;
         }
 
         .modal-content {
@@ -162,10 +147,13 @@
             position: absolute;
         }
 
+        .sidebar.open ~ .main-content .modal-content {
+            left: calc(125px + 50%);
+        }
+
         .close {
             color: #aaa;
             float: right;
-            font-size: 28px;
             font-weight: bold;
         }
 
@@ -229,17 +217,17 @@
             background-color: white;
         }
 
-        .time-container {
+        .modal-inner-container {
             display: flex;
             justify-content: space-between;
         }
 
-        .time-container div {
+        .modal-inner-container div {
             flex: 1;
             margin-right: 10px;
         }
 
-        .time-container div:last-child {
+        .modal-inner-container div:last-child {
             margin-right: 0;
         }
 
@@ -299,12 +287,16 @@
             box-sizing: border-box;
         }
 
-        .team {
-            flex: 1 1 20%;
+        .history-group.time {
+            flex: 1 1 25%;
         }
 
-        .time {
+        .history-cell.team {
             flex: 1 1 10%;
+        }
+
+        .history-cell {
+            flex: 1;
         }
         
         .history-cell[data-label="VS"] {
@@ -321,27 +313,15 @@
             margin-bottom: 5px;
         }
 
-        .error {
+        .errorteam {
             color: red;
             font-size: 14px;
             margin-top: 5px;
         }
 
-        .sidebar.open ~ .main-content .modal-content {
-            left: calc(125px + 50%);
-        }
-
         .history-group {
             display: flex;
             flex-direction: row;
-        }
-        
-        .history-group.team {
-            flex: 1 1 45%;
-        }
-
-        .history-group.time {
-            flex: 1 1 30%;
         }
 
     @media (max-width: 480px) {
@@ -376,7 +356,7 @@
         .timer .timefill{
             font-size: 25px;
         }
-        .time-container {
+        .modal-inner-container {
             flex-direction: column;
         }
         .history-cell.team p:first-child,
@@ -391,6 +371,12 @@
         }
         .history-group {
             flex-direction: row;
+        }
+        .pcard::after, .pstar::after, .pduration::after {
+            content: ' : '
+        }
+        .space::before {
+            content: ' ';
         }
         .sidebar.open ~ .main-content .modal-content {
             left: 50%;
@@ -416,5 +402,6 @@
         .modal-content {
             width: 80%;
             left: 50%;
+            top: calc(50% + 40px);
         }
     }

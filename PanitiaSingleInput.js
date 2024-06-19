@@ -73,12 +73,12 @@ $(document).ready(function() {
             if (totalSeconds <= 0 || $('#startButton').text() === "Start Game") {
                 clearInterval(interval);
                 $('#startButton').text("Start Game");
-                if (totalSeconds <= 0)
+                if (totalSeconds <= 0) {
+                    setCurrentTimeForTimeInput('#timeFinished');
                     showModal();
-                else
-                    alert('Game telah diakhiri!');
+                } else {
                 showModal();
-                // showModal();
+                }
             }
         }, 1000);
     }
@@ -190,21 +190,20 @@ $(document).ready(function() {
         });
     });
 
-    // $('.close').on('click', function() {
-    //     $('#gameEndModal').hide();
-    // });
+    $('.close').on('click', function() {
+        $('#gameEndModal').hide();
+    });
 
-    // $(window).on('click', function(event) {
-    //     if (event.target == modal[0]) {
-    //         $('#gameEndModal').hide();
-    //     }
-    // });
-
-    // const teamName = teamData[teamId] 
+    $(window).on('click', function(event) {
+        if (event.target == modal[0]) {
+            $('#gameEndModal').hide();
+        }
+    }); 
 
     $('#starEarned').on('change', function() {
         const team = $('#teamplayed').val();
         const star = $('#starEarned').val();
+        const card = $('#cardskill').val();
 
         if (star === "1") {
             $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${team}`);
@@ -214,6 +213,19 @@ $(document).ready(function() {
         }
         else if (star === "3") {
             $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else {
+            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
+        }
+
+        if (star === "1" && card === "Double Point") {
+            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else if (star === "2") {
+            $('#pointsMessage').text(`120 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else if (star === "3") {
+            $('#pointsMessage').text(`200 POINTS WILL BE GIVEN TO ${team}`);
         }
         else {
             $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
@@ -267,4 +279,4 @@ $(document).ready(function() {
     });
 
     $('#history').bind('DOMNodeInserted DOMNodeRemoved', checkHistory);
-});
+})

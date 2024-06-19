@@ -43,26 +43,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 openPopup('popup-wrong');
             }
         } catch (error) {
-            showErrorMessage('Login gagal: Harap isi username dan password' );
+            popupOverlay.addEventListener('click', function() {
+                closePopup('popup-wrong');
+            });
         }
         popupOverlay.addEventListener('click', function() {
             closePopup('popup-wrong');
         });
     });
+})
 
-    function deleteCookie(name) {
-        document.cookie = name + '=; Max-Age=-99999999;';
+function setCookie(name, value, daysToLive) {
+    let cookie = name + "=" + encodeURIComponent(value);
+    if (typeof daysToLive === "number") {
+        cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
+        document.cookie = cookie;
     }
+}
 
-    function setCookie(name, value, daysToLive) {
-        let cookie = name + "=" + encodeURIComponent(value);
-        if (typeof daysToLive === "number") {
-            cookie += "; max-age=" + (daysToLive*24*60*60) + "; path=/";
-            document.cookie = cookie;
-        }
-    }
+function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
+  }
 
-    deleteCookie("Token");
+deleteCookie("Token");
+    
     
     //     const fileInputs = inputs.filter(input => input.type === 'file');
     //     const anyFileUploaded = fileInputs.some(input => input.files[0]);
@@ -157,5 +161,3 @@ document.addEventListener('DOMContentLoaded', function () {
     //         console.error('Error:', error);
     //     });
     // });
-    
-});

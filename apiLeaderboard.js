@@ -13,9 +13,33 @@ $(document).ready(function () {
   }
 
   function fetchLeaderBoard() {
-    fetch(domain + '', {
+    fetch(domain + 'api/team', {
       method: 'GET',
       headers: { Token: getCookie('Token') },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if(!data.error) {
+        const leaderboardBody = $('#leaderboard-body');
+        leaderboardBody.empty();
+        data.data.sort((a, b) => b.totalPoin - a.totalPoin); // Sortir berdasarkan total poin, descending
+        data.data.forEach((team, index) => {
+          const row = `<tr>
+                         <td>${index + 1}</td>
+                         <td>${team.namaTeam}</td>
+                         <td>${index+1}/18</td>
+                         <td>${team.totalPoin}</td>
+                       </tr>`;
+          leaderboardBody.append(row);
+        });
+      } else {
+        console.error("Error fetching leaderboard data: ", data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error: ", error);
     });
   }
+
+  fetchLeaderBoard();
 });
