@@ -265,6 +265,41 @@ public class BoothgamesController {
                 .body(response);
     }
 
+    @GetMapping("/getAvailableDatas")
+    public ResponseEntity<Response> getAvailableDatas(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get Boothgame Available Datas for Input");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    response.setMessage("Data Successfully Retrieved");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(boothgamesService.getAvailableDatas());
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/getById/{id}")
     public ResponseEntity<Response> getBoothgameById(HttpServletRequest request,
             @PathVariable("id") String id) {

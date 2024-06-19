@@ -2,6 +2,7 @@ package com.restfulnplc.nplcrestful.service;
 
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
+import com.restfulnplc.nplcrestful.model.Lokasi;
 import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.repository.BoothgamesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.ArrayList;
 
 @Service
 public class BoothgamesService {
@@ -40,6 +43,36 @@ public class BoothgamesService {
         return boothgamesRepository.findAll();
     }
 
+    public Object getAvailableDatas() {
+        ArrayList<Object> listAvailablePanitia = new ArrayList<Object>();
+        ArrayList<Object> listAvailableLokasi = new ArrayList<Object>();
+        for(Panitia panitia : panitiaService.getAllPanitia()) {
+            if(!getBoothgameByPanitia(panitia.getIdPanitia()).isPresent()) {
+                listAvailablePanitia.add(
+                    Map.of(
+                        "namaPanitia", panitia.getNama()
+                    )
+                );
+            }
+        }
+
+        for(Lokasi lokasi : lokasiService.getAllLokasi()) {
+            if(!getBoothgameByLokasi(lokasi.getNoRuangan()).isPresent()) {
+                listAvailableLokasi.add(
+                    Map.of(
+                        "noRuangan", lokasi.getNoRuangan()
+                    )
+                );
+            }
+        }
+
+        Object result = Map.of(
+            "listPanitia", listAvailablePanitia,
+            "listLokasi", listAvailableLokasi
+        );
+        return result;
+    }
+
     public Optional<Boothgames> getBoothgameById(String id) {
         return boothgamesRepository.findById(id);
     }
@@ -55,6 +88,16 @@ public class BoothgamesService {
                 if (boothgame.getIdPenjaga1().equals(panitia)) {
                     return Optional.of(boothgame);
                 }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Boothgames> getBoothgameByLokasi(String noruangan) {
+        Lokasi lokasi = lokasiService.getLokasiById(noruangan).get();
+        for (Boothgames boothgame : getAllBoothgames()) {
+            if(boothgame.getLokasi().equals(lokasi)) {
+                return Optional.of(boothgame);
             }
         }
         return Optional.empty();
