@@ -20,7 +20,9 @@ $(document).ready(function () {
 
   function setCurrentTimeForTimeInput(selector) {
     var now = new Date();
-    var formattedTime = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2) + ':' + ('0' + now.getSeconds()).slice(-2);
+    var formattedTime = ('0' + now.getHours()).slice(-2) + ':' + 
+                        ('0' + now.getMinutes()).slice(-2) + ':' + 
+                        ('0' + now.getSeconds()).slice(-2);
     $(selector).val(formattedTime);
   }
 
@@ -32,6 +34,7 @@ $(document).ready(function () {
 
   function showModal() {
     $('#gameEndModal').show();
+    $(".sidebar").toggleClass("disable");
     setCurrentTimeForTimeInput('#timeFinished');
     calculateDuration();
     $('#teamPlayed').val($('#teamname').val());
@@ -69,7 +72,7 @@ $(document).ready(function () {
       var minutes = Math.floor(totalSeconds / 60);
       var seconds = totalSeconds % 60;
 
-      $('#timefill').text(pad(minutes) + ':' + pad(seconds));
+      $('.timeleft').text(pad(minutes) + ':' + pad(seconds));
 
       if (totalSeconds <= 0 || $('#startButton').text() === 'Start Game') {
         clearInterval(interval);
@@ -78,7 +81,7 @@ $(document).ready(function () {
           setCurrentTimeForTimeInput('#timeFinished');
           showModal();
         } else {
-          clearform();
+          showModal();
         }
       }
     }, 1000);
@@ -89,11 +92,10 @@ $(document).ready(function () {
     clearInterval(interval);
     setCurrentTimeForTimeInput('#timeFinished'); // Set waktu selesai saat menghentikan timer
     showModal();
-    clearform();
   }
 
   function clearform() {
-    $('#timefill').text(timer);
+    $('.timeleft').text(timer);
     $('#teamname').val('');
     timeStartedSet = false; // Reset flag saat form dibersihkan
   }
@@ -179,7 +181,7 @@ $(document).ready(function () {
     }
 
     // Add event listener for input events
-    $(this).on('input', function () {
+    $(this).on('change', function () {
       if ($(this).val() !== '') {
         $(this).addClass('not-empty');
         $('.input-group .error').text('');
@@ -190,11 +192,11 @@ $(document).ready(function () {
     });
   });
 
-  $('.startButton').on('click', function () {
-    setCurrentTime('#timeStarted');
-    setCurrentTime('#timeFinished');
-    calculateDuration();
-  });
+  // $('.startButton').on('click', function () {
+  //   setCurrentTime('#timeStarted');
+  //   setCurrentTime('#timeFinished');
+  //   calculateDuration();
+  // });
 
   $('.close').on('click', function () {
     $('#gameEndModal').hide();
@@ -252,9 +254,11 @@ $(document).ready(function () {
         `);
 
     $('#history').append(historyItem);
-    $('#gameEndModal').hide();
-    $('.input-group input').removeClass('not-empty');
     clearform();
+
+    $('#gameEndModal').hide();
+    $('#gameEndForm')[0].reset();
+    
     checkHistory();
   });
 });

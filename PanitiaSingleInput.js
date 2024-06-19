@@ -73,11 +73,12 @@ $(document).ready(function() {
             if (totalSeconds <= 0 || $('#startButton').text() === "Start Game") {
                 clearInterval(interval);
                 $('#startButton').text("Start Game");
-                if (totalSeconds <= 0)
+                if (totalSeconds <= 0) {
+                    setCurrentTimeForTimeInput('#timeFinished');
                     showModal();
-                else
+                } else {
                 showModal();
-                // showModal();
+                }
             }
         }, 1000);
     }
@@ -197,9 +198,7 @@ $(document).ready(function() {
         if (event.target == modal[0]) {
             $('#gameEndModal').hide();
         }
-    });
-
-    // const teamName = teamData[teamId] 
+    }); 
 
     $('#starEarned').on('change', function() {
         const team = $('#teamplayed').val();
@@ -280,4 +279,4 @@ $(document).ready(function() {
     });
 
     $('#history').bind('DOMNodeInserted DOMNodeRemoved', checkHistory);
-});
+})

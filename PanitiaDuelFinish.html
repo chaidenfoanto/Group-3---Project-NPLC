@@ -62,6 +62,7 @@
             <!-- <span class="close">&times;</span> -->
             <h1>Game Has Ended</h1>
             <form id = "gameEndForm">
+              <div class="modal-inner-container">
               <div class = "input-group">
                 <select id="winningTeam">
                     <option value=""></option>
@@ -71,20 +72,21 @@
                 <label class = "placeholder" for="winningTeam">Winning Team</label>
                 <span class = "error"></span>
               </div>
-                <div class="time-container">
-                    <div class = "input-group">
-                        <input type="time" id="timeStarted" step = "1" disabled>
-                        <label class = "placeholder" for="timeStarted">Time Started</label>
-                    </div>
-                    <div class = "input-group">
-                        <input type="time" id="timeFinished" step = "1" disabled>
-                        <label class = "placeholder" for="timeFinished">Time Finished</label>
-                    </div>
-                    <div class = "input-group">
-                        <input type="text" id="duration" disabled>
-                        <label class = "placeholder" for="duration">Duration</label>
-                    </div>
+            </div>
+              <div class="modal-inner-container">
+                <div class = "input-group">
+                    <input type="time" id="timeStarted" step = "1" disabled>
+                    <label class = "placeholder" for="timeStarted">Time Started</label>
                 </div>
+                <div class = "input-group">
+                    <input type="time" id="timeFinished" step = "1" disabled>
+                    <label class = "placeholder" for="timeFinished">Time Finished</label>
+                </div>
+                <div class = "input-group">
+                    <input type="text" id="duration" disabled>
+                    <label class = "placeholder" for="duration">Duration</label>
+                </div>
+            </div>
                 <p id="pointsMessage">100 POINTS WILL BE GIVEN TO ...</p>
                 <button type="submit">Save Changes</button>
             </form>
@@ -93,4 +95,20 @@
   </div>
 </div>
 <script src="apiPanitiaDuel.js"></script>
+<script>
+
+
+  function fetchRole() {
+    fetch ('http://localhost:8080/api/check/penjaga duel', {
+      method: 'GET',
+      headers: { Token: getCookie('Token') },
+    })
+    .then((response) => response.json())
+    .then((data) => { 
+      if (!data.error) {
+        
+      }
+    })
+  }
+</script>
 </body>
