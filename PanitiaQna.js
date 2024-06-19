@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".sidebar").load("sidebarplayer.html", function() {
+    $(".sidebar").load("sidebarpanitia.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
         toggleBtn.on("click", function() {
