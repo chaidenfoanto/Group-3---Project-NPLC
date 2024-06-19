@@ -47,7 +47,7 @@ $(document).ready(function () {
             // Membuat kartu permainan tergantung pada jenis permainan (Duel atau Single)
             if (boothData.tipeGame == 'Duel') {
               var gameCard = `
-              <div class="game-card" onclick="gameCardClick(${boothData.idBoothGame})">  
+              <div class="game-card" onclick="gameCardClick('${boothData.idBoothGame}')">  
               <img
                 src="${boothData.fotoBooth}"
                 alt="${boothData.namaBoothGame}"
@@ -71,7 +71,7 @@ $(document).ready(function () {
               `;
             } else {
               var gameCard = `
-              <div class="game-card" onclick="gameCardClick(${boothData.idBoothGame})">  
+              <div class="game-card" onclick="gameCardClick('${boothData.idBoothGame}')">  
               <img
                 src="${boothData.fotoBooth}"
                 alt="${boothData.namaBoothGame}"
