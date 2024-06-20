@@ -1,9 +1,22 @@
 package com.restfulnplc.nplcrestful.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
@@ -12,18 +25,13 @@ import com.restfulnplc.nplcrestful.model.Singlematch;
 import com.restfulnplc.nplcrestful.model.Tipegame;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.service.DuelMatchService;
-import com.restfulnplc.nplcrestful.service.SinglematchService;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.SinglematchService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -409,6 +417,56 @@ public class BoothgamesController {
                 }
             } else {
                 response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PutMapping("/updateSOP/{id}")
+    public ResponseEntity<Response> updateSOP(HttpServletRequest request, @PathVariable("id") String id,
+            @RequestBody BoothgamesDTO boothgamesDTO) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Update SOP Boothgame");
+        try {
+            if (loginService.checkSessionPanitia(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken)) {
+                    Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
+                    if (boothgameOptional.isPresent()) {
+                        Boothgames boothgame = boothgameOptional.get();
+                        boothgame.setSopGames(boothgamesDTO.getSopGames());
+                        boothgame = boothgamesService.updateBoothgame(id, boothgamesDTO).get();
+
+                        response.setMessage("SOP Boothgame Berhasil Diupdate");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.OK);
+                        response.setData(Map.of(
+                                "idBoothGame", boothgame.getIdBooth(),
+                                "sopGame", boothgame.getSopGames()));
+                    } else {
+                        response.setMessage("Boothgame Tidak Ditemukan");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.NOT_FOUND);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Akses Ditolak");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Autorisasi Gagal");
                 response.setError(true);
                 response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));
