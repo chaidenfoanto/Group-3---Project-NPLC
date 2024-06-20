@@ -1,8 +1,6 @@
 $(document).ready(function () {
-    // Fungsi ini memastikan bahwa kode di dalamnya dijalankan setelah dokumen HTML selesai dimuat
     const domain = 'http://localhost:8080/'; // Basis domain untuk permintaan API
   
-    // Fungsi untuk mendapatkan cookie tertentu berdasarkan nama
     function getCookie(name) {
       let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
       for (let i = 0; i < cookieArr.length; i++) {
@@ -36,4 +34,19 @@ $(document).ready(function () {
         });
     }
 
+    $('#uploadButton').on('click', function () {
+        const fileInput = document.getElementById('csvFileInput');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            Papa.parse(file, {
+                header: true,
+                complete: function (results) {
+                    const data = results.data;
+                    postCSVData(data);
+                }
+            });
+        } else {
+            alert("Please select a file.");
+        }
+    });
 });

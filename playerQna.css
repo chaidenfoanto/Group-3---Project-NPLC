@@ -233,7 +233,7 @@ header h1 {
     text-decoration: underline;
 }
 
-/* CSS for popups */
+/* CSS popup question box */
 .popup {
     display: none; /* Ensure popups are hidden initially */
     position: fixed;

@@ -17,6 +17,8 @@ $(document).ready(function() {
         }
     });
 
+    $('.popup').hide();
+    
     // Function to open the question popup
     $('#addQuestionBtn').click(function() {
         $('#popup').fadeIn();
