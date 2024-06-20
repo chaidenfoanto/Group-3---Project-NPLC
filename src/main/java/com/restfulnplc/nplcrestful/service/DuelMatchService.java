@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -96,14 +97,40 @@ public class DuelMatchService {
         return Optional.empty();
     }
 
-    public ArrayList<DuelMatch> getDuelMatchesByUser(String userId) {
+    public ArrayList<DuelMatch> getDuelMatchesByUser(String idTeam) {
         ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
         for (DuelMatch duelMatch : getAllDuelMatches()) {
-            if (duelMatch.getTeam1().getIdTeam().equals(userId) || duelMatch.getTeam2().getIdTeam().equals(userId)) {
+            if (duelMatch.getTeam1().getIdTeam().equals(idTeam) || duelMatch.getTeam2().getIdTeam().equals(idTeam)) {
                 duelMatchArray.add(duelMatch);
             }
         }
         return duelMatchArray;
+    }
+
+    public ArrayList<DuelMatch> getWinningDuelMatchesByUser(String idTeam) {
+        ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
+            if (duelMatch.getTimMenang().getIdTeam().equals(idTeam)) {
+                duelMatchArray.add(duelMatch);
+            }
+        }
+        return duelMatchArray;
+    }
+
+    public Object getDuelMatchesStatByUser(String idTeam) {
+        ArrayList<DuelMatch> duelMatchArray = new ArrayList<DuelMatch>();
+        ArrayList<DuelMatch> duelMatchWinArray = new ArrayList<DuelMatch>();
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
+            if (duelMatch.getTeam1().getIdTeam().equals(idTeam) || duelMatch.getTeam2().getIdTeam().equals(idTeam)) {
+                duelMatchArray.add(duelMatch);
+            }
+            if (duelMatch.getTimMenang().getIdTeam().equals(idTeam)) {
+                duelMatchWinArray.add(duelMatch);
+            }
+        }
+        return Map.of(
+                "duelMatchPlayed", duelMatchArray.size(),
+                "duelMatchWon", duelMatchWinArray.size());
     }
 
     public ArrayList<DuelMatch> getDuelMatchesByUserAndBooth(String userId, String boothId) {

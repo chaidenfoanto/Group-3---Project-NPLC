@@ -2,8 +2,10 @@ package com.restfulnplc.nplcrestful.service;
 
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
+import com.restfulnplc.nplcrestful.model.Divisi;
 import com.restfulnplc.nplcrestful.model.Lokasi;
 import com.restfulnplc.nplcrestful.model.Panitia;
+import com.restfulnplc.nplcrestful.model.Tipegame;
 import com.restfulnplc.nplcrestful.repository.BoothgamesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,30 +48,27 @@ public class BoothgamesService {
     public Object getAvailableDatas() {
         ArrayList<Object> listAvailablePanitia = new ArrayList<Object>();
         ArrayList<Object> listAvailableLokasi = new ArrayList<Object>();
-        for(Panitia panitia : panitiaService.getAllPanitia()) {
-            if(!getBoothgameByPanitia(panitia.getIdPanitia()).isPresent()) {
+        for (Panitia panitia : panitiaService.getAllPanitia()) {
+            if (!getBoothgameByPanitia(panitia.getIdPanitia()).isPresent() && !panitia.getIsAdmin()
+                    && !panitia.getDivisi().equals(Divisi.KETUAACARA)) {
                 listAvailablePanitia.add(
-                    Map.of(
-                        "namaPanitia", panitia.getNama()
-                    )
-                );
+                        Map.of(
+                                "idPanitia", panitia.getIdPanitia(),
+                                "namaPanitia", panitia.getNama()));
             }
         }
 
-        for(Lokasi lokasi : lokasiService.getAllLokasi()) {
-            if(!getBoothgameByLokasi(lokasi.getNoRuangan()).isPresent()) {
+        for (Lokasi lokasi : lokasiService.getAllLokasi()) {
+            if (!getBoothgameByLokasi(lokasi.getNoRuangan()).isPresent()) {
                 listAvailableLokasi.add(
-                    Map.of(
-                        "noRuangan", lokasi.getNoRuangan()
-                    )
-                );
+                        Map.of(
+                                "noRuangan", lokasi.getNoRuangan()));
             }
         }
 
         Object result = Map.of(
-            "listPanitia", listAvailablePanitia,
-            "listLokasi", listAvailableLokasi
-        );
+                "listPanitia", listAvailablePanitia,
+                "listLokasi", listAvailableLokasi);
         return result;
     }
 
@@ -78,15 +77,18 @@ public class BoothgamesService {
     }
 
     public Optional<Boothgames> getBoothgameByPanitia(String id) {
-        Panitia panitia = panitiaService.getPanitiaById(id).get();
-        for (Boothgames boothgame : getAllBoothgames()) {
-            if (boothgame.getIdPenjaga2() != null) {
-                if (boothgame.getIdPenjaga1().equals(panitia) || boothgame.getIdPenjaga2().equals(panitia)) {
-                    return Optional.of(boothgame);
-                }
-            } else {
-                if (boothgame.getIdPenjaga1().equals(panitia)) {
-                    return Optional.of(boothgame);
+        Optional<Panitia> panitiaOptional = panitiaService.getPanitiaById(id);
+        if (panitiaOptional.isPresent()) {
+            Panitia panitia = panitiaOptional.get();
+            for (Boothgames boothgame : getAllBoothgames()) {
+                if (boothgame.getIdPenjaga2() != null) {
+                    if (boothgame.getIdPenjaga1().equals(panitia) || boothgame.getIdPenjaga2().equals(panitia)) {
+                        return Optional.of(boothgame);
+                    }
+                } else {
+                    if (boothgame.getIdPenjaga1().equals(panitia)) {
+                        return Optional.of(boothgame);
+                    }
                 }
             }
         }
@@ -96,11 +98,47 @@ public class BoothgamesService {
     public Optional<Boothgames> getBoothgameByLokasi(String noruangan) {
         Lokasi lokasi = lokasiService.getLokasiById(noruangan).get();
         for (Boothgames boothgame : getAllBoothgames()) {
-            if(boothgame.getLokasi().equals(lokasi)) {
+            if (boothgame.getLokasi().equals(lokasi)) {
                 return Optional.of(boothgame);
             }
         }
         return Optional.empty();
+    }
+
+    public ArrayList<Boothgames> getSingleGames() {
+        ArrayList<Boothgames> result = new ArrayList<Boothgames>();
+        for (Boothgames boothgame : getAllBoothgames()) {
+            if (boothgame.getTipegame().equals(Tipegame.SINGLE)) {
+                result.add(boothgame);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Boothgames> getDuelGames() {
+        ArrayList<Boothgames> result = new ArrayList<Boothgames>();
+        for (Boothgames boothgame : getAllBoothgames()) {
+            if (boothgame.getTipegame().equals(Tipegame.DUEL)) {
+                result.add(boothgame);
+            }
+        }
+        return result;
+    }
+
+    public Object getGameStats() {
+        ArrayList<Boothgames> duelGames = new ArrayList<Boothgames>();
+        ArrayList<Boothgames> singleGames = new ArrayList<Boothgames>();
+        for (Boothgames boothgame : getAllBoothgames()) {
+            if (boothgame.getTipegame().equals(Tipegame.DUEL)) {
+                duelGames.add(boothgame);
+            } else {
+                singleGames.add(boothgame);
+            }
+        }
+        return Map.of(
+                "totalGame", duelGames.size() + singleGames.size(),
+                "singleGame", singleGames.size(),
+                "duelGame", duelGames.size());
     }
 
     public Optional<Boothgames> updateBoothgame(String id, BoothgamesDTO boothgamesDTO) {

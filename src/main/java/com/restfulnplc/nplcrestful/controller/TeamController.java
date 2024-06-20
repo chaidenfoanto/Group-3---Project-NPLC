@@ -15,6 +15,7 @@ import com.restfulnplc.nplcrestful.service.TeamService;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.service.SinglematchService;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
+import com.restfulnplc.nplcrestful.service.LeaderboardService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
@@ -46,6 +47,9 @@ public class TeamController {
     @Autowired
     private BoothgamesService boothgamesService;
 
+    @Autowired
+    private LeaderboardService leaderboardService;
+
     private Response response = new Response();
 
     @PostMapping
@@ -61,12 +65,11 @@ public class TeamController {
                         response.setError(false);
                         response.setHttpCode(HTTPCode.CREATED);
                         ArrayList<Object> playerList = new ArrayList<Object>();
-                        for(Players player : newTeam.getPlayers()) {
+                        for (Players player : newTeam.getPlayers()) {
                             playerList.add(Map.of(
-                                "idPlayer", player.getIdPlayer(),
-                                "nama", player.getNama(),
-                                "foto", player.getFoto()
-                            ));
+                                    "idPlayer", player.getIdPlayer(),
+                                    "nama", player.getNama(),
+                                    "foto", player.getFoto()));
                         }
                         response.setData(Map.of(
                                 "idTeam", newTeam.getIdTeam(),
@@ -121,12 +124,11 @@ public class TeamController {
                     ArrayList<Object> listData = new ArrayList<>();
                     for (Team team : teamList) {
                         ArrayList<Object> playerList = new ArrayList<Object>();
-                        for(Players player : team.getPlayers()) {
+                        for (Players player : team.getPlayers()) {
                             playerList.add(Map.of(
-                                "idPlayer", player.getIdPlayer(),
-                                "nama", player.getNama(),
-                                "foto", player.getFoto()
-                            ));
+                                    "idPlayer", player.getIdPlayer(),
+                                    "nama", player.getNama(),
+                                    "foto", player.getFoto()));
                         }
                         listData.add(Map.of(
                                 "idTeam", team.getIdTeam(),
@@ -204,6 +206,41 @@ public class TeamController {
                 .body(response);
     }
 
+    @GetMapping("/getLeaderboard")
+    public ResponseEntity<Response> getLeaderboard(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get Leaderboard");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionPanitia(sessionToken)) {
+                    response.setMessage("Leaderboard Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(leaderboardService.getLeaderboard());
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response> getTeamById(HttpServletRequest request, @PathVariable("id") String id) {
         String sessionToken = request.getHeader("Token");
@@ -217,13 +254,12 @@ public class TeamController {
                     response.setError(false);
                     response.setHttpCode(HTTPCode.OK);
                     ArrayList<Object> playerList = new ArrayList<Object>();
-                        for(Players player : team.getPlayers()) {
-                            playerList.add(Map.of(
+                    for (Players player : team.getPlayers()) {
+                        playerList.add(Map.of(
                                 "idPlayer", player.getIdPlayer(),
                                 "nama", player.getNama(),
-                                "foto", player.getFoto()
-                            ));
-                        }
+                                "foto", player.getFoto()));
+                    }
                     response.setData(Map.of(
                             "idTeam", team.getIdTeam(),
                             "namaTeam", team.getNama(),

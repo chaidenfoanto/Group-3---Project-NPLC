@@ -57,10 +57,10 @@ public class SinglematchService {
         return singlematchRepository.save(singlematch);
     }
 
-    public ArrayList<Singlematch> getSinglematchesByUser(String userId) {
+    public ArrayList<Singlematch> getSinglematchesByUser(String idTeam) {
         ArrayList<Singlematch> singlematchArray = new ArrayList<Singlematch>();
         for (Singlematch singlematch : getAllSinglematches()) {
-            if (singlematch.getTeam().getIdTeam().equals(userId)) {
+            if (singlematch.getTeam().getIdTeam().equals(idTeam)) {
                 singlematchArray.add(singlematch);
             }
         }
