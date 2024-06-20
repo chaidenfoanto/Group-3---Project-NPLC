@@ -235,7 +235,7 @@ $(document).ready(function() {
     $('#gameEndForm').on('submit', function(event) {
         event.preventDefault();
 
-        const team = $('#teamPlayed').val();
+        const team = $('#teamplayed').val();
         const star = $('#starEarned').val();
         const card = $('#cardskill').val() || '-';
         const timeStarted = $('#timeStarted').val();
@@ -244,11 +244,11 @@ $(document).ready(function() {
 
         if (!team) {
             // Display the error message in the span element
-            $('#teamPlayed').closest('.input-group').find('.errorteam').text('Team should be filled.');
+            $('#teamplayed').closest('.input-group').find('.errorteam').text('Team should be filled.');
             return;
         } else {
             // Remove the error message if it exists
-            $('#teamPlayed').closest('.input-group').find('.errorteam').text('');
+            $('#teamplayed').closest('.input-group').find('.errorteam').text('');
         }
 
         const historyItem = $(`
