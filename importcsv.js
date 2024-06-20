@@ -24,10 +24,8 @@ $(document).ready(function() {
 
     function closeSidebar() {
         $('.sidebar').removeClass('open');
-        // $('.main-content').removeClass('shift');
     }
 
-    // Update file name display when file is selected
     $('#csvFileInput').on('change', function() {
         const fileName = $(this).val().split('\\').pop();
         $('.file-name').text(fileName ? fileName : 'No file chosen');
@@ -42,6 +40,7 @@ $(document).ready(function() {
                 header: true,
                 complete: function(results) {
                     displayCSVData(results.data);
+                    postCSVData(results.data);
                 },
                 error: function(error) {
                     console.error("Error parsing CSV:", error);
