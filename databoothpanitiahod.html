@@ -6,7 +6,7 @@
     <title>Menu Card Skill Panitia</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="databoothpanitia.css">
+    <link rel="stylesheet" href="databoothpanitiahod.css">
     <link rel="stylesheet" href="sidebarHod.css">
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -83,38 +83,4 @@
       </div>
     </div>
     <script src="apiBoothHod.js"></script>
-    <!-- <script>
-      function getCookie(name) {
-        let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
-        for (let i = 0; i < cookieArr.length; i++) {
-          let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
-          if (name == cookiePair[0].trim()) {
-            return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
-          }
-        }
-        return null; // Mengembalikan null jika cookie tidak ditemukan
-      }
-    
-      function logout() {
-        window.location.href = 'LoginPanitia.html';
-      }
-    
-      function fetchRole() {
-        fetch ('http://localhost:8080/api/login/check/admin', {
-          method: 'GET',
-          headers: { Token: getCookie('Token') },
-        })
-        .then((response) => response.json())
-        .then((data) => { 
-          if (!data.error) {
-            if(data.data.accessGranted) {
-              console.log('access granted');
-            } else {
-              logout();
-            }
-          }
-        })
-      }
-      fetchRole();
-    </script> -->
 </body>
