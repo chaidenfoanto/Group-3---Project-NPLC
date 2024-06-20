@@ -72,6 +72,56 @@ $(document).ready(function () {
         });
     }
 
+    /// Function to handle form submission
+  document.getElementById('questionForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const question = document.getElementById('question').value;
+
+    if (answer) {
+      try {
+        await postAnswer(answer);
+        // Refresh the page after successful submission
+        window.location.reload();
+      } catch (error) {
+        console.log('Error submitting answer:', error);
+      } 
+    } else {
+      alert('answer is required.');
+    }
+  });
+
+    async function postAnswer(answer) {
+      const newanswer = {
+        "jawaban": answer,
+      };
+  
+      try {
+        const response = await fetch(domain + 'api/qna/answer/{id}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Token: getCookie('Token'), // Retrieve the session token from cookies
+          },
+          body: JSON.stringify(newAnswer),
+        });
+  
+        const data = await response.json();
+  
+        if (!data.error) {
+          console.log('Question successfully added');
+          // Optionally handle success message or UI state
+        } else {
+          console.error('Error adding question:', data.message);
+          // Optionally handle error message or UI state
+        }
+      } catch (error) {
+        console.error('Error occurred while adding question:', error);
+        // Optionally handle error message or UI state
+      }
+    }
+  
+
     function closeAllPopups() {
         $(".popup").fadeOut();
     }

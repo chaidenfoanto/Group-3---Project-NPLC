@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    // Load sidebar content
     $(".sidebar").load("sidebarplayer.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");
         const logo = $(".logo_details .logo").eq(1); // Select the second logo
@@ -14,7 +15,8 @@ $(document).ready(function() {
                 logo.show();
             }
         }
-});
+    });
+
     // Function to open the question popup
     $('#addQuestionBtn').click(function() {
         $('#popup').fadeIn();

@@ -342,6 +342,15 @@ header h1 {
   background-color: #297eac;
 }
 
+.single {
+  color: blue;
+}
+
+.duel {
+  color: red;
+}
+
+
 @media (max-width: 768px) {
   header h1 {
     font-size: 28px;

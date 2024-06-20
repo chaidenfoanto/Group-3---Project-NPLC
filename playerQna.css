@@ -212,7 +212,7 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 35%;
+    margin-top: 30%;
     border-top: 1px solid rgb(159, 159, 159);
     padding-top: 10px;
 }

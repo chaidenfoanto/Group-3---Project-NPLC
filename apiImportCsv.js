@@ -1,7 +1,6 @@
 $(document).ready(function () {
     // Fungsi ini memastikan bahwa kode di dalamnya dijalankan setelah dokumen HTML selesai dimuat
     const domain = 'http://localhost:8080/'; // Basis domain untuk permintaan API
-    var boothData = {}; // Objek untuk menyimpan data tim
   
     // Fungsi untuk mendapatkan cookie tertentu berdasarkan nama
     function getCookie(name) {
@@ -16,18 +15,17 @@ $(document).ready(function () {
     }
 
     function postCSVData(data) {
-        const domain = 'http://localhost:8080/';
-        const token = getCookie('Token');
+        const token = getCookie('Token'); // Mendapatkan token dari cookie
 
         data.forEach(panitia => {
             $.ajax({
-                url: domain + 'api/panitia',
-                method: 'POST',
+                url: domain + 'api/panitia', // URL endpoint API
+                method: 'POST', // Metode HTTP POST
                 headers: {
                     'Content-Type': 'application/json',
                     'Token': token
                 },
-                data: JSON.stringify(panitia),
+                data: JSON.stringify(panitia), // Mengirim data panitia sebagai JSON string
                 success: function(response) {
                     console.log("Panitia Successfully Added: ", response);
                 },
