@@ -30,49 +30,47 @@ $(document).ready(function() {
         }
     ];
 
-    function renderQuestions() {
-        var questionList = $("#questionList");
-        questionList.empty();
+    // function renderQuestions() {
+    //     var questionList = $("#questionList");
+    //     questionList.empty();
 
-        questions.forEach(function(q) {
-            var questionItem = $('<div class="question-item"></div>');
-            var questionTitle = $('<h3></h3>').text('Team Name: ' + q.teamName);
-            var questionText = $('<p></p>').text('Question: ' + q.question);
-            var statusContainer = $('<div class="status-container"></div>');
-            var status = $('<span class="status"></span>').text(q.status);
-            var seeAnswer = $('<span class="see-answer"></span>').text('See Answer');
-            var editAnswer = $('<span class="edit-answer"></span>').text('Answer');
+    //     questions.forEach(function(q) {
+    //         var questionItem = $('<div class="question-item"></div>');
+    //         var questionTitle = $('<h3></h3>').text('Team Name: ' + q.teamName);
+    //         var questionText = $('<p></p>').text('Question: ' + q.question);
+    //         var statusContainer = $('<div class="status-container"></div>');
+    //         var status = $('<span class="status"></span>').text(q.status);
+    //         var seeAnswer = $('<span class="see-answer"></span>').text('See Answer');
+    //         var editAnswer = $('<span class="edit-answer"></span>').text('Answer');
 
-            if (q.status === "Answered") {
-                status.css('color', 'green');
-                seeAnswer.click(function() {
-                    closeAllPopups();
-                    $("#answerContent").text(q.answer);
-                    $("#answerPopup").fadeIn();
-                });
-                statusContainer.append(status, seeAnswer);
-            } else {
-                status.css('color', 'red');
-                editAnswer.click(function() {
-                    closeAllPopups();
-                    $("#editTeamName").val(q.teamName);
-                    $("#editQuestion").val(q.question);
-                    $("#editAnswer").val(q.answer);
-                    $("#editAnswerPopup").fadeIn();
-                });
-                statusContainer.append(status, editAnswer);
-            }
+    //         if (q.status === "Answered") {
+    //             status.css('color', 'green');
+    //             seeAnswer.click(function() {
+    //                 closeAllPopups();
+    //                 $("#answerContent").text(q.answer);
+    //                 $("#answerPopup").fadeIn();
+    //             });
+    //             statusContainer.append(status, seeAnswer);
+    //         } else {
+    //             status.css('color', 'red');
+    //             editAnswer.click(function() {
+    //                 closeAllPopups();
+    //                 $("#editTeamName").val(q.teamName);
+    //                 $("#editQuestion").val(q.question);
+    //                 $("#editAnswer").val(q.answer);
+    //                 $("#editAnswerPopup").fadeIn();
+    //             });
+    //             statusContainer.append(status, editAnswer);
+    //         }
 
-            questionItem.append(questionTitle, questionText, statusContainer);
-            questionList.append(questionItem);
-        });
-    }
+    //         questionItem.append(questionTitle, questionText, statusContainer);
+    //         questionList.append(questionItem);
+    //     });
+    // }
 
     function closeAllPopups() {
         $(".popup").fadeOut();
     }
-
-    renderQuestions();
 
     $(".close-btn").click(function() {
         closeAllPopups();
