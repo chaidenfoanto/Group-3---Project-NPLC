@@ -13,7 +13,7 @@ $(document).ready(function () {
   }
 
   function fetchLeaderBoard() {
-    fetch(domain + 'api/team', {
+    fetch(domain + 'api/team/getLeaderboard', {
       method: 'GET',
       headers: { Token: getCookie('Token') },
     })
@@ -22,12 +22,20 @@ $(document).ready(function () {
       if(!data.error) {
         const leaderboardBody = $('#leaderboard-body');
         leaderboardBody.empty();
-        data.data.sort((a, b) => b.totalPoin - a.totalPoin); // Sortir berdasarkan total poin, descending
-        data.data.forEach((team, index) => {
+
+        // Dapatkan data tim dan jumlahBoothgame dari respons API
+        const teams = data.data.teams;
+        const jumlahBoothgame = data.data.jumlahBoothgame.totalGame;
+
+        // Sortir berdasarkan total poin, descending
+        teams.sort((a, b) => b.totalPoin - a.totalPoin);
+
+        // Iterasi melalui setiap tim dan tambahkan baris ke tabel
+        teams.forEach((team, index) => {
           const row = `<tr>
                          <td>${index + 1}</td>
-                         <td>${team.namaTeam}</td>
-                         <td>${index+1}/18</td>
+                         <td>${team.team.namaTeam}</td>
+                         <td>${team.gamesPlayed}/${jumlahBoothgame}</td>
                          <td>${team.totalPoin}</td>
                        </tr>`;
           leaderboardBody.append(row);
