@@ -67,30 +67,4 @@ $(document).ready(function() {
     //         questionList.append(questionItem);
     //     });
     // }
-
-    function closeAllPopups() {
-        $(".popup").fadeOut();
-    }
-
-    $(".close-btn").click(function() {
-        closeAllPopups();
-    });
-
-    $("#editAnswerForm").submit(function(event) {
-        event.preventDefault();
-        var teamName = $("#editTeamName").val();
-        var question = $("#editQuestion").val();
-        var answer = $("#editAnswer").val();
-
-        var questionIndex = questions.findIndex(function(q) {
-            return q.teamName === teamName && q.question === question;
-        });
-
-        if (questionIndex !== -1) {
-            questions[questionIndex].answer = answer;
-            questions[questionIndex].status = "Answered";
-            renderQuestions();
-            $("#editAnswerPopup").fadeOut();
-        }
-    });
 });
