@@ -27,40 +27,6 @@ $(document).ready(function() {
         // $('.main-content').removeClass('shift');
     }
 
-    const leaderboardData = [
-        { teamName: 'Nama Tim 1', boothsPlayed: '10/18', points: 1000 },
-        { teamName: 'Nama Tim 2', boothsPlayed: '10/18', points: 900 },
-        { teamName: 'Nama Tim 3', boothsPlayed: '10/18', points: 800 },
-        // Add more data as needed
-    ];
-
-    const renderLeaderboard = (data) => {
-        const $leaderboardBody = $('#leaderboard-body');
-        $leaderboardBody.empty(); // Clear existing rows
-
-        // Sort data by points in descending order
-        data.sort((a, b) => b.points - a.points);
-
-        $.each(data, function(index, item) {
-            const $row = $('<tr>');
-
-            const $rankCell = $('<td>').text(index + 1);
-            $row.append($rankCell);
-
-            const $teamNameCell = $('<td>').text(item.teamName);
-            $row.append($teamNameCell);
-
-            const $boothsPlayedCell = $('<td>').text(item.boothsPlayed);
-            $row.append($boothsPlayedCell);
-
-            const $pointsCell = $('<td>').text(item.points);
-            $row.append($pointsCell);
-
-            $leaderboardBody.append($row);
-        });
-    };
-
-    renderLeaderboard(leaderboardData);
 
     // Example of updating data and re-rendering the leaderboard
     // setTimeout(function() {

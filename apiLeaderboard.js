@@ -35,7 +35,7 @@ $(document).ready(function () {
           const row = `<tr>
                          <td>${index + 1}</td>
                          <td>${team.team.namaTeam}</td>
-                         <td>${team.gamesPlayed}/${jumlahBoothgame}</td>
+                         <td>${team.gameStats.totalGamesPlayed}/${jumlahBoothgame}</td>
                          <td>${team.totalPoin}</td>
                        </tr>`;
           leaderboardBody.append(row);
