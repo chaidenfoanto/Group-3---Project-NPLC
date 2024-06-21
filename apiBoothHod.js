@@ -16,7 +16,7 @@ $(document).ready(function () {
   function populateSelect(selectElement, dataArray, valueKey, textKey) {
     dataArray.forEach((item) => {
       const option = document.createElement('option');
-      option.value = item[valueKey];
+      option.value = item[textKey];
       option.textContent = item[textKey];
       selectElement.appendChild(option);
 
@@ -39,8 +39,8 @@ $(document).ready(function () {
         const guard2Select = document.getElementById('guard2Name');
         const noRuanganSelect = document.getElementById('noRuangan');
 
-        populateSelect(guard1Select, listPanitia, 'namaPanitia', 'namaPanitia');
-        populateSelect(guard2Select, listPanitia, 'namaPanitia', 'namaPanitia');
+        populateSelect(guard1Select, listPanitia, 'idPanitia', 'namaPanitia');
+        populateSelect(guard2Select, listPanitia, 'idPanitia', 'namaPanitia');
         populateSelect(noRuanganSelect, listLokasi, 'noRuangan', 'noRuangan');
       })
       .catch((error) => console.error('Error fetching data:', error));
@@ -75,15 +75,15 @@ $(document).ready(function () {
 
   fetchDataBooth();
 
-  function getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+  async function getBase64(file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      localStorage.setItem('image', reader.result);
+    };
+    return localStorage.getItem('image');
   }
-  
+
   async function postDataBooth() {
     const boothName = document.getElementById('boothName').value;
     const guard1Name = document.getElementById('guard1Name').value;
@@ -91,51 +91,82 @@ $(document).ready(function () {
     const howToPlay = document.getElementById('howtoplay').value;
     const noRuangan = document.getElementById('noRuangan').value;
     const tipeGame = document.getElementById('tipeGame').value;
+    const inputDurasi = document.getElementById('inputTime').value;
     const fileInput = document.getElementById('imageInput').files[0];
-  
+
     // Dapatkan ID Panitia dari nama yang dipilih
     const guard1Id = panitiaData[guard1Name];
     const guard2Id = panitiaData[guard2Name];
-  
+
     let base64File = null;
     if (fileInput) {
-      base64File = await getBase64(fileInput);
+      base64File = await compressImage(fileInput, 0.7);
     }
-  
+
     const payload = {
-      namaBoothGame: boothName,
-      namaPanitia1: guard1Id,
-      namaPanitia2: guard2Id,
-      sopGame: howToPlay,
-      noRuangan: noRuangan,
+      nama: boothName,
+      idPenjaga1: guard1Id,
+      idPenjaga2: guard2Id,
+      sopGames: howToPlay,
+      lokasi: noRuangan,
       tipeGame: tipeGame,
-      fotoBooth: base64File,  // Optional, if needed
+      durasiPermainan: inputDurasi,
+      fotoBooth: base64File, // Optional, if needed
     };
-  
+
     fetch(domain + 'api/boothgames', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Token': getCookie('Token')
+        Token: getCookie('Token'),
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.error) {
+          console.log('Booth added successfully');
+          window.location.href = "DashboardHod.html";
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error to post:', error);
+      });
   }
-  
-  document.getElementById('booth-form').addEventListener('submit', function(event) {
+
+  document.getElementById('booth-form').addEventListener('submit', function (event) {
     event.preventDefault();
     postDataBooth();
   });
+
+  function compressImage(file, quality) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const width = img.width;
+                const height = img.height;
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                canvas.toBlob((blob) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        resolve(reader.result);
+                    };
+                }, 'image/jpeg', quality);
+            };
+            img.onerror = (error) => reject(error);
+        };
+        reader.onerror = (error) => reject(error);
+    });
+}
 });

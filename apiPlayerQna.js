@@ -28,8 +28,6 @@ $(document).ready(function () {
           // Clear existing content
           questionList.innerHTML = '';
 
-          add
-
           // Loop through each question and append to the list
           data.data.forEach((question) => {
             appendQuestion(question);
