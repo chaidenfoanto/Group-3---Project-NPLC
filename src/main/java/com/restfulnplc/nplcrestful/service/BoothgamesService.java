@@ -169,7 +169,7 @@ public class BoothgamesService {
         ArrayList<Boothgames> boothHasil = new ArrayList<Boothgames>();
         ArrayList<Boothgames> allBooth = new ArrayList<Boothgames>();
         for(Boothgames boothgame : getAllBoothgames()) {
-            if(tipegame != null) {
+            if(tipegame != null && !tipegame.matches("^[\s]*$")) {
                 if(boothgame.getTipegame().equals(Tipegame.fromString(tipegame))) {
                     allBooth.add(boothgame);
                 }
@@ -177,7 +177,7 @@ public class BoothgamesService {
                 allBooth.add(boothgame);
             }
         }
-        if(lantai != null) {
+        if(lantai != null && !lantai.matches("^[\s]*$")) {
             for(Boothgames boothgame : allBooth) {
                 if(String.valueOf(boothgame.getLokasi().getLantai()).equals(lantai)) {
                     boothHasil.add(boothgame);
@@ -188,7 +188,7 @@ public class BoothgamesService {
             allBooth = boothHasil;
             boothHasil.removeAll(boothHasil);
         }
-        if(namaBooth != null) {
+        if(namaBooth != null && !namaBooth.matches("^[\s]*$")) {
             for(Boothgames boothgame : allBooth) {
                 if(boothgame.getNama().toLowerCase().matches(namaBooth.toLowerCase())) {
                     boothHasil.add(boothgame);
