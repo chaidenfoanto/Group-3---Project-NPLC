@@ -89,13 +89,15 @@ $(document).ready(function () {
 
         // Menambahkan opsi untuk guard 2 jika tersedia
         $('#guard2Name').empty(); // Mengosongkan opsi sebelum menambahkan
-        if (booth.panitia2) {
+        if (booth.panitia2 != null) {
           $('#guard2Name').append(new Option(booth.panitia2, booth.panitia2));
+        } else{
+          $('#guard2Name').val("Tidak Ada");
         }
 
         // Menambahkan opsi untuk nomor ruangan
         $('#noRuangan').empty(); // Mengosongkan opsi sebelum menambahkan
-        $('#noRuangan').append(new Option(booth.lokasi, booth.lokasi));
+        $('#noRuangan').append(new Option(booth.lokasi.noRuangan, booth.lokasi.noRuangan));
 
         // Menetapkan nilai untuk tipe game
         $('#tipeGame').val(booth.tipeGame);
