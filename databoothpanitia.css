@@ -146,18 +146,14 @@ header h1, h2 {
     padding: 10px 20px;
     font-size: 14px;
     font-weight: bold;
-    color: #fff;
-    background-color: #007bff;
+    color: #000000;
+    background-color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     text-align: center;
     text-decoration: none; /* Remove underline from the label */
-}
-
-.upload-button:hover {
-    background-color: #0056b3;
 }
 
 #imageInput {
@@ -174,6 +170,73 @@ header h1, h2 {
 .input-group {
     position: relative;
     width: 100%;
+}
+
+.popup {
+    max-width: 400px;
+    width: 80%;
+    background: #2A9BDB;
+    border-radius: 6px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    text-align: center;
+    padding: 15px;
+    color: white;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 1500;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+}
+
+.popup.open-popup {
+    visibility: visible;
+    border-radius: 20px;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup p {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+.popup button {
+    width: 50%;
+    margin-top: 20px;
+    padding: 10px 0;
+    background: white;
+    color: #2A9BDB;
+    border: 0;
+    outline: none;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.open-popup {
+    visibility: visible;
+    border-radius: 20px;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    z-index: 1400;
+}
+
+.popup-overlay.active {
+    visibility: visible;
 }
 
 .inner-container .placeholder {
