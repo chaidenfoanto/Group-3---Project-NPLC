@@ -1,5 +1,14 @@
 package com.restfulnplc.nplcrestful.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.restfulnplc.nplcrestful.dto.BoothgamesDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.Divisi;
@@ -7,14 +16,6 @@ import com.restfulnplc.nplcrestful.model.Lokasi;
 import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.model.Tipegame;
 import com.restfulnplc.nplcrestful.repository.BoothgamesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.Map;
-import java.util.ArrayList;
 
 @Service
 public class BoothgamesService {
@@ -189,7 +190,7 @@ public class BoothgamesService {
         }
         if(namaBooth != null) {
             for(Boothgames boothgame : allBooth) {
-                if(boothgame.getNama().matches(namaBooth)) {
+                if(boothgame.getNama().toLowerCase().matches(namaBooth.toLowerCase())) {
                     boothHasil.add(boothgame);
                 }
             }
