@@ -6,6 +6,7 @@ $(document).ready(function () {
     boothList.empty(); // Clear existing content
 
     booths.forEach((booth) => {
+<<<<<<< HEAD
       let boothItem;
       if (booth.tipeGame === 'Duel') {
         boothItem = `
@@ -48,6 +49,27 @@ $(document).ready(function () {
                     </div>
                 `;
       }
+=======
+      var boothItem = `
+    <div class="booth-item">
+      <div class="insides-item">
+        <div class="booth-header">
+          <div class="booth-left">
+            <p class="namaBooth" >Nama Booth : <span>${booth.namaBoothGame}</span></p>
+          </div>
+          <div class="booth-right">
+            <p><i class='bx bx-map'></i> R. ${booth.lokasi.noRuangan} - Lantai ${booth.lokasi.lantai}</p>
+            <p><i class='bx bx-time'></i> ${booth.durasiPermainan} min</p>
+            <p class="type">${booth.tipeGame}</p>
+          </div>
+        </div>
+        <p class="penjaga1" >Penjaga Booth 1 : <span>${booth.panitia1 || 'Tidak Ada'}</span></p>
+        <p class="penjaga2" >Penjaga Booth 2 : <span>${booth.panitia2 || 'Tidak Ada'}</span></p>
+        <button id="showPopup" class="edit-btn">Edit</button>
+      </div>
+      </div>
+    `;
+>>>>>>> fb4246ea41926e57e3961b2576d3d72bbfedaf58
       var tempElement = document.createElement('div');
       tempElement.innerHTML = boothItem.trim();
       boothList.append(tempElement.firstChild);
