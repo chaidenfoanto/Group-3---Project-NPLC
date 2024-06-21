@@ -17,7 +17,7 @@ $(document).ready(function () {
 
   // Fungsi untuk mengambil dan menampilkan nama-nama tim
   function fetchDataBooth() {
-    fetch(domain + 'api/', {
+    fetch(domain + 'api/boothgames', {
       method: 'GET',
       headers: { Token: getCookie('Token') }, // Menyertakan token dalam header dari cookie
     })
