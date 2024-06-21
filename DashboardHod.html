@@ -70,7 +70,7 @@
                 </div>
                 <p>Penjaga Booth 1 : <span>.............................</span></p>
                 <p>Penjaga Booth 2 : <span>.............................</span></p>
-                <button class="edit-btn">Edit</button>
+                <button class="edit-btn" id="showPopup">Edit</button>
               </div>
             </div>
             <div class="booth-item">
@@ -91,56 +91,57 @@
               </div>
             </div>
           </div>
+          <div id="popup" class="popup">
+            <div class="popup-content">
+              <span class="close-btn">&times;</span>
+              <h2>Edit Booth Games</h2>
+    
+              <div class="popup-body">
+    
+                <div class="popup-row">
+                  <div class="input-group">
+                    <input type="text" id="boothNamePopup">
+                    <label class="placeholder">Nama Booth</label>
+                    <span class="error-message" id="boothNameErrorPopup"></span>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" id="penjagaboothPopup">
+                    <label class="placeholder">Penjaga Booth</label>
+                    <span class="error-message" id="penjagaboothErrorPopup"></span>
+                  </div>
+                </div>
+    
+                <div class="input-desc">
+                <div class="input-group">
+                    <input type="text" id="boothDescriptionPopup">
+                    <label class="placeholder">Deskripsi Booth</label>
+                    <span class="error-message" id="boothDescriptionErrorPopup"></span>
+                </div>
+                </div>
+    
+                <div class="popup-row2">
+                  <div class="input-group">
+                    <select id="roomPopup" name="Room">
+                      <option value=""></option>
+                    </select>
+                    <label class="placeholder">Ruangan</label>
+                    <span class="error-message" id="roomErrorPopup"></span>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" id="timePopup">
+                    <label class="placeholder">Waktu</label>
+                    <span class="error-message" id="timeErrorPopup"></span>
+                  </div>
+                </div>
+              </div>
+              <button class="edit-popup-btn">Edit</button>
+            </div>
+          </div>
         </div>
       </div>
     
       <!-- Popup HTML -->
-      <!-- <div id="popup" class="popup">
-        <div class="popup-content">
-          <span class="close-btn">&times;</span>
-          <h2>Edit Booth Games</h2>
-
-          <div class="popup-body">
-
-            <div class="popup-row">
-              <div class="input-popup">
-                <input type="text" id="boothNamePopup">
-                <label class="placeholder">Nama Booth</label>
-                <span class="error-message" id="boothNameErrorPopup"></span>
-              </div>
-              <div class="input-popup">
-                <input type="text" id="penjagaboothPopup">
-                <label class="placeholder">Penjaga Booth</label>
-                <span class="error-message" id="penjagaboothErrorPopup"></span>
-              </div>
-            </div>
-
-            <div class="input-desc">
-            <div class="input-popup">
-                <input type="text" id="boothDescriptionPopup">
-                <label class="placeholder">Deskripsi Booth</label>
-                <span class="error-message" id="boothDescriptionErrorPopup"></span>
-            </div>
-            </div>
-
-            <div class="popup-row2">
-              <div class="input-popup">
-                <select id="roomPopup" name="Room">
-                  <option value=""></option>
-                </select>
-                <label class="placeholder">Ruangan</label>
-                <span class="error-message" id="roomErrorPopup"></span>
-              </div>
-              <div class="input-popup">
-                <input type="text" id="timePopup">
-                <label class="placeholder">Waktu</label>
-                <span class="error-message" id="timeErrorPopup"></span>
-              </div>
-            </div>
-          </div>
-          <button class="edit-popup-btn">Edit</button>
-        </div>
-      </div> -->
+      
       <script src="apiDashboardHod.js"></script>
       <script>
         function getCookie(name) {
