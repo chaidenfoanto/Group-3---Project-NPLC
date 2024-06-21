@@ -34,30 +34,28 @@ $(document).ready(function () {
     });
   });
 
+  $('#showPopup').on('click', function (e) {
+    $("#popup").css("display", "block");
+    $("#popup").toggleClass("open");
+    $("#popup").show();
+  });
+
+  // const showbtn = $("#showPopup");
+
+  // showbtn.click(function () {
+  //   showModal();
+  // });
+
+  // function showModal() {
+  //   $('.popup').toggleClass('open');
+  // }
+
+  $('.close-btn').click(function() {
+    $('#popup').removeClass('open');
+  });
+
   $('#addGameButton').on('click', function () {
     window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
-    $('.sidebar').load('sidebarHod.html', function () {
-      const toggleBtn = $('#toggle-btn, #burger-btn');
-      const logo = $('.logo_details .logo').eq(1); // Select the second logo
-      toggleBtn.on('click', function () {
-        $('.sidebar').toggleClass('open');
-        menuBtnChange();
-      });
-    });
-  });
-
-  const showbtn = $(".edit-btn");
-
-  showbtn.click(function () {
-    showModal();
-  });
-
-  function showModal() {
-    $(".popup").toggleClass("open");
-  }
-
-  $(".close-btn").click(function() {
-    $(".popup").removeClass("open");
   });
 
   $('#toggle-btn').on('click', function () {
