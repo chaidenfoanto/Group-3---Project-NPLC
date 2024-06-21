@@ -16,7 +16,7 @@ $(document).ready(function () {
     }
   });
 
-  $('.form-group select, .form-group input').each(function () {
+  $('.form-group select, .form-group input, .popup input, .popup select').each(function () {
     // Check if the input is not empty on page load
     if ($(this).val() !== '') {
       $(this).addClass('not-empty');
