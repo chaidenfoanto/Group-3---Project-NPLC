@@ -205,27 +205,23 @@ $(document).ready(function() {
         const star = $('#starEarned').val();
         const card = $('#cardskill').val();
 
-        if (star === "1") {
-            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${team}`);
-        }
-        else if (star === "2") {
-            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${team}`);
-        }
-        else if (star === "3") {
-            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
-        }
-        else {
-            $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
-        }
-
         if (star === "1" && card === "Double Point") {
             $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${team}`);
         }
-        else if (star === "2") {
+        else if (star === "2" && card === "Double Point") {
             $('#pointsMessage').text(`120 POINTS WILL BE GIVEN TO ${team}`);
         }
-        else if (star === "3") {
+        else if (star === "3" && card === "Double Point") {
             $('#pointsMessage').text(`200 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else if (star === "1" && card != "Double point") {
+            $('#pointsMessage').text(`30 POINTS WILL BE GIVEN TO ${team}`);
+        } 
+        else if (star === "2" && card != "Double point") {
+            $('#pointsMessage').text(`60 POINTS WILL BE GIVEN TO ${team}`);
+        }
+        else if (star === "3" && card != "Double point") {
+            $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
         }
         else {
             $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
