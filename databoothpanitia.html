@@ -8,114 +8,92 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="databoothpanitia.css">
     <link rel="stylesheet" href="sidebarpanitia.css">
-    </head>
-    <body>
+</head>
+<body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="databoothpanitia.js"></script>
-        
-    <div class = "container">
-      <div class="sidebar"></div>
+
+    <div class="container">
+        <div class="sidebar"></div>
         <div class="main-content">
-          <!-- <header>
-              <h1>Welcome Admin!</h1>
-          </header> -->
-          <h2>Data Booth Games</h2>
-          <div class="inner-container">
-            <form id="booth-form">
-              <div class = "image-upload">
-                <img src="img/kartu2.png" alt="Hasil Gacha" id="cardImage">
-                <label for="imageInput" class="upload-button">Upload File</label>
-                <input type="file" id="imageInput" accept="image/*" style="display: none;">
-                <p id="fileSource"></p>
-              </div>
-              <div class="form-group">
-                <div class="input-group">
-                  <input type="text" id="boothName">
-                  <label class = "placeholder">Nama Booth</label>
-                  <span class="error-message" id="boothNameError"></span>
-                </div>
-                  <div class="input-group">
-                    <select id="guard1Name" name="guard1Name" disabled>
-                      <option value=""></option>
-                    </select>
-                    <label class = "placeholder">Penjaga Booth 1</label>
-                    <span class="error-message" id="guard1NameError"></span>
-                  </div>
-                  <div class="input-group">
-                    <select id="guard2Name" name="guard2Name" disabled>
-                      <option value=""></option>
-                    </select>
-                    <label class = "placeholder">Penjaga Booth 2</label>
-                    <span class="error-message" id="guard2NameError"></span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <textarea type="text" id="howtoplay"></textarea>
-                    <label class = "placeholder">Cara Bermain</label>
-                    <span class="error-message" id="howtoplayError"></span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <select id="noRuangan" name="noRuangan" disabled>
-                      <option value=""></option>
-                    </select>
-                    <label class = "placeholder">No. Ruangan</label>
-                    <span class="error-message" id="noRuanganError"></span>
-                  </div>
-                  <div class="input-group">
-                    <select id="tipeGame" name="tipeGame">
-                      <option value=""></option>
-                      <option value="single">Single</option>
-                      <option value="Duel">Duel</option>
-                    </select>
-                    <label class = "placeholder">Tipe Game</label>
-                    <span class="error-message" id="tipeGameError"></span>
-                  </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" id="save" class = "btn ok">Simpan</button>
-                    <!-- <button type="button" id="delete" class = "btn cancel">Hapus</button>
-                </div> -->
-                
-            </form>
+            <h2>Data Booth Games</h2>
+            <div class="inner-container">
+                <form id="booth-form">
+                    <div class="image-upload">
+                        <img src="img/kartu2.png" alt="Hasil Gacha" id="cardImage">
+                        <label for="imageInput" class="upload-button">Upload File</label>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <p id="fileSource"></p>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" id="boothName" required placeholder=" " oninput="togglePlaceholder(this)" disabled>
+                            <label for="boothName" class="placeholder">Nama Booth</label>
+                            <span class="error-message" id="boothNameError"></span>
+                        </div>
+                        <div class="input-group">
+                            <select id="guard1Name" name="guard1Name" disabled placeholder=" " oninput="togglePlaceholder(this)">
+                                <option value=""></option>
+                            </select>
+                            <label for="guard1Name" class="placeholder">Penjaga Booth 1</label>
+                            <span class="error-message" id="guard1NameError"></span>
+                        </div>
+                        <div class="input-group">
+                            <select id="guard2Name" name="guard2Name" disabled placeholder=" " oninput="togglePlaceholder(this)">
+                                <option value=""></option>
+                            </select>
+                            <label for="guard2Name" class="placeholder">Penjaga Booth 2</label>
+                            <span class="error-message" id="guard2NameError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <textarea id="howtoplay" required placeholder=" " oninput="togglePlaceholder(this)"></textarea>
+                            <label for="howtoplay" class="placeholder">Cara Bermain</label>
+                            <span class="error-message" id="howtoplayError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select id="noRuangan" name="noRuangan" disabled placeholder=" " oninput="togglePlaceholder(this)">
+                                <option value=""></option>
+                            </select>
+                            <label for="noRuangan" class="placeholder">No. Ruangan</label>
+                            <span class="error-message" id="noRuanganError"></span>
+                        </div>
+                        <div class="input-group">
+                            <select id="tipeGame" name="tipeGame" required placeholder=" " oninput="togglePlaceholder(this)">
+                                <option value=""></option>
+                                <option value="single">Single</option>
+                                <option value="duel">Duel</option>
+                            </select>
+                            <label for="tipeGame" class="placeholder">Tipe Game</label>
+                            <span class="error-message" id="tipeGameError"></span>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="save" class="btn ok">Simpan</button>
+                    </div>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
     <script src="apiDataBoothPanitia.js"></script>
     <script>
-      function getCookie(name) {
-        let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
-        for (let i = 0; i < cookieArr.length; i++) {
-          let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
-          if (name == cookiePair[0].trim()) {
-            return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
-          }
-        }
-        return null; // Mengembalikan null jika cookie tidak ditemukan
-      }
-    
-      function logout() {
-        window.location.href = 'LoginPanitia.html';
-      }
-    
-      function fetchRole() {
-        fetch ('http://localhost:8080/api/login/check/penjagasingle', {
-          method: 'GET',
-          headers: { Token: getCookie('Token') },
-        })
-        .then((response) => response.json())
-        .then((data) => { 
-          if (!data.error) {
-            if(data.data.accessGranted) {
-              console.log('access granted');
+        function togglePlaceholder(element) {
+            if (element.value) {
+                element.classList.add('not-empty');
             } else {
-              logout();
+                element.classList.remove('not-empty');
             }
-          }
-        })
-      }
-      fetchRole();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                togglePlaceholder(input);
+            });
+        });
     </script>
 </body>
+</html>

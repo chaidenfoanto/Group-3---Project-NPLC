@@ -15,6 +15,7 @@ $(document).ready(function() {
             }
         }
     });
+    $('.popup').hide();
     var questions = [
         {
             teamName: "Team A",

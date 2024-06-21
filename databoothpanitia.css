@@ -1,285 +1,285 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-        :root{
-        --color-default:#35A2DB;
-        --color-second:#0067ac;
-        --color-white:#fff;
-        --color-body:#e4e9f7;
-        --color-light:#e0e0e0;
-        }
+:root {
+    --color-default: #35A2DB;
+    --color-second: #0067ac;
+    --color-white: #fff;
+    --color-body: #e4e9f7;
+    --color-light: #e0e0e0;
+}
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
-        *{
-        padding: 0%;
-        margin: 0%;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-        }
+body {
+    min-height: 100vh;
+    background-color: var(--color-body);
+    display: flex;
+}
 
-        body{
-        min-height: 100vh;
-        }
+.container {
+    display: flex;
+    width: 100%;
+}
 
-        .main-content{
-            position: relative;
-            min-height: 100vh;
-            top:0;
-            width: calc(100% - 78px);
-            transition: all .5s ease;
-            z-index: 2;
-            margin-left: 80px;
-            padding: 20px;
-            flex: 1
-        }
+.main-content {
+    position: relative;
+    min-height: 100vh;
+    width: calc(100% - 78px);
+    transition: all .5s ease;
+    z-index: 2;
+    margin-left: 80px;
+    padding: 20px;
+    flex: 1;
+    background-color: var(--color-white);
+}
 
-        .main-content .text{
-        display: inline-block;
-        color:var(--color-default);
-        font-size: 25px;
-        font-weight: 500;
-        margin: 18px;
-        }
+.main-content .text {
+    display: inline-block;
+    color: var(--color-default);
+    font-size: 25px;
+    font-weight: 500;
+    margin: 18px;
+}
 
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
 
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
 
-        header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            color: #35A2DB;
-        }
-        header h1, h2 {
-            margin: 10px;
-        }
-        .inner-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            margin-bottom: 20px;
-            margin-top: 10px;
-        }
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    color: #35A2DB;
+}
 
-        .inner-container h2 {
-            font-weight: bold;
-            color: black;
-        }
-        
-        .btn {
-            font-size: 16px;
-            margin-top: 5px;
-            padding: 10px 40px;
-            border: 1px solid transparent;
-            border-radius: 20px;
-            color: #fff;
-            cursor: pointer;
-        }
+header h1, h2 {
+    margin: 10px;
+}
 
-        .ok {
-            background-color: var(--color-default);
-        }
+.inner-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
 
-        .cancel {
-            background-color: #d3574e;
-        }
+.inner-container h2 {
+    font-weight: bold;
+    color: black;
+}
 
-        .ok:hover {
-            background-color: var(--color-second);
-        }
+.btn {
+    font-size: 16px;
+    margin-top: 5px;
+    padding: 10px 40px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    color: #fff;
+    cursor: pointer;
+}
 
-        .cancel:hover {
-            background-color: #a72e25;
-        }
+.ok {
+    background-color: var(--color-default);
+}
 
-        .image-upload img {
-            max-width: 150px;
-            width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-        }
+.cancel {
+    background-color: #d3574e;
+}
 
-        .inner-container input, textarea, select {
-            border: none;
-            margin: 8px 0;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 8px;
-            width: 100%;
-            outline: none;
-            box-sizing: border-box;
-            border: 1px solid #212b27;
-        }
+.ok:hover {
+    background-color: var(--color-second);
+}
 
-        .image-upload {
-            flex: 0 0 30%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            width: 100%
-        }
-        
-        .upload-button {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-align: center;
-            text-decoration: none; /* Remove underline from the label */
-        }
-        
-        .upload-button:hover {
-            background-color: #0056b3;
-        }
-        
-        #imageInput {
-            display: none;
-        }
+.cancel:hover {
+    background-color: #a72e25;
+}
 
-        #fileSource {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 5px;
-            word-break: break-all; /* Ensure long file paths break to the next line */
-        }
+.image-upload img {
+    max-width: 150px;
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
 
-        .input-group {
-            position: relative;
-            width: 100%;
-        }
+.inner-container input,
+.inner-container textarea,
+.inner-container select {
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid #212b27;
+}
 
-        .inner-container .placeholder {
-            position: absolute;
-            top: 18px;
-            left: 18px;
-            font-size: 16px;
-            padding: 0px 5px;
-            color: #666;
-            transition: 0.3s;
-            pointer-events: none;
-        }
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
 
-        .inner-container input:focus + .placeholder,
-        .inner-container textarea:focus + .placeholder,
-        .inner-container input.not-empty + .placeholder,
-        .inner-container textarea.not-empty + .placeholder,
-        .inner-container select:focus + .placeholder,
-        .inner-container select.not-empty + .placeholder {
-            top: -6px;
-            color: #000000;
-            background-color: white;
-        }
+.upload-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none; /* Remove underline from the label */
+}
 
-        @media (max-width: 500px) {
-            header h1 {
-                font-size: 28px;
-            }
-            h2 {
-                font-size: 18px;
-            }
-            .main-content {
-                margin-left: 0;
-                left: 75px;
-            }
+.upload-button:hover {
+    background-color: #0056b3;
+}
 
-            .inner-container input, 
-            .inner-container select, 
-            .inner-container textarea, 
-            .inner-container #fileSource, 
-            .inner-container .upload-button,
-            .inner-container .placeholder,
-            .inner-container button {
-                font-size: 12px;
-            }
+#imageInput {
+    display: none;
+}
 
-            .btn {
-                padding: 10px 20px;
-            }
-        }
+#fileSource {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    word-break: break-all; /* Ensure long file paths break to the next line */
+}
 
-        @media (max-width: 768px) {
-            .image-upload {
-                width: 100%;
-                flex-direction: column;
-            }
-            .image-upload img {
-                max-width: 120px;
-                width: 100%;
-                height: auto;
-                border: 1px solid #ccc;
-            }
-            h1 {
-                font-size: 35px;
-            }
-            .card {
-                font-size: 15px;
-            }
-            .form-group {
-                flex-direction: column; 
-            }
-        
-            .input-group {
-                flex: 1 100%; 
-                padding: 10px 0; 
-            }
-        
-            #howtoplay {
-                height: 100px;
-            }
-        }
+.input-group {
+    position: relative;
+    width: 100%;
+}
 
-        .form-group {
-            display: flex;
-            justify-content: space-between;
-        }
+.inner-container .placeholder {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-size: 16px;
+    padding: 0px 5px;
+    color: #666;
+    transition: 0.3s;
+    pointer-events: none;
+    background: white; /* Tambahkan background putih untuk menutupi */
+}
 
-        .input-group {
-            flex: 1;
-            padding: 0 10px;
-            position: relative; /* Tambahkan posisi relatif pada .input-group */
-            width: 100%;
-        }
+.inner-container input:focus + .placeholder,
+.inner-container textarea:focus + .placeholder,
+.inner-container input:not(:placeholder-shown) + .placeholder,
+.inner-container textarea:not(:placeholder-shown) + .placeholder,
+.inner-container select:focus + .placeholder,
+.inner-container select:not([value=""]) + .placeholder {
+    top: -4px;
+    color: #000000;
+    background-color: white;
+}
 
-        #howtoplay {
-            flex: 1 100%;
-            height: 200px; 
-            overflow-y: auto;
-        }
+@media (max-width: 500px) {
+    header h1 {
+        font-size: 28px;
+    }
+    h2 {
+        font-size: 18px;
+    }
+    .main-content {
+        margin-left: 0;
+        left: 75px;
+    }
 
-        .error-message {
-            display: block;
-            color: red;
-            font-size: 14px;
-            margin-top: 4px; /* Atur jarak dari input di atasnya */
-        }
+    .inner-container input, 
+    .inner-container select, 
+    .inner-container textarea, 
+    .inner-container #fileSource, 
+    .inner-container .upload-button,
+    .inner-container .placeholder,
+    .inner-container button {
+        font-size: 12px;
+    }
 
-        /* .input-group input,
-        .input-group select,
-        .input-group textarea {
-            width: 100%;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 16px;;
-            border-radius: 4px;
-            box-sizing: border-box;
-        } */
-        
+    .btn {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .image-upload {
+        width: 100%;
+        flex-direction: column;
+    }
+    .image-upload img {
+        max-width: 120px;
+        width: 100%;
+        height: auto;
+        border: 1px solid #ccc;
+    }
+    h1 {
+        font-size: 35px;
+    }
+    .card {
+        font-size: 15px;
+    }
+    .form-group {
+        flex-direction: column; 
+    }
+
+    .input-group {
+        flex: 1 100%; 
+        padding: 10px 0; 
+    }
+
+    #howtoplay {
+        height: 100px;
+    }
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    flex: 1;
+    padding: 0 10px;
+    position: relative; /* Tambahkan posisi relatif pada .input-group */
+    width: 100%;
+}
+
+#howtoplay {
+    flex: 1 100%;
+    height: 200px; 
+    overflow-y: auto;
+}
+
+.error-message {
+    display: block;
+    color: red;
+    font-size: 14px;
+    margin-top: 4px; /* Atur jarak dari input di atasnya */
+}

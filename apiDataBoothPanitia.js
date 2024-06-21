@@ -69,39 +69,46 @@ $(document).ready(function () {
   // }
 
   
-    // Fungsi untuk mengambil dan menampilkan data booth
-    function fetchDataBooth() {
-      fetch(domain + 'api/boothgames/getSelfBooth', {
-        method: 'GET',
-        headers: { Token: getCookie('Token') }, // Menyertakan token dalam header dari cookie
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.error) {
-            const booth = data.data;
-  
-            // Isi form dengan data booth yang diterima
-            $('#boothName').val(booth.namaBoothGame);
-            $('#guard1Name').append(new Option(booth.panitia1, booth.panitia1));
-            if (booth.panitia2) {
-              $('#guard2Name').append(new Option(booth.panitia2, booth.panitia2));
-            }
-            $('#howtoplay').val(booth.sopGame);
-            $('#noRuangan').append(new Option(booth.lokasi, booth.lokasi));
-            $('#tipeGame').val(booth.tipeGame);
-  
-            // Menampilkan gambar booth jika ada
-            if (booth.fotoBooth) {
-              $('#cardImage').attr('src', 'data:image/jpeg;base64,' + booth.fotoBooth);
-            }
-          } else {
-            console.error('Error:', data.message);
-          }
-        })
-        .catch((error) => console.error('Error loading booth:', error)); // Menangani dan log error jika permintaan gagal
-    }
+  function fetchDataBooth() {
+    fetch(domain + 'api/boothgames/getSelfBooth', {
+      method: 'GET',
+      headers: { Token: getCookie('Token') },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.error) {
+        const booth = data.data;
+
+        // Mengisi form dengan data booth yang diterima
+        $('#boothName').val(booth.namaBoothGame);
+        $('#howtoplay').val(booth.sopGame);
+
+        // Menambahkan opsi untuk guard 1
+        $('#guard1Name').empty(); // Mengosongkan opsi sebelum menambahkan
+        $('#guard1Name').append(new Option(booth.panitia1, booth.panitia1));
+
+        // Menambahkan opsi untuk guard 2 jika tersedia
+        $('#guard2Name').empty(); // Mengosongkan opsi sebelum menambahkan
+        if (booth.panitia2) {
+          $('#guard2Name').append(new Option(booth.panitia2, booth.panitia2));
+        }
+
+        // Menambahkan opsi untuk nomor ruangan
+        $('#noRuangan').empty(); // Mengosongkan opsi sebelum menambahkan
+        $('#noRuangan').append(new Option(booth.lokasi, booth.lokasi));
+
+        // Menetapkan nilai untuk tipe game
+        $('#tipeGame').val(booth.tipeGame);
+
+      } else {
+        console.error('Error:', data.message);
+      }
+    })
+    .catch((error) => console.error('Error fetching booth data:', error));
+  }
   
     // Memanggil fungsi untuk mengambil data booth saat dokumen siap
+
 
 
 

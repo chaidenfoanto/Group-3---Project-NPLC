@@ -34,19 +34,7 @@ $(document).ready(function () {
     });
   });
 
-  $('#addGameButton').on('click', function () {
-    window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
-    $('.sidebar').load('sidebarHod.html', function () {
-      const toggleBtn = $('#toggle-btn, #burger-btn');
-      const logo = $('.logo_details .logo').eq(1); // Select the second logo
-      toggleBtn.on('click', function () {
-        $('.sidebar').toggleClass('open');
-        menuBtnChange();
-      });
-    });
-  });
-
-  const showbtn = $(".edit-btn");
+  const showbtn = $("#showPopup");
 
   showbtn.click(function () {
     showModal();
@@ -58,6 +46,18 @@ $(document).ready(function () {
 
   $(".close-btn").click(function() {
     $(".popup").removeClass("open");
+  });
+
+  $('#addGameButton').on('click', function () {
+    window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
+    $('.sidebar').load('sidebarHod.html', function () {
+      const toggleBtn = $('#toggle-btn, #burger-btn');
+      const logo = $('.logo_details .logo').eq(1); // Select the second logo
+      toggleBtn.on('click', function () {
+        $('.sidebar').toggleClass('open');
+        menuBtnChange();
+      });
+    });
   });
 
   $('#toggle-btn').on('click', function () {
