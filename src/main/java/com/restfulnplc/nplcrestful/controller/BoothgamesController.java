@@ -1,7 +1,6 @@
 package com.restfulnplc.nplcrestful.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -484,41 +483,49 @@ public class BoothgamesController {
                 .body(response);
     }
 
-    @GetMapping("/getByPanitia")
+    @GetMapping("/getSelfBooth")
     public ResponseEntity<Response> getBoothgamesByPanitia(HttpServletRequest request) {
         String sessionToken = request.getHeader("Token");
         response.setService("Get Boothgames By Panitia");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
-                if (loginService.checkSessionAdmin(sessionToken) || loginService.checkSessionLOGame(sessionToken)) {
+                if (loginService.checkSessionLOGame(sessionToken)) {
                     String userid = loginService.getLoginSession(sessionToken).getIdUser();
                     Optional<Boothgames> boothgamesOptional = boothgamesService.getBoothgameByPanitia(userid);
                     if (boothgamesOptional.isPresent()) {
-                        Boothgames boothgame = boothgamesOptional.get();
-                        response.setMessage("Boothgame Retrieved Successfully");
-                        response.setError(false);
-                        response.setHttpCode(HTTPCode.OK);
-                        Map<String, Object> boothgameData = new HashMap<>();
-                        boothgameData.put("idBoothGame", boothgame.getIdBooth());
-                        boothgameData.put("namaBoothGame", boothgame.getNama());
-                        boothgameData.put("panitia1", boothgame.getIdPenjaga1().getIdPanitia());
+                    Boothgames boothgame = boothgamesOptional.get();
+                    response.setMessage("Boothgame Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.CREATED);
                         if (boothgame.getIdPenjaga2() != null) {
-                            boothgameData.put("panitia2", boothgame.getIdPenjaga2().getIdPanitia());
+                            response.setData(Map.of(
+                                    "idBoothGame", boothgame.getIdBooth(),
+                                    "namaBoothGame", boothgame.getNama(),
+                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                    "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
+                                    "sopGame", boothgame.getSopGames(),
+                                    "lokasi", boothgame.getLokasi(),
+                                    "tipeGame", boothgame.getTipegame().toString(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
+                                    "fotoBooth", boothgame.getFotoBooth()));
+                        } else {
+                            response.setData(Map.of(
+                                    "idBoothGame", boothgame.getIdBooth(),
+                                    "namaBoothGame", boothgame.getNama(),
+                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                    "sopGame", boothgame.getSopGames(),
+                                    "lokasi", boothgame.getLokasi(),
+                                    "tipeGame", boothgame.getTipegame().toString(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
+                                    "fotoBooth", boothgame.getFotoBooth()));
                         }
-                        boothgameData.put("sopGame", boothgame.getSopGames());
-                        boothgameData.put("lokasi", boothgame.getLokasi());
-                        boothgameData.put("tipeGame", boothgame.getTipegame().toString());
-                        boothgameData.put("durasiPermainan", (boothgame.getDurasiPermainan() / 60000));
-                        boothgameData.put("fotoBooth", boothgame.getFotoBooth());
-
-                        response.setData(boothgameData);
-                    } else {
-                        response.setMessage("Boothgame Data Not Found");
-                        response.setError(true);
-                        response.setHttpCode(HTTPCode.OK);
-                        response.setData(new ErrorMessage(response.getHttpCode()));
-                    }
                 } else {
+                    response.setMessage("BoothGame Not Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+             } else {
                     response.setMessage("Access Denied");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.FORBIDDEN);
@@ -540,7 +547,7 @@ public class BoothgamesController {
                 .status(response.getHttpCode().getStatus())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
-    }
+}
 
 
 
@@ -617,7 +624,7 @@ public class BoothgamesController {
         response.setService("Update SOP Boothgame");
         try {
             if (loginService.checkSessionPanitia(sessionToken)) {
-                if (loginService.checkSessionAdmin(sessionToken)) {
+                if (loginService.checkSessionAdmin(sessionToken) || loginService.checkSessionLOGame(sessionToken)) {
                     Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameById(id);
                     if (boothgameOptional.isPresent()) {
                         Boothgames boothgame = boothgameOptional.get();
