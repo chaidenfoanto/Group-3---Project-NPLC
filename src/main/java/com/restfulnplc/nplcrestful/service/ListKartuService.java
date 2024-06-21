@@ -105,13 +105,13 @@ public class ListKartuService {
         return listKartu;
     }
 
-    public Optional<ListKartu> useCard(String id) {
+    public Optional<CardSkill> useCard(String id) {
         Optional<ListKartu> optionalListKartu = listKartuRepository.findById(id);
         if (optionalListKartu.isPresent()) {
             ListKartu listKartu = optionalListKartu.get();
             if (!listKartu.getCardSkill().getIdCard().equals("ZONK")) {
                 listKartu.setIsUsed(true);
-                return Optional.of(listKartuRepository.save(listKartu));
+                return Optional.of(listKartuRepository.save(listKartu).getCardSkill());
             }
         }
         return Optional.empty();

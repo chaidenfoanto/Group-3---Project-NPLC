@@ -1,27 +1,16 @@
 package com.restfulnplc.nplcrestful.dto;
 
-import java.sql.Time;
-
 import com.restfulnplc.nplcrestful.model.Tipegame;
 
 public class BoothgamesDTO {
-    private int idBooth;
     private String nama;
     private String idPenjaga1;
     private String idPenjaga2;
     private String sopGames;
     private String lokasi;
     private String tipeGame;
-    private Time durasiPermainan;
+    private int durasiPermainan;
     private String fotoBooth;
-
-    public int getIdBooth() {
-        return idBooth;
-    }
-
-    public void setIdBooth(int idBooth) {
-        this.idBooth = idBooth;
-    }
 
     public String getNama() {
         return nama;
@@ -75,11 +64,11 @@ public class BoothgamesDTO {
         this.tipeGame = tipeGame;
     }
 
-    public Time getDurasiPermainan() {
+    public int getDurasiPermainan() {
         return durasiPermainan;
     }
 
-    public void setDurasiPermainan(Time durasiPermainan) {
+    public void setDurasiPermainan(int durasiPermainan) {
         this.durasiPermainan = durasiPermainan;
     }
 
