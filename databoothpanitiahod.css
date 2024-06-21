@@ -24,7 +24,7 @@
             position: relative;
             min-height: 100vh;
             top:0;
-            width: calc(100% - 78px);
+            max-width: calc(100% - 78px);
             transition: all .5s ease;
             z-index: 2;
             margin-left: 80px;

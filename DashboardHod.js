@@ -34,11 +34,6 @@ $(document).ready(function () {
     });
   });
 
-  $('#toggle-btn').on('click', function () {
-    $('.sidebar').toggleClass('open');
-    $(this).toggleClass('burger-icon');
-  });
-
   $('#addGameButton').on('click', function () {
     window.location.href = 'databoothpanitiahod.html'; // Replace with the actual target page
     $('.sidebar').load('sidebarHod.html', function () {
@@ -49,11 +44,40 @@ $(document).ready(function () {
         menuBtnChange();
       });
     });
+  });
 
-    $('.edit-btn').click(function () {
-        window.location.href = 'databoothpanitiahod.html';
-      });
-    });
+  const showbtn = $(".edit-btn");
+
+  showbtn.click(function () {
+    showModal();
+  });
+
+  function showModal() {
+    $(".popup").toggleClass("open");
+  }
+
+  $(".close-btn").click(function() {
+    $(".popup").removeClass("open");
+  });
+
+  $('#toggle-btn').on('click', function () {
+    $('.sidebar').toggleClass('open');
+    $(this).toggleClass('burger-icon');
+  });
+
+    // $('.edit-btn').click(function () {
+    //     window.location.href = 'databoothpanitiahod.html';
+    //   });
+    
+    
+        // $(window).click(function(event) {
+        //     if ($(event.target).is("#popup")) {
+        //         $("#popup").css("display", "none");
+        //     }
+        // });
+
+        
+
   });
 
   //   function adjustMainContent() {

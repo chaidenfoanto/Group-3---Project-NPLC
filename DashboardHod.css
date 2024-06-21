@@ -121,7 +121,7 @@ header h1 {
   border: 1px solid #212b27;
 }
 
-.form-group .placeholder {
+.form-group .placeholder, .popup .placeholder {
   position: absolute;
   top: 10px;
   left: 15px;
@@ -135,7 +135,11 @@ header h1 {
 .form-group input:focus + .placeholder,
 .form-group select:focus + .placeholder,
 .form-group input.not-empty + .placeholder,
-.form-group select.not-empty + .placeholder {
+.form-group select.not-empty + .placeholder,
+.popup input:focus + .placeholder,
+.popup select:focus + .placeholder,
+.popup input.not-empty + .placeholder,
+.popup select.not-empty + .placeholder {
   top: -12px;
   color: #000000;
   background-color: white;
@@ -243,6 +247,10 @@ header h1 {
   overflow: hidden;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup.open {
+  display: block;
 }
 
 .popup-content {
@@ -387,7 +395,7 @@ header h1 {
     min-width: 50px;
     text-align: center;
     margin-top: 2%;
-    width: 10%;
+    width: 30%;
     margin-left: auto;
   }
 
@@ -460,7 +468,11 @@ header h1 {
     .form-group input:focus + .placeholder,
     .form-group select:focus + .placeholder,
     .form-group input.not-empty + .placeholder,
-    .form-group select.not-empty + .placeholder {
+    .form-group select.not-empty + .placeholder
+    .popup input:focus + .placeholder,
+    .popup select:focus + .placeholder,
+    .popup input.not-empty + .placeholder,
+    .popup select.not-empty + .placeholder {
       top: -12px;
     }
     .buttons {
