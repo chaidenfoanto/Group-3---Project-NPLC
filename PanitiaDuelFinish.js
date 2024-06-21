@@ -96,8 +96,11 @@ $(document).ready(function () {
 
   function clearform() {
     $('.timeleft').text(timer);
-    $('#teamname').val('');
+    $('#team1').val("");
+    $('#team2').val("");
+    $('#winningTeam').val("");
     timeStartedSet = false; // Reset flag saat form dibersihkan
+    checkTeams();
   }
 
   function pad(val) {

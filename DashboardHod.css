@@ -121,9 +121,20 @@ header h1 {
   border: 1px solid #212b27;
 }
 
-.form-group .placeholder, .popup .placeholder {
+.form-group .placeholder {
   position: absolute;
   top: 10px;
+  left: 15px;
+  font-size: 16px;
+  padding: 0px 5px;
+  color: #666;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.popup .placeholder {
+  position: absolute;
+  top: 16px;
   left: 15px;
   font-size: 16px;
   padding: 0px 5px;
@@ -135,12 +146,17 @@ header h1 {
 .form-group input:focus + .placeholder,
 .form-group select:focus + .placeholder,
 .form-group input.not-empty + .placeholder,
-.form-group select.not-empty + .placeholder,
+.form-group select.not-empty + .placeholder {
+  top: -12px;
+  color: #000000;
+  background-color: white;
+}
+
 .popup input:focus + .placeholder,
 .popup select:focus + .placeholder,
 .popup input.not-empty + .placeholder,
 .popup select.not-empty + .placeholder {
-  top: -12px;
+  top: -8px;
   color: #000000;
   background-color: white;
 }
@@ -259,7 +275,7 @@ header h1 {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.popup.open {
+.open {
   display: block;
 }
 
@@ -272,10 +288,9 @@ header h1 {
   height: 70%;
   z-index: 1001;
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 50%;
+  left: calc(50% + 40px);
+  transform: translate(-50%, -50%);
   border-radius: 20px;
 }
 
@@ -300,14 +315,15 @@ header h1 {
   text-align: center;
 }
 
-.input-popup {
+.popup .input-group {
   flex: 1;
   position: relative;
   padding: 0 5px;
+  width: 100%;
 }
 
-.input-popup input,
-.input-popup select {
+.popup .input-group input,
+.popup .input-group select {
   width: 100%;
   padding: 10px 15px;
   margin: 5px 0;
@@ -370,6 +386,9 @@ header h1 {
   text-align: center;
 }
 
+.sidebar.open ~ .main-content .popup-content {
+  left: calc(125px + 50%);
+}
 
 @media (max-width: 768px) {
   header h1 {
@@ -434,7 +453,7 @@ header h1 {
 
   .popup-content {
     width: 90%;
-    height: 50%;
+    height: 60%;
     padding: 10px;
   }
 
@@ -479,18 +498,52 @@ header h1 {
       top: 10px;
     }
 
+    .popup .placeholder {
+      top: 18px;
+    }
+
     .form-group input:focus + .placeholder,
     .form-group select:focus + .placeholder,
     .form-group input.not-empty + .placeholder,
-    .form-group select.not-empty + .placeholder
+    .form-group select.not-empty + .placeholder {
+      top: -12px;
+    }
+
     .popup input:focus + .placeholder,
     .popup select:focus + .placeholder,
     .popup input.not-empty + .placeholder,
     .popup select.not-empty + .placeholder {
-      top: -12px;
+      top: -2px;
     }
+
     .buttons {
       display: block;
+    }
+
+    .popup .input-group input, .popup .input-group select, .popup .placeholder {
+      font-size: 13px;
+    }
+
+    .popup .input-group input, .popup .input-group select {
+      margin: 8px 0;
+    }
+
+    .popup-row {
+      flex-direction: column;
+    }
+
+    .popup-content {
+      width: 90%;
+      height: 65%;
+      padding: 10px;
+    }
+
+    .popup-content {
+      left: calc(50%);
+    }
+
+    .sidebar.open ~ .main-content .popup-content {
+      left: calc(50%);
     }
 
     .input-group {
