@@ -212,7 +212,7 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 35%;
+    margin-top: 30%;
     border-top: 1px solid rgb(159, 159, 159);
     padding-top: 10px;
 }
@@ -233,7 +233,7 @@ header h1 {
     text-decoration: underline;
 }
 
-/* CSS for popups */
+/* CSS popup question box */
 .popup {
     display: none; /* Ensure popups are hidden initially */
     position: fixed;
