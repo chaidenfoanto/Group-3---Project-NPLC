@@ -1,5 +1,37 @@
 var interval;
 var timer = '01:00';
+
+const domain = 'http://localhost:8080/';
+
+function getCookie(name) {
+  let cookieArr = document.cookie.split(';'); 
+  for (let i = 0; i < cookieArr.length; i++) {
+    let cookiePair = cookieArr[i].split('='); 
+    if (name == cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]); 
+    }
+  }
+  return null; // Mengembalikan null jika cookie tidak ditemukan
+}
+
+function getTime() {
+  fetch(domain + 'api/boothgames/getSelfBooth', {
+    method: 'GET',
+    headers: { Token: getCookie('Token') },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.error) {
+        const durasiPermainanElement = $('.timeleft');
+        var durasiPermainan = data.data.durasiPermainan.toString();
+        timer = (durasiPermainan.length < 2 ? '0' + durasiPermainan : durasiPermainan) + ':00';
+        durasiPermainanElement.text(timer);
+      }
+    });
+}
+
+getTime();
+
 $(document).ready(function () {
   $('.sidebar').load('sidebarpanitia.html', function () {
     const toggleBtn = $('#toggle-btn, #burger-btn');
@@ -18,11 +50,18 @@ $(document).ready(function () {
     }
   });
 
+  function pad(val) {
+    var valString = val + '';
+    if (valString.length < 2) {
+      return '0' + valString;
+    } else {
+      return valString;
+    }
+  }
+
   function setCurrentTimeForTimeInput(selector) {
     var now = new Date();
-    var formattedTime = ('0' + now.getHours()).slice(-2) + ':' + 
-                        ('0' + now.getMinutes()).slice(-2) + ':' + 
-                        ('0' + now.getSeconds()).slice(-2);
+    var formattedTime = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2) + ':' + ('0' + now.getSeconds()).slice(-2);
     $(selector).val(formattedTime);
   }
 
@@ -34,7 +73,7 @@ $(document).ready(function () {
 
   function showModal() {
     $('#gameEndModal').show();
-    $(".sidebar").toggleClass("disable");
+    $('.sidebar').toggleClass('disable');
     setCurrentTimeForTimeInput('#timeFinished');
     calculateDuration();
     $('#teamPlayed').val($('#teamname').val());
@@ -101,15 +140,6 @@ $(document).ready(function () {
     $('#winningTeam').val("");
     timeStartedSet = false; // Reset flag saat form dibersihkan
     checkTeams();
-  }
-
-  function pad(val) {
-    var valString = val + '';
-    if (valString.length < 2) {
-      return '0' + valString;
-    } else {
-      return valString;
-    }
   }
 
   function closeSidebar() {
@@ -260,7 +290,7 @@ $(document).ready(function () {
 
     $('#gameEndModal').hide();
     $('#gameEndForm')[0].reset();
-    
+
     checkHistory();
   });
 });

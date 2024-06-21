@@ -1,5 +1,38 @@
 var interval;
 var timer = '01:00';
+
+const domain = 'http://localhost:8080/';
+
+function getCookie(name) {
+  let cookieArr = document.cookie.split(';'); 
+  for (let i = 0; i < cookieArr.length; i++) {
+    let cookiePair = cookieArr[i].split('='); 
+    if (name == cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]); 
+    }
+  }
+  return null; 
+}
+
+function getTime() {
+  fetch(domain + 'api/boothgames/getSelfBooth', {
+    method: 'GET',
+    headers: { Token: getCookie('Token') },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.error) {
+        const durasiPermainanElement = $('.timeleft');
+        var durasiPermainan = data.data.durasiPermainan.toString();
+        timer = (durasiPermainan.length < 2 ? '0' + durasiPermainan : durasiPermainan) + ':00';
+        durasiPermainanElement.text(timer);
+      }
+    });
+}
+
+getTime();
+
+
 $(document).ready(function() {
     $(".sidebar").load("sidebarpanitia.html", function() {
         const toggleBtn = $("#toggle-btn, #burger-btn");

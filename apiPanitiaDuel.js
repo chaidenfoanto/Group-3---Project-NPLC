@@ -15,6 +15,42 @@ $(document).ready(function () {
     return null; // Mengembalikan null jika cookie tidak ditemukan
   }
 
+
+  function gethistory () {
+    fetch(domain + 'api/boothgames/getSelfBoothDuel', {
+      method: 'GET',
+      headers: { Token: getCookie('Token') },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.error) {
+        data.data.forEach((history) => {
+        const historyItem = `
+          <div class="history-item">
+              <div class="history-row">
+                  <div class = "history-group team">
+                      <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                      <p class="${history.team1 === winningTeam ? 'winner' : ''}">${history.team1}</p></div>
+                      <div class="history-cell" data-label="VS">VS</div>
+                      <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                      <p class="${history.team2=== winningTeam ? 'winner' : ''}">${history.team2}</p></div>
+                  </div>
+                  <div class = "history-group time">
+                      <div class="history-cell time" data-label="Time Started"><p>Time Started</p><p>${history.waktuMulai}</p></div>
+                      <div class="history-cell" data-label="VS">-</div>
+                      <div class="history-cell time" data-label="Time Finished"><p>Time Finished</p><p>${history.waktuSelesai}</p></div>
+                  </div>
+                  <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${history.durasiPermainan}</p></div>
+              </div>
+          </div>
+          `;
+
+          $('#history').append(historyItem);
+        })
+      }
+    })
+  }
+  
   // Fungsi untuk mengambil dan menampilkan nama-nama tim
   function fetchTeamNames() {
     fetch(domain + 'api/team/getTeamPerGame', {
@@ -110,4 +146,5 @@ $(document).ready(function () {
 
   // Memanggil fungsi untuk mengambil nama-nama tim saat dokumen siap
   fetchTeamNames();
+  gethistory();
 });

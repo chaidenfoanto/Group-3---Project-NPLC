@@ -1,9 +1,8 @@
 $(document).ready(function () {
-  const domain = 'http://localhost:8080/'; // Make sure this is your correct domain
+  const domain = 'http://localhost:8080/';
   let teamData = {};
-  let selectedTeamId = null; // Global variable to store the selected team ID
+  let selectedTeamId = null;
 
-  // Function to get the cookie value by name
   function getCookie(name) {
     let cookieArr = document.cookie.split(';');
     for (let i = 0; i < cookieArr.length; i++) {
@@ -15,7 +14,39 @@ $(document).ready(function () {
     return null;
   }
 
-  // Function to fetch team names
+  function gethistory() {
+    fetch(domain + 'api/', {
+      method: 'GET',
+      headers: { Token: getCookie('Token') },
+    })
+      .then((response) => response, json())
+      .then((data) => {
+        if (!data.error) {
+          const historyItem = `
+          <div class="history-item">
+              <div class="history-row">
+                  <div class = "history-group team">
+                      <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                      <p class="${team1 === winningTeam ? 'winner' : ''}">${team1}</p></div>
+                      <div class="history-cell" data-label="VS">VS</div>
+                      <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
+                      <p class="${team2 === winningTeam ? 'winner' : ''}">${team2}</p></div>
+                  </div>
+                  <div class = "history-group time">
+                      <div class="history-cell time" data-label="Time Started"><p>Time Started</p><p>${timeStarted}</p></div>
+                      <div class="history-cell" data-label="VS">-</div>
+                      <div class="history-cell time" data-label="Time Finished"><p>Time Finished</p><p>${timeFinished}</p></div>
+                  </div>
+                  <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${duration}</p></div>
+              </div>
+          </div>
+          `;
+
+          $('#history').append(historyItem);
+        }
+      });
+  }
+
   function fetchTeamNames() {
     fetch(domain + 'api/team/getTeamPerGame', {
       method: 'GET',
@@ -25,28 +56,23 @@ $(document).ready(function () {
       .then((data) => {
         const teamSelect = document.getElementById('teamname');
 
-        // Remove all existing options
         teamSelect.innerHTML = '';
-
-        // Add options for each team from the received data
         data.data.forEach((team) => {
-          teamData[team.namaTeam] = team.idTeam; // Store team ID in teamData object
+          teamData[team.namaTeam] = team.idTeam;
           const option = document.createElement('option');
-          option.value = team.namaTeam; // Set the option value and text with team name
+          option.value = team.namaTeam;
           option.textContent = team.namaTeam;
           teamSelect.appendChild(option);
         });
 
-        // Set placeholder option
         const placeholder = document.createElement('option');
         placeholder.value = '';
-        teamSelect.prepend(placeholder); // Add placeholder at the top
-        teamSelect.value = ''; // Set default value to empty
+        teamSelect.prepend(placeholder);
+        teamSelect.value = '';
       })
       .catch((error) => console.error('Error loading team names:', error));
   }
 
-  // Function to fetch available cards for a team by team ID
   function fetchAvailableCards(teamId) {
     fetch(domain + 'api/listkartu/getByTeam/' + teamId, {
       method: 'GET',
@@ -56,42 +82,35 @@ $(document).ready(function () {
       .then((data) => {
         const cardSelect = document.getElementById('cardskill');
 
-        // Remove all existing options
         cardSelect.innerHTML = '';
 
-        // Check if the team has any available cards
         if (data.data.availableCards && data.data.availableCards.length > 0) {
-          // Add options for each card from the received data
           data.data.availableCards.forEach((card) => {
             const option = document.createElement('option');
-            option.value = card.cardSkill.namaKartu; // Set the option value and text with card skill name
+            option.value = card.cardSkill.namaKartu;
             option.textContent = card.cardSkill.namaKartu;
             cardSelect.appendChild(option);
           });
         }
 
-        // Always add a placeholder option at the top
         const placeholder = document.createElement('option');
         placeholder.value = '';
-        cardSelect.prepend(placeholder); // Add placeholder at the top
-        cardSelect.value = ''; // Set default value to empty
+        cardSelect.prepend(placeholder);
+        cardSelect.value = '';
       })
       .catch((error) => console.error('Error loading available cards:', error));
   }
 
-  // Event listener for team selection change
   document.getElementById('teamname').addEventListener('change', function () {
     const selectedTeam = this.value;
     if (selectedTeam && teamData[selectedTeam]) {
-      selectedTeamId = teamData[selectedTeam]; // Store selected team ID in the global variable
-      fetchAvailableCards(selectedTeamId); // Fetch available cards for the selected team
+      selectedTeamId = teamData[selectedTeam];
+      fetchAvailableCards(selectedTeamId);
     } else {
-      // Clear the card skill select if no team is selected
       const cardSelect = document.getElementById('cardskill');
       cardSelect.innerHTML = '<option value=""></option>';
     }
   });
 
-  // Initialize the page by fetching team names
   fetchTeamNames();
 });
