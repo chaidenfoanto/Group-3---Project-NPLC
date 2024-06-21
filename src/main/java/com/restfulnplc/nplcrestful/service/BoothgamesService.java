@@ -164,6 +164,44 @@ public class BoothgamesService {
         return Optional.empty();
     }
 
+    public ArrayList<Boothgames> searchBoothgame(String namaBooth, String lantai, String tipegame) {
+        ArrayList<Boothgames> boothHasil = new ArrayList<Boothgames>();
+        ArrayList<Boothgames> allBooth = new ArrayList<Boothgames>();
+        for(Boothgames boothgame : getAllBoothgames()) {
+            if(tipegame != null) {
+                if(boothgame.getTipegame().equals(Tipegame.fromString(tipegame))) {
+                    allBooth.add(boothgame);
+                }
+            } else {
+                allBooth.add(boothgame);
+            }
+        }
+        if(lantai != null) {
+            for(Boothgames boothgame : allBooth) {
+                if(String.valueOf(boothgame.getLokasi().getLantai()).equals(lantai)) {
+                    boothHasil.add(boothgame);
+                }
+            }
+            allBooth.removeAll(boothHasil);
+            boothHasil.removeAll(allBooth);
+            allBooth = boothHasil;
+            boothHasil.removeAll(boothHasil);
+        }
+        if(namaBooth != null) {
+            for(Boothgames boothgame : allBooth) {
+                if(boothgame.getNama().matches(namaBooth)) {
+                    boothHasil.add(boothgame);
+                }
+            }
+            allBooth.removeAll(boothHasil);
+            boothHasil.removeAll(allBooth);
+            allBooth = boothHasil;
+            boothHasil.removeAll(boothHasil);
+        }
+        boothHasil = allBooth;
+        return boothHasil;
+    }
+
     public boolean deleteBoothgame(String id) {
         Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
         if (optionalBoothgame.isPresent()) {
