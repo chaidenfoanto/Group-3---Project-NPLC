@@ -69,13 +69,14 @@ $(document).ready(function() {
                 rows.forEach((row) => {
                     const columns = row.split(',');
                     const data = {
-                        idpanitia: columns[0].trim(),
+                        idPanitia: columns[0].trim(),
                         angkatan: parseInt(columns[1].trim()),
                         divisi: columns[2].trim(),
                         nama: columns[3].trim(),
                         spesialisasi: columns[4].trim(),
                         username: columns[5].trim(),
-                        passusr: generatePassword(name)
+                        passusr: generatePassword(name),
+                        isAdmin: 0
                     };
                     fetch('/api/panitia', {
                         method: 'POST',
@@ -92,8 +93,6 @@ $(document).ready(function() {
             reader.readAsText(file);
         }
     }
-
-
 
     function displayCSVData(data) {
         const $container = $('#csvDataContainer');
