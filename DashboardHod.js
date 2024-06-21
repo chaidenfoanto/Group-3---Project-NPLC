@@ -34,12 +34,6 @@ $(document).ready(function () {
     });
   });
 
-  $('#showPopup').on('click', function (e) {
-    $("#popup").css("display", "block");
-    $("#popup").toggleClass("open");
-    $("#popup").show();
-  });
-
   // const showbtn = $("#showPopup");
 
   // showbtn.click(function () {
@@ -52,6 +46,12 @@ $(document).ready(function () {
 
   $('.close-btn').click(function() {
     $('#popup').removeClass('open');
+  });
+
+  $('#showPopup').on('click', function () {
+    // $("#popup").css("display", "block");
+    $(".popup").toggleClass("open");
+    // $("#popup").show();
   });
 
   $('#addGameButton').on('click', function () {
