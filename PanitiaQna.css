@@ -45,8 +45,8 @@ header h1 {
 }
 
 .question-box-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
     align-items: flex-start;
     margin-top: 20px;
@@ -64,6 +64,32 @@ header h1 {
     background-color: var(--color-white);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     position: relative;
+}
+.question-item,
+.add-question-box {
+    background-color: var(--color-white);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 240px;
+    height: 220px;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.add-question-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add-question-box::before {
+    content: '+ Add Question';
+    font-size: 18px;
+    color: var(--color-default);
 }
 
 /* CSS question data */
@@ -102,7 +128,6 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 35%;
     border-top: 1px solid rgb(159, 159, 159);
     padding-top: 10px;
 }
