@@ -1,16 +1,18 @@
 package com.restfulnplc.nplcrestful.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.ListKartu;
 import com.restfulnplc.nplcrestful.model.Singlematch;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.repository.SinglematchRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class SinglematchService {
@@ -27,12 +29,9 @@ public class SinglematchService {
     @Autowired
     private ListKartuService listKartuService;
 
-    @Autowired
-    private BoothgamesService boothGamesService;
-
-    public Singlematch addSinglematch(SinglematchDTO singlematchDTO) {
+    public Singlematch startSinglematch(SinglematchDTO singlematchDTO, Boothgames boothgames) {
         Singlematch singlematch = new Singlematch();
-        singlematch.setNoMatch(singlematchDTO.getNoMatch());
+        singlematch.setNoMatch(getNextMatchID());
         singlematch.setWaktuMulai(singlematchDTO.getWaktuMulai());
         singlematch.setWaktuSelesai(singlematchDTO.getWaktuSelesai());
         singlematch.setInputBy(panitiaService.getPanitiaById(singlematchDTO.getInputBy()).get());
@@ -49,10 +48,7 @@ public class SinglematchService {
             singlematch.setListKartu(listKartu.get());
         }
 
-        Optional<Boothgames> boothGames = boothGamesService.getBoothgameById(singlematchDTO.getIdBooth());
-        if (boothGames.isPresent()) {
-            singlematch.setBoothGames(boothGames.get());
-        }
+        singlematch.setBoothGames(boothgames);
 
         return singlematchRepository.save(singlematch);
     }
@@ -108,37 +104,6 @@ public class SinglematchService {
         return singlematchRepository.findById(id);
     }
 
-    public Optional<Singlematch> updateSinglematch(String id, SinglematchDTO singlematchDTO) {
-        Optional<Singlematch> singlematchData = singlematchRepository.findById(id);
-        if (singlematchData.isPresent()) {
-            Singlematch singlematch = singlematchData.get();
-            singlematch.setNoMatch(singlematchDTO.getNoMatch());
-            singlematch.setWaktuMulai(singlematchDTO.getWaktuMulai());
-            singlematch.setWaktuSelesai(singlematchDTO.getWaktuSelesai());
-            singlematch.setInputBy(panitiaService.getPanitiaById(singlematchDTO.getInputBy()).get());
-            singlematch.setTotalPoin(singlematchDTO.getTotalPoin());
-            singlematch.setTotalBintang(singlematchDTO.getTotalBintang());
-
-            Optional<Team> team = teamService.getTeamById(singlematchDTO.getIdTeam());
-            if (team.isPresent()) {
-                singlematch.setTeam(team.get());
-            }
-
-            Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
-            if (listKartu.isPresent()) {
-                singlematch.setListKartu(listKartu.get());
-            }
-
-            Optional<Boothgames> boothGames = boothGamesService.getBoothgameById(singlematchDTO.getIdBooth());
-            if (boothGames.isPresent()) {
-                singlematch.setBoothGames(boothGames.get());
-            }
-
-            return Optional.of(singlematchRepository.save(singlematch));
-        }
-        return Optional.empty();
-    }
-
     public boolean deleteSinglematch(String id) {
         if (singlematchRepository.existsById(id)) {
             singlematchRepository.deleteById(id);
@@ -149,5 +114,14 @@ public class SinglematchService {
 
     public void reset() {
         singlematchRepository.deleteAll();
+    }
+
+    public String getNextMatchID() {
+        List<Singlematch> singlematch = singlematchRepository.findAll();
+        if (singlematch.size() > 0)
+            return "SINGLEMATCH"
+                    + (Integer.parseInt(singlematch.get(singlematch.size() - 1).getNoMatch().split("SINGLEMATCH")[1])
+                            + 1);
+        return "SINGLEMATCH1";
     }
 }

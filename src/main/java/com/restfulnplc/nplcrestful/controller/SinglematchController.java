@@ -1,24 +1,28 @@
 package com.restfulnplc.nplcrestful.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
 import com.restfulnplc.nplcrestful.model.Singlematch;
-import com.restfulnplc.nplcrestful.service.SinglematchService;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.SinglematchService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -33,51 +37,52 @@ public class SinglematchController {
 
     private Response response = new Response();
 
-    @PostMapping
-    public ResponseEntity<Response> addSinglematch(HttpServletRequest request,
-            @RequestBody SinglematchDTO singlematchDTO) {
-        String sessionToken = request.getHeader("Token");
-        response.setService("Add Single Match");
-        try {
-            if (loginService.checkSessionAlive(sessionToken)) {
-                if (loginService.checkSessionAdmin(sessionToken)) {
-                    Singlematch newSinglematch = singlematchService.addSinglematch(singlematchDTO);
-                    response.setMessage("Single Match Successfully Added");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.CREATED);
-                    response.setData(Map.of(
-                            "noMatch", newSinglematch.getNoMatch(),
-                            "idTeam", newSinglematch.getTeam(),
-                            "waktuMulai", newSinglematch.getWaktuMulai(),
-                            "waktuSelesai", newSinglematch.getWaktuSelesai(),
-                            "noKartu", newSinglematch.getListKartu(),
-                            "inputBy", newSinglematch.getInputBy(),
-                            "totalPoin", newSinglematch.getTotalPoin(),
-                            "totalBintang", newSinglematch.getTotalBintang(),
-                            "boothgames", newSinglematch.getBoothGames()));
-                } else {
-                    response.setMessage("Access Denied");
-                    response.setError(true);
-                    response.setHttpCode(HTTPCode.FORBIDDEN);
-                    response.setData(new ErrorMessage(response.getHttpCode()));
-                }
-            } else {
-                response.setMessage("Authorization Failed");
-                response.setError(true);
-                response.setHttpCode(HTTPCode.BAD_REQUEST);
-                response.setData(new ErrorMessage(response.getHttpCode()));
-            }
-        } catch (Exception e) {
-            response.setMessage(e.getMessage());
-            response.setError(true);
-            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
-            response.setData(new ErrorMessage(response.getHttpCode()));
-        }
-        return ResponseEntity
-                .status(response.getHttpCode().getStatus())
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
+    // @PostMapping
+    // public ResponseEntity<Response> addSinglematch(HttpServletRequest request,
+    // @RequestBody SinglematchDTO singlematchDTO) {
+    // String sessionToken = request.getHeader("Token");
+    // response.setService("Add Single Match");
+    // try {
+    // if (loginService.checkSessionAlive(sessionToken)) {
+    // if (loginService.checkSessionAdmin(sessionToken)) {
+    // Singlematch newSinglematch =
+    // singlematchService.startSinglematch(singlematchDTO);
+    // response.setMessage("Single Match Successfully Added");
+    // response.setError(false);
+    // response.setHttpCode(HTTPCode.CREATED);
+    // response.setData(Map.of(
+    // "noMatch", newSinglematch.getNoMatch(),
+    // "idTeam", newSinglematch.getTeam(),
+    // "waktuMulai", newSinglematch.getWaktuMulai(),
+    // "waktuSelesai", newSinglematch.getWaktuSelesai(),
+    // "noKartu", newSinglematch.getListKartu(),
+    // "inputBy", newSinglematch.getInputBy(),
+    // "totalPoin", newSinglematch.getTotalPoin(),
+    // "totalBintang", newSinglematch.getTotalBintang(),
+    // "boothgames", newSinglematch.getBoothGames()));
+    // } else {
+    // response.setMessage("Access Denied");
+    // response.setError(true);
+    // response.setHttpCode(HTTPCode.FORBIDDEN);
+    // response.setData(new ErrorMessage(response.getHttpCode()));
+    // }
+    // } else {
+    // response.setMessage("Authorization Failed");
+    // response.setError(true);
+    // response.setHttpCode(HTTPCode.BAD_REQUEST);
+    // response.setData(new ErrorMessage(response.getHttpCode()));
+    // }
+    // } catch (Exception e) {
+    // response.setMessage(e.getMessage());
+    // response.setError(true);
+    // response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+    // response.setData(new ErrorMessage(response.getHttpCode()));
+    // }
+    // return ResponseEntity
+    // .status(response.getHttpCode().getStatus())
+    // .contentType(MediaType.APPLICATION_JSON)
+    // .body(response);
+    // }
 
     @GetMapping
     public ResponseEntity<Response> getAllSingleMatches(HttpServletRequest request) {
@@ -155,61 +160,6 @@ public class SinglematchController {
                     response.setMessage("Single Match Not Found");
                     response.setError(true);
                     response.setHttpCode(HTTPCode.OK);
-                    response.setData(new ErrorMessage(response.getHttpCode()));
-                }
-            } else {
-                response.setMessage("Authorization Failed");
-                response.setError(true);
-                response.setHttpCode(HTTPCode.BAD_REQUEST);
-                response.setData(new ErrorMessage(response.getHttpCode()));
-            }
-        } catch (Exception e) {
-            response.setMessage(e.getMessage());
-            response.setError(true);
-            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
-            response.setData(new ErrorMessage(response.getHttpCode()));
-        }
-        return ResponseEntity
-                .status(response.getHttpCode().getStatus())
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Response> updateSinglematch(HttpServletRequest request,
-            @PathVariable("id") String id,
-            @RequestBody SinglematchDTO singlematchDTO) {
-        String sessionToken = request.getHeader("Token");
-        response.setService("Update Single Match");
-        try {
-            if (loginService.checkSessionPanitia(sessionToken)) {
-                if (loginService.checkSessionAdmin(sessionToken)) {
-                    Optional<Singlematch> updatedSingleMatch = singlematchService.updateSinglematch(id, singlematchDTO);
-                    if (updatedSingleMatch.isPresent()) {
-                        Singlematch singleMatch = updatedSingleMatch.get();
-                        response.setMessage("Single Match Updated Successfully");
-                        response.setError(false);
-                        response.setHttpCode(HTTPCode.OK);
-                        response.setData(Map.of(
-                                "noMatch", singleMatch.getNoMatch(),
-                                "idTeam", singleMatch.getTeam(),
-                                "waktuMulai", singleMatch.getWaktuMulai(),
-                                "waktuSelesai", singleMatch.getWaktuSelesai(),
-                                "noKartu", singleMatch.getListKartu(),
-                                "inputBy", singleMatch.getInputBy(),
-                                "totalPoin", singleMatch.getTotalPoin(),
-                                "totalBintang", singleMatch.getTotalBintang(),
-                                "boothgames", singleMatch.getBoothGames()));
-                    } else {
-                        response.setMessage("Single Match Not Found");
-                        response.setError(true);
-                        response.setHttpCode(HTTPCode.OK);
-                        response.setData(new ErrorMessage(response.getHttpCode()));
-                    }
-                } else {
-                    response.setMessage("Access Denied");
-                    response.setError(true);
-                    response.setHttpCode(HTTPCode.FORBIDDEN);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {

@@ -1,24 +1,32 @@
 package com.restfulnplc.nplcrestful.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.restfulnplc.nplcrestful.dto.LokasiDTO;
 import com.restfulnplc.nplcrestful.model.Lokasi;
-import com.restfulnplc.nplcrestful.service.LokasiService;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.LokasiService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -35,7 +43,7 @@ public class LokasiController {
 
     @PostMapping
     public ResponseEntity<Response> addLokasi(HttpServletRequest request,
-                                              @RequestBody LokasiDTO lokasiDTO) {
+            @RequestBody LokasiDTO lokasiDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Add Lokasi");
         try {
@@ -114,9 +122,48 @@ public class LokasiController {
                 .body(response);
     }
 
+    @GetMapping("/getAllLantai")
+    public ResponseEntity<Response> getAllLantai(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get All Lantai");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                List<Lokasi> lokasiList = lokasiService.getAllLokasi();
+                if (lokasiList.size() > 0) {
+                    response.setMessage("All Lantai Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(Map.of(
+                            "dataLantai", lokasiService.getLantai(),
+                            "jumlahLantai", lokasiService.getLantai().size(),
+                            "jumlahLokasi", lokasiService.getAllLokasi().size()));
+                } else {
+                    response.setMessage("No Lantai Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response> getLokasiById(HttpServletRequest request,
-                                                  @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
         String sessionToken = request.getHeader("Token");
         response.setService("Get Lokasi By ID");
         try {
@@ -156,8 +203,8 @@ public class LokasiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateLokasi(HttpServletRequest request,
-                                                 @PathVariable("id") String id,
-                                                 @RequestBody LokasiDTO lokasiDTO) {
+            @PathVariable("id") String id,
+            @RequestBody LokasiDTO lokasiDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Update Lokasi");
         try {
@@ -204,7 +251,7 @@ public class LokasiController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteLokasi(HttpServletRequest request,
-                                                 @PathVariable("id") String id) {
+            @PathVariable("id") String id) {
         String sessionToken = request.getHeader("Token");
         response.setService("Delete Lokasi");
         try {

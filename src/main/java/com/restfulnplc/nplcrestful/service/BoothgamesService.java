@@ -165,42 +165,53 @@ public class BoothgamesService {
         return Optional.empty();
     }
 
+    public Optional<Boothgames> updateSOP(String id, BoothgamesDTO boothgamesDTO) {
+        Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
+        if (optionalBoothgame.isPresent()) {
+            Boothgames existingBoothgame = optionalBoothgame.get();
+            existingBoothgame.setSopGames(boothgamesDTO.getSopGames());
+            boothgamesRepository.save(existingBoothgame);
+            return Optional.of(existingBoothgame);
+        }
+        return Optional.empty();
+    }
+
     public ArrayList<Boothgames> searchBoothgame(String namaBooth, String lantai, String tipegame) {
-        ArrayList<Boothgames> boothHasil = new ArrayList<Boothgames>();
-        ArrayList<Boothgames> allBooth = new ArrayList<Boothgames>();
-        for(Boothgames boothgame : getAllBoothgames()) {
-            if(tipegame != null && !tipegame.matches("^[\s]*$")) {
-                if(boothgame.getTipegame().equals(Tipegame.fromString(tipegame))) {
-                    allBooth.add(boothgame);
+        ArrayList<Boothgames> tempArray = new ArrayList<Boothgames>();
+        ArrayList<Boothgames> resultArray = new ArrayList<Boothgames>();
+        ArrayList<Boothgames> deleteArray;
+        for (Boothgames boothgame : getAllBoothgames()) {
+            if (tipegame != null && !tipegame.matches("^[\s]*$") && !tipegame.equals("")) {
+                if (boothgame.getTipegame().equals(Tipegame.fromString(tipegame))) {
+                    resultArray.add(boothgame);
                 }
             } else {
-                allBooth.add(boothgame);
+                resultArray.add(boothgame);
             }
         }
-        if(lantai != null && !lantai.matches("^[\s]*$")) {
-            for(Boothgames boothgame : allBooth) {
-                if(String.valueOf(boothgame.getLokasi().getLantai()).equals(lantai)) {
-                    boothHasil.add(boothgame);
+        if (lantai != null && !lantai.matches("^[\s]*$") && !lantai.equals("")) {
+            for (Boothgames boothgame : resultArray) {
+                if (String.valueOf(boothgame.getLokasi().getLantai()).equals(lantai)) {
+                    tempArray.add(boothgame);
                 }
             }
-            allBooth.removeAll(boothHasil);
-            boothHasil.removeAll(allBooth);
-            allBooth = boothHasil;
-            boothHasil.removeAll(boothHasil);
+            deleteArray = new ArrayList<Boothgames>(resultArray);
+            deleteArray.removeAll(tempArray);
+            resultArray.removeAll(deleteArray);
+            tempArray.removeAll(tempArray);
         }
-        if(namaBooth != null && !namaBooth.matches("^[\s]*$")) {
-            for(Boothgames boothgame : allBooth) {
-                if(boothgame.getNama().toLowerCase().matches(namaBooth.toLowerCase())) {
-                    boothHasil.add(boothgame);
+        if (namaBooth != null && !namaBooth.matches("^[\s]*$") && !namaBooth.equals("")) {
+            for (Boothgames boothgame : resultArray) {
+                if (boothgame.getNama().toLowerCase().contains(namaBooth.toLowerCase())) {
+                    tempArray.add(boothgame);
                 }
             }
-            allBooth.removeAll(boothHasil);
-            boothHasil.removeAll(allBooth);
-            allBooth = boothHasil;
-            boothHasil.removeAll(boothHasil);
+            deleteArray = new ArrayList<Boothgames>(resultArray);
+            deleteArray.removeAll(tempArray);
+            resultArray.removeAll(deleteArray);
+            tempArray.removeAll(tempArray);
         }
-        boothHasil = allBooth;
-        return boothHasil;
+        return resultArray;
     }
 
     public boolean deleteBoothgame(String id) {

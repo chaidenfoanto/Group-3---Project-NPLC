@@ -1,13 +1,17 @@
 package com.restfulnplc.nplcrestful.service;
 
-import com.restfulnplc.nplcrestful.dto.LokasiDTO;
-import com.restfulnplc.nplcrestful.model.Lokasi;
-import com.restfulnplc.nplcrestful.repository.LokasiRepository;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.restfulnplc.nplcrestful.dto.LokasiDTO;
+import com.restfulnplc.nplcrestful.model.Lokasi;
+import com.restfulnplc.nplcrestful.repository.LokasiRepository;
 
 @Service
 public class LokasiService {
@@ -47,5 +51,13 @@ public class LokasiService {
             return true;
         }
         return false;
+    }
+
+    public Set<Object> getLantai() {
+        ArrayList<Object> lantaiList = new ArrayList<Object>();
+        for (Lokasi lokasi : getAllLokasi()) {
+            lantaiList.add(Integer.toString(lokasi.getLantai()));
+        }
+        return new HashSet<Object>(lantaiList);
     }
 }
