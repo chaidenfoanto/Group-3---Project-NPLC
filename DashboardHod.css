@@ -192,11 +192,12 @@ header h1 {
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  margin-bottom: -1%;
+  
 }
 
 .booth-left {
   flex: 1;
+  
 }
 
 .booth-right {
@@ -229,8 +230,17 @@ header h1 {
   margin-left: auto;
 }
 
-.type {
-  background-color: #898989;
+#type {
+  background-color: #0d71c4;
+  width: 65px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+#typeduel {
+  background-color: #ef1717;
+  width: 65px;
   padding: 5px 10px;
   border-radius: 5px;
   display: inline-block;
@@ -351,11 +361,13 @@ header h1 {
 }
 
 .single {
-  color: blue;
+  color: rgb(241, 241, 246);
+  text-align: center;
 }
 
 .duel {
-  color: red;
+  color: rgb(250, 248, 248);
+  text-align: center;
 }
 
 
@@ -398,6 +410,8 @@ header h1 {
     width: 30%;
     margin-left: auto;
   }
+
+
 
   .timer {
     width: 40%;
