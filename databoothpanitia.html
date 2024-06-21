@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Card Skill Panitia</title>
+    <title>Data Booth Panitia</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="databoothpanitia.css">
@@ -20,9 +20,9 @@
             <div class="inner-container">
                 <form id="booth-form">
                     <div class="image-upload">
-                        <img src="img/kartu2.png" alt="Hasil Gacha" id="cardImage">
-                        <label for="imageInput" class="upload-button">Upload File</label>
-                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <img alt="Hasil Gacha" id="cardImage">
+                        <label for="imageInput" class="upload-button">Gambar Booth</label>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;" disabled>
                         <p id="fileSource"></p>
                     </div>
                     <div class="form-group">
@@ -62,20 +62,26 @@
                             <span class="error-message" id="noRuanganError"></span>
                         </div>
                         <div class="input-group">
-                            <select id="tipeGame" name="tipeGame" required placeholder=" " oninput="togglePlaceholder(this)">
+                            <select id="tipeGame" name="tipeGame" disabled placeholder=" " oninput="togglePlaceholder(this)">
                                 <option value=""></option>
-                                <option value="single">Single</option>
-                                <option value="duel">Duel</option>
                             </select>
                             <label for="tipeGame" class="placeholder">Tipe Game</label>
                             <span class="error-message" id="tipeGameError"></span>
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" id="save" class="btn ok">Simpan</button>
+                        <button type="submit" id="save" class="btn ok" onclick="openPopup('popup')">Simpan</button>
                     </div>
                 </form>
             </div>
+            <div class="popup" id="popup">
+                <p>SOP Games telah berhasil di Update! tetap semangat panitia!</p>
+            <button type="button" onclick="closePopup('popup')">OK</button>
+        </div>
+
+                <div class="popup-overlay" id="popup-overlay"></div>
+            </div>
+            
         </div>
     </div>
     <script src="apiDataBoothPanitia.js"></script>
