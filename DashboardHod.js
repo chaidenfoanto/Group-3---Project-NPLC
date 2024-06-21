@@ -34,15 +34,10 @@ $(document).ready(function () {
     });
   });
 
-  const showbtn = $("#showPopup");
-
-  showbtn.click(function () {
-    showModal();
+  $(".edit-btn").click(function() {
+    console.log("Masuk");
+    $(".popup").addClass("open");
   });
-
-  function showModal() {
-    $(".popup").toggleClass("open");
-  }
 
   $(".close-btn").click(function() {
     $(".popup").removeClass("open");
@@ -79,6 +74,11 @@ $(document).ready(function () {
         
 
   });
+
+  function showModal() {
+    console.log("Masuk");
+    $(".popup").addClass("open");
+  }
 
   //   function adjustMainContent() {
   //       if ($(".sidebar").hasClass("open")) {

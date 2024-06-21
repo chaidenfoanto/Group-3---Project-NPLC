@@ -259,7 +259,7 @@ header h1 {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.popup.open {
+.open {
   display: block;
 }
 
