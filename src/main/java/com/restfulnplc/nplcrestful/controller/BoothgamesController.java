@@ -73,7 +73,7 @@ public class BoothgamesController {
                                 "sopGame", newBoothgame.getSopGames(),
                                 "lokasi", newBoothgame.getLokasi(),
                                 "tipeGame", newBoothgame.getTipegame().toString(),
-                                "durasiPermainan", newBoothgame.getDurasiPermainan(),
+                                "durasiPermainan", (newBoothgame.getDurasiPermainan()/60000),
                                 "fotoBooth", newBoothgame.getFotoBooth()));
                     } else {
                         response.setData(Map.of(
@@ -83,7 +83,7 @@ public class BoothgamesController {
                                 "sopGame", newBoothgame.getSopGames(),
                                 "lokasi", newBoothgame.getLokasi(),
                                 "tipeGame", newBoothgame.getTipegame().toString(),
-                                "durasiPermainan", newBoothgame.getDurasiPermainan(),
+                                "durasiPermainan", (newBoothgame.getDurasiPermainan()/60000),
                                 "fotoBooth", newBoothgame.getFotoBooth()));
                     }
                 } else {
@@ -132,7 +132,7 @@ public class BoothgamesController {
                                     "sopGame", boothgame.getSopGames(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", boothgame.getDurasiPermainan(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         } else {
                             listData.add(Map.of(
@@ -142,8 +142,65 @@ public class BoothgamesController {
                                     "sopGame", boothgame.getSopGames(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", boothgame.getDurasiPermainan(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                     "fotoBooth", boothgame.getFotoBooth()));
+                        }
+                    }
+                    response.setData(listData);
+                } else {
+                    response.setMessage("No Boothgames Found");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.OK);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/getGeneral")
+    public ResponseEntity<Response> getAllBoothgamesGeneral(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get All Boothgames General Data");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                List<Boothgames> boothgamesList = boothgamesService.getAllBoothgames();
+                if (boothgamesList.size() > 0) {
+                    response.setMessage("All Boothgames General Data Retrieved Successfully");
+                    response.setError(false);
+                    response.setHttpCode(HTTPCode.OK);
+                    ArrayList<Object> listData = new ArrayList<Object>();
+                    for (Boothgames boothgame : boothgamesList) {
+                        if (boothgame.getIdPenjaga2() != null) {
+                            listData.add(Map.of(
+                                    "idBoothGame", boothgame.getIdBooth(),
+                                    "namaBoothGame", boothgame.getNama(),
+                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                    "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
+                                    "lokasi", boothgame.getLokasi(),
+                                    "tipeGame", boothgame.getTipegame().toString(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000)));
+                        } else {
+                            listData.add(Map.of(
+                                    "idBoothGame", boothgame.getIdBooth(),
+                                    "namaBoothGame", boothgame.getNama(),
+                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                    "lokasi", boothgame.getLokasi(),
+                                    "tipeGame", boothgame.getTipegame().toString(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000)));
                         }
                     }
                     response.setData(listData);
@@ -226,7 +283,7 @@ public class BoothgamesController {
                                         "sopGame", boothgame.getSopGames(),
                                         "lokasi", boothgame.getLokasi(),
                                         "tipeGame", boothgame.getTipegame().toString(),
-                                        "durasiPermainan", boothgame.getDurasiPermainan(),
+                                        "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                         "fotoBooth", boothgame.getFotoBooth(),
                                         "gameResult", resultData));
                             } else {
@@ -237,7 +294,7 @@ public class BoothgamesController {
                                         "sopGame", boothgame.getSopGames(),
                                         "lokasi", boothgame.getLokasi(),
                                         "tipeGame", boothgame.getTipegame().toString(),
-                                        "durasiPermainan", boothgame.getDurasiPermainan(),
+                                        "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                         "fotoBooth", boothgame.getFotoBooth(),
                                         "gameResult", resultData));
                             }
@@ -330,7 +387,7 @@ public class BoothgamesController {
                                 "sopGame", boothgame.getSopGames(),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),
-                                "durasiPermainan", boothgame.getDurasiPermainan(),
+                                "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                 "fotoBooth", boothgame.getFotoBooth()));
                     } else {
                         response.setData(Map.of(
@@ -340,7 +397,7 @@ public class BoothgamesController {
                                 "sopGame", boothgame.getSopGames(),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),
-                                "durasiPermainan", boothgame.getDurasiPermainan(),
+                                "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                 "fotoBooth", boothgame.getFotoBooth()));
                     }
                 } else {
@@ -390,7 +447,7 @@ public class BoothgamesController {
                                     "sopGame", boothgame.getSopGames(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", boothgame.getDurasiPermainan(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         } else {
                             response.setData(Map.of(
@@ -400,7 +457,7 @@ public class BoothgamesController {
                                     "sopGame", boothgame.getSopGames(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", boothgame.getDurasiPermainan(),
+                                    "durasiPermainan", (boothgame.getDurasiPermainan()/60000),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         }
                     } else {
