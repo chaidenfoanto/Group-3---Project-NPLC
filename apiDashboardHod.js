@@ -23,7 +23,7 @@ $(document).ready(function () {
                             </div>
                             <p class="penjaga1">Penjaga Booth 1 : <span>${booth.panitia1 || 'Tidak Ada'}</span></p>
                             <p class="penjaga2">Penjaga Booth 2 : <span>${booth.panitia2 || 'Tidak Ada'}</span></p>
-                            <button class="edit-btn">Edit</button>
+                            <button id="showPopup" class="edit-btn">Edit</button>
                         </div>
                     </div>
                 `;
@@ -43,7 +43,7 @@ $(document).ready(function () {
                             </div>
                             <p class="penjaga1">Penjaga Booth 1 : <span>${booth.panitia1 || 'Tidak Ada'}</span></p>
                             <p class="penjaga2">Penjaga Booth 2 : <span>${booth.panitia2 || 'Tidak Ada'}</span></p>
-                            <button class="edit-btn">Edit</button>
+                            <button id="showPopup" class="edit-btn">Edit</button>
                         </div>
                     </div>
                 `;

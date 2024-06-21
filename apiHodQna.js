@@ -128,3 +128,4 @@ document.getElementById('editAnswerForm').addEventListener('submit', async funct
   }
 });
 loadQuestions();
+closeAllPopups();
