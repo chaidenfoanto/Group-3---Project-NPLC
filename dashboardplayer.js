@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $(".sidebar").load("sidebarplayer.html", function () {
         const toggleBtn = $("#toggle-btn, #burger-btn");
-        const logo = $(".logo_details .logo").eq(1); // Select the second logo
+        const logo = $(".logo_details .logo").eq(1); 
         toggleBtn.on("click", function () {
             $(".sidebar").toggleClass("open");
             updateLogo();

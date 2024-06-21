@@ -75,14 +75,14 @@
     <script src="deckcardplayer.js"></script>
     <script>
       function getCookie(name) {
-        let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
+        let cookieArr = document.cookie.split(';'); 
         for (let i = 0; i < cookieArr.length; i++) {
-          let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
+          let cookiePair = cookieArr[i].split('='); 
           if (name == cookiePair[0].trim()) {
-            return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
+            return decodeURIComponent(cookiePair[1]); 
           }
         }
-        return null; // Mengembalikan null jika cookie tidak ditemukan
+        return null; 
       }
     
       function logout() {

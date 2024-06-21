@@ -32,19 +32,16 @@ $(document).ready(function () {
       });
   }
 
-  // Fungsi untuk mengambil dan menampilkan data kartu dek
   function fetchDeckCard() {
-    const cardsContainer = document.querySelector('.cards-list'); // Memilih wadah daftar kartu
+    const cardsContainer = document.querySelector('.cards-list');
     fetch(domain + 'api/cardskills/getWithUser', {
       method: 'GET',
-      headers: { Token: getCookie('Token') }, // Menyertakan token dalam header dari cookie
+      headers: { Token: getCookie('Token') },
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          // Jika tidak ada error, iterasi melalui data kartu dan buat elemen HTML untuk setiap kartu
           data.data.forEach((cardData) => {
-            // Memisahkan aturan kartu ke dalam dua bagian: cardRulesLess (untuk pratinjau) dan cardRulesMore (untuk detail)
             var cardRules = cardData.rules.split(' ');
             var cardRulesLess = '';
             var cardRulesMore = '';
@@ -55,8 +52,6 @@ $(document).ready(function () {
               cardRulesMore += cardRules[j];
               if (j < cardRules.length - 1) cardRulesMore += ' ';
             }
-
-            // Membuat elemen HTML untuk kartu dan menyusunnya dengan data dari API
             var cardList = `
                     <div class="card" id="${cardData.idCard}">
                     <img src="${cardData.gambarKartu}" alt="${cardData.namaKartu}" class="card-image">
@@ -81,26 +76,20 @@ $(document).ready(function () {
                     </table>
                 </div>
                     `;
-            // Membuat elemen div sementara untuk mengurai string HTML dan menambahkannya ke dalam wadah daftar kartu
+
             var tempElement = document.createElement('div');
             tempElement.innerHTML = cardList.trim();
             cardsContainer.appendChild(tempElement.firstChild);
           });
         } else {
-          console.log('Error fetching cards:', data.message); // Log jika ada error saat mengambil data kartu
+          console.log('Error fetching cards:', data.message);
         }
       })
       .catch((error) => {
-        console.error('Error occurred while fetching cards:', error); // Menangani dan log error jika permintaan gagal
+        console.error('Error occurred while fetching cards:', error);
       });
   }
 
-  // Memanggil fungsi untuk mengambil data kartu dek dan tiket roll saat dokumen siap
   fetchDeckCard();
   fetchRollTicket();
-
-  // Hapus komentar pada baris berikut jika ingin mengambil sesi secara berkala
-  // setInterval(function() {
-  //     fetchSession();
-  // }, 5000);
 });

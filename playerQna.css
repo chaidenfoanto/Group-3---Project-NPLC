@@ -242,12 +242,12 @@ header h1 {
         color: white;
         background-color: #35A2DB;
         width: 90%;
-        height: 20%;
-        margin-left: 5%;
+        height: 100px; /* Reduced height for smaller screens */
+        margin: 0 auto; /* Center the button */
     }
 
     .question-item {
-        margin-left: 20%;
+        margin-left: 0; /* Remove margin to center items */
     }
 
     .status, .see-answer {
@@ -256,13 +256,35 @@ header h1 {
 }
 
 @media (max-width: 480px) {
-    .question-item {
+    header {
+        flex-direction: column;
+        align-items: center;
         width: 100%;
-        height: auto;
+    }
+
+    header h1 {
+        margin: 10px 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .popup-content {
+        width: calc(100% - 20px);
     }
 
     #addQuestionBtn {
-        width: 100%;
+        width: 90%;
+        height: 50px; /* Further reduce height for smaller screens */
+        margin: 10px auto; /* Center the button */
+    }
+
+    .question-item {
+        width: 80%;
         height: auto;
+        margin: 10px 0; /* Center items and add margin for spacing */
+    }
+
+    #questionList {
+        justify-content: center; /* Center items */
     }
 }

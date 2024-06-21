@@ -3,7 +3,7 @@ $(document).ready(function () {
 
   function displayBooths(booths) {
     const boothList = $('.booth-list');
-    boothList.empty(); // Clear existing content
+    boothList.empty();
 
     booths.forEach((booth) => {
       let boothItem;
@@ -55,7 +55,7 @@ $(document).ready(function () {
   }
 
   function populateFloorDropdown(floors) {
-    const floorSelect = $('#Floor'); // Using jQuery to select the dropdown element
+    const floorSelect = $('#Floor');
 
     floors.forEach((floor) => {
       const option = `<option value="${floor}">Lantai ${floor}</option>`;
@@ -70,9 +70,9 @@ $(document).ready(function () {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Response from getAllLantai:', data); // Log response for debugging
+        console.log('Response from getAllLantai:', data);
         if (!data.error && data.data.dataLantai) {
-          populateFloorDropdown(data.data.dataLantai); // Call function to populate dropdown
+          populateFloorDropdown(data.data.dataLantai);
         } else {
           console.log(data.message || 'Unexpected data format');
         }
@@ -128,7 +128,7 @@ $(document).ready(function () {
         } else {
           console.log('failed search:', data.message);
           const boothList = $('.booth-list');
-          boothList.empty(); // Clear existing content
+          boothList.empty();
           const text = document.createElement('h1');
           text.innerHTML = data.message;
           boothList.append(text);

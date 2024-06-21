@@ -12,12 +12,11 @@ $(document).ready(function () {
     return null;
   }
 
-  // Function to load questions from the server
   async function loadQuestions() {
     await fetch(domain + 'api/qna/questions', {
       method: 'GET',
       headers: {
-        Token: getCookie('Token'), // Retrieve the session token from cookies
+        Token: getCookie('Token'),
       },
     })
       .then((response) => response.json())
@@ -25,10 +24,8 @@ $(document).ready(function () {
         if (!data.error) {
           const questionList = document.getElementById('questionList');
 
-          // Clear existing content
           questionList.innerHTML = '';
 
-          // Loop through each question and append to the list
           data.data.forEach((question) => {
             appendQuestion(question);
           });
@@ -41,16 +38,15 @@ $(document).ready(function () {
       });
   }
 
-  /// Function to handle form submission
   document.getElementById('questionForm').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
 
     const question = document.getElementById('question').value;
 
     if (question) {
       try {
         await postQuestion(question);
-        // Refresh the page after successful submission
+
         window.location.reload();
       } catch (error) {
         console.log('Error submitting question:', error);
@@ -60,10 +56,9 @@ $(document).ready(function () {
     }
   });
 
-  // Function to send the question to the server
   async function postQuestion(question) {
     const newQuestion = {
-      "pertanyaan": question,
+      pertanyaan: question,
     };
 
     try {
@@ -71,7 +66,7 @@ $(document).ready(function () {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Token: getCookie('Token'), // Retrieve the session token from cookies
+          Token: getCookie('Token'),
         },
         body: JSON.stringify(newQuestion),
       });
@@ -80,14 +75,11 @@ $(document).ready(function () {
 
       if (!data.error) {
         console.log('Question successfully added');
-        // Optionally handle success message or UI state
       } else {
         console.error('Error adding question:', data.message);
-        // Optionally handle error message or UI state
       }
     } catch (error) {
       console.error('Error occurred while adding question:', error);
-      // Optionally handle error message or UI state
     }
   }
 
