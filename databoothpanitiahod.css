@@ -267,7 +267,7 @@
             display: block;
             color: red;
             font-size: 14px;
-            margin-top: 4px; /* Atur jarak dari input di atasnya */
+            margin-top: 4px; 
         }
 
         .input-group input,
