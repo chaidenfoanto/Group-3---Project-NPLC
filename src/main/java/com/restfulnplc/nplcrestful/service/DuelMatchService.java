@@ -13,6 +13,7 @@ import com.restfulnplc.nplcrestful.dto.DuelMatchDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.DuelMatch;
 import com.restfulnplc.nplcrestful.model.MatchStatus;
+import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.repository.DuelMatchRepository;
 
@@ -34,6 +35,19 @@ public class DuelMatchService {
         duelMatch.setWaktuSelesai(LocalTime.now().plusNanos(boothgame.getDurasiPermainan() * 1_000_000));
         duelMatch.setBoothGames(boothgame);
         duelMatch.setMatchStatus(MatchStatus.STARTED);
+        return duelMatchRepository.save(duelMatch);
+    }
+
+    public DuelMatch stopDuelMatch(DuelMatch duelMatch) {
+        duelMatch.setWaktuSelesai(LocalTime.now());
+        duelMatch.setMatchStatus(MatchStatus.FINISHED);
+        return duelMatchRepository.save(duelMatch);
+    }
+
+    public DuelMatch submitDuelMatch(DuelMatch duelMatch, String idTeamMenang, Panitia panitia) {
+        duelMatch.setTimMenang(teamService.getTeamById(idTeamMenang).get());
+        duelMatch.setInputBy(panitia);
+        duelMatch.setMatchStatus(MatchStatus.SUBMITTED);
         return duelMatchRepository.save(duelMatch);
     }
 

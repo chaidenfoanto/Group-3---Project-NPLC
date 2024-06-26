@@ -1,5 +1,6 @@
 package com.restfulnplc.nplcrestful.controller;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import com.restfulnplc.nplcrestful.model.DuelMatch;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.service.DuelMatchService;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.PanitiaService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
 import com.restfulnplc.nplcrestful.util.Response;
@@ -38,6 +40,9 @@ public class DuelMatchController {
 
     @Autowired
     private BoothgamesService boothgamesService;
+
+    @Autowired
+    private PanitiaService panitiaService;
 
     @Autowired
     private LoginService loginService;
@@ -130,7 +135,7 @@ public class DuelMatchController {
                     } else {
                         response.setMessage("BoothGame Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.FORBIDDEN);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -172,12 +177,12 @@ public class DuelMatchController {
                     response.setHttpCode(HTTPCode.OK);
                     response.setData(Map.of(
                             "noMatch", duelMatch.getNoMatch(),
-                            "team1", duelMatch.getTeam1(),
-                            "team2", duelMatch.getTeam2(),
+                            "team1", duelMatch.getTeam1().getNama(),
+                            "team2", duelMatch.getTeam2().getNama(),
                             "waktuMulai", duelMatch.getWaktuMulai(),
                             "waktuSelesai", duelMatch.getWaktuSelesai(),
-                            "inputBy", duelMatch.getInputBy(),
-                            "timMenang", duelMatch.getTimMenang(),
+                            "inputBy", duelMatch.getInputBy().getNama(),
+                            "timMenang", duelMatch.getTimMenang().getNama(),
                             "boothgames", duelMatch.getBoothGames()));
                 } else {
                     response.setMessage("Duel Match Not Found");
@@ -219,12 +224,12 @@ public class DuelMatchController {
                     for (DuelMatch duelMatch : duelMatchList) {
                         listData.add(Map.of(
                                 "noMatch", duelMatch.getNoMatch(),
-                                "team1", duelMatch.getTeam1(),
-                                "team2", duelMatch.getTeam2(),
+                                "team1", duelMatch.getTeam1().getNama(),
+                                "team2", duelMatch.getTeam2().getNama(),
                                 "waktuMulai", duelMatch.getWaktuMulai(),
                                 "waktuSelesai", duelMatch.getWaktuSelesai(),
-                                "inputBy", duelMatch.getInputBy(),
-                                "timMenang", duelMatch.getTimMenang(),
+                                "inputBy", duelMatch.getInputBy().getNama(),
+                                "timMenang", duelMatch.getTimMenang().getNama(),
                                 "isWinningTeam", duelMatch.getTimMenang().getIdTeam().equals(id),
                                 "boothgames", duelMatch.getBoothGames()));
                     }
@@ -232,7 +237,7 @@ public class DuelMatchController {
                 } else {
                     response.setMessage("No Duel Matches With That ID Found");
                     response.setError(true);
-                    response.setHttpCode(HTTPCode.OK);
+                    response.setHttpCode(HTTPCode.BAD_REQUEST);
                     response.setData(new ErrorMessage(response.getHttpCode()));
                 }
             } else {
@@ -317,11 +322,11 @@ public class DuelMatchController {
                             response.setData(Map.of(
                                     "gameStatus", duelMatch.getMatchStatus().toString(),
                                     "gameData", Map.of(
-                                            "team1", duelMatch.getTeam1(),
-                                            "team2", duelMatch.getTeam2(),
+                                            "team1", duelMatch.getTeam1().getNama(),
+                                            "team2", duelMatch.getTeam2().getNama(),
                                             "startTime", duelMatch.getWaktuMulai(),
                                             "finishTime", duelMatch.getWaktuSelesai(),
-                                            "boothnName", duelMatch.getBoothGames().getNama())));
+                                            "boothName", duelMatch.getBoothGames().getNama())));
                         } else {
                             response.setMessage("No Current Game Running");
                             response.setError(true);
@@ -330,7 +335,7 @@ public class DuelMatchController {
                     } else {
                         response.setMessage("BoothGame Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.FORBIDDEN);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -358,7 +363,7 @@ public class DuelMatchController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<Response> getBoothgamesByPanitia(HttpServletRequest request, DuelMatchDTO duelMatchDTO) {
+    public ResponseEntity<Response> startGame(HttpServletRequest request, DuelMatchDTO duelMatchDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Start Duel Match");
         try {
@@ -375,15 +380,15 @@ public class DuelMatchController {
                         response.setData(Map.of(
                                 "gameStatus", "Game Started",
                                 "gameData", Map.of(
-                                        "team1", duelMatch.getTeam1(),
-                                        "team2", duelMatch.getTeam2(),
+                                        "team1", duelMatch.getTeam1().getNama(),
+                                        "team2", duelMatch.getTeam2().getNama(),
                                         "startTime", duelMatch.getWaktuMulai(),
                                         "finishTime", duelMatch.getWaktuSelesai(),
-                                        "boothnName", duelMatch.getBoothGames().getNama())));
+                                        "boothName", duelMatch.getBoothGames().getNama())));
                     } else {
                         response.setMessage("BoothGame Not Found");
                         response.setError(true);
-                        response.setHttpCode(HTTPCode.FORBIDDEN);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
                         response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
@@ -394,6 +399,144 @@ public class DuelMatchController {
                 }
             } else {
                 response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping("/finish")
+    public ResponseEntity<Response> finishGame(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Stop Duel Match");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionLOGame(sessionToken)) {
+                    String userid = loginService.getLoginSession(sessionToken).getIdUser();
+                    Optional<Boothgames> boothgamesOptional = boothgamesService.getBoothgameByPanitia(userid);
+                    if (boothgamesOptional.isPresent()) {
+                        Boothgames boothgame = boothgamesOptional.get();
+                        Optional<DuelMatch> currentDuelMatch = duelMatchService.getCurrentDuelMatch(boothgame);
+                        if (currentDuelMatch.isPresent()) {
+                            DuelMatch duelMatch = duelMatchService.stopDuelMatch(currentDuelMatch.get());
+                            response.setMessage("Game Stopped!");
+                            response.setError(false);
+                            response.setHttpCode(HTTPCode.OK);
+                            Long durationSecond = duelMatch.getWaktuMulai().until(duelMatch.getWaktuSelesai(),
+                                    ChronoUnit.SECONDS);
+                            response.setData(Map.of(
+                                    "gameStatus", "Game Stopped",
+                                    "gameData", Map.of(
+                                            "team1", duelMatch.getTeam1().getNama(),
+                                            "team2", duelMatch.getTeam2().getNama(),
+                                            "startTime", duelMatch.getWaktuMulai(),
+                                            "finishTime", duelMatch.getWaktuSelesai(),
+                                            "durasi", Map.of(
+                                                    "detik", durationSecond / 60,
+                                                    "menit", durationSecond % 60),
+                                            "boothName", duelMatch.getBoothGames().getNama())));
+                        } else {
+                            response.setMessage("Match Not Found");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.BAD_REQUEST);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
+                    } else {
+                        response.setMessage("BoothGame Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<Response> submitGame(HttpServletRequest request, DuelMatchDTO duelMatchDTO) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Submit Duel Match");
+        try {
+            if (duelMatchDTO.getTimMenang() != null) {
+                if (loginService.checkSessionAlive(sessionToken)) {
+                    if (loginService.checkSessionLOGame(sessionToken)) {
+                        String userid = loginService.getLoginSession(sessionToken).getIdUser();
+                        Optional<Boothgames> boothgamesOptional = boothgamesService.getBoothgameByPanitia(userid);
+                        if (boothgamesOptional.isPresent()) {
+                            Boothgames boothgame = boothgamesOptional.get();
+                            Optional<DuelMatch> currentDuelMatch = duelMatchService.getCurrentDuelMatch(boothgame);
+                            if (currentDuelMatch.isPresent()) {
+                                DuelMatch duelMatch = duelMatchService.submitDuelMatch(currentDuelMatch.get(),
+                                        duelMatchDTO.getTimMenang(), panitiaService.getPanitiaById(userid).get());
+                                response.setMessage("Game Submitted!");
+                                response.setError(false);
+                                response.setHttpCode(HTTPCode.OK);
+                                response.setData(Map.of(
+                                        "gameStatus", "Game Submitted",
+                                        "gameData", Map.of(
+                                                "noMatch", duelMatch.getNoMatch(),
+                                                "team1", duelMatch.getTeam1().getNama(),
+                                                "team2", duelMatch.getTeam2().getNama(),
+                                                "waktuMulai", duelMatch.getWaktuMulai(),
+                                                "waktuSelesai", duelMatch.getWaktuSelesai(),
+                                                "inputBy", duelMatch.getInputBy().getNama(),
+                                                "timMenang", duelMatch.getTimMenang().getNama(),
+                                                "boothgames", duelMatch.getBoothGames())));
+                            } else {
+                                response.setMessage("Match Not Found");
+                                response.setError(true);
+                                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                                response.setData(new ErrorMessage(response.getHttpCode()));
+                            }
+                        } else {
+                            response.setMessage("BoothGame Not Found");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.BAD_REQUEST);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
+                    } else {
+                        response.setMessage("Access Denied");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.FORBIDDEN);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Authorization Failed");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.BAD_REQUEST);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Team Menang Was Not Defined");
                 response.setError(true);
                 response.setHttpCode(HTTPCode.BAD_REQUEST);
                 response.setData(new ErrorMessage(response.getHttpCode()));

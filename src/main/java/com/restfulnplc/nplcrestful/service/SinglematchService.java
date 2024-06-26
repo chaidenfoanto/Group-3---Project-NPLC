@@ -1,5 +1,6 @@
 package com.restfulnplc.nplcrestful.service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.ListKartu;
+import com.restfulnplc.nplcrestful.model.MatchStatus;
+import com.restfulnplc.nplcrestful.model.Panitia;
 import com.restfulnplc.nplcrestful.model.Singlematch;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.repository.SinglematchRepository;
@@ -21,36 +24,83 @@ public class SinglematchService {
     private SinglematchRepository singlematchRepository;
 
     @Autowired
-    private TeamService teamService;
-
-    @Autowired
-    private PanitiaService panitiaService;
+    private TeamService teamService;;
 
     @Autowired
     private ListKartuService listKartuService;
 
-    public Singlematch startSinglematch(SinglematchDTO singlematchDTO, Boothgames boothgames) {
+    public Singlematch startSingleMatch(SinglematchDTO singlematchDTO, Boothgames boothgame) {
         Singlematch singlematch = new Singlematch();
         singlematch.setNoMatch(getNextMatchID());
-        singlematch.setWaktuMulai(singlematchDTO.getWaktuMulai());
-        singlematch.setWaktuSelesai(singlematchDTO.getWaktuSelesai());
-        singlematch.setInputBy(panitiaService.getPanitiaById(singlematchDTO.getInputBy()).get());
-        singlematch.setTotalPoin(singlematchDTO.getTotalPoin());
-        singlematch.setTotalBintang(singlematchDTO.getTotalBintang());
+        singlematch.setWaktuMulai(LocalTime.now());
+        LocalTime waktuSelesai = LocalTime.now().plusNanos(boothgame.getDurasiPermainan() * 1_000_000);
+        singlematch.setTeam(teamService.getTeamById(singlematchDTO.getIdTeam()).get());
 
-        Optional<Team> team = teamService.getTeamById(singlematchDTO.getIdTeam());
-        if (team.isPresent()) {
-            singlematch.setTeam(team.get());
+        if (singlematchDTO.getNoKartu() != null) {
+            Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
+            if (listKartu.isPresent()) {
+                singlematch.setListKartu(listKartu.get());
+                listKartuService.useCard(singlematchDTO.getNoKartu());
+                if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
+                    
+                }
+            }
         }
+        singlematch.setWaktuSelesai(waktuSelesai);
 
-        Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
-        if (listKartu.isPresent()) {
-            singlematch.setListKartu(listKartu.get());
-        }
-
-        singlematch.setBoothGames(boothgames);
+        singlematch.setBoothGames(boothgame);
 
         return singlematchRepository.save(singlematch);
+    }
+
+    public Singlematch stopSingleMatch(Singlematch singlematch) {
+        singlematch.setWaktuSelesai(LocalTime.now());
+        singlematch.setMatchStatus(MatchStatus.FINISHED);
+        return singlematchRepository.save(singlematch);
+    }
+    
+    public Singlematch submitSingleMatch(Singlematch singlematch, int totalBintang, Panitia panitia) {
+        singlematch.setTotalBintang(totalBintang);
+        int totalPoin;
+        switch(totalBintang) {
+            case 0:
+                totalPoin = 0;
+                break;
+            case 1:
+                totalPoin = 30;
+                break;
+            case 2:
+                totalPoin = 60;
+                break;
+            case 3:
+                totalPoin = 100;
+                break;
+            default:
+                totalPoin = 0;
+        }
+        if(singlematch.getListKartu().getCardSkill().getIdCard().equals("A1")) {
+            totalPoin *= 2;
+        }
+        singlematch.setTotalPoin(totalPoin);
+        singlematch.setInputBy(panitia);
+        singlematch.setMatchStatus(MatchStatus.SUBMITTED);
+        return singlematchRepository.save(singlematch);
+    }
+
+    public Optional<Singlematch> getCurrentSingleMatch(Boothgames boothgames) {
+        for (Singlematch singlematch : getAllSinglematches()) {
+            if (singlematch.getBoothGames().equals(boothgames)
+                    && (singlematch.getMatchStatus().equals(MatchStatus.STARTED)
+                            || singlematch.getMatchStatus().equals(MatchStatus.FINISHED))) {
+                if (LocalTime.now().isAfter(singlematch.getWaktuSelesai())
+                        && singlematch.getMatchStatus().equals(MatchStatus.STARTED)) {
+                    singlematch.setMatchStatus(MatchStatus.FINISHED);
+                    singlematch = singlematchRepository.save(singlematch);
+                }
+                return Optional.of(singlematch);
+            }
+        }
+        return Optional.empty();
     }
 
     public ArrayList<Singlematch> getSinglematchesByUser(String idTeam) {
