@@ -15,6 +15,9 @@ $(document).ready(function() {
             }
         }
 });
+
+    $('.popup').hide();
+    
     // Function to open the question popup
     $('#addQuestionBtn').click(function() {
         $('#popup').fadeIn();
@@ -82,17 +85,4 @@ $(document).ready(function() {
         questionItem.append(statusContainer);
         $('#questionList').append(questionItem);
     }
-    
-    // Load questions on document ready
-    function loadQuestions() {
-        // Example questions for demo purposes
-        var questions = [
-            { teamName: "Team A", question: "What is the strategy?", answer: "", status: "Not Answered" },
-            { teamName: "Team B", question: "Who is the best player?", answer: "All players are valuable.", status: "Answered" }
-        ];
-
-        questions.forEach(appendQuestion);
-    }
-
-    loadQuestions();
 });

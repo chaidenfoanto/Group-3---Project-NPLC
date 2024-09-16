@@ -1,7 +1,9 @@
 var interval;
 var timer = '01:00';
+let teamData = {};
+let selectedTeamId = null;
 
-const domain = 'http://localhost:8080/';
+const domain2 = 'http://localhost:8080/';
 
 function getCookie(name) {
   let cookieArr = document.cookie.split(';'); 
@@ -15,7 +17,7 @@ function getCookie(name) {
 }
 
 function getTime() {
-  fetch(domain + 'api/boothgames/getSelfBooth', {
+  fetch(domain2 + 'api/boothgames/getSelfBooth', {
     method: 'GET',
     headers: { Token: getCookie('Token') },
   })
@@ -43,7 +45,7 @@ $(document).ready(function() {
         });
 
         function menuBtnChange() {
-            if (sidebar.hasClass("open")) {
+            if ($(".sidebar").hasClass("open")) {
                 logo.hide();
             } else {
                 logo.show();
@@ -68,7 +70,7 @@ $(document).ready(function() {
     function showModal() {
         $('#gameEndModal').show();
         $(".sidebar").toggleClass("disable");
-        setCurrentTimeForTimeInput('#timeFinished');
+        // setCurrentTimeForTimeInput('#timeFinished');
         calculateDuration();
         const team = $('#teamname').val();
         $('#teamplayed').val(team);
@@ -76,16 +78,196 @@ $(document).ready(function() {
         $('#pointsMessage').text(`0 POINTS WILL BE GIVEN TO ${team}`);
     }
 
-    $('#startButton').click(function() {
-        if ($(this).text() === "Start Game") {
-            $(this).text("Finish Game");
-            setCurrentTimeForTimeInput('#timeStarted');
-            startTimer(); // Fungsi untuk memulai timer
+    document.getElementById("gameEndForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Mencegah pengiriman formulir secara default
+        submitHistory();
+      });
+
+    
+    function fetchTeamNames() {
+    fetch(domain2 + "api/team/getTeamPerGame", {
+        method: "GET",
+        headers: { Token: getCookie("Token") },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+        const teamSelect = document.getElementById("teamname");
+
+        teamSelect.innerHTML = "";
+        data.data.forEach((team) => {
+            teamData[team.namaTeam] = team.idTeam;
+            const option = document.createElement("option");
+            option.value = team.namaTeam;
+            option.textContent = team.namaTeam;
+            teamSelect.appendChild(option);
+        });
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        teamSelect.prepend(placeholder);
+        teamSelect.value = "";
+        })
+        .catch((error) => console.error("Error loading team names:", error));
+    }
+    
+      function fetchAvailableCards(teamId) {
+        cardsData = [];
+        fetch(domain2 + "api/listkartu/getByTeam/" + teamId, {
+          method: "GET",
+          headers: { Token: getCookie("Token") },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const cardSelect = document.getElementById("cardskill");
+    
+            cardSelect.innerHTML = "";
+    
+            if (data.data.availableCards && data.data.availableCards.length > 0) {
+              cardsData = data.data.availableCards;
+              data.data.availableCards.forEach((card) => {
+                const option = document.createElement("option");
+                option.value = card.cardSkill.namaKartu;
+                option.textContent = card.cardSkill.namaKartu;
+                cardSelect.appendChild(option);
+              });
+            }
+    
+            const placeholder = document.createElement("option");
+            placeholder.value = "";
+            cardSelect.prepend(placeholder);
+            cardSelect.value = "";
+          })
+          .catch((error) => console.error("Error loading available cards:", error));
+      }
+    
+      document.getElementById('teamname').addEventListener('change', function () {
+        const selectedTeam = this.value;
+        if (selectedTeam && teamData[selectedTeam]) {
+          selectedTeamId = teamData[selectedTeam];
+          fetchAvailableCards(selectedTeamId);
         } else {
-            $(this).text("Start Game");
-            stopTimer(); // Fungsi untuk menghentikan timer
+          const cardSelect = document.getElementById('cardskill');
+          cardSelect.innerHTML = '<option value=""></option>';
         }
-    });
+      });
+    
+      fetchTeamNames();
+  
+    // Fungsi untuk mendapatkan card number paling atas dari response
+    function getTopCardNumber(cardsData) {
+      // Memastikan ada kartu yang tersedia
+      if (
+        cardsData &&
+        cardsData.availableCards &&
+        cardsData.availableCards.length > 0
+      ) {
+        // Ambil kartu teratas dan cardNumber teratas
+        const topCardSkill = cardsData.availableCards[0];
+        if (topCardSkill.cardNumbers && topCardSkill.cardNumbers.length > 0) {
+          return topCardSkill.cardNumbers[0].cardNumber; // Kartu teratas
+        }
+      }
+      return null; // Jika tidak ada kartu
+    }
+
+    // Fungsi untuk memulai game
+    function postStartGame() {
+        // Mengambil card number yang paling atas
+        const topCardNumber = getTopCardNumber(cardsData);
+
+        // if (!topCardNumber) {
+        //   console.error("No available cards to start the game.");
+        //   return;
+        // }
+
+        // Membuat objek data yang akan dikirim
+        const data = {
+        idTeam: selectedTeamId, // Menggunakan id team yang telah kamu simpan
+        noKartu: topCardNumber, // Mengirim card number teratas
+        };
+
+        // Melakukan POST request ke server
+        fetch(domain2 + "api/singlematch/start", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Token: getCookie("Token"), // Token otentikasi jika diperlukan
+        },
+        body: JSON.stringify(data), // Mengubah objek data menjadi JSON
+        })
+        .then((response) => response.json())
+        .then((data) => {
+        console.log("Game started successfully:", data);
+        const durasiPermainanElement = $('.timeleft');
+        var durasiPermainan = data.data.gameData.durasi.menit.toString();
+        timer = (durasiPermainan.length < 2 ? '0' + durasiPermainan : durasiPermainan) + ':00';
+        durasiPermainanElement.text(timer);
+        // Tambahkan aksi setelah game berhasil dimulai, seperti menavigasi ke halaman lain
+        })
+        .catch((error) => {
+        console.error("Error starting game:", error);
+        });
+    }
+
+    function sendGameEndData() {
+        fetch(domain2 + 'api/singlematch/finish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Token: getCookie("Token"),
+            },
+            body: JSON.stringify()  // Jangan lupa isi dengan data jika diperlukan
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+
+            $('#timeStarted').val(data.data.gameData.startTime);
+            $('#timeFinished').val(data.data.gameData.finishTime);
+            calculateDuration();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Tindakan jika terjadi error
+        });
+    }
+
+    function submitHistory() {
+        const data = {
+            totalBintang: $('#starEarned').val(),
+            };
+
+        fetch(domain2 + 'api/singlematch/submit', {
+            method: 'POST',
+            headers:{
+                'content-Type': 'application/json',
+                Token: getCookie("Token"),
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Tindakan jika terjadi error
+        });
+    }
+    
+
+  $('#startButton').click(function() {
+    if ($(this).text() === "Start Game") {
+        $(this).text("Finish Game");
+        // setCurrentTimeForTimeInput('#timeStarted');
+        postStartGame();
+        startTimer(); // Fungsi untuk memulai timer
+    } else {
+        $(this).text("Start Game");
+        stopTimer(); // Fungsi untuk menghentikan timer
+
+    }
+});
 
     function startTimer() {
         // Implementasi timer
@@ -107,7 +289,7 @@ $(document).ready(function() {
                 clearInterval(interval);
                 $('#startButton').text("Start Game");
                 if (totalSeconds <= 0) {
-                    setCurrentTimeForTimeInput('#timeFinished');
+                    // setCurrentTimeForTimeInput('#timeFinished');
                     showModal();
                 } else {
                 showModal();
@@ -120,6 +302,7 @@ $(document).ready(function() {
         // Menghentikan timer
         clearInterval(interval);
         showModal();
+        sendGameEndData();
     }
 
     function clearform() {
@@ -232,7 +415,7 @@ $(document).ready(function() {
             $('#gameEndModal').hide();
         }
     }); 
-
+    
     $('#starEarned').on('change', function() {
         const team = $('#teamplayed').val();
         const star = $('#starEarned').val();

@@ -1,7 +1,7 @@
 var interval;
 var timer = '01:00';
 
-const domain = 'http://localhost:8080/';
+const domain2 = 'http://localhost:8080/';
 
 function getCookie(name) {
   let cookieArr = document.cookie.split(';'); 
@@ -15,7 +15,7 @@ function getCookie(name) {
 }
 
 function getTime() {
-  fetch(domain + 'api/boothgames/getSelfBooth', {
+  fetch(domain2 + 'api/boothgames/getSelfBooth', {
     method: 'GET',
     headers: { Token: getCookie('Token') },
   })
