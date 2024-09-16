@@ -159,7 +159,7 @@ public class ListKartuService {
         ArrayList<Object> listUsed = new ArrayList<Object>();
         ArrayList<Object> listUnused = new ArrayList<Object>();
         for (CardSkill cardSkill : cardSkillService.getAllCardSkills()) {
-            if (!cardSkill.getIdCard().equals("ZONK") || !cardSkill.getIdCard().equals("D4")) {
+            if (!cardSkill.getIdCard().equals("ZONK") && !cardSkill.getIdCard().equals("D4")) {
                 ArrayList<Object> cardNumbersUsed = new ArrayList<Object>();
                 ArrayList<Object> cardNumbersUnused = new ArrayList<Object>();
                 for (ListKartu listKartu : getCardsByTeamIdAndCardID(id, cardSkill.getIdCard())) {
