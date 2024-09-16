@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -216,12 +217,18 @@ public class SinglematchController {
                             response.setData(Map.of(
                                     "gameStatus", singlematch.getMatchStatus().toString(),
                                     "gameData", Map.of(
+                                            "cardUsed", (singlematch.getListKartu() != null) ? (Map.of(
+                                                    "cardName",
+                                                    singlematch.getListKartu().getCardSkill().getNamaKartu(),
+                                                    "cardNumber", singlematch.getListKartu().getNoKartu(),
+                                                    "cardId", singlematch.getListKartu().getCardSkill().getIdCard()))
+                                                    : "None",
                                             "team", singlematch.getTeam().getNama(),
                                             "startTime", singlematch.getWaktuMulai(),
                                             "finishTime", singlematch.getWaktuSelesai(),
                                             "durasi", Map.of(
-                                                    "detik", durationSecond / 60,
-                                                    "menit", durationSecond % 60),
+                                                    "detik", durationSecond % 60,
+                                                    "menit", durationSecond / 60),
                                             "boothName", singlematch.getBoothGames().getNama())));
                         } else {
                             response.setMessage("No Current Game Running");
@@ -259,9 +266,9 @@ public class SinglematchController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<Response> startGame(HttpServletRequest request, SinglematchDTO singlematchDTO) {
+    public ResponseEntity<Response> startGame(HttpServletRequest request, @RequestBody SinglematchDTO singlematchDTO) {
         String sessionToken = request.getHeader("Token");
-        response.setService("Start Duel Match");
+        response.setService("Start Single Match");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionLOGame(sessionToken)) {
@@ -269,23 +276,36 @@ public class SinglematchController {
                     Optional<Boothgames> boothgamesOptional = boothgamesService.getBoothgameByPanitia(userid);
                     if (boothgamesOptional.isPresent()) {
                         Boothgames boothgame = boothgamesOptional.get();
-                        Singlematch singlematch = singlematchService.startSingleMatch(singlematchDTO, boothgame);
-                        Long durationSecond = singlematch.getWaktuMulai().until(singlematch.getWaktuSelesai(),
-                                ChronoUnit.SECONDS);
-                        response.setMessage("Game Started!");
-                        response.setError(false);
-                        response.setHttpCode(HTTPCode.OK);
-                        response.setData(Map.of(
-                                "gameStatus", "Game Started",
-                                "gameData", Map.of(
-                                        "team", singlematch.getTeam().getNama(),
-                                        "cardUsed", singlematch.getListKartu(),
-                                        "startTime", singlematch.getWaktuMulai(),
-                                        "finishTime", singlematch.getWaktuSelesai(),
-                                        "durasi", Map.of(
-                                                "detik", durationSecond / 60,
-                                                "menit", durationSecond % 60),
-                                        "boothName", singlematch.getBoothGames().getNama())));
+                        if (!singlematchService.getGameRunning(boothgame).isPresent()) {
+                            Singlematch singlematch = singlematchService.startSingleMatch(singlematchDTO, boothgame,
+                                    userid);
+                            Long durationSecond = singlematch.getWaktuMulai().until(singlematch.getWaktuSelesai(),
+                                    ChronoUnit.SECONDS);
+                            response.setMessage("Game Started!");
+                            response.setError(false);
+                            response.setHttpCode(HTTPCode.OK);
+                            response.setData(Map.of(
+                                    "gameStatus", "Game Started",
+                                    "gameData", Map.of(
+                                            "team", singlematch.getTeam().getNama(),
+                                            "cardUsed", (singlematch.getListKartu() != null) ? (Map.of(
+                                                    "cardName",
+                                                    singlematch.getListKartu().getCardSkill().getNamaKartu(),
+                                                    "cardNumber", singlematch.getListKartu().getNoKartu(),
+                                                    "cardId", singlematch.getListKartu().getCardSkill().getIdCard()))
+                                                    : "None",
+                                            "startTime", singlematch.getWaktuMulai(),
+                                            "finishTime", singlematch.getWaktuSelesai(),
+                                            "durasi", Map.of(
+                                                    "detik", durationSecond % 60,
+                                                    "menit", durationSecond / 60),
+                                            "boothName", singlematch.getBoothGames().getNama())));
+                        } else {
+                            response.setMessage("Game Started!");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.BAD_REQUEST);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
                     } else {
                         response.setMessage("BoothGame Not Found");
                         response.setError(true);
@@ -339,12 +359,17 @@ public class SinglematchController {
                                     "gameStatus", "Game Stopped",
                                     "gameData", Map.of(
                                             "team", singlematch.getTeam().getNama(),
-                                            "cardUsed", singlematch.getListKartu(),
+                                            "cardUsed", (singlematch.getListKartu() != null) ? (Map.of(
+                                                    "cardName",
+                                                    singlematch.getListKartu().getCardSkill().getNamaKartu(),
+                                                    "cardNumber", singlematch.getListKartu().getNoKartu(),
+                                                    "cardId", singlematch.getListKartu().getCardSkill().getIdCard()))
+                                                    : "None",
                                             "startTime", singlematch.getWaktuMulai(),
                                             "finishTime", singlematch.getWaktuSelesai(),
                                             "durasi", Map.of(
-                                                    "detik", durationSecond / 60,
-                                                    "menit", durationSecond % 60),
+                                                    "detik", durationSecond % 60,
+                                                    "menit", durationSecond / 60),
                                             "boothName", singlematch.getBoothGames().getNama())));
                         } else {
                             response.setMessage("Match Not Found");
@@ -383,7 +408,7 @@ public class SinglematchController {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<Response> submitGame(HttpServletRequest request, SinglematchDTO singlematchDTO) {
+    public ResponseEntity<Response> submitGame(HttpServletRequest request, @RequestBody SinglematchDTO singlematchDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Submit Duel Match");
         try {
@@ -403,6 +428,12 @@ public class SinglematchController {
                             response.setData(Map.of(
                                     "gameStatus", "Game Submitted",
                                     "gameData", Map.of(
+                                            "cardUsed", (singlematch.getListKartu() != null) ? (Map.of(
+                                                    "cardName",
+                                                    singlematch.getListKartu().getCardSkill().getNamaKartu(),
+                                                    "cardNumber", singlematch.getListKartu().getNoKartu(),
+                                                    "cardId", singlematch.getListKartu().getCardSkill().getIdCard()))
+                                                    : "None",
                                             "noMatch", singlematch.getNoMatch(),
                                             "team", singlematch.getTeam().getNama(),
                                             "waktuMulai", singlematch.getWaktuMulai(),

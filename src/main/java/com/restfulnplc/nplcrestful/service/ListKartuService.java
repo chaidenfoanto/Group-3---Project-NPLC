@@ -110,8 +110,10 @@ public class ListKartuService {
         if (optionalListKartu.isPresent()) {
             ListKartu listKartu = optionalListKartu.get();
             if (!listKartu.getCardSkill().getIdCard().equals("ZONK")) {
-                listKartu.setIsUsed(true);
-                return Optional.of(listKartuRepository.save(listKartu).getCardSkill());
+                if (!listKartu.getIsUsed()) {
+                    listKartu.setIsUsed(true);
+                    return Optional.of(listKartuRepository.save(listKartu).getCardSkill());
+                }
             }
         }
         return Optional.empty();
@@ -176,18 +178,16 @@ public class ListKartuService {
                 if (cardNumbersUsed.size() > 0) {
                     listUsed.add(Map.of(
                             "cardSkill", Map.of(
-                                "idCard", cardSkill.getIdCard(),
-                                "namaKartu", cardSkill.getNamaKartu()
-                            ),
+                                    "idCard", cardSkill.getIdCard(),
+                                    "namaKartu", cardSkill.getNamaKartu()),
                             "total", cardNumbersUsed.size(),
                             "cardNumbers", cardNumbersUsed));
                 }
                 if (cardNumbersUnused.size() > 0) {
                     listUnused.add(Map.of(
                             "cardSkill", Map.of(
-                                "idCard", cardSkill.getIdCard(),
-                                "namaKartu", cardSkill.getNamaKartu()
-                            ),
+                                    "idCard", cardSkill.getIdCard(),
+                                    "namaKartu", cardSkill.getNamaKartu()),
                             "total", cardNumbersUnused.size(),
                             "cardNumbers", cardNumbersUnused));
                 }

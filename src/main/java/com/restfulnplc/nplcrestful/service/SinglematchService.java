@@ -30,21 +30,26 @@ public class SinglematchService {
     @Autowired
     private ListKartuService listKartuService;
 
-    public Singlematch startSingleMatch(SinglematchDTO singlematchDTO, Boothgames boothgame) {
+    @Autowired
+    private PanitiaService panitiaService;
+
+    public Singlematch startSingleMatch(SinglematchDTO singlematchDTO, Boothgames boothgame, String panitiaId) {
         Singlematch singlematch = new Singlematch();
         singlematch.setNoMatch(getNextMatchID());
         singlematch.setWaktuMulai(LocalTime.now());
         LocalTime waktuSelesai = LocalTime.now().plusNanos(boothgame.getDurasiPermainan() * 1_000_000);
         singlematch.setTeam(teamService.getTeamById(singlematchDTO.getIdTeam()).get());
+        singlematch.setInputBy(panitiaService.getPanitiaById(panitiaId).get());
+        singlematch.setMatchStatus(MatchStatus.STARTED);
 
         if (singlematchDTO.getNoKartu() != null) {
             Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
-            if (listKartu.isPresent()) {
+            if (listKartu.isPresent() && !listKartu.get().getIsUsed()) {
                 singlematch.setListKartu(listKartu.get());
                 listKartuService.useCard(singlematchDTO.getNoKartu());
                 if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
                     waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
-                } else if(listKartu.get().getCardSkill().getIdCard().equals("B2")) {
+                } else if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
                     waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
                 }
             }
@@ -61,11 +66,22 @@ public class SinglematchService {
         singlematch.setMatchStatus(MatchStatus.FINISHED);
         return singlematchRepository.save(singlematch);
     }
-    
+
+    public Optional<Singlematch> getGameRunning(Boothgames boothgame) {
+        ArrayList<Singlematch> matches = getAllSinglematches();
+        Optional<Singlematch> runningMatch = Optional.empty();
+        for (Singlematch match : matches) {
+            if (match.getBoothGames().equals(boothgame) && !match.getMatchStatus().equals(MatchStatus.SUBMITTED)) {
+                runningMatch = Optional.of(match);
+            }
+        }
+        return runningMatch;
+    }
+
     public Singlematch submitSingleMatch(Singlematch singlematch, int totalBintang, Panitia panitia) {
         singlematch.setTotalBintang(totalBintang);
         int totalPoin;
-        switch(totalBintang) {
+        switch (totalBintang) {
             case 0:
                 totalPoin = 0;
                 break;
@@ -81,7 +97,7 @@ public class SinglematchService {
             default:
                 totalPoin = 0;
         }
-        if(singlematch.getListKartu().getCardSkill().getIdCard().equals("A1")) {
+        if (singlematch.getListKartu().getCardSkill().getIdCard().equals("A1")) {
             totalPoin *= 2;
         }
         singlematch.setTotalPoin(totalPoin);
