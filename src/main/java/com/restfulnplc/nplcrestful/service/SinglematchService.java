@@ -97,8 +97,10 @@ public class SinglematchService {
             default:
                 totalPoin = 0;
         }
-        if (singlematch.getListKartu().getCardSkill().getIdCard().equals("A1")) {
-            totalPoin *= 2;
+        if (singlematch.getListKartu() != null) {
+            if (singlematch.getListKartu().getCardSkill().getIdCard().equals("A1")) {
+                totalPoin *= 2;
+            }
         }
         singlematch.setTotalPoin(totalPoin);
         singlematch.setInputBy(panitia);
@@ -150,6 +152,14 @@ public class SinglematchService {
         }
         return teamList;
     }
+
+    // public ArrayList<Team> getAvailableRepeatTeam(String id) {
+    // ArrayList<Team> teamPerBooth = getTeamPerBooth(id);
+    // ArrayList<ListKartu> listKartu
+    // for(Team team : teamPerBooth){
+
+    // }
+    // }
 
     public Optional<Singlematch> getSinglematchesByUserAndBooth(String userId, String boothId) {
         for (Singlematch singlematch : getAllSinglematches()) {

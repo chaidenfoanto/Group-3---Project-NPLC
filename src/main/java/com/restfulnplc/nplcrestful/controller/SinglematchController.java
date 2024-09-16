@@ -410,7 +410,7 @@ public class SinglematchController {
     @PostMapping("/submit")
     public ResponseEntity<Response> submitGame(HttpServletRequest request, @RequestBody SinglematchDTO singlematchDTO) {
         String sessionToken = request.getHeader("Token");
-        response.setService("Submit Duel Match");
+        response.setService("Submit Single Match");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionLOGame(sessionToken)) {

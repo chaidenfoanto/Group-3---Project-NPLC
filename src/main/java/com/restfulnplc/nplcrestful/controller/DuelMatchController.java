@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -363,7 +364,7 @@ public class DuelMatchController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<Response> startGame(HttpServletRequest request, DuelMatchDTO duelMatchDTO) {
+    public ResponseEntity<Response> startGame(HttpServletRequest request, @RequestBody DuelMatchDTO duelMatchDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Start Duel Match");
         try {
@@ -482,7 +483,7 @@ public class DuelMatchController {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<Response> submitGame(HttpServletRequest request, DuelMatchDTO duelMatchDTO) {
+    public ResponseEntity<Response> submitGame(HttpServletRequest request, @RequestBody DuelMatchDTO duelMatchDTO) {
         String sessionToken = request.getHeader("Token");
         response.setService("Submit Duel Match");
         try {
