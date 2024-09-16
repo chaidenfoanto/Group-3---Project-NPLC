@@ -39,7 +39,7 @@ public class SinglematchController {
 
     @Autowired
     private BoothgamesService boothgamesService;
-    
+
     @Autowired
     private PanitiaService panitiaService;
 
@@ -208,6 +208,8 @@ public class SinglematchController {
                         Optional<Singlematch> singlematchOptional = singlematchService.getCurrentSingleMatch(boothgame);
                         if (singlematchOptional.isPresent()) {
                             Singlematch singlematch = singlematchOptional.get();
+                            Long durationSecond = singlematch.getWaktuMulai().until(singlematch.getWaktuSelesai(),
+                                    ChronoUnit.SECONDS);
                             response.setMessage("Game Data Retrieved!");
                             response.setError(false);
                             response.setHttpCode(HTTPCode.OK);
@@ -217,6 +219,9 @@ public class SinglematchController {
                                             "team", singlematch.getTeam().getNama(),
                                             "startTime", singlematch.getWaktuMulai(),
                                             "finishTime", singlematch.getWaktuSelesai(),
+                                            "durasi", Map.of(
+                                                    "detik", durationSecond / 60,
+                                                    "menit", durationSecond % 60),
                                             "boothName", singlematch.getBoothGames().getNama())));
                         } else {
                             response.setMessage("No Current Game Running");
@@ -265,6 +270,8 @@ public class SinglematchController {
                     if (boothgamesOptional.isPresent()) {
                         Boothgames boothgame = boothgamesOptional.get();
                         Singlematch singlematch = singlematchService.startSingleMatch(singlematchDTO, boothgame);
+                        Long durationSecond = singlematch.getWaktuMulai().until(singlematch.getWaktuSelesai(),
+                                ChronoUnit.SECONDS);
                         response.setMessage("Game Started!");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
@@ -275,6 +282,9 @@ public class SinglematchController {
                                         "cardUsed", singlematch.getListKartu(),
                                         "startTime", singlematch.getWaktuMulai(),
                                         "finishTime", singlematch.getWaktuSelesai(),
+                                        "durasi", Map.of(
+                                                "detik", durationSecond / 60,
+                                                "menit", durationSecond % 60),
                                         "boothName", singlematch.getBoothGames().getNama())));
                     } else {
                         response.setMessage("BoothGame Not Found");

@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,9 @@ public class SinglematchService {
                 singlematch.setListKartu(listKartu.get());
                 listKartuService.useCard(singlematchDTO.getNoKartu());
                 if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
-                    
+                    waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
+                } else if(listKartu.get().getCardSkill().getIdCard().equals("B2")) {
+                    waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
                 }
             }
         }
