@@ -62,7 +62,7 @@ public class SinglematchService {
     }
 
     public Singlematch stopSingleMatch(Singlematch singlematch) {
-        singlematch.setWaktuSelesai(LocalTime.now());
+        singlematch.setWaktuSelesai(LocalTime.now().withNano(0));
         singlematch.setMatchStatus(MatchStatus.FINISHED);
         return singlematchRepository.save(singlematch);
     }
