@@ -1,6 +1,7 @@
 package com.restfulnplc.nplcrestful.service;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,10 @@ public class SinglematchService {
     }
 
     public Singlematch stopSingleMatch(Singlematch singlematch) {
-        singlematch.setWaktuSelesai(LocalTime.now().withNano(0));
+        if (LocalTime.now().until(singlematch.getWaktuSelesai(),
+        ChronoUnit.SECONDS) > 0) {
+            singlematch.setWaktuSelesai(LocalTime.now().withNano(0));
+        }
         singlematch.setMatchStatus(MatchStatus.FINISHED);
         return singlematchRepository.save(singlematch);
     }

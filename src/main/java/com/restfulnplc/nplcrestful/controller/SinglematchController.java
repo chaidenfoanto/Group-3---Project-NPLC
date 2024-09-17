@@ -1,5 +1,6 @@
 package com.restfulnplc.nplcrestful.controller;
 
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.Singlematch;
+import com.restfulnplc.nplcrestful.model.MatchStatus;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.service.PanitiaService;
@@ -211,6 +213,11 @@ public class SinglematchController {
                             Singlematch singlematch = singlematchOptional.get();
                             Long durationSecond = singlematch.getWaktuMulai().until(singlematch.getWaktuSelesai(),
                                     ChronoUnit.SECONDS);
+                            Long sisaWaktuSecond = LocalTime.now().until(singlematch.getWaktuSelesai(),
+                                    ChronoUnit.SECONDS);
+                            if(sisaWaktuSecond <= 0 && singlematch.getMatchStatus().equals(MatchStatus.STARTED)){
+                                singlematch = singlematchService.stopSingleMatch(singlematch);
+                            }
                             response.setMessage("Game Data Retrieved!");
                             response.setError(false);
                             response.setHttpCode(HTTPCode.OK);
@@ -223,17 +230,23 @@ public class SinglematchController {
                                                     "cardNumber", singlematch.getListKartu().getNoKartu(),
                                                     "cardId", singlematch.getListKartu().getCardSkill().getIdCard()))
                                                     : "None",
-                                            "team", singlematch.getTeam().getNama(),
+                                            "team", Map.of(
+                                                "namaTeam", singlematch.getTeam().getNama(),
+                                                "idTeam", singlematch.getTeam().getIdTeam()),
                                             "startTime", singlematch.getWaktuMulai(),
                                             "finishTime", singlematch.getWaktuSelesai(),
                                             "durasi", Map.of(
                                                     "detik", durationSecond % 60,
                                                     "menit", durationSecond / 60),
+                                            "sisaWaktu", Map.of(
+                                                    "detik", sisaWaktuSecond % 60,
+                                                    "menit", sisaWaktuSecond / 60),
                                             "boothName", singlematch.getBoothGames().getNama())));
                         } else {
                             response.setMessage("No Current Game Running");
                             response.setError(true);
-                            response.setHttpCode(HTTPCode.OK);
+                            response.setHttpCode(HTTPCode.BAD_REQUEST);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
                         }
                     } else {
                         response.setMessage("BoothGame Not Found");
@@ -287,7 +300,9 @@ public class SinglematchController {
                             response.setData(Map.of(
                                     "gameStatus", "Game Started",
                                     "gameData", Map.of(
-                                            "team", singlematch.getTeam().getNama(),
+                                            "team", Map.of(
+                                                "namaTeam", singlematch.getTeam().getNama(),
+                                                "idTeam", singlematch.getTeam().getIdTeam()),
                                             "cardUsed", (singlematch.getListKartu() != null) ? (Map.of(
                                                     "cardName",
                                                     singlematch.getListKartu().getCardSkill().getNamaKartu(),
@@ -358,7 +373,9 @@ public class SinglematchController {
                             response.setData(Map.of(
                                     "gameStatus", "Game Stopped",
                                     "gameData", Map.of(
-                                            "team", singlematch.getTeam().getNama(),
+                                            "team", Map.of(
+                                                "namaTeam", singlematch.getTeam().getNama(),
+                                                "idTeam", singlematch.getTeam().getIdTeam()),
                                             "cardUsed", (singlematch.getListKartu() != null) ? (Map.of(
                                                     "cardName",
                                                     singlematch.getListKartu().getCardSkill().getNamaKartu(),
@@ -435,13 +452,15 @@ public class SinglematchController {
                                                     "cardId", singlematch.getListKartu().getCardSkill().getIdCard()))
                                                     : "None",
                                             "noMatch", singlematch.getNoMatch(),
-                                            "team", singlematch.getTeam().getNama(),
+                                            "team", Map.of(
+                                                "namaTeam", singlematch.getTeam().getNama(),
+                                                "idTeam", singlematch.getTeam().getIdTeam()),
                                             "waktuMulai", singlematch.getWaktuMulai(),
                                             "waktuSelesai", singlematch.getWaktuSelesai(),
                                             "inputBy", singlematch.getInputBy().getNama(),
                                             "totalBintang", singlematch.getTotalBintang(),
                                             "totalPoin", singlematch.getTotalPoin(),
-                                            "boothgames", singlematch.getBoothGames())));
+                                            "boothgames", singlematch.getBoothGames().getNama())));
                         } else {
                             response.setMessage("Match Not Found");
                             response.setError(true);
