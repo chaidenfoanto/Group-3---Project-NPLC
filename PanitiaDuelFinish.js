@@ -1,30 +1,34 @@
 var interval;
-var timer = '01:00';
+var timer = "01:00";
+let teamData = {};
 
-const domain2 = 'http://localhost:8080/';
+const domain2 = "http://localhost:8080/";
 
 function getCookie(name) {
-  let cookieArr = document.cookie.split(';'); 
+  let cookieArr = document.cookie.split(";");
   for (let i = 0; i < cookieArr.length; i++) {
-    let cookiePair = cookieArr[i].split('='); 
+    let cookiePair = cookieArr[i].split("=");
     if (name == cookiePair[0].trim()) {
-      return decodeURIComponent(cookiePair[1]); 
+      return decodeURIComponent(cookiePair[1]);
     }
   }
   return null; // Mengembalikan null jika cookie tidak ditemukan
 }
 
 function getTime() {
-  fetch(domain2 + 'api/boothgames/getSelfBooth', {
-    method: 'GET',
-    headers: { Token: getCookie('Token') },
+  fetch(domain2 + "api/boothgames/getSelfBooth", {
+    method: "GET",
+    headers: { Token: getCookie("Token") },
   })
     .then((response) => response.json())
     .then((data) => {
       if (!data.error) {
-        const durasiPermainanElement = $('.timeleft');
+        const durasiPermainanElement = $(".timeleft");
         var durasiPermainan = data.data.durasiPermainan.toString();
-        timer = (durasiPermainan.length < 2 ? '0' + durasiPermainan : durasiPermainan) + ':00';
+        timer =
+          (durasiPermainan.length < 2
+            ? "0" + durasiPermainan
+            : durasiPermainan) + ":00";
         durasiPermainanElement.text(timer);
       }
     });
@@ -33,27 +37,147 @@ function getTime() {
 getTime();
 
 $(document).ready(function () {
-  $(".sidebar").load("sidebarpanitia.html", function() {
+  $(".sidebar").load("sidebarpanitia.html", function () {
     const toggleBtn = $("#toggle-btn, #burger-btn");
     const logo = $(".logo_details .logo").eq(1); // Select the second logo
-    toggleBtn.on("click", function() {
-        $(".sidebar").toggleClass("open");
-        menuBtnChange();
+    toggleBtn.on("click", function () {
+      $(".sidebar").toggleClass("open");
+      menuBtnChange();
     });
 
     function menuBtnChange() {
-        if ($(".sidebar").hasClass("open")) {
-            logo.hide();
-        } else {
-            logo.show();
-        }
+      if ($(".sidebar").hasClass("open")) {
+        logo.hide();
+      } else {
+        logo.show();
+      }
     }
   });
 
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".sidebar, #toggle-btn").length) {
+      closeSidebar();
+    }
+  });
+
+  function showModal() {
+    $("#gameEndModal").show();
+    $(".sidebar").toggleClass("disable");
+    setCurrentTimeForTimeInput("#timeFinished");
+    calculateDuration();
+    $("#teamPlayed").val($("#teamname").val());
+    $("#teamPlayed").addClass("not-empty");
+    const team = $("#teamname").val();
+    if (team.val().undefined()) {
+      $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ...`);
+    } else {
+      $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ${team}`);
+    }
+  }
+
+  function fetchTeamNames() {
+    fetch(domain + "api/team/getTeamPerGame", {
+      method: "GET",
+      headers: { Token: getCookie("Token") }, // Menyertakan token dalam header dari cookie
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const teamSelect1 = document.getElementById("team1");
+        const teamSelect2 = document.getElementById("team2");
+
+        // Hapus semua opsi yang ada
+        teamSelect1.innerHTML = "";
+        teamSelect2.innerHTML = "";
+
+        // Tambahkan opsi untuk setiap tim dari data yang diterima
+        data.data.forEach((team) => {
+          teamData[team.namaTeam] = team; // Simpan data tim dalam objek teamData
+          const option1 = document.createElement("option");
+          option1.value = team.namaTeam; // Isi nilai dan teks opsi dengan nama tim
+          option1.textContent = team.namaTeam;
+          teamSelect1.appendChild(option1);
+
+          const option2 = document.createElement("option");
+          option2.value = team.namaTeam; // Isi nilai dan teks opsi dengan nama tim
+          option2.textContent = team.namaTeam;
+          teamSelect2.appendChild(option2);
+        });
+
+        // Setel opsi placeholder
+        const placeholder1 = document.createElement("option");
+        const placeholder2 = document.createElement("option");
+        placeholder1.value = "";
+        placeholder2.value = "";
+        teamSelect1.prepend(placeholder1); // Tambahkan placeholder di bagian atas
+        teamSelect2.prepend(placeholder2); // Tambahkan placeholder di bagian atas
+        teamSelect1.value = "";
+        teamSelect2.value = "";
+      })
+      .catch((error) => console.error("Error loading team names:", error)); // Menangani dan log error jika permintaan gagal
+  }
+
+  // Fungsi untuk memperbarui opsi tim yang dipilih
+  function updateTeamOptions() {
+    const teamSelect1 = document.getElementById("team1");
+    const teamSelect2 = document.getElementById("team2");
+    const winningTeamSelect = document.getElementById("winningTeam");
+    const selectedTeam1 = teamSelect1.value;
+    const selectedTeam2 = teamSelect2.value;
+
+    // Menonaktifkan opsi di teamSelect1 jika tim tersebut dipilih di teamSelect2 dan sebaliknya
+    for (let i = 0; i < teamSelect1.options.length; i++) {
+      const option1 = teamSelect1.options[i];
+      const option2 = teamSelect2.options[i];
+
+      if (option1.value === selectedTeam2) {
+        option1.disabled = true;
+      } else {
+        option1.disabled = false;
+      }
+
+      if (option2.value === selectedTeam1) {
+        option2.disabled = true;
+      } else {
+        option2.disabled = false;
+      }
+    }
+
+    // Perbarui opsi untuk winningTeam
+    winningTeamSelect.innerHTML = "";
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    winningTeamSelect.appendChild(placeholder);
+
+    if (selectedTeam1) {
+      const option1 = document.createElement("option");
+      option1.value = selectedTeam1;
+      option1.textContent = selectedTeam1;
+      winningTeamSelect.appendChild(option1);
+    }
+
+    if (selectedTeam2) {
+      const option2 = document.createElement("option");
+      option2.value = selectedTeam2;
+      option2.textContent = selectedTeam2;
+      winningTeamSelect.appendChild(option2);
+    }
+  }
+
+  // Menambahkan event listener untuk mengupdate opsi tim ketika pilihan berubah
+  document
+    .getElementById("team1")
+    .addEventListener("change", updateTeamOptions);
+  document
+    .getElementById("team2")
+    .addEventListener("change", updateTeamOptions);
+
+  // Memanggil fungsi untuk mengambil nama-nama tim saat dokumen siap
+  fetchTeamNames();
+
   function pad(val) {
-    var valString = val + '';
+    var valString = val + "";
     if (valString.length < 2) {
-      return '0' + valString;
+      return "0" + valString;
     } else {
       return valString;
     }
@@ -61,38 +185,24 @@ $(document).ready(function () {
 
   function setCurrentTimeForTimeInput(selector) {
     var now = new Date();
-    var formattedTime = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2) + ':' + ('0' + now.getSeconds()).slice(-2);
+    var formattedTime =
+      ("0" + now.getHours()).slice(-2) +
+      ":" +
+      ("0" + now.getMinutes()).slice(-2) +
+      ":" +
+      ("0" + now.getSeconds()).slice(-2);
     $(selector).val(formattedTime);
   }
 
-  $(document).on('click', function (e) {
-    if (!$(e.target).closest('.sidebar, #toggle-btn').length) {
-      closeSidebar();
-    }
-  });
+  
 
-  function showModal() {
-    $('#gameEndModal').show();
-    $('.sidebar').toggleClass('disable');
-    setCurrentTimeForTimeInput('#timeFinished');
-    calculateDuration();
-    $('#teamPlayed').val($('#teamname').val());
-    $('#teamPlayed').addClass('not-empty');
-    const team = $('#teamname').val();
-    if (team.val().undefined()) {
-      $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ...`);
-    } else {
-      $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${team}`);
-    }
-  }
-
-  $('#startButton').click(function () {
-    if ($(this).text() === 'Start Game') {
-      $(this).text('Finish Game');
-      setCurrentTimeForTimeInput('#timeStarted');
+  $("#startButton").click(function () {
+    if ($(this).text() === "Start Game") {
+      $(this).text("Finish Game");
+      setCurrentTimeForTimeInput("#timeStarted");
       startTimer(); // Fungsi untuk memulai timer
     } else {
-      $(this).text('Start Game');
+      $(this).text("Start Game");
       stopTimer(); // Fungsi untuk menghentikan timer
     }
   });
@@ -100,7 +210,7 @@ $(document).ready(function () {
   function startTimer() {
     // Implementasi timer
     timestart = new Date();
-    var timeArray = timer.split(':');
+    var timeArray = timer.split(":");
     var minutes = parseInt(timeArray[0]);
     var seconds = parseInt(timeArray[1]);
 
@@ -111,13 +221,13 @@ $(document).ready(function () {
       var minutes = Math.floor(totalSeconds / 60);
       var seconds = totalSeconds % 60;
 
-      $('.timeleft').text(pad(minutes) + ':' + pad(seconds));
+      $(".timeleft").text(pad(minutes) + ":" + pad(seconds));
 
-      if (totalSeconds <= 0 || $('#startButton').text() === 'Start Game') {
+      if (totalSeconds <= 0 || $("#startButton").text() === "Start Game") {
         clearInterval(interval);
-        $('#startButton').text('Start Game');
+        $("#startButton").text("Start Game");
         if (totalSeconds <= 0) {
-          setCurrentTimeForTimeInput('#timeFinished');
+          setCurrentTimeForTimeInput("#timeFinished");
           showModal();
         } else {
           showModal();
@@ -129,36 +239,36 @@ $(document).ready(function () {
   function stopTimer() {
     // Menghentikan timer
     clearInterval(interval);
-    setCurrentTimeForTimeInput('#timeFinished'); // Set waktu selesai saat menghentikan timer
+    setCurrentTimeForTimeInput("#timeFinished"); // Set waktu selesai saat menghentikan timer
     showModal();
   }
 
   function clearform() {
-    $('.timeleft').text(timer);
-    $('#team1').val("");
-    $('#team2').val("");
-    $('#winningTeam').val("");
+    $(".timeleft").text(timer);
+    $("#team1").val("");
+    $("#team2").val("");
+    $("#winningTeam").val("");
     timeStartedSet = false; // Reset flag saat form dibersihkan
     checkTeams();
   }
 
   function closeSidebar() {
-    $('.sidebar').removeClass('open');
+    $(".sidebar").removeClass("open");
     // $('.main-content').removeClass('shift');
   }
 
   function setCurrentTime(inputId) {
     var now = new Date();
-    var hours = String(now.getHours()).padStart(2, '0');
-    var minutes = String(now.getMinutes()).padStart(2, '0');
-    var seconds = String(now.getSeconds()).padStart(2, '0');
-    var currentTime = hours + ':' + minutes + ':' + seconds;
+    var hours = String(now.getHours()).padStart(2, "0");
+    var minutes = String(now.getMinutes()).padStart(2, "0");
+    var seconds = String(now.getSeconds()).padStart(2, "0");
+    var currentTime = hours + ":" + minutes + ":" + seconds;
     $(inputId).val(currentTime);
   }
 
   function calculateDuration() {
-    var startTime = $('#timeStarted').val();
-    var endTime = $('#timeFinished').val();
+    var startTime = $("#timeStarted").val();
+    var endTime = $("#timeFinished").val();
 
     if (startTime && endTime) {
       const start = new Date(`1970-01-01T${startTime}`);
@@ -170,33 +280,35 @@ $(document).ready(function () {
         const minutes = Math.floor(diffSecs / 60);
         const seconds = diffSecs % 60;
 
-        duration = `${minutes}m ${String(seconds).padStart(2, '0')}s`;
-        $('#duration').val(duration);
+        duration = `${minutes}m ${String(seconds).padStart(2, "0")}s`;
+        $("#duration").val(duration);
       }
     }
   }
 
-  setCurrentTime('#timeStarted');
-  setCurrentTime('#timeFinished');
+  setCurrentTime("#timeStarted");
+  setCurrentTime("#timeFinished");
   calculateDuration();
 
-  $('#timeStarted, #timeFinished').on('change', calculateDuration);
+  $("#timeStarted, #timeFinished").on("change", calculateDuration);
 
   function checkHistory() {
-    if ($('#history').is(':empty')) {
-      $('#history').html('<p class = "noteam">There are no team playing in your booth yet...</p>');
+    if ($("#history").is(":empty")) {
+      $("#history").html(
+        '<p class = "noteam">There are no team playing in your booth yet...</p>'
+      );
     }
   }
 
   checkHistory();
 
   function checkTeams() {
-    const team1 = $('#team1').val();
-    const team2 = $('#team2').val();
+    const team1 = $("#team1").val();
+    const team2 = $("#team2").val();
     if (team1 && team2) {
-      $('#startButton').prop('disabled', false);
+      $("#startButton").prop("disabled", false);
     } else {
-      $('#startButton').prop('disabled', true);
+      $("#startButton").prop("disabled", true);
     }
   }
 
@@ -204,23 +316,25 @@ $(document).ready(function () {
   checkTeams();
 
   // Check when either select element changes
-  $('#team1, #team2').on('change', checkTeams);
+  $("#team1, #team2").on("change", checkTeams);
 
-  $('.matchup-container select, .modal-content select, .modal-content input').each(function () {
+  $(
+    ".matchup-container select, .modal-content select, .modal-content input"
+  ).each(function () {
     // Check if the input is not empty on page load
-    if ($(this).val() !== '') {
-      $(this).addClass('not-empty');
-      $('.input-group .error').text('');
+    if ($(this).val() !== "") {
+      $(this).addClass("not-empty");
+      $(".input-group .error").text("");
     }
 
     // Add event listener for input events
-    $(this).on('change', function () {
-      if ($(this).val() !== '') {
-        $(this).addClass('not-empty');
-        $('.input-group .error').text('');
+    $(this).on("change", function () {
+      if ($(this).val() !== "") {
+        $(this).addClass("not-empty");
+        $(".input-group .error").text("");
       } else {
-        $(this).removeClass('not-empty');
-        $('.input-group .error').text('Winning team should be filled.');
+        $(this).removeClass("not-empty");
+        $(".input-group .error").text("Winning team should be filled.");
       }
     });
   });
@@ -231,38 +345,33 @@ $(document).ready(function () {
   //   calculateDuration();
   // });
 
-  $('.close').on('click', function () {
-    $('#gameEndModal').hide();
+  $(".close").on("click", function () {
+    $("#gameEndModal").hide();
   });
 
-  $(window).on('click', function (event) {
-    if (event.target == modal[0]) {
-      $('#gameEndModal').hide();
-    }
+
+  $("#winningTeam").on("change", function () {
+    const winningTeam = $("#winningTeam").val();
+    $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ${winningTeam}`);
   });
 
-  $('#winningTeam').on('change', function () {
-    const winningTeam = $('#winningTeam').val();
-    $('#pointsMessage').text(`100 POINTS WILL BE GIVEN TO ${winningTeam}`);
-  });
-
-  $('#gameEndForm').on('submit', function (event) {
+  $("#gameEndForm").on("submit", function (event) {
     event.preventDefault();
 
-    const team1 = $('#team1').val();
-    const team2 = $('#team2').val();
-    const winningTeam = $('#winningTeam').val();
-    const timeStarted = $('#timeStarted').val();
-    const timeFinished = $('#timeFinished').val();
-    const duration = $('#duration').val();
+    const team1 = $("#team1").val();
+    const team2 = $("#team2").val();
+    const winningTeam = $("#winningTeam").val();
+    const timeStarted = $("#timeStarted").val();
+    const timeFinished = $("#timeFinished").val();
+    const duration = $("#duration").val();
 
     if (!winningTeam) {
       // Display the error message in the span element
-      $('.input-group .error').text('Winning team should be filled.');
+      $(".input-group .error").text("Winning team should be filled.");
       return;
     } else {
       // Remove the error message if it exists
-      $('.input-group .error').text('');
+      $(".input-group .error").text("");
     }
 
     const historyItem = $(`
@@ -270,10 +379,14 @@ $(document).ready(function () {
             <div class="history-row">
                 <div class = "history-group team">
                     <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
-                    <p class="${team1 === winningTeam ? 'winner' : ''}">${team1}</p></div>
+                    <p class="${
+                      team1 === winningTeam ? "winner" : ""
+                    }">${team1}</p></div>
                     <div class="history-cell" data-label="VS">VS</div>
                     <div class="history-cell team" data-label="Team Name"><p>Team Name</p>
-                    <p class="${team2 === winningTeam ? 'winner' : ''}">${team2}</p></div>
+                    <p class="${
+                      team2 === winningTeam ? "winner" : ""
+                    }">${team2}</p></div>
                 </div>
                 <div class = "history-group time">
                     <div class="history-cell time" data-label="Time Started"><p>Time Started</p><p>${timeStarted}</p></div>
@@ -285,11 +398,11 @@ $(document).ready(function () {
         </div>
         `);
 
-    $('#history').append(historyItem);
+    $("#history").append(historyItem);
     clearform();
 
-    $('#gameEndModal').hide();
-    $('#gameEndForm')[0].reset();
+    $("#gameEndModal").hide();
+    $("#gameEndForm")[0].reset();
 
     checkHistory();
   });
