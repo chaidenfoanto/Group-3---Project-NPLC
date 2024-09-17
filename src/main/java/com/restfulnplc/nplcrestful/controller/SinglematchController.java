@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.Singlematch;
-import com.restfulnplc.nplcrestful.model.MatchStatus;
 import com.restfulnplc.nplcrestful.service.BoothgamesService;
 import com.restfulnplc.nplcrestful.service.LoginService;
 import com.restfulnplc.nplcrestful.service.PanitiaService;
@@ -215,8 +214,9 @@ public class SinglematchController {
                                     ChronoUnit.SECONDS);
                             Long sisaWaktuSecond = LocalTime.now().until(singlematch.getWaktuSelesai(),
                                     ChronoUnit.SECONDS);
-                            if(sisaWaktuSecond <= 0 && singlematch.getMatchStatus().equals(MatchStatus.STARTED)){
+                            if(sisaWaktuSecond <= 0){
                                 singlematch = singlematchService.stopSingleMatch(singlematch);
+                                sisaWaktuSecond = (long) 0;
                             }
                             response.setMessage("Game Data Retrieved!");
                             response.setError(false);
@@ -467,6 +467,51 @@ public class SinglematchController {
                             response.setHttpCode(HTTPCode.BAD_REQUEST);
                             response.setData(new ErrorMessage(response.getHttpCode()));
                         }
+                    } else {
+                        response.setMessage("BoothGame Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/getHistory")
+    public ResponseEntity<Response> getHistory(HttpServletRequest request) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get Game History");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionLOGame(sessionToken)) {
+                    String userid = loginService.getLoginSession(sessionToken).getIdUser();
+                    Optional<Boothgames> boothgamesOptional = boothgamesService.getBoothgameByPanitia(userid);
+                    if (boothgamesOptional.isPresent()) {
+                        Boothgames boothgame = boothgamesOptional.get();
+                            response.setMessage("Game History Retrieved!");
+                            response.setError(false);
+                            response.setHttpCode(HTTPCode.OK);
+                            response.setData(singlematchService.getBoothHistory(boothgame.getIdBooth()));
                     } else {
                         response.setMessage("BoothGame Not Found");
                         response.setError(true);

@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -45,12 +46,13 @@ public class SinglematchService {
 
         if (singlematchDTO.getNoKartu() != null) {
             Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
-            if (listKartu.isPresent() && !listKartu.get().getIsUsed()) {
+            if (listKartu.isPresent() && !listKartu.get().getIsUsed()
+                    && listKartu.get().getOwnedBy().equals(singlematch.getTeam())) {
                 singlematch.setListKartu(listKartu.get());
-                listKartuService.useCard(singlematchDTO.getNoKartu());
+                listKartuService.useCard(singlematch.getListKartu().getNoKartu());
                 if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
                     waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
-                } else if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
+                } else if (listKartu.get().getCardSkill().getIdCard().equals("C3")) {
                     waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
                 }
             }
@@ -64,7 +66,7 @@ public class SinglematchService {
 
     public Singlematch stopSingleMatch(Singlematch singlematch) {
         if (LocalTime.now().until(singlematch.getWaktuSelesai(),
-        ChronoUnit.SECONDS) > 0) {
+                ChronoUnit.SECONDS) > 0) {
             singlematch.setWaktuSelesai(LocalTime.now().withNano(0));
         }
         singlematch.setMatchStatus(MatchStatus.FINISHED);
@@ -173,6 +175,36 @@ public class SinglematchService {
             }
         }
         return Optional.empty();
+    }
+
+    public ArrayList<Object> getBoothHistory(String boothId) {
+        ArrayList<Object> result = new ArrayList<Object>();
+        for (Singlematch singlematch : getAllSinglematches()) {
+            if (singlematch.getBoothGames().getIdBooth().equals(boothId) && singlematch.getMatchStatus().equals(MatchStatus.SUBMITTED)) {
+                Long durationSecond = singlematch.getWaktuMulai().until(singlematch.getWaktuSelesai(),
+                        ChronoUnit.SECONDS);
+                result.add(Map.of(
+                        "noMatch", singlematch.getNoMatch(),
+                        "waktuMulai", singlematch.getWaktuMulai(),
+                        "waktuSelesai", singlematch.getWaktuSelesai(),
+                        "cardUsed", (singlematch.getListKartu() != null) ? (Map.of(
+                                "cardName",
+                                singlematch.getListKartu().getCardSkill().getNamaKartu(),
+                                "cardNumber", singlematch.getListKartu().getNoKartu(),
+                                "cardId", singlematch.getListKartu().getCardSkill().getIdCard()))
+                                : "None",
+                        "team", Map.of(
+                                "namaTeam", singlematch.getTeam().getNama(),
+                                "idTeam", singlematch.getTeam().getIdTeam()),
+                        "inputBy", singlematch.getInputBy().getNama(),
+                        "totalBintang", singlematch.getTotalBintang(),
+                        "durasi", Map.of(
+                                "detik", durationSecond % 60,
+                                "menit", durationSecond / 60),
+                        "totalPoin", singlematch.getTotalPoin()));
+            }
+        }
+        return result;
     }
 
     public ArrayList<Singlematch> getAllSinglematches() {
