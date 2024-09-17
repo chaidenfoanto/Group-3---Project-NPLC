@@ -186,6 +186,7 @@ public class SinglematchService {
 
     public ArrayList<Team> getAvailableRepeatTeamPerBooth(String boothId) {
         ArrayList<ListKartu> listSecondChance = new ArrayList<ListKartu>();
+        ArrayList<Team> cleanList = new ArrayList<Team>();
         for (ListKartu listKartu : listKartuService.getAllListKartu()) {
             if (!listKartu.getIsUsed() && listKartu.getCardSkill().getIdCard().equals("D4")
                     && listKartu.getOwnedBy() != null) {
@@ -193,6 +194,7 @@ public class SinglematchService {
             }
         }
 
+        if(listSecondChance.size() > 0){
         ArrayList<Team> allowedTeams = new ArrayList<Team>();
         ArrayList<Team> repeatTeam = getTeamPerBooth(boothId);
         for (Team team : repeatTeam) {
@@ -204,8 +206,6 @@ public class SinglematchService {
             }
         }
 
-        ArrayList<Team> cleanList = new ArrayList<Team>();
-
         for (Team team : allowedTeams) {
             for (ListKartu listKartu : listSecondChance) {
                 if (listKartu.getOwnedBy().equals(team) && !cleanList.contains(team)) {
@@ -214,6 +214,7 @@ public class SinglematchService {
                 }
             }
         }
+    }
         return cleanList;
     }
 
