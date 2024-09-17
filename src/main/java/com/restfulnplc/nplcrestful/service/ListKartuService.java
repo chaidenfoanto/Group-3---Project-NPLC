@@ -201,6 +201,50 @@ public class ListKartuService {
         return null;
     }
 
+    public Object getSecondChanceStatsByTeam(String id) {
+        ArrayList<Object> listUsed = new ArrayList<Object>();
+        ArrayList<Object> listUnused = new ArrayList<Object>();
+        for (CardSkill cardSkill : cardSkillService.getAllCardSkills()) {
+            if (cardSkill.getIdCard().equals("D4")) {
+                ArrayList<Object> cardNumbersUsed = new ArrayList<Object>();
+                ArrayList<Object> cardNumbersUnused = new ArrayList<Object>();
+                for (ListKartu listKartu : getCardsByTeamIdAndCardID(id, cardSkill.getIdCard())) {
+                    if (listKartu.getIsUsed()) {
+                        cardNumbersUsed.add(
+                                Map.of(
+                                        "cardNumber", listKartu.getNoKartu()));
+                    } else {
+                        cardNumbersUnused.add(
+                                Map.of(
+                                        "cardNumber", listKartu.getNoKartu()));
+                    }
+                }
+                if (cardNumbersUsed.size() > 0) {
+                    listUsed.add(Map.of(
+                            "cardSkill", Map.of(
+                                    "idCard", cardSkill.getIdCard(),
+                                    "namaKartu", cardSkill.getNamaKartu()),
+                            "total", cardNumbersUsed.size(),
+                            "cardNumbers", cardNumbersUsed));
+                }
+                if (cardNumbersUnused.size() > 0) {
+                    listUnused.add(Map.of(
+                            "cardSkill", Map.of(
+                                    "idCard", cardSkill.getIdCard(),
+                                    "namaKartu", cardSkill.getNamaKartu()),
+                            "total", cardNumbersUnused.size(),
+                            "cardNumbers", cardNumbersUnused));
+                }
+            }
+        }
+        if (listUsed.size() > 0 || listUnused.size() > 0) {
+            return Map.of(
+                    "usedCards", listUsed,
+                    "availableCards", listUnused);
+        }
+        return null;
+    }
+
     public boolean deleteListKartu(String id) {
         Optional<ListKartu> optionalListKartu = listKartuRepository.findById(id);
         if (optionalListKartu.isPresent()) {

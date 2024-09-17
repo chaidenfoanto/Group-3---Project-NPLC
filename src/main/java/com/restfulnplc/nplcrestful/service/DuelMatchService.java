@@ -108,13 +108,19 @@ public class DuelMatchService {
         return duelMatches;
     }
 
-    public ArrayList<Team> getAvailableTeamPerBooth(String id) {
-        ArrayList<Team> availableTeam = new ArrayList<Team>();
+    public ArrayList<Object> getAvailableTeamPerBooth(String id) {
+        ArrayList<Object> availableTeam = new ArrayList<Object>();
         ArrayList<Team> teamList = teamService.getAllTeam();
         teamList.removeAll(getWinningTeamsByBooth(id));
         for (Team team : teamList) {
             if (getDuelMatchesByUser(team.getIdTeam()).size() < 2) {
-                availableTeam.add(team);
+                availableTeam.add(Map.of(
+                        "idTeam", team.getIdTeam(),
+                        "namaTeam", team.getNama(),
+                        "usernameTeam", team.getUsername(),
+                        "asalSekolah", team.getAsalSekolah(),
+                        "chanceRoll", team.getChanceRoll(),
+                        "totalPoin", team.getTotalPoin()));
             }
         }
         return availableTeam;

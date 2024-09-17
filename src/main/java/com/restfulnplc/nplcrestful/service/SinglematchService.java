@@ -47,13 +47,15 @@ public class SinglematchService {
         if (singlematchDTO.getNoKartu() != null) {
             Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
             if (listKartu.isPresent() && !listKartu.get().getIsUsed()
-                    && listKartu.get().getOwnedBy().equals(singlematch.getTeam())) {
-                singlematch.setListKartu(listKartu.get());
-                listKartuService.useCard(singlematch.getListKartu().getNoKartu());
-                if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
-                    waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
-                } else if (listKartu.get().getCardSkill().getIdCard().equals("C3")) {
-                    waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
+                    && listKartu.get().getOwnedBy() != null) {
+                if (listKartu.get().getOwnedBy().equals(singlematch.getTeam())) {
+                    singlematch.setListKartu(listKartu.get());
+                    listKartuService.useCard(singlematch.getListKartu().getNoKartu());
+                    if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
+                        waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
+                    } else if (listKartu.get().getCardSkill().getIdCard().equals("C3")) {
+                        waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
+                    }
                 }
             }
         }
@@ -150,22 +152,70 @@ public class SinglematchService {
         return teamsPlayed;
     }
 
-    public ArrayList<Team> getAvailableTeamPerBooth(String id) {
+    public ArrayList<Object> getAvailableTeamPerBooth(String id) {
         ArrayList<Team> teamList = teamService.getAllTeam();
         ArrayList<Team> teamPerBooth = getTeamPerBooth(id);
         if (teamPerBooth.size() > 0) {
             teamList.removeAll(teamPerBooth);
         }
-        return teamList;
+        ArrayList<Team> secondChanceTeam = getAvailableRepeatTeamPerBooth(id);
+        ArrayList<Object> availableTeams = new ArrayList<Object>();
+
+        for (Team team : teamList) {
+            availableTeams.add(Map.of(
+                    "idTeam", team.getIdTeam(),
+                    "namaTeam", team.getNama(),
+                    "usernameTeam", team.getUsername(),
+                    "asalSekolah", team.getAsalSekolah(),
+                    "chanceRoll", team.getChanceRoll(),
+                    "totalPoin", team.getTotalPoin(),
+                    "secondChance", false));
+        }
+        for (Team team : secondChanceTeam) {
+            availableTeams.add(Map.of(
+                    "idTeam", team.getIdTeam(),
+                    "namaTeam", team.getNama(),
+                    "usernameTeam", team.getUsername(),
+                    "asalSekolah", team.getAsalSekolah(),
+                    "chanceRoll", team.getChanceRoll(),
+                    "totalPoin", team.getTotalPoin(),
+                    "secondChance", true));
+        }
+        return availableTeams;
     }
 
-    // public ArrayList<Team> getAvailableRepeatTeam(String id) {
-    // ArrayList<Team> teamPerBooth = getTeamPerBooth(id);
-    // ArrayList<ListKartu> listKartu
-    // for(Team team : teamPerBooth){
+    public ArrayList<Team> getAvailableRepeatTeamPerBooth(String boothId) {
+        ArrayList<ListKartu> listSecondChance = new ArrayList<ListKartu>();
+        for (ListKartu listKartu : listKartuService.getAllListKartu()) {
+            if (!listKartu.getIsUsed() && listKartu.getCardSkill().getIdCard().equals("D4")
+                    && listKartu.getOwnedBy() != null) {
+                listSecondChance.add(listKartu);
+            }
+        }
 
-    // }
-    // }
+        ArrayList<Team> allowedTeams = new ArrayList<Team>();
+        ArrayList<Team> repeatTeam = getTeamPerBooth(boothId);
+        for (Team team : repeatTeam) {
+            if (!allowedTeams.contains(team)) {
+                allowedTeams.add(team);
+            } else {
+                allowedTeams.remove(team);
+                repeatTeam.remove(team);
+            }
+        }
+
+        ArrayList<Team> cleanList = new ArrayList<Team>();
+
+        for (Team team : allowedTeams) {
+            for (ListKartu listKartu : listSecondChance) {
+                if (listKartu.getOwnedBy().equals(team) && !cleanList.contains(team)) {
+                    cleanList.add(team);
+                    break;
+                }
+            }
+        }
+        return cleanList;
+    }
 
     public Optional<Singlematch> getSinglematchesByUserAndBooth(String userId, String boothId) {
         for (Singlematch singlematch : getAllSinglematches()) {
@@ -180,7 +230,8 @@ public class SinglematchService {
     public ArrayList<Object> getBoothHistory(String boothId) {
         ArrayList<Object> result = new ArrayList<Object>();
         for (Singlematch singlematch : getAllSinglematches()) {
-            if (singlematch.getBoothGames().getIdBooth().equals(boothId) && singlematch.getMatchStatus().equals(MatchStatus.SUBMITTED)) {
+            if (singlematch.getBoothGames().getIdBooth().equals(boothId)
+                    && singlematch.getMatchStatus().equals(MatchStatus.SUBMITTED)) {
                 Long durationSecond = singlematch.getWaktuMulai().until(singlematch.getWaktuSelesai(),
                         ChronoUnit.SECONDS);
                 result.add(Map.of(

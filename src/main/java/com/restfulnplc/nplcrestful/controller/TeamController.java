@@ -303,27 +303,17 @@ public class TeamController {
                     String id = loginService.getLoginSession(sessionToken).getIdUser();
                     Boothgames boothGame = boothgamesService.getBoothgameByPanitia(id).get();
                     Tipegame tipeGame = boothGame.getTipegame();
-                    ArrayList<Object> listData = new ArrayList<>();
-                    ArrayList<Team> teamList = new ArrayList<Team>();
+                    ArrayList<Object> teamList = new ArrayList<Object>();
                     if (tipeGame.equals(Tipegame.SINGLE)) {
                         teamList = singlematchService.getAvailableTeamPerBooth(boothGame.getIdBooth());
                     } else {
                         teamList = duelMatchService.getAvailableTeamPerBooth(boothGame.getIdBooth());
                     }
                     if (teamList.size() > 0) {
-                        for (Team team : teamList) {
-                            listData.add(Map.of(
-                                    "idTeam", team.getIdTeam(),
-                                    "namaTeam", team.getNama(),
-                                    "usernameTeam", team.getUsername(),
-                                    "asalSekolah", team.getAsalSekolah(),
-                                    "chanceRoll", team.getChanceRoll(),
-                                    "totalPoin", team.getTotalPoin()));
-                        }
                         response.setMessage("Team Datas Retrieved Successfully");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.OK);
-                        response.setData(listData);
+                        response.setData(teamList);
                     } else {
                         response.setMessage("All Teams Have Played!");
                         response.setError(true);

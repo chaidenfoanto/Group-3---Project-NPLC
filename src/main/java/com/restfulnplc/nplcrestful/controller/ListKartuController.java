@@ -6,10 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.restfulnplc.nplcrestful.dto.ListKartuDTO;
+import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.ListKartu;
 import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.service.ListKartuService;
 import com.restfulnplc.nplcrestful.service.LoginService;
+import com.restfulnplc.nplcrestful.service.BoothgamesService;
+import com.restfulnplc.nplcrestful.service.SinglematchService;
 import com.restfulnplc.nplcrestful.service.TeamService;
 import com.restfulnplc.nplcrestful.util.ErrorMessage;
 import com.restfulnplc.nplcrestful.util.HTTPCode;
@@ -36,6 +39,12 @@ public class ListKartuController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private BoothgamesService boothgamesService;
+
+    @Autowired
+    private SinglematchService singlematchService;
+
     private Response response = new Response();
 
     @PostMapping
@@ -54,9 +63,8 @@ public class ListKartuController {
                             "noKartu", newListKartu.getNoKartu(),
                             "cardSkill", newListKartu.getCardSkill(),
                             "ownedBy", Map.of(
-                                "idTeam", newListKartu.getOwnedBy().getIdTeam(),
-                                "namaTeam", newListKartu.getOwnedBy().getNama()
-                            ),
+                                    "idTeam", newListKartu.getOwnedBy().getIdTeam(),
+                                    "namaTeam", newListKartu.getOwnedBy().getNama()),
                             "isUsed", newListKartu.getIsUsed()));
                 } else {
                     response.setMessage("Access Denied");
@@ -99,9 +107,8 @@ public class ListKartuController {
                                 "noKartu", listKartu.getNoKartu(),
                                 "cardSkill", listKartu.getCardSkill(),
                                 "ownedBy", Map.of(
-                                    "idTeam", listKartu.getOwnedBy().getIdTeam(),
-                                    "namaTeam", listKartu.getOwnedBy().getNama()
-                                ),
+                                        "idTeam", listKartu.getOwnedBy().getIdTeam(),
+                                        "namaTeam", listKartu.getOwnedBy().getNama()),
                                 "isUsed", listKartu.getIsUsed()));
                     }
                     response.setData(listData);
@@ -165,6 +172,74 @@ public class ListKartuController {
                 .body(response);
     }
 
+    @GetMapping("/getByTeamBooth/{id}")
+    public ResponseEntity<Response> getListKartuByTeamBooth(HttpServletRequest request, @PathVariable("id") String id) {
+        String sessionToken = request.getHeader("Token");
+        response.setService("Get List Kartu By Team Per Booth");
+        try {
+            if (loginService.checkSessionAlive(sessionToken)) {
+                if (loginService.checkSessionLOGame(sessionToken)) {
+                    Optional<Team> teamOptional = teamService.getTeamById(id);
+                    if (teamOptional.isPresent()) {
+                        Team team = teamOptional.get();
+                        String userid = loginService.getLoginSession(sessionToken).getIdUser();
+                        Optional<Boothgames> boothgamesOptional = boothgamesService.getBoothgameByPanitia(userid);
+                        if (boothgamesOptional.isPresent()) {
+                            Boothgames boothgame = boothgamesOptional.get();
+                            Object result = null;
+                            if (singlematchService.getAvailableRepeatTeamPerBooth(boothgame.getIdBooth())
+                                    .contains(team)) {
+                                result = listKartuService.getSecondChanceStatsByTeam(id);
+                            } else {
+                                result = listKartuService.getCardStatsByTeam(id);
+                            }
+                            if (result != null) {
+                                response.setMessage("Card Stats Retrieved");
+                                response.setError(false);
+                                response.setHttpCode(HTTPCode.OK);
+                                response.setData(result);
+                            } else {
+                                response.setMessage("No Cards Owned");
+                                response.setError(true);
+                                response.setHttpCode(HTTPCode.OK);
+                                response.setData(new ErrorMessage(response.getHttpCode()));
+                            }
+                        } else {
+                            response.setMessage("BoothGame Not Found");
+                            response.setError(true);
+                            response.setHttpCode(HTTPCode.BAD_REQUEST);
+                            response.setData(new ErrorMessage(response.getHttpCode()));
+                        }
+                    } else {
+                        response.setMessage("Team Not Found");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
+                    }
+                } else {
+                    response.setMessage("Access Denied");
+                    response.setError(true);
+                    response.setHttpCode(HTTPCode.FORBIDDEN);
+                    response.setData(new ErrorMessage(response.getHttpCode()));
+                }
+            } else {
+                response.setMessage("Authorization Failed");
+                response.setError(true);
+                response.setHttpCode(HTTPCode.BAD_REQUEST);
+                response.setData(new ErrorMessage(response.getHttpCode()));
+            }
+        } catch (Exception e) {
+            response.setMessage(e.getMessage());
+            response.setError(true);
+            response.setHttpCode(HTTPCode.INTERNAL_SERVER_ERROR);
+            response.setData(new ErrorMessage(response.getHttpCode()));
+        }
+        return ResponseEntity
+                .status(response.getHttpCode().getStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response> getListKartuById(HttpServletRequest request,
             @PathVariable("id") String id) {
@@ -182,9 +257,8 @@ public class ListKartuController {
                             "noKartu", listKartu.getNoKartu(),
                             "cardSkill", listKartu.getCardSkill(),
                             "ownedBy", Map.of(
-                                "idTeam", listKartu.getOwnedBy().getIdTeam(),
-                                "namaTeam", listKartu.getOwnedBy().getNama()
-                            ),
+                                    "idTeam", listKartu.getOwnedBy().getIdTeam(),
+                                    "namaTeam", listKartu.getOwnedBy().getNama()),
                             "isUsed", listKartu.getIsUsed()));
                 } else {
                     response.setMessage("List Kartu Not Found");
@@ -226,7 +300,7 @@ public class ListKartuController {
                     "cardUsed", usedCards,
                     "cardAvailable", availableCards,
                     "cardTaken", totalCards - availableCards,
-                    "zonkLeft" , zonkCards));
+                    "zonkLeft", zonkCards));
         } catch (Exception e) {
             response.setMessage(e.getMessage());
             response.setError(true);
@@ -313,9 +387,8 @@ public class ListKartuController {
                                 "noKartu", listKartu.getNoKartu(),
                                 "cardSkill", listKartu.getCardSkill(),
                                 "ownedBy", Map.of(
-                                    "idTeam", listKartu.getOwnedBy().getIdTeam(),
-                                    "namaTeam", listKartu.getOwnedBy().getNama()
-                                ),
+                                        "idTeam", listKartu.getOwnedBy().getIdTeam(),
+                                        "namaTeam", listKartu.getOwnedBy().getNama()),
                                 "isUsed", listKartu.getIsUsed()));
                     } else {
                         response.setMessage("List Kartu Not Found");
