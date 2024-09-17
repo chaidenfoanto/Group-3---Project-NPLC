@@ -44,20 +44,26 @@ public class SinglematchService {
         singlematch.setInputBy(panitiaService.getPanitiaById(panitiaId).get());
         singlematch.setMatchStatus(MatchStatus.STARTED);
 
-        if (singlematchDTO.getNoKartu() != null) {
-            Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
-            if (listKartu.isPresent() && !listKartu.get().getIsUsed()
-                    && listKartu.get().getOwnedBy() != null) {
-                if (listKartu.get().getOwnedBy().equals(singlematch.getTeam())) {
-                    singlematch.setListKartu(listKartu.get());
-                    listKartuService.useCard(singlematch.getListKartu().getNoKartu());
-                    if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
-                        waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
-                    } else if (listKartu.get().getCardSkill().getIdCard().equals("C3")) {
-                        waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
+        if (!getAvailableRepeatTeamPerBooth(boothgame.getIdBooth()).contains(singlematch.getTeam())) {
+            if (singlematchDTO.getNoKartu() != null) {
+                Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
+                if (listKartu.isPresent() && !listKartu.get().getIsUsed()
+                        && listKartu.get().getOwnedBy() != null
+                        && !listKartu.get().getCardSkill().getIdCard().equals("D4")) {
+                    if (listKartu.get().getOwnedBy().equals(singlematch.getTeam())) {
+                        singlematch.setListKartu(listKartu.get());
+                        listKartuService.useCard(singlematch.getListKartu().getNoKartu());
+                        if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
+                            waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
+                        } else if (listKartu.get().getCardSkill().getIdCard().equals("C3")) {
+                            waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
+                        }
                     }
                 }
             }
+        } else {
+            singlematch.setListKartu(listKartuService.getCardsByTeamIdAndCardID(singlematch.getTeam().getIdTeam(), "D4").get(0));
+            listKartuService.useCard(singlematch.getListKartu().getNoKartu());
         }
         singlematch.setWaktuSelesai(waktuSelesai);
 
@@ -194,27 +200,29 @@ public class SinglematchService {
             }
         }
 
-        if(listSecondChance.size() > 0){
-        ArrayList<Team> allowedTeams = new ArrayList<Team>();
-        ArrayList<Team> repeatTeam = getTeamPerBooth(boothId);
-        for (Team team : repeatTeam) {
-            if (!allowedTeams.contains(team)) {
-                allowedTeams.add(team);
-            } else {
-                allowedTeams.remove(team);
-                repeatTeam.remove(team);
+        if (listSecondChance.size() > 0) {
+            ArrayList<Team> allowedTeams = new ArrayList<Team>();
+            ArrayList<Team> unallowedTeams = new ArrayList<Team>();
+            ArrayList<Team> repeatTeam = getTeamPerBooth(boothId);
+            for (Team team : repeatTeam) {
+                if (!allowedTeams.contains(team)) {
+                    allowedTeams.add(team);
+                } else {
+                    unallowedTeams.add(team);
+                }
             }
-        }
 
-        for (Team team : allowedTeams) {
-            for (ListKartu listKartu : listSecondChance) {
-                if (listKartu.getOwnedBy().equals(team) && !cleanList.contains(team)) {
-                    cleanList.add(team);
-                    break;
+            allowedTeams.removeAll(unallowedTeams);
+
+            for (Team team : allowedTeams) {
+                for (ListKartu listKartu : listSecondChance) {
+                    if (listKartu.getOwnedBy().equals(team) && !cleanList.contains(team)) {
+                        cleanList.add(team);
+                        break;
+                    }
                 }
             }
         }
-    }
         return cleanList;
     }
 
