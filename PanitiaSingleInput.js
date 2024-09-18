@@ -78,7 +78,12 @@ function fetchHistory() {
                                                 <p>Time Finished</p>
                                                 <p>${history.waktuSelesai}</p>
                                             </div>
-                                            <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${history.durasi.menit + "m " + history.durasi.detik + "s"}</p></div>
+                                            <div class="history-cell time" data-label="Duration"><p>Duration</p><p>${
+                                              history.durasi.menit +
+                                              "m " +
+                                              history.durasi.detik +
+                                              "s"
+                                            }</p></div>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +125,6 @@ $(document).ready(function () {
   function showModal() {
     $("#gameEndModal").show();
     $(".sidebar").toggleClass("disable");
-    // setCurrentTimeForTimeInput('#timeFinished');
     calculateDuration();
     const team = $("#teamname").val();
     $("#teamplayed").val(team);
@@ -220,11 +224,6 @@ $(document).ready(function () {
     // Mengambil card number yang paling atas
     const topCardNumber = getTopCardNumber($("#cardskill").val());
 
-    // if (!topCardNumber) {
-    //   console.error("No available cards to start the game.");
-    //   return;
-    // }
-
     // Membuat objek data yang akan dikirim
     const data = {
       idTeam: selectedTeamId, // Menggunakan id team yang telah kamu simpan
@@ -298,12 +297,12 @@ $(document).ready(function () {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
-    })
-    .catch((error) => {
+      })
+      .then(window.location.reload())
+      .catch((error) => {
         console.error("Error:", error);
         // Tindakan jika terjadi error
-    });
-    window.location.reload();
+      });
   }
 
   function getCurrentGame() {
@@ -394,7 +393,6 @@ $(document).ready(function () {
   function startGame(initialStart = true) {
     if ($("#startButton").text() === "Start Game") {
       $("#startButton").text("Finish Game");
-      // setCurrentTimeForTimeInput('#timeStarted');
       if (initialStart) postStartGame();
       if (!initialStart) startTimer(); // Fungsi untuk memulai timer
       $("#teamname").prop("disabled", true);

@@ -1,6 +1,8 @@
 var interval;
 var timer = "01:00";
 let teamData = {};
+let selectedTeamId1 = null;
+let selectedTeamId2 = null;
 
 const domain2 = "http://localhost:8080/";
 
@@ -34,9 +36,62 @@ function getTime() {
     });
 }
 
-getTime();
-
 $(document).ready(function () {
+  function stopTimer() {
+    // Menghentikan timer
+    clearInterval(interval);
+    showModal();
+  }
+  
+  function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    } else {
+      return valString;
+    }
+  }
+
+  function startTimer() {
+    // Implementasi timer
+    timestart = new Date();
+    var timeArray = timer.split(":");
+    var minutes = parseInt(timeArray[0]);
+    var seconds = parseInt(timeArray[1]);
+
+    var totalSeconds = minutes * 60 + seconds;
+
+    var interval = setInterval(function () {
+      totalSeconds--;
+      var minutes = Math.floor(totalSeconds / 60);
+      var seconds = totalSeconds % 60;
+
+      $(".timeleft").text(pad(minutes) + ":" + pad(seconds));
+
+      if (totalSeconds <= 0 || $("#startButton").text() === "Start Game") {
+        clearInterval(interval);
+        $("#startButton").text("Start Game");
+        if (totalSeconds <= 0) {
+          stopTimer();
+        }
+      }
+    }, 1000);
+  }
+
+  function startGame(initialStart = true) {
+    if ($("#startButton").text() === "Start Game") {
+      $("#startButton").text("Finish Game");
+      if (initialStart) postStartGame();
+      if (!initialStart) startTimer(); // Fungsi untuk memulai timer
+      $("#team1").prop("disabled", true);
+      $("#team2").prop("disabled", true);
+    } else {
+      $("#startButton").text("Start Game");
+      stopTimer(); // Fungsi untuk menghentikan timer
+    }
+  }
+  $("#startButton").click(startGame);
+
   $(".sidebar").load("sidebarpanitia.html", function () {
     const toggleBtn = $("#toggle-btn, #burger-btn");
     const logo = $(".logo_details .logo").eq(1); // Select the second logo
@@ -63,7 +118,6 @@ $(document).ready(function () {
   function showModal() {
     $("#gameEndModal").show();
     $(".sidebar").toggleClass("disable");
-    setCurrentTimeForTimeInput("#timeFinished");
     calculateDuration();
     $("#teamPlayed").val($("#teamname").val());
     $("#teamPlayed").addClass("not-empty");
@@ -75,8 +129,51 @@ $(document).ready(function () {
     }
   }
 
+  // Fungsi untuk memulai game
+  // Fungsi untuk memulai game
+  function postStartGame() {
+    if (!selectedTeamId1 || !selectedTeamId2) {
+      console.error("Both teams must be selected.");
+      alert("Please select both teams.");
+      return;
+    }
+
+    // Membuat objek data yang akan dikirim
+    const data = {
+      team1: selectedTeamId1, // ID tim pertama
+      team2: selectedTeamId2, // ID tim kedua
+    };
+
+    // Melakukan POST request ke server
+    fetch(domain2 + "api/duelmatch/start", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: getCookie("Token"), // Token otentikasi jika diperlukan
+      },
+      body: JSON.stringify(data), // Mengubah objek data menjadi JSON
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Game started successfully:", data);
+        const durasiPermainanElement = $(".timeleft");
+        var durasiMenit = data.data.gameData.durasi.menit.toString();
+        var durasiDetik = data.data.gameData.durasi.detik.toString();
+        timer =
+          (durasiMenit.length < 2 ? "0" + durasiMenit : durasiMenit) +
+          ":" +
+          (durasiDetik.length < 2 ? "0" + durasiDetik : durasiDetik);
+        durasiPermainanElement.text(timer);
+        startTimer();
+      })
+      .catch((error) => {
+        console.error("Error starting game:", error);
+        alert(data);
+      });
+  }
+
   function fetchTeamNames() {
-    fetch(domain + "api/team/getTeamPerGame", {
+    fetch(domain2 + "api/team/getTeamPerGame", {
       method: "GET",
       headers: { Token: getCookie("Token") }, // Menyertakan token dalam header dari cookie
     })
@@ -91,7 +188,7 @@ $(document).ready(function () {
 
         // Tambahkan opsi untuk setiap tim dari data yang diterima
         data.data.forEach((team) => {
-          teamData[team.namaTeam] = team; // Simpan data tim dalam objek teamData
+          teamData[team.namaTeam] = team.idTeam; // Simpan data tim dalam objek teamData
           const option1 = document.createElement("option");
           option1.value = team.namaTeam; // Isi nilai dan teks opsi dengan nama tim
           option1.textContent = team.namaTeam;
@@ -116,6 +213,87 @@ $(document).ready(function () {
       .catch((error) => console.error("Error loading team names:", error)); // Menangani dan log error jika permintaan gagal
   }
 
+  function getCurrentGame() {
+    fetch(domain2 + "api/duelmatch/getCurrentGame", {
+      method: "GET",
+      headers: { Token: getCookie("Token") },
+    })
+      .then((response) => response.json()) // Hapus tanda titik koma di sini
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          if (data.message === "No Current Game Running") {
+            getTime();
+            fetchTeamNames();
+          }
+        } else {
+          const durasiPermainanElement = $(".timeleft");
+          var sisaMenit = data.data.gameData.sisaWaktu.menit.toString();
+          var sisaDetik = data.data.gameData.sisaWaktu.detik.toString();
+          timer =
+            (sisaMenit.length < 2 ? "0" + sisaMenit : sisaMenit) +
+            ":" +
+            (sisaDetik.length < 2 ? "0" + sisaDetik : sisaDetik);
+          durasiPermainanElement.text(timer);
+
+          const teamSelect1 = document.getElementById("team1");
+          const teamSelect2 = document.getElementById("team2");
+
+          // Hapus semua opsi yang ada
+          teamSelect1.innerHTML = "";
+          teamSelect2.innerHTML = "";
+
+          // Tambahkan opsi untuk setiap tim dari data yang diterima
+          teamData[data.data.gameData.team1.namaTeam] =
+            data.data.gameData.team1.idTeam;
+          const option1 = document.createElement("option");
+          option1.value = team1.namaTeam; // Isi nilai dan teks opsi dengan nama tim
+          option1.textContent = team1.namaTeam;
+          teamSelect1.appendChild(option1);
+
+          teamData[data.data.gameData.team2.namaTeam] =
+            data.data.gameData.team2.idTeam;
+          const option2 = document.createElement("option");
+          option2.value = team2.namaTeam; // Isi nilai dan teks opsi dengan nama tim
+          option2.textContent = team2.namaTeam;
+          teamSelect2.appendChild(option2);
+
+          // Setel opsi placeholder
+          const placeholder1 = document.createElement("option");
+          const placeholder2 = document.createElement("option");
+          placeholder1.value = "";
+          placeholder2.value = "";
+          teamSelect1.prepend(placeholder1); // Tambahkan placeholder di bagian atas
+          teamSelect2.prepend(placeholder2); // Tambahkan placeholder di bagian atas
+          teamSelect1.value = "";
+          teamSelect2.value = "";
+
+          selectedTeamId1 = data.data.gameData.team1.idTeam;
+          selectedTeamId2 = data.data.gameData.team2.idTeam;
+          $("#team1").val(data.data.gameData.team1.namaTeam);
+          $("#team2").val(data.data.gameData.team2.namaTeam);
+          $("#team2").addClass("not-empty");
+
+          checkTeams();
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+  getCurrentGame();
+
+  // Simpan ID tim ketika dropdown berubah
+  document.getElementById("team1").addEventListener("change", function () {
+    const selectedTeamName1 = this.value; // Nama tim yang dipilih
+    selectedTeamId1 = teamData[selectedTeamName1]; // Simpan ID tim berdasarkan nama tim
+  });
+
+  document.getElementById("team2").addEventListener("change", function () {
+    const selectedTeamName2 = this.value; // Nama tim yang dipilih
+    selectedTeamId2 = teamData[selectedTeamName2]; // Simpan ID tim berdasarkan nama tim
+  });
+
   // Fungsi untuk memperbarui opsi tim yang dipilih
   function updateTeamOptions() {
     const teamSelect1 = document.getElementById("team1");
@@ -124,7 +302,23 @@ $(document).ready(function () {
     const selectedTeam1 = teamSelect1.value;
     const selectedTeam2 = teamSelect2.value;
 
-    // Menonaktifkan opsi di teamSelect1 jika tim tersebut dipilih di teamSelect2 dan sebaliknya
+    if (selectedTeam1 != "") {
+      $("#team1").addClass("not-empty");
+      selectedTeamId1 = teamData[selectedTeam1]; // Simpan ID tim dari teamSelect1
+    } else {
+      $("#team1").removeClass("not-empty");
+      selectedTeamId1 = null; // Reset jika tidak ada tim yang dipilih
+    }
+
+    if (selectedTeam2 != "") {
+      $("#team2").addClass("not-empty");
+      selectedTeamId2 = teamData[selectedTeam2]; // Simpan ID tim dari teamSelect2
+    } else {
+      $("#team2").removeClass("not-empty");
+      selectedTeamId2 = null; // Reset jika tidak ada tim yang dipilih
+    }
+
+    // Nonaktifkan opsi di teamSelect1 jika tim tersebut dipilih di teamSelect2 dan sebaliknya
     for (let i = 0; i < teamSelect1.options.length; i++) {
       const option1 = teamSelect1.options[i];
       const option2 = teamSelect2.options[i];
@@ -161,6 +355,8 @@ $(document).ready(function () {
       option2.textContent = selectedTeam2;
       winningTeamSelect.appendChild(option2);
     }
+
+    checkTeams();
   }
 
   // Menambahkan event listener untuk mengupdate opsi tim ketika pilihan berubah
@@ -174,15 +370,6 @@ $(document).ready(function () {
   // Memanggil fungsi untuk mengambil nama-nama tim saat dokumen siap
   fetchTeamNames();
 
-  function pad(val) {
-    var valString = val + "";
-    if (valString.length < 2) {
-      return "0" + valString;
-    } else {
-      return valString;
-    }
-  }
-
   function setCurrentTimeForTimeInput(selector) {
     var now = new Date();
     var formattedTime =
@@ -192,64 +379,6 @@ $(document).ready(function () {
       ":" +
       ("0" + now.getSeconds()).slice(-2);
     $(selector).val(formattedTime);
-  }
-
-  
-
-  $("#startButton").click(function () {
-    if ($(this).text() === "Start Game") {
-      $(this).text("Finish Game");
-      setCurrentTimeForTimeInput("#timeStarted");
-      startTimer(); // Fungsi untuk memulai timer
-    } else {
-      $(this).text("Start Game");
-      stopTimer(); // Fungsi untuk menghentikan timer
-    }
-  });
-
-  function startTimer() {
-    // Implementasi timer
-    timestart = new Date();
-    var timeArray = timer.split(":");
-    var minutes = parseInt(timeArray[0]);
-    var seconds = parseInt(timeArray[1]);
-
-    var totalSeconds = minutes * 60 + seconds;
-
-    interval = setInterval(function () {
-      totalSeconds--;
-      var minutes = Math.floor(totalSeconds / 60);
-      var seconds = totalSeconds % 60;
-
-      $(".timeleft").text(pad(minutes) + ":" + pad(seconds));
-
-      if (totalSeconds <= 0 || $("#startButton").text() === "Start Game") {
-        clearInterval(interval);
-        $("#startButton").text("Start Game");
-        if (totalSeconds <= 0) {
-          setCurrentTimeForTimeInput("#timeFinished");
-          showModal();
-        } else {
-          showModal();
-        }
-      }
-    }, 1000);
-  }
-
-  function stopTimer() {
-    // Menghentikan timer
-    clearInterval(interval);
-    setCurrentTimeForTimeInput("#timeFinished"); // Set waktu selesai saat menghentikan timer
-    showModal();
-  }
-
-  function clearform() {
-    $(".timeleft").text(timer);
-    $("#team1").val("");
-    $("#team2").val("");
-    $("#winningTeam").val("");
-    timeStartedSet = false; // Reset flag saat form dibersihkan
-    checkTeams();
   }
 
   function closeSidebar() {
@@ -315,9 +444,6 @@ $(document).ready(function () {
   // Check on page load
   checkTeams();
 
-  // Check when either select element changes
-  $("#team1, #team2").on("change", checkTeams);
-
   $(
     ".matchup-container select, .modal-content select, .modal-content input"
   ).each(function () {
@@ -339,16 +465,9 @@ $(document).ready(function () {
     });
   });
 
-  // $('.startButton').on('click', function () {
-  //   setCurrentTime('#timeStarted');
-  //   setCurrentTime('#timeFinished');
-  //   calculateDuration();
-  // });
-
   $(".close").on("click", function () {
     $("#gameEndModal").hide();
   });
-
 
   $("#winningTeam").on("change", function () {
     const winningTeam = $("#winningTeam").val();

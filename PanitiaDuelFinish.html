@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panitia Duel Finish Game</title>
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -15,76 +12,60 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-    <link
-      rel="stylesheet"
-      href="PanitiaDuelFinish.css"
-    />
-    <link
-      rel="stylesheet"
-      href="sidebarpanitia.css"
-    />
+    <link rel="stylesheet" href="PanitiaDuelFinish.css" />
+    <link rel="stylesheet" href="sidebarpanitia.css" />
+    </head>
     <body>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-      <div class="container">
-        <div class="sidebar"></div>
-        <div class="main-content">
-          <header>
-            <h1>Selamat datang Penjaga Booth!</h1>
-            <div class="timer">
-              <p>Remaining Time:</p>
-              <p class="timefill">
-                <i
-                  class="fa-regular fa-clock"
-                  style="color: #000000"
-                ></i>
-                <span class="timeleft">01:00</span>
-              </p>
-            </div>
-          </header>
-          <h2>Nama Booth</h2>
-
-          <div class="matchup-container">
-            <div class="team">
-              <div class="input-group">
-                <select id="team1">
-                  <option value=""></option>
-                </select>
-                <label class="placeholder">Team Name</label>
-                <!-- <span class = "error"></span> -->
-              </div>
-            </div>
-            <div class="vs">VS</div>
-            <div class="team">
-              <div class="input-group">
-                <select id="team2">
-                  <option value=""></option>
-                  <option value="Team 1">Team 1</option>
-                  <option value="Team 2">Team 2</option>
-                </select>
-                <label class="placeholder">Team Name</label>
-                <!-- <span class = "error"></span> -->
-              </div>
-            </div>
+      <script src="PanitiaDuelFinish2.js"></script>
+          
+      <div class = "container">    
+  <div class="sidebar"></div>
+    <div class="main-content">
+      <header>
+          <h1>Selamat datang Penjaga Booth!</h1>
+          <div class="timer">
+            <p>Remaining Time:</p>
+            <p class="timefill">
+              <i class="fa-regular fa-clock" style="color: #000000"></i>
+              <span class = "timeleft"></span>
+            </p>
           </div>
-          <div class="start">
-            <button
-              id="startButton"
-              class="startButton"
-              disabled
-            >
-              Start Game
-            </button>
+      </header>
+      <h2>Nama Booth</h2>
+  
+      <div class="matchup-container">
+        <div class="team">
+          <div class="input-group">
+            <select id="team1">
+              <option value=""></option>
+            </select>
+            <label class="placeholder">Team Name</label>
+            <!-- <span class = "error"></span> -->
           </div>
-
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <div class="input-group">
+            <select id="team2">
+              <option value=""></option>
+              <option value="Team 1">Team 1</option>
+              <option value="Team 2">Team 2</option>
+            </select>
+            <label class="placeholder">Team Name</label>
+            <!-- <span class = "error"></span> -->
+          </div>
+        </div>
+      </div>
+      <div class="start">
+        <button id="startButton" class="startButton" disabled>Start Game</button>
+    </div>
+  
           <h2>History</h2>
           <div id="history"></div>
-
-          <div
-            id="gameEndModal"
-            class="modal"
-          >
-            <div class="modal-content">
+  
+        <div id="gameEndModal" class="modal">
+          <div class="modal-content">
               <!-- <span class="close">&times;</span> -->
               <h1>Game Has Ended</h1>
               <form id="gameEndForm">
@@ -95,9 +76,7 @@
                       <option value="Team 1">Team 1</option>
                       <option value="Team 2">Team 2</option>
                     </select>
-                    <label
-                      class="placeholder"
-                      for="winningTeam"
+                    <label class="placeholder" for="winningTeam"
                       >Winning Team</label
                     >
                     <span class="error"></span>
@@ -105,87 +84,28 @@
                 </div>
                 <div class="modal-inner-container">
                   <div class="input-group">
-                    <input
-                      type="time"
-                      id="timeStarted"
-                      step="1"
-                      disabled
-                    />
-                    <label
-                      class="placeholder"
-                      for="timeStarted"
+                    <input type="time" id="timeStarted" step="1" disabled />
+                    <label class="placeholder" for="timeStarted"
                       >Time Started</label
                     >
                   </div>
                   <div class="input-group">
-                    <input
-                      type="time"
-                      id="timeFinished"
-                      step="1"
-                      disabled
-                    />
-                    <label
-                      class="placeholder"
-                      for="timeFinished"
+                    <input type="time" id="timeFinished" step="1" disabled />
+                    <label class="placeholder" for="timeFinished"
                       >Time Finished</label
                     >
                   </div>
                   <div class="input-group">
-                    <input
-                      type="text"
-                      id="duration"
-                      disabled
-                    />
-                    <label
-                      class="placeholder"
-                      for="duration"
-                      >Duration</label
-                    >
+                    <input type="text" id="duration" disabled />
+                    <label class="placeholder" for="duration">Duration</label>
                   </div>
                 </div>
                 <p id="pointsMessage">100 POINTS WILL BE GIVEN TO ...</p>
                 <button type="submit">Save Changes</button>
               </form>
-            </div>
           </div>
         </div>
-      </div>
-      <script src="apiPanitiaDuel.js"></script>
-      <script src="PanitiaDuelFinish.js"></script>
-      <!-- <script>
-  function getCookie(name) {
-    let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
-    for (let i = 0; i < cookieArr.length; i++) {
-      let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
-      if (name == cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
-      }
-    }
-    return null; // Mengembalikan null jika cookie tidak ditemukan
-  }
-
-  function logout() {
-    window.location.href = 'LoginPanitia.html';
-  }
-
-  function fetchRole() {
-    fetch ('http://localhost:8080/api/login/check/penjagaduel', {
-      method: 'GET',
-      headers: { Token: getCookie('Token') },
-    })
-    .then((response) => response.json())
-    .then((data) => { 
-      if (!data.error) {
-        if(data.data.accessGranted) {
-          console.log('access granted');
-        } else {
-          logout();
-        }
-      }
-    })
-  }
-  fetchRole();
-</script> -->
-    </body>
-  </head>
+    </div>
+  </div>
+  </body>
 </html>
