@@ -35,41 +35,47 @@ public class SinglematchService {
     @Autowired
     private PanitiaService panitiaService;
 
-    public Singlematch startSingleMatch(SinglematchDTO singlematchDTO, Boothgames boothgame, String panitiaId) {
-        Singlematch singlematch = new Singlematch();
-        singlematch.setNoMatch(getNextMatchID());
-        singlematch.setWaktuMulai(LocalTime.now());
-        LocalTime waktuSelesai = LocalTime.now().plusNanos(boothgame.getDurasiPermainan() * 1_000_000);
-        singlematch.setTeam(teamService.getTeamById(singlematchDTO.getIdTeam()).get());
-        singlematch.setInputBy(panitiaService.getPanitiaById(panitiaId).get());
-        singlematch.setMatchStatus(MatchStatus.STARTED);
+    public Optional<Singlematch> startSingleMatch(SinglematchDTO singlematchDTO, Boothgames boothgame,
+            String panitiaId) {
+        if (getAvailableTeamPerBoothList(boothgame.getIdBooth())
+                .contains(teamService.getTeamById(singlematchDTO.getIdTeam()).get())) {
+            Singlematch singlematch = new Singlematch();
+            singlematch.setNoMatch(getNextMatchID());
+            singlematch.setWaktuMulai(LocalTime.now());
+            LocalTime waktuSelesai = LocalTime.now().plusNanos(boothgame.getDurasiPermainan() * 1_000_000);
+            singlematch.setTeam(teamService.getTeamById(singlematchDTO.getIdTeam()).get());
+            singlematch.setInputBy(panitiaService.getPanitiaById(panitiaId).get());
+            singlematch.setMatchStatus(MatchStatus.STARTED);
 
-        if (!getAvailableRepeatTeamPerBooth(boothgame.getIdBooth()).contains(singlematch.getTeam())) {
-            if (singlematchDTO.getNoKartu() != null) {
-                Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
-                if (listKartu.isPresent() && !listKartu.get().getIsUsed()
-                        && listKartu.get().getOwnedBy() != null
-                        && !listKartu.get().getCardSkill().getIdCard().equals("D4")) {
-                    if (listKartu.get().getOwnedBy().equals(singlematch.getTeam())) {
-                        singlematch.setListKartu(listKartu.get());
-                        listKartuService.useCard(singlematch.getListKartu().getNoKartu());
-                        if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
-                            waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
-                        } else if (listKartu.get().getCardSkill().getIdCard().equals("C3")) {
-                            waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
+            if (!getAvailableRepeatTeamPerBooth(boothgame.getIdBooth()).contains(singlematch.getTeam())) {
+                if (singlematchDTO.getNoKartu() != null) {
+                    Optional<ListKartu> listKartu = listKartuService.getListKartuById(singlematchDTO.getNoKartu());
+                    if (listKartu.isPresent() && !listKartu.get().getIsUsed()
+                            && listKartu.get().getOwnedBy() != null
+                            && !listKartu.get().getCardSkill().getIdCard().equals("D4")) {
+                        if (listKartu.get().getOwnedBy().equals(singlematch.getTeam())) {
+                            singlematch.setListKartu(listKartu.get());
+                            listKartuService.useCard(singlematch.getListKartu().getNoKartu());
+                            if (listKartu.get().getCardSkill().getIdCard().equals("B2")) {
+                                waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(3) * 1_000_000);
+                            } else if (listKartu.get().getCardSkill().getIdCard().equals("C3")) {
+                                waktuSelesai = waktuSelesai.plusNanos(TimeUnit.MINUTES.toMillis(5) * 1_000_000);
+                            }
                         }
                     }
                 }
+            } else {
+                singlematch.setListKartu(
+                        listKartuService.getCardsByTeamIdAndCardID(singlematch.getTeam().getIdTeam(), "D4").get(0));
+                listKartuService.useCard(singlematch.getListKartu().getNoKartu());
             }
-        } else {
-            singlematch.setListKartu(listKartuService.getCardsByTeamIdAndCardID(singlematch.getTeam().getIdTeam(), "D4").get(0));
-            listKartuService.useCard(singlematch.getListKartu().getNoKartu());
+            singlematch.setWaktuSelesai(waktuSelesai);
+
+            singlematch.setBoothGames(boothgame);
+
+            return Optional.of(singlematchRepository.save(singlematch));
         }
-        singlematch.setWaktuSelesai(waktuSelesai);
-
-        singlematch.setBoothGames(boothgame);
-
-        return singlematchRepository.save(singlematch);
+        return Optional.empty();
     }
 
     public Singlematch stopSingleMatch(Singlematch singlematch) {
@@ -187,6 +193,21 @@ public class SinglematchService {
                     "totalPoin", team.getTotalPoin(),
                     "secondChance", true));
         }
+        return availableTeams;
+    }
+
+    public ArrayList<Team> getAvailableTeamPerBoothList(String id) {
+        ArrayList<Team> teamList = teamService.getAllTeam();
+        ArrayList<Team> teamPerBooth = getTeamPerBooth(id);
+        if (teamPerBooth.size() > 0) {
+            teamList.removeAll(teamPerBooth);
+        }
+        ArrayList<Team> secondChanceTeam = getAvailableRepeatTeamPerBooth(id);
+        ArrayList<Team> availableTeams = new ArrayList<Team>();
+
+        availableTeams.addAll(teamList);
+        availableTeams.addAll(secondChanceTeam);
+        
         return availableTeams;
     }
 
