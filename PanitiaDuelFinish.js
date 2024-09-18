@@ -272,6 +272,7 @@ $(document).ready(function () {
           selectedTeamId2 = data.data.gameData.team2.idTeam;
           $("#team1").val(data.data.gameData.team1.namaTeam);
           $("#team2").val(data.data.gameData.team2.namaTeam);
+          $("#team1").addClass("not-empty");
           $("#team2").addClass("not-empty");
 
           checkTeams();
