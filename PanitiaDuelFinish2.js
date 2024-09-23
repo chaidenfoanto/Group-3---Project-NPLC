@@ -126,11 +126,7 @@ $(document).ready(function () {
     $("#teamPlayed").val($("#winningTeam").val());
     $("#teamPlayed").addClass("not-empty");
     const team = $("#winningTeam").val();
-    if (!team) {
-      $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ...`);
-    } else {
-      $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ${team}`);
-    }
+    $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ${team}`);
   }
 
   document
@@ -329,6 +325,8 @@ $(document).ready(function () {
         option.textContent = data.data.gameData.team2.namaTeam;
         winningTeamSelect.appendChild(option);
         $("#winningTeam").addClass("not-empty");
+        $("#winningTeam").val(data.data.gameData.team1.namaTeam);
+        $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ${data.data.gameData.team1.namaTeam}`);
 
         calculateDuration();
       })
@@ -444,6 +442,8 @@ $(document).ready(function () {
             option.textContent = data.data.gameData.team2.namaTeam;
             winningTeamSelect.appendChild(option);
             $("#winningTeam").addClass("not-empty");
+            $("#winningTeam").val(data.data.gameData.team1.namaTeam);
+            $("#pointsMessage").text(`100 POINTS WILL BE GIVEN TO ${data.data.gameData.team1.namaTeam}`);
 
             calculateDuration();
             showModal();
@@ -499,8 +499,8 @@ $(document).ready(function () {
   function stopTimer() {
     // Menghentikan timer
     clearInterval(interval);
-    showModal();
     sendGameEndData();
+    showModal();
   }
 
   function pad(val) {
