@@ -64,6 +64,7 @@ public class BoothgamesController {
                     Optional<Boothgames> newBoothgameOptional = boothgamesService.addBoothgame(boothgamesDTO);
                     if (newBoothgameOptional.isPresent()) {
                         Boothgames newBoothgame = newBoothgameOptional.get();
+                        Long durasiDetik = TimeUnit.MILLISECONDS.toSeconds(newBoothgame.getDurasiPermainan());
                         response.setMessage("Boothgame Successfully Added");
                         response.setError(false);
                         response.setHttpCode(HTTPCode.CREATED);
@@ -76,7 +77,9 @@ public class BoothgamesController {
                                     "sopGame", newBoothgame.getSopGames(),
                                     "lokasi", newBoothgame.getLokasi(),
                                     "tipeGame", newBoothgame.getTipegame().toString(),
-                                    "durasiPermainan", (newBoothgame.getDurasiPermainan() / 60000),
+                                    "durasiPermainan", Map.of(
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", newBoothgame.getFotoBooth()));
                         } else {
                             response.setData(Map.of(
@@ -86,7 +89,9 @@ public class BoothgamesController {
                                     "sopGame", newBoothgame.getSopGames(),
                                     "lokasi", newBoothgame.getLokasi(),
                                     "tipeGame", newBoothgame.getTipegame().toString(),
-                                    "durasiPermainan", (newBoothgame.getDurasiPermainan() / 60000),
+                                    "durasiPermainan", Map.of(
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", newBoothgame.getFotoBooth()));
                         }
                     }
@@ -193,6 +198,7 @@ public class BoothgamesController {
                     response.setHttpCode(HTTPCode.OK);
                     ArrayList<Object> listData = new ArrayList<Object>();
                     for (Boothgames boothgame : boothgamesList) {
+                        Long durasiDetik = TimeUnit.MILLISECONDS.toSeconds(boothgame.getDurasiPermainan());
                         if (boothgame.getIdPenjaga2() != null) {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
@@ -201,7 +207,10 @@ public class BoothgamesController {
                                     "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", (boothgame.getDurasiPermainan() / 60000)));
+                                    "durasiPermainan", Map.of(
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60))
+                                            ));
                         } else {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
@@ -209,7 +218,10 @@ public class BoothgamesController {
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", (boothgame.getDurasiPermainan() / 60000)));
+                                    "durasiPermainan", Map.of(
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60))
+                                            ));
                         }
                     }
                     response.setData(listData);
@@ -254,6 +266,7 @@ public class BoothgamesController {
                     response.setHttpCode(HTTPCode.OK);
                     ArrayList<Object> listData = new ArrayList<Object>();
                     for (Boothgames boothgame : boothgamesList) {
+                        Long durasiDetik = TimeUnit.MILLISECONDS.toSeconds(boothgame.getDurasiPermainan());
                         if (boothgame.getIdPenjaga2() != null) {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
@@ -262,7 +275,10 @@ public class BoothgamesController {
                                     "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", (boothgame.getDurasiPermainan() / 60000)));
+                                    "durasiPermainan", Map.of(
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60))
+                                            ));
                         } else {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
@@ -270,7 +286,10 @@ public class BoothgamesController {
                                     "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
-                                    "durasiPermainan", (boothgame.getDurasiPermainan() / 60000)));
+                                    "durasiPermainan", Map.of(
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60))
+                                            ));
                         }
                     }
                     response.setData(listData);

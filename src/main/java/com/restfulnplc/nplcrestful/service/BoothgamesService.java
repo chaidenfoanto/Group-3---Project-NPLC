@@ -29,12 +29,17 @@ public class BoothgamesService {
     @Autowired
     private LokasiService lokasiService;
 
+    private Long durasiMin = TimeUnit.SECONDS.toMillis(1);
+    private Long durasiMax = TimeUnit.SECONDS.toMillis(60*30);
+
     public Optional<Boothgames> addBoothgame(BoothgamesDTO boothgamesDTO) {
         String durasi = boothgamesDTO.getDurasiPermainan();
         if (durasi.matches("/^([0-9]{1,2})(:)([0-9]{1,2})/gm")) {
             int menit = Integer.parseInt(durasi.split(":")[0]);
             int detik = Integer.parseInt(durasi.split(":")[1]);
             Long durasiTotal = TimeUnit.SECONDS.toMillis(menit * 60 + detik);
+            if(durasiTotal < durasiMin) durasiTotal = durasiMin;
+            if(durasiTotal > durasiMax) durasiTotal = durasiMax;
 
             Boothgames newBoothgame = new Boothgames();
             newBoothgame.setIdBooth(getNextBoothgameID());
@@ -159,6 +164,8 @@ public class BoothgamesService {
             int menit = Integer.parseInt(durasi.split(":")[0]);
             int detik = Integer.parseInt(durasi.split(":")[1]);
             Long durasiTotal = TimeUnit.SECONDS.toMillis(menit * 60 + detik);
+            if(durasiTotal < durasiMin) durasiTotal = durasiMin;
+            if(durasiTotal > durasiMax) durasiTotal = durasiMax;
             Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
             if (optionalBoothgame.isPresent()) {
                 Boothgames existingBoothgame = optionalBoothgame.get();
