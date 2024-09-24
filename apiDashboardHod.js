@@ -7,6 +7,8 @@ $(document).ready(function () {
 
     booths.forEach((booth) => {
       let boothItem;
+      let durasiMenit = booth.durasiPermainan.menit.toString();
+      let durasiDetik = booth.durasiPermainan.detik.toString();
       if (booth.tipeGame === 'Duel') {
         boothItem = `
                     <div class="booth-item">
@@ -17,7 +19,7 @@ $(document).ready(function () {
                                 </div>
                                 <div class="booth-right">
                                     <p><i class='bx bx-map'></i> R. ${booth.lokasi.noRuangan} - Lantai ${booth.lokasi.lantai}</p>
-                                    <p><i class='bx bx-time'></i> ${booth.durasiPermainan} min</p>
+                                    <p><i class='bx bx-time'></i> ${((durasiMenit.length < 2) ? "0" + durasiMenit : durasiMenit) + ":" + ((durasiDetik.length < 2) ? "0" + durasiDetik : durasiDetik)} min</p>
                                     <p class="duel" id="typeduel">${booth.tipeGame}</p>
                                 </div>
                             </div>
@@ -37,7 +39,7 @@ $(document).ready(function () {
                                 </div>
                                 <div class="booth-right">
                                     <p><i class='bx bx-map'></i> R. ${booth.lokasi.noRuangan} - Lantai ${booth.lokasi.lantai}</p>
-                                    <p><i class='bx bx-time'></i> ${booth.durasiPermainan} min</p>
+                                    <p><i class='bx bx-time'></i> ${((durasiMenit.length < 2) ? "0" + durasiMenit : durasiMenit) + ":" + ((durasiDetik.length < 2) ? "0" + durasiDetik : durasiDetik)} min</p>
                                     <p class="single" id="type">${booth.tipeGame}</p>
                                 </div>
                             </div>

@@ -1,3 +1,12 @@
+let changeTab = false;
+$(window).focus(function () {
+  if (changeTab) window.location.reload();
+});
+
+$(window).blur(function () {
+  changeTab = true;
+});
+
 var interval;
 var timer = "01:00";
 let teamData = {};
@@ -26,11 +35,12 @@ function getTime() {
     .then((data) => {
       if (!data.error) {
         const durasiPermainanElement = $(".timeleft");
-        var durasiPermainan = data.data.durasiPermainan.toString();
+        var durasiMenit = data.data.durasiPermainan.menit.toString();
+        var durasiDetik = data.data.durasiPermainan.detik.toString();
         timer =
-          (durasiPermainan.length < 2
-            ? "0" + durasiPermainan
-            : durasiPermainan) + ":00";
+          (durasiMenit.length < 2 ? "0" + durasiMenit : durasiMenit) +
+          ":" +
+          (durasiDetik.length < 2 ? "0" + durasiDetik : durasiDetik);
         durasiPermainanElement.text(timer);
       }
     });

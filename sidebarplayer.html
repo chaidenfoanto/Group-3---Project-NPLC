@@ -101,6 +101,9 @@
               : arrayNama[0];
           $(".name").html(namaUser);
           $(".designation").html(data.data.role);
+          if (data.data.role != "Players") {
+            logout();
+          }
         } else {
           console.log("Authorization Failed");
           deleteCookie("Token");

@@ -113,6 +113,9 @@
             document.getElementById('SBP-navigatebyRole').href = 'PanitiaDuelFinish.html';
             break;
         }
+        if (data.data.role != "Penjaga Single" && data.data.role != "Penjaga Duel") {
+            logout();
+          }
       } else {
         console.log('Authorization Failed');
         deleteCookie("Token");
@@ -131,15 +134,6 @@
   function logout() {
     window.location.href = "LoginPanitia.html"
   }
-
-  let changeTab = false;
-  $(window).focus(function() {
-   if(changeTab) window.location.reload();
-});
-
-$(window).blur(function() {
-   changeTab = true;
-});
         
 //         document.addEventListener('keydown', function (e) {
 //   if (e.which === 123) {
