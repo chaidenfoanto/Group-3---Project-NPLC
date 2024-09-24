@@ -94,6 +94,11 @@ public class BoothgamesController {
                                             "detik", (durasiDetik % 60)),
                                     "fotoBooth", newBoothgame.getFotoBooth()));
                         }
+                    } else {
+                        response.setMessage("Boothgame Add Failed");
+                        response.setError(true);
+                        response.setHttpCode(HTTPCode.BAD_REQUEST);
+                        response.setData(new ErrorMessage(response.getHttpCode()));
                     }
                 } else {
                     response.setMessage("Access Denied");
