@@ -641,7 +641,7 @@ public class BoothgamesController {
                                     "fotoBooth", boothgame.getFotoBooth()));
                         }
                     } else {
-                        response.setMessage("Boothgame Not Found");
+                        response.setMessage("Boothgame Not Found or Invalid Data");
                         response.setError(true);
                         response.setHttpCode(HTTPCode.OK);
                         response.setData(new ErrorMessage(response.getHttpCode()));

@@ -160,7 +160,7 @@ public class BoothgamesService {
 
     public Optional<Boothgames> updateBoothgame(String id, BoothgamesDTO boothgamesDTO) {
         String durasi = boothgamesDTO.getDurasiPermainan();
-        if (durasi.matches("/^([0-9]{1,2})(:)([0-9]{1,2})/gm")) {
+        if (durasi.matches("^([0-9]{1,2})(:)([0-9]{1,2})$")) {
             int menit = Integer.parseInt(durasi.split(":")[0]);
             int detik = Integer.parseInt(durasi.split(":")[1]);
             Long durasiTotal = TimeUnit.SECONDS.toMillis(menit * 60 + detik);
