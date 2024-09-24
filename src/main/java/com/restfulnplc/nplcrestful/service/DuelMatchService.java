@@ -52,7 +52,7 @@ public class DuelMatchService {
     public DuelMatch stopDuelMatch(DuelMatch duelMatch) {
         if (LocalTime.now().until(duelMatch.getWaktuSelesai(),
                 ChronoUnit.SECONDS) > 0) {
-            duelMatch.setWaktuSelesai(LocalTime.now());
+            duelMatch.setWaktuSelesai(LocalTime.now().withNano(0));
         }
         duelMatch.setMatchStatus(MatchStatus.FINISHED);
         return duelMatchRepository.save(duelMatch);
