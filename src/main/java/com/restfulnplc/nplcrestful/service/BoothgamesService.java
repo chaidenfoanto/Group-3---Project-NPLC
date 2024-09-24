@@ -29,20 +29,28 @@ public class BoothgamesService {
     @Autowired
     private LokasiService lokasiService;
 
-    public Boothgames addBoothgame(BoothgamesDTO boothgamesDTO) {
-        Boothgames newBoothgame = new Boothgames();
-        newBoothgame.setIdBooth(getNextBoothgameID());
-        newBoothgame.setNama(boothgamesDTO.getNama());
-        newBoothgame.setIdPenjaga1(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga1()).get());
-        if (boothgamesDTO.getIdPenjaga2() != null) {
-            newBoothgame.setIdPenjaga2(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga2()).get());
+    public Optional<Boothgames> addBoothgame(BoothgamesDTO boothgamesDTO) {
+        String durasi = boothgamesDTO.getDurasiPermainan();
+        if (durasi.matches("/^([0-9]{1,2})(:)([0-9]{1,2})/gm")) {
+            int menit = Integer.parseInt(durasi.split(":")[0]);
+            int detik = Integer.parseInt(durasi.split(":")[1]);
+            Long durasiTotal = TimeUnit.SECONDS.toMillis(menit * 60 + detik);
+
+            Boothgames newBoothgame = new Boothgames();
+            newBoothgame.setIdBooth(getNextBoothgameID());
+            newBoothgame.setNama(boothgamesDTO.getNama());
+            newBoothgame.setIdPenjaga1(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga1()).get());
+            if (boothgamesDTO.getIdPenjaga2() != null) {
+                newBoothgame.setIdPenjaga2(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga2()).get());
+            }
+            newBoothgame.setSopGames(boothgamesDTO.getSopGames());
+            newBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
+            newBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
+            newBoothgame.setDurasiPermainan(durasiTotal);
+            newBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); // update
+            return Optional.of(boothgamesRepository.save(newBoothgame));
         }
-        newBoothgame.setSopGames(boothgamesDTO.getSopGames());
-        newBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
-        newBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
-        newBoothgame.setDurasiPermainan(TimeUnit.MINUTES.toMillis(boothgamesDTO.getDurasiPermainan()));
-        newBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); // update
-        return boothgamesRepository.save(newBoothgame);
+        return Optional.empty();
     }
 
     public List<Boothgames> getAllBoothgames() {
@@ -146,21 +154,27 @@ public class BoothgamesService {
     }
 
     public Optional<Boothgames> updateBoothgame(String id, BoothgamesDTO boothgamesDTO) {
-        Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
-        if (optionalBoothgame.isPresent()) {
-            Boothgames existingBoothgame = optionalBoothgame.get();
-            existingBoothgame.setNama(boothgamesDTO.getNama());
-            existingBoothgame.setIdPenjaga1(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga1()).get());
-            if (boothgamesDTO.getIdPenjaga2() != null) {
-                existingBoothgame.setIdPenjaga2(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga2()).get());
+        String durasi = boothgamesDTO.getDurasiPermainan();
+        if (durasi.matches("/^([0-9]{1,2})(:)([0-9]{1,2})/gm")) {
+            int menit = Integer.parseInt(durasi.split(":")[0]);
+            int detik = Integer.parseInt(durasi.split(":")[1]);
+            Long durasiTotal = TimeUnit.SECONDS.toMillis(menit * 60 + detik);
+            Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
+            if (optionalBoothgame.isPresent()) {
+                Boothgames existingBoothgame = optionalBoothgame.get();
+                existingBoothgame.setNama(boothgamesDTO.getNama());
+                existingBoothgame.setIdPenjaga1(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga1()).get());
+                if (boothgamesDTO.getIdPenjaga2() != null) {
+                    existingBoothgame.setIdPenjaga2(panitiaService.getPanitiaById(boothgamesDTO.getIdPenjaga2()).get());
+                }
+                existingBoothgame.setSopGames(boothgamesDTO.getSopGames());
+                existingBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
+                existingBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
+                existingBoothgame.setDurasiPermainan(durasiTotal);
+                existingBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); // update
+                boothgamesRepository.save(existingBoothgame);
+                return Optional.of(existingBoothgame);
             }
-            existingBoothgame.setSopGames(boothgamesDTO.getSopGames());
-            existingBoothgame.setLokasi(lokasiService.getLokasiById(boothgamesDTO.getLokasi()).get());
-            existingBoothgame.setTipegame(boothgamesDTO.getTipeGameClass());
-            existingBoothgame.setDurasiPermainan(TimeUnit.MINUTES.toMillis(boothgamesDTO.getDurasiPermainan()));
-            existingBoothgame.setFotoBooth(boothgamesDTO.getFotoBooth()); // update
-            boothgamesRepository.save(existingBoothgame);
-            return Optional.of(existingBoothgame);
         }
         return Optional.empty();
     }

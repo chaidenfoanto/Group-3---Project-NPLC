@@ -61,31 +61,34 @@ public class BoothgamesController {
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionAdmin(sessionToken)) {
-                    Boothgames newBoothgame = boothgamesService.addBoothgame(boothgamesDTO);
-                    response.setMessage("Boothgame Successfully Added");
-                    response.setError(false);
-                    response.setHttpCode(HTTPCode.CREATED);
-                    if (newBoothgame.getIdPenjaga2() != null) {
-                        response.setData(Map.of(
-                                "idBoothGame", newBoothgame.getIdBooth(),
-                                "namaBoothGame", newBoothgame.getNama(),
-                                "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
-                                "panitia2", newBoothgame.getIdPenjaga2().getIdPanitia(),
-                                "sopGame", newBoothgame.getSopGames(),
-                                "lokasi", newBoothgame.getLokasi(),
-                                "tipeGame", newBoothgame.getTipegame().toString(),
-                                "durasiPermainan", (newBoothgame.getDurasiPermainan() / 60000),
-                                "fotoBooth", newBoothgame.getFotoBooth()));
-                    } else {
-                        response.setData(Map.of(
-                                "idBoothGame", newBoothgame.getIdBooth(),
-                                "namaBoothGame", newBoothgame.getNama(),
-                                "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
-                                "sopGame", newBoothgame.getSopGames(),
-                                "lokasi", newBoothgame.getLokasi(),
-                                "tipeGame", newBoothgame.getTipegame().toString(),
-                                "durasiPermainan", (newBoothgame.getDurasiPermainan() / 60000),
-                                "fotoBooth", newBoothgame.getFotoBooth()));
+                    Optional<Boothgames> newBoothgameOptional = boothgamesService.addBoothgame(boothgamesDTO);
+                    if (newBoothgameOptional.isPresent()) {
+                        Boothgames newBoothgame = newBoothgameOptional.get();
+                        response.setMessage("Boothgame Successfully Added");
+                        response.setError(false);
+                        response.setHttpCode(HTTPCode.CREATED);
+                        if (newBoothgame.getIdPenjaga2() != null) {
+                            response.setData(Map.of(
+                                    "idBoothGame", newBoothgame.getIdBooth(),
+                                    "namaBoothGame", newBoothgame.getNama(),
+                                    "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
+                                    "panitia2", newBoothgame.getIdPenjaga2().getIdPanitia(),
+                                    "sopGame", newBoothgame.getSopGames(),
+                                    "lokasi", newBoothgame.getLokasi(),
+                                    "tipeGame", newBoothgame.getTipegame().toString(),
+                                    "durasiPermainan", (newBoothgame.getDurasiPermainan() / 60000),
+                                    "fotoBooth", newBoothgame.getFotoBooth()));
+                        } else {
+                            response.setData(Map.of(
+                                    "idBoothGame", newBoothgame.getIdBooth(),
+                                    "namaBoothGame", newBoothgame.getNama(),
+                                    "panitia1", newBoothgame.getIdPenjaga1().getIdPanitia(),
+                                    "sopGame", newBoothgame.getSopGames(),
+                                    "lokasi", newBoothgame.getLokasi(),
+                                    "tipeGame", newBoothgame.getTipegame().toString(),
+                                    "durasiPermainan", (newBoothgame.getDurasiPermainan() / 60000),
+                                    "fotoBooth", newBoothgame.getFotoBooth()));
+                        }
                     }
                 } else {
                     response.setMessage("Access Denied");
@@ -135,9 +138,8 @@ public class BoothgamesController {
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         } else {
                             listData.add(Map.of(
@@ -148,9 +150,8 @@ public class BoothgamesController {
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         }
                     }
@@ -354,9 +355,8 @@ public class BoothgamesController {
                                         "lokasi", boothgame.getLokasi(),
                                         "tipeGame", boothgame.getTipegame().toString(),
                                         "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                                "menit", (durasiDetik / 60),
+                                                "detik", (durasiDetik % 60)),
                                         "fotoBooth", boothgame.getFotoBooth(),
                                         "gameResult", resultData));
                             } else {
@@ -368,9 +368,8 @@ public class BoothgamesController {
                                         "lokasi", boothgame.getLokasi(),
                                         "tipeGame", boothgame.getTipegame().toString(),
                                         "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                                "menit", (durasiDetik / 60),
+                                                "detik", (durasiDetik % 60)),
                                         "fotoBooth", boothgame.getFotoBooth(),
                                         "gameResult", resultData));
                             }
@@ -466,8 +465,7 @@ public class BoothgamesController {
                                 "tipeGame", boothgame.getTipegame().toString(),
                                 "durasiPermainan", Map.of(
                                         "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                        "detik", (durasiDetik % 60)),
                                 "fotoBooth", boothgame.getFotoBooth()));
                     } else {
                         response.setData(Map.of(
@@ -479,8 +477,7 @@ public class BoothgamesController {
                                 "tipeGame", boothgame.getTipegame().toString(),
                                 "durasiPermainan", Map.of(
                                         "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                        "detik", (durasiDetik % 60)),
                                 "fotoBooth", boothgame.getFotoBooth()));
                     }
                 } else {
@@ -532,9 +529,8 @@ public class BoothgamesController {
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         } else {
                             response.setData(Map.of(
@@ -545,9 +541,8 @@ public class BoothgamesController {
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         }
                     } else {
@@ -605,9 +600,8 @@ public class BoothgamesController {
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         } else {
                             response.setData(Map.of(
@@ -618,9 +612,8 @@ public class BoothgamesController {
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
-                                        "menit", (durasiDetik / 60),
-                                        "detik", (durasiDetik % 60)
-                                    ),
+                                            "menit", (durasiDetik / 60),
+                                            "detik", (durasiDetik % 60)),
                                     "fotoBooth", boothgame.getFotoBooth()));
                         }
                     } else {

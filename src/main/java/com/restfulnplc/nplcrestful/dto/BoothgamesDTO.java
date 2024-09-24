@@ -9,7 +9,7 @@ public class BoothgamesDTO {
     private String sopGames;
     private String lokasi;
     private String tipeGame;
-    private int durasiPermainan;
+    private String durasiPermainan;
     private String fotoBooth;
 
     public String getNama() {
@@ -64,11 +64,11 @@ public class BoothgamesDTO {
         this.tipeGame = tipeGame;
     }
 
-    public int getDurasiPermainan() {
+    public String getDurasiPermainan() {
         return durasiPermainan;
     }
 
-    public void setDurasiPermainan(int durasiPermainan) {
+    public void setDurasiPermainan(String durasiPermainan) {
         this.durasiPermainan = durasiPermainan;
     }
 
