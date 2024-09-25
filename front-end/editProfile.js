@@ -1,4 +1,21 @@
 $(document).ready(function() {
+
+    $('.inner-container input, .inner-container textarea, .inner-container select').each(function() {
+        // Check if the input is not empty on page load
+        if ($(this).val() !== '') {
+            $(this).addClass('not-empty');
+        }
+
+        // Add event listener for input events
+        $(this).on('input', function() {
+            if ($(this).val() !== '') {
+                $(this).addClass('not-empty');
+            } else {
+                $(this).removeClass('not-empty');
+            }
+        });
+    });
+
     $('#profile-form').on('submit', function(event) {
         // Clear previous error messages
         $('.error-message').text('');
