@@ -20,6 +20,7 @@ $(document).ready(function () {
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
+          console.log(data)
           const leaderboardBody = $('#leaderboard-body');
           leaderboardBody.empty();
 
