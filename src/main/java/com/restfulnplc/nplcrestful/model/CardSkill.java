@@ -19,9 +19,6 @@ public class CardSkill {
     @Column(name = "rules", columnDefinition = "TINYTEXT",nullable = false)
     private String rules;
 
-    @Column(name = "totalkartu", nullable = false)
-    private int totalKartu;
-
     @Column(name = "gambarkartu",  columnDefinition = "MEDIUMBLOB", nullable = false)
     private String gambarKartu;
 
@@ -48,14 +45,6 @@ public class CardSkill {
 
     public void setRules(String rules) {
         this.rules = rules;
-    }
-
-    public int getTotalKartu() {
-        return this.totalKartu;
-    }
-
-    public void setTotalKartu(int totalKartu) {
-        this.totalKartu = totalKartu;
     }
 
     public String getGambarKartu() {

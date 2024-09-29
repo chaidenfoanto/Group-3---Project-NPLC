@@ -26,6 +26,20 @@ public class ListKartuService {
 
     @Autowired
     private TeamService teamService;
+    
+    public ArrayList<ListKartu> getListKartuByCardId(String cardId){
+        Optional<CardSkill> cardSkillOptional = cardSkillService.getCardSkillById(cardId);
+        ArrayList<ListKartu> listKartuList = new ArrayList<ListKartu>();
+        if(cardSkillOptional.isPresent()){
+            CardSkill cardSkill = cardSkillOptional.get();
+            for(ListKartu kartu : getAllListKartu()){
+                if(kartu.getCardSkill().equals(cardSkill)){
+                    listKartuList.add(kartu);
+                }
+            }
+        }
+        return listKartuList;
+    }
 
     public ListKartu addListKartu(ListKartuDTO listKartuDTO) {
         ListKartu listKartu = new ListKartu();

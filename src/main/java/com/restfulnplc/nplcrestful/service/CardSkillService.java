@@ -20,7 +20,6 @@ public class CardSkillService {
         cardSkill.setIdCard(getNextCardSkillID());
         cardSkill.setNamaKartu(cardSkillDTO.getNamaKartu());
         cardSkill.setRules(cardSkillDTO.getRules());
-        cardSkill.setTotalKartu(cardSkillDTO.getTotalKartu());
         cardSkill.setGambarKartu(cardSkillDTO.getGambarKartu());
         return cardSkillRepository.save(cardSkill);
     }
@@ -39,7 +38,6 @@ public class CardSkillService {
             CardSkill cardSkill = optionalCardSkill.get();
             cardSkill.setNamaKartu(cardSkillDTO.getNamaKartu());
             cardSkill.setRules(cardSkillDTO.getRules());
-            cardSkill.setTotalKartu(cardSkillDTO.getTotalKartu());
             cardSkill.setGambarKartu(cardSkillDTO.getGambarKartu());
             return Optional.of(cardSkillRepository.save(cardSkill));
         }

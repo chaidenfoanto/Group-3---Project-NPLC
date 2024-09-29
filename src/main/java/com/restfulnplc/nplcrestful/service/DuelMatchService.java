@@ -30,6 +30,20 @@ public class DuelMatchService {
     @Autowired
     private PanitiaService panitiaService;
 
+    public int getPointsByTeam(String teamID){
+        Optional<Team> optionalTeam = teamService.getTeamById(teamID);
+        int totalPoin = 0;
+        if(optionalTeam.isPresent()){
+            Team team = optionalTeam.get();
+            for(DuelMatch duelMatch : getAllDuelMatches()){
+                if(duelMatch.getTimMenang().equals(team)){
+                    totalPoin += 100;
+                }
+            }
+        }
+        return totalPoin;
+    }
+
     public Optional<DuelMatch> startDuelMatch(DuelMatchDTO duelMatchDTO, Boothgames boothgame, String panitiaId) {
         ArrayList<Team> availableTeams = getAvailableTeamPerBoothList(boothgame.getIdBooth());
         if (availableTeams.contains(teamService.getTeamById(duelMatchDTO.getTeam1()).get())
@@ -165,8 +179,7 @@ public class DuelMatchService {
                         "namaTeam", team.getNama(),
                         "usernameTeam", team.getUsername(),
                         "asalSekolah", team.getAsalSekolah(),
-                        "chanceRoll", team.getChanceRoll(),
-                        "totalPoin", team.getTotalPoin()));
+                        "chanceRoll", team.getChanceRoll()));
             }
         }
         return availableTeam;
@@ -187,6 +200,19 @@ public class DuelMatchService {
             }
         }
         return duelMatchArray;
+    }
+
+    
+    public int getTotalMatchByUser(String idTeam) {
+        ArrayList<Boothgames> boothgamesArray = new ArrayList<Boothgames>();
+        if(teamService.checkTeam(idTeam)){
+        for (DuelMatch duelMatch : getAllDuelMatches()) {
+            if ((duelMatch.getTeam1().getIdTeam().equals(idTeam) || duelMatch.getTeam2().getIdTeam().equals(idTeam)) && !boothgamesArray.contains(duelMatch.getBoothGames())) {
+                boothgamesArray.add(duelMatch.getBoothGames());
+            }
+        }
+    }
+        return boothgamesArray.size();
     }
 
     public ArrayList<DuelMatch> getWinningDuelMatchesByUser(String idTeam) {

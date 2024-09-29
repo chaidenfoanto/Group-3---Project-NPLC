@@ -40,9 +40,6 @@ public class Team {
     @Column(name = "chanceroll")
     private int chanceRoll;
 
-    @Column(name = "totalPoin")
-    private int totalPoin;
-
     public String getIdTeam() {
         return this.idTeam;
     }
@@ -105,14 +102,6 @@ public class Team {
 
     public void setChanceRoll(int chanceRoll) {
         this.chanceRoll = chanceRoll;
-    }
-
-    public int getTotalPoin() {
-        return this.totalPoin;
-    }
-
-    public void setTotalPoin(int totalPoin) {
-        this.totalPoin = totalPoin;
     }
 
 }

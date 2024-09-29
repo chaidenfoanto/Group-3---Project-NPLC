@@ -26,12 +26,13 @@ public class LeaderboardService {
         public Object getLeaderboard() {
                 ArrayList<Object> teams = new ArrayList<Object>();
                 for (Team team : teamService.getAllTeam()) {
-                        int singleMatches = singlematchService.getSinglematchesByUser(team.getIdTeam()).size();
-                        int duelMatches = duelMatchService.getDuelMatchesByUser(team.getIdTeam()).size();
+                        int singleMatches = singlematchService.getTotalMatchByUser(team.getIdTeam());
+                        int duelMatches = duelMatchService.getTotalMatchByUser(team.getIdTeam());
                         int duelMatchesWin = duelMatchService.getWinningDuelMatchesByUser(team.getIdTeam()).size();
                         teams.add(
                                         Map.of(
-                                                        "totalPoin", team.getTotalPoin(),
+                                                        "totalPoin",
+                                                        boothgamesService.getTeamTotalPoin(team.getIdTeam()),
                                                         "team", Map.of(
                                                                         "namaTeam", team.getNama(),
                                                                         "idTeam", team.getIdTeam()),

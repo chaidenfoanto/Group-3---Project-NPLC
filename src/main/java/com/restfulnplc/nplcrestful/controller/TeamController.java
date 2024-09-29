@@ -78,7 +78,7 @@ public class TeamController {
                                 "asalSekolah", newTeam.getAsalSekolah(),
                                 "kategoriTeam", newTeam.getKategoriTeam().toString(),
                                 "chanceRoll", newTeam.getChanceRoll(),
-                                "totalPoin", newTeam.getTotalPoin(),
+                                "totalPoin", boothgamesService.getTeamTotalPoin(newTeam.getIdTeam()),
                                 "players", playerList));
                     } else {
                         response.setMessage("Username Exists");
@@ -137,7 +137,7 @@ public class TeamController {
                                 "asalSekolah", team.getAsalSekolah(),
                                 "kategoriTeam", team.getKategoriTeam().toString(),
                                 "chanceRoll", team.getChanceRoll(),
-                                "totalPoin", team.getTotalPoin(),
+                                "totalPoin", boothgamesService.getTeamTotalPoin(team.getIdTeam()),
                                 "players", playerList));
                     }
                     response.setData(listData);
@@ -181,7 +181,7 @@ public class TeamController {
                     response.setData(Map.of(
                             "idTeam", team.getIdTeam(),
                             "chanceRoll", team.getChanceRoll(),
-                            "totalPoin", team.getTotalPoin()));
+                            "totalPoin", boothgamesService.getTeamTotalPoin(team.getIdTeam())));
                 } else {
                     response.setMessage("Team Not Found");
                     response.setError(true);
@@ -267,7 +267,7 @@ public class TeamController {
                             "asalSekolah", team.getAsalSekolah(),
                             "kategoriTeam", team.getKategoriTeam().toString(),
                             "chanceRoll", team.getChanceRoll(),
-                            "totalPoin", team.getTotalPoin(),
+                            "totalPoin", boothgamesService.getTeamTotalPoin(team.getIdTeam()),
                             "players", playerList));
                 } else {
                     response.setMessage("Team Not Found");

@@ -53,7 +53,7 @@ public class CardSkillController {
                             "idCard", newCardSkill.getIdCard(),
                             "namaKartu", newCardSkill.getNamaKartu(),
                             "rules", newCardSkill.getRules(),
-                            "totalKartu", newCardSkill.getTotalKartu(),
+                            "totalKartu", listKartuService.getListKartuByCardId(newCardSkill.getIdCard()).size(),
                             "gambarKartu", newCardSkill.getGambarKartu()
                     ));
                 } else {
@@ -97,7 +97,7 @@ public class CardSkillController {
                                 "idCard", cardSkill.getIdCard(),
                                 "namaKartu", cardSkill.getNamaKartu(),
                                 "rules", cardSkill.getRules(),
-                                "totalKartu", cardSkill.getTotalKartu(),
+                                "totalKartu", listKartuService.getListKartuByCardId(cardSkill.getIdCard()).size(),
                                 "gambarKartu", cardSkill.getGambarKartu()
                         ));
                     }
@@ -144,7 +144,7 @@ public class CardSkillController {
                                 "idCard", cardSkill.getIdCard(),
                                 "namaKartu", cardSkill.getNamaKartu(),
                                 "rules", cardSkill.getRules(),
-                                "totalKartu", cardSkill.getTotalKartu(),
+                                "totalKartu", listKartuService.getListKartuByCardId(cardSkill.getIdCard()).size(),
                                 "gambarKartu", cardSkill.getGambarKartu(),
                                 "totalOwned", listKartuService.getCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size(),
                                 "totalUsed", listKartuService.getUsedCardsByTeamIdAndCardID(userid, cardSkill.getIdCard()).size(),
@@ -193,7 +193,7 @@ public class CardSkillController {
                             "idCard", cardSkill.getIdCard(),
                             "namaKartu", cardSkill.getNamaKartu(),
                             "rules", cardSkill.getRules(),
-                            "totalKartu", cardSkill.getTotalKartu(),
+                            "totalKartu", listKartuService.getListKartuByCardId(cardSkill.getIdCard()).size(),
                             "gambarKartu", cardSkill.getGambarKartu()
                     ));
                 } else {
@@ -239,7 +239,7 @@ public class CardSkillController {
                                 "idCard", cardSkill.getIdCard(),
                                 "namaKartu", cardSkill.getNamaKartu(),
                                 "rules", cardSkill.getRules(),
-                                "totalKartu", cardSkill.getTotalKartu(),
+                                "totalKartu", listKartuService.getListKartuByCardId(cardSkill.getIdCard()).size(),
                                 "gambarKartu", cardSkill.getGambarKartu()
                         ));
                     } else {

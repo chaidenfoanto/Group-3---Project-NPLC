@@ -325,7 +325,7 @@ public class BoothgamesController {
     @GetMapping("/getWithResult")
     public ResponseEntity<Response> getAllBoothgamesResult(HttpServletRequest request) {
         String sessionToken = request.getHeader("Token");
-        response.setService("Get All Boothgames");
+        response.setService("Get All Boothgames With Result");
         try {
             if (loginService.checkSessionAlive(sessionToken)) {
                 if (loginService.checkSessionTeam(sessionToken)) {
@@ -340,12 +340,12 @@ public class BoothgamesController {
                             Object resultData;
                             if (boothgame.getTipegame().equals(Tipegame.SINGLE)) {
                                 Optional<Singlematch> singlematchDataOptional = singlematchService
-                                        .getSinglematchesByUserAndBooth(userid, boothgame.getIdBooth());
-                                int totalBintang = 0;
-                                int totalPoin = 0;
+                                        .getSinglematchResultByUserAndBooth(userid, boothgame.getIdBooth());
+                                String totalBintang = "-";
+                                String totalPoin = "-";
                                 if (singlematchDataOptional.isPresent()) {
-                                    totalBintang = singlematchDataOptional.get().getTotalBintang();
-                                    totalPoin = singlematchDataOptional.get().getTotalPoin();
+                                    totalBintang = Integer.toString(singlematchDataOptional.get().getTotalBintang());
+                                    totalPoin = Integer.toString(singlematchDataOptional.get().getTotalPoin());
                                 }
                                 resultData = Map.of(
                                         "totalBintang", totalBintang,

@@ -60,7 +60,6 @@ public class TeamService {
         newTeam.setAsalSekolah(teamDTO.getAsalSekolah());
         newTeam.setKategoriTeam(teamDTO.getKategoriTeamClass());
         newTeam.setChanceRoll(0);
-        newTeam.setTotalPoin(0);
 
         Set<Players> newPlayers = Collections.<Players>emptySet();
         String playerID = "";

@@ -27,13 +27,37 @@ public class SinglematchService {
     private SinglematchRepository singlematchRepository;
 
     @Autowired
-    private TeamService teamService;;
+    private TeamService teamService;
 
     @Autowired
     private ListKartuService listKartuService;
 
     @Autowired
     private PanitiaService panitiaService;
+
+    public int getPointsByTeam(String teamID) {
+        Optional<Team> optionalTeam = teamService.getTeamById(teamID);
+        int totalPoin = 0;
+        ArrayList<Object> insertedPoints = new ArrayList<Object>();
+        ArrayList<Object> insertedBooth = new ArrayList<Object>();
+        if (optionalTeam.isPresent()) {
+            for (Singlematch singlematch : getSinglematchesByUser(teamID)) {
+                if (insertedBooth.contains(singlematch.getBoothGames())) {
+                    int index = insertedBooth.indexOf(singlematch.getBoothGames());
+                    if ((int) insertedPoints.get(index) < singlematch.getTotalPoin()) {
+                        insertedPoints.set(index, singlematch.getTotalPoin());
+                    }
+                } else {
+                    insertedBooth.add(singlematch.getBoothGames());
+                    insertedPoints.add(singlematch.getTotalPoin());
+                }
+            }
+            for (Object point : insertedPoints) {
+                totalPoin += (int) point;
+            }
+        }
+        return totalPoin;
+    }
 
     public Optional<Singlematch> startSingleMatch(SinglematchDTO singlematchDTO, Boothgames boothgame,
             String panitiaId) {
@@ -154,6 +178,18 @@ public class SinglematchService {
         return singlematchArray;
     }
 
+    public int getTotalMatchByUser(String idTeam) {
+        ArrayList<Boothgames> boothgamesArray = new ArrayList<Boothgames>();
+        if(teamService.checkTeam(idTeam)){
+        for (Singlematch singlematch : getAllSinglematches()) {
+            if (singlematch.getTeam().getIdTeam().equals(idTeam) && !boothgamesArray.contains(singlematch.getBoothGames())) {
+                boothgamesArray.add(singlematch.getBoothGames());
+            }
+        }
+    }
+        return boothgamesArray.size();
+    }
+
     public ArrayList<Team> getTeamPerBooth(String id) {
         ArrayList<Team> teamsPlayed = new ArrayList<Team>();
         for (Singlematch singlematch : getAllSinglematches()) {
@@ -180,7 +216,6 @@ public class SinglematchService {
                     "usernameTeam", team.getUsername(),
                     "asalSekolah", team.getAsalSekolah(),
                     "chanceRoll", team.getChanceRoll(),
-                    "totalPoin", team.getTotalPoin(),
                     "secondChance", false));
         }
         for (Team team : secondChanceTeam) {
@@ -190,7 +225,6 @@ public class SinglematchService {
                     "usernameTeam", team.getUsername(),
                     "asalSekolah", team.getAsalSekolah(),
                     "chanceRoll", team.getChanceRoll(),
-                    "totalPoin", team.getTotalPoin(),
                     "secondChance", true));
         }
         return availableTeams;
@@ -207,7 +241,7 @@ public class SinglematchService {
 
         availableTeams.addAll(teamList);
         availableTeams.addAll(secondChanceTeam);
-        
+
         return availableTeams;
     }
 
@@ -247,10 +281,29 @@ public class SinglematchService {
         return cleanList;
     }
 
-    public Optional<Singlematch> getSinglematchesByUserAndBooth(String userId, String boothId) {
-        for (Singlematch singlematch : getAllSinglematches()) {
-            if (singlematch.getTeam().getIdTeam().equals(userId)
-                    && singlematch.getBoothGames().getIdBooth().equals(boothId)) {
+    public ArrayList<Singlematch> getSinglematchesByUserAndBooth(String userId, String boothId) {
+        ArrayList<Singlematch> singlematches = new ArrayList<Singlematch>();
+        if (teamService.checkTeam(userId)) {
+            for (Singlematch singlematch : getAllSinglematches()) {
+                if (singlematch.getTeam().getIdTeam().equals(userId)
+                        && singlematch.getBoothGames().getIdBooth().equals(boothId)) {
+                    singlematches.add(singlematch);
+                }
+            }
+        }
+        return singlematches;
+    }
+
+    public Optional<Singlematch> getSinglematchResultByUserAndBooth(String userId, String boothId) {
+        if (teamService.checkTeam(userId)) {
+            ArrayList<Singlematch> singlematches = getSinglematchesByUserAndBooth(userId, boothId);
+            if (singlematches.size() > 0) {
+                Singlematch singlematch = singlematches.get(0);
+                for (Singlematch singlematchCheck : singlematches) {
+                    if (singlematchCheck.getTotalPoin() > singlematch.getTotalPoin()) {
+                        singlematch = singlematchCheck;
+                    }
+                }
                 return Optional.of(singlematch);
             }
         }

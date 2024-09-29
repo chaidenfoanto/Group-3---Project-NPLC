@@ -14,6 +14,7 @@ import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.Divisi;
 import com.restfulnplc.nplcrestful.model.Lokasi;
 import com.restfulnplc.nplcrestful.model.Panitia;
+import com.restfulnplc.nplcrestful.model.Team;
 import com.restfulnplc.nplcrestful.model.Tipegame;
 import com.restfulnplc.nplcrestful.repository.BoothgamesRepository;
 
@@ -29,8 +30,26 @@ public class BoothgamesService {
     @Autowired
     private LokasiService lokasiService;
 
+    @Autowired
+    private TeamService teamService;
+
+    @Autowired
+    private SinglematchService singlematchService;
+
+    @Autowired
+    private DuelMatchService duelMatchService;
+
     private Long durasiMin = TimeUnit.SECONDS.toMillis(1);
-    private Long durasiMax = TimeUnit.SECONDS.toMillis(60*30);
+    private Long durasiMax = TimeUnit.SECONDS.toMillis(60 * 30);
+
+    public int getTeamTotalPoin(String teamID) {
+        Optional<Team> optionalTeam = teamService.getTeamById(teamID);
+        int totalPoin = 0;
+        if (optionalTeam.isPresent()) {
+            totalPoin = singlematchService.getPointsByTeam(teamID) + duelMatchService.getPointsByTeam(teamID);
+        }
+        return totalPoin;
+    }
 
     public Optional<Boothgames> addBoothgame(BoothgamesDTO boothgamesDTO) {
         String durasi = boothgamesDTO.getDurasiPermainan();
@@ -38,8 +57,10 @@ public class BoothgamesService {
             int menit = Integer.parseInt(durasi.split(":")[0]);
             int detik = Integer.parseInt(durasi.split(":")[1]);
             Long durasiTotal = TimeUnit.SECONDS.toMillis(menit * 60 + detik);
-            if(durasiTotal < durasiMin) durasiTotal = durasiMin;
-            if(durasiTotal > durasiMax) durasiTotal = durasiMax;
+            if (durasiTotal < durasiMin)
+                durasiTotal = durasiMin;
+            if (durasiTotal > durasiMax)
+                durasiTotal = durasiMax;
 
             Boothgames newBoothgame = new Boothgames();
             newBoothgame.setIdBooth(getNextBoothgameID());
@@ -164,8 +185,10 @@ public class BoothgamesService {
             int menit = Integer.parseInt(durasi.split(":")[0]);
             int detik = Integer.parseInt(durasi.split(":")[1]);
             Long durasiTotal = TimeUnit.SECONDS.toMillis(menit * 60 + detik);
-            if(durasiTotal < durasiMin) durasiTotal = durasiMin;
-            if(durasiTotal > durasiMax) durasiTotal = durasiMax;
+            if (durasiTotal < durasiMin)
+                durasiTotal = durasiMin;
+            if (durasiTotal > durasiMax)
+                durasiTotal = durasiMax;
             Optional<Boothgames> optionalBoothgame = boothgamesRepository.findById(id);
             if (optionalBoothgame.isPresent()) {
                 Boothgames existingBoothgame = optionalBoothgame.get();
