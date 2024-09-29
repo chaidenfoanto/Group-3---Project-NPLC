@@ -167,6 +167,10 @@ table.duel {
 table.duel td:first-child {
     width: 35%;
 }
+table.duel td:nth-child(2) {
+    width: 6%;
+    white-space: nowrap;
+}
 table.single  {
     width: 100%;
     text-align: left;
