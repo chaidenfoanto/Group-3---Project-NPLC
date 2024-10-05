@@ -44,7 +44,7 @@ public class StatusNPLCController {
                 Long durationHour = durationSecond / 3600;
                 Long durationMinute = durationSecond % 3600 / 60;
                 durationSecond = durationSecond % 3600 % 60;
-                response.setMessage("Game Started");
+                response.setMessage("NPLC Status Retrieved");
                 response.setError(false);
                 response.setHttpCode(HTTPCode.OK);
                 response.setData(Map.of(

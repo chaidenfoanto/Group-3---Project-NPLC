@@ -46,7 +46,13 @@ public class StatusNPLCService {
     private TeamService teamService;
 
     public StatusNPLC getStatusNPLC() {
-        return statusNPLCRepository.findAll().get(0);
+        StatusNPLC status = statusNPLCRepository.findAll().get(0);
+        Long durationSecond = LocalTime.now().until(status.getWaktuSelesai(),
+                ChronoUnit.SECONDS);
+        if(durationSecond < 1 && status.getStatusGame().equals(StatusGame.INPROGRESS)){
+            status.setStatusGame(StatusGame.DONE);
+        }
+        return statusNPLCRepository.save(status);
     }
 
     public Object updateStatusNPLC(String condition) {
