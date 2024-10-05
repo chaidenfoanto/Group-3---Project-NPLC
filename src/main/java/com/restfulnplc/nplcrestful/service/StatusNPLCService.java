@@ -81,6 +81,7 @@ public class StatusNPLCService {
         statusNPLCRepository.save(statusNPLC);
         Long durationSecond = LocalTime.now().until(statusNPLC.getWaktuSelesai(),
                 ChronoUnit.SECONDS);
+        if(durationSecond <= 0) durationSecond = Long.valueOf(0);
         Long durationHour = durationSecond / 3600;
         Long durationMinute = durationSecond % 3600 / 60;
         durationSecond = durationSecond % 3600 % 60;
