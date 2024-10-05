@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
@@ -366,7 +367,7 @@ public class SinglematchService {
     }
 
     public String getNextMatchID() {
-        List<Singlematch> singlematch = singlematchRepository.findAll();
+        List<Singlematch> singlematch = singlematchRepository.findAll(Sort.by(Sort.Direction.ASC, "noMatch"));
         if (singlematch.size() > 0)
             return "SINGLEMATCH"
                     + (Integer.parseInt(singlematch.get(singlematch.size() - 1).getNoMatch().split("SINGLEMATCH")[1])
