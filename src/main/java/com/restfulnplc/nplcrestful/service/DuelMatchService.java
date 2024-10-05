@@ -74,6 +74,7 @@ public class DuelMatchService {
 
     public DuelMatch submitDuelMatch(DuelMatch duelMatch, String idTeamMenang, Panitia panitia) {
         duelMatch.setTimMenang(teamService.getTeamById(idTeamMenang).get());
+        teamService.teamWins(duelMatch.getTimMenang());
         duelMatch.setInputBy(panitia);
         duelMatch.setMatchStatus(MatchStatus.SUBMITTED);
         return duelMatchRepository.save(duelMatch);

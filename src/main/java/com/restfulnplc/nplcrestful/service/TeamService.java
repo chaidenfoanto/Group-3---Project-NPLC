@@ -30,6 +30,10 @@ public class TeamService {
     @Autowired
     private PlayersService playersService;
 
+    public void teamWins(Team tim){
+        tim.setChanceRoll(tim.getChanceRoll() + 1);
+    }
+
     public Optional<Team> findTeamByUsername(String username) {
         List<Team> listTeam = teamRepository.findAll();
         for (Team Team : listTeam) {
