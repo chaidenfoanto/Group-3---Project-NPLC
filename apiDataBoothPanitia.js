@@ -65,7 +65,8 @@ window.closePopup = function (id) {
   }
 
   
-  function putSopGames(id, sopGame) {
+  function putSopGames() {
+    const sopGame = $('#howtoplay').val();
     fetch(domain + 'api/boothgames/updateSOP', {
       method: 'PUT',
       headers: { 

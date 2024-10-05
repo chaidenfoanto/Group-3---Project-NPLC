@@ -348,12 +348,12 @@ $(document).ready(function () {
       });
   }
 
-  function submitHistory() {
+  async function submitHistory() {
     const data = {
       timMenang: teamData[$("#winningTeam").val()],
     };
 
-    fetch(domain2 + "api/duelmatch/submit", {
+    await fetch(domain2 + "api/duelmatch/submit", {
       method: "POST",
       headers: {
         "content-Type": "application/json",
@@ -365,11 +365,11 @@ $(document).ready(function () {
       .then((data) => {
         console.log("Success:", data);
       })
-      .then(window.location.reload())
       .catch((error) => {
         console.error("Error:", error);
         // Tindakan jika terjadi error
       });
+      window.location.reload()
   }
 
   function getCurrentGame() {

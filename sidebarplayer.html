@@ -30,7 +30,7 @@
       <i class="fa-regular fa-user"></i>
       <div class="profile_content">
         <div class="name"></div>
-        <div class="designation">Admin</div>
+        <div class="designation"></div>
       </div>
     </div>
     <i class="bx bx-log-out" id="log_out" onclick="logout()"></i>
@@ -96,9 +96,9 @@
           setCookie("Token", getCookie("Token"), 365);
           const arrayNama = data.data.namaUser.split(" ");
           const namaUser =
-            arrayNama.length > 1
-              ? arrayNama[0] + " " + arrayNama[arrayNama.length - 1]
-              : arrayNama[0];
+            (arrayNama.length > 1)
+              ? (arrayNama[0] + " " + arrayNama[arrayNama.length - 1])
+              : (arrayNama[0]);
           $(".name").html(namaUser);
           $(".designation").html(data.data.role);
           if (data.data.role != "Players") {
