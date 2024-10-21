@@ -312,7 +312,7 @@ $(document).ready(function () {
         console.error("Error:", error);
         // Tindakan jika terjadi error
       });
-      // window.location.reload()
+      window.location.reload()
   }
 
   function getCurrentGame() {
