@@ -269,10 +269,13 @@ public class BoothgamesService {
 
     public String getNextBoothgameID() {
         List<Boothgames> boothgames = boothgamesRepository.findAll();
-        if (boothgames.size() > 0)
-            return "BOOTHGAME"
-                    + (Integer.parseInt(boothgames.get(boothgames.size() - 1).getIdBooth().split("BOOTHGAME")[1]) + 1);
-        return "BOOTHGAME1";
+        int highestID = 0;
+        for (Boothgames boothgame : boothgames) {
+            int newID = Integer.parseInt(boothgame.getIdBooth().split("BOOTHGAME")[1]);
+            if (newID > highestID)
+                highestID = newID;
+        }
+        return "BOOTHGAME" + (highestID + 1);
     }
 
     public void reset() {

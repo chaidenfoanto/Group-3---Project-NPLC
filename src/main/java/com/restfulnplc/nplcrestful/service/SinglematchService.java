@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Sort;
 
 import com.restfulnplc.nplcrestful.dto.SinglematchDTO;
 import com.restfulnplc.nplcrestful.model.Boothgames;
@@ -181,13 +180,14 @@ public class SinglematchService {
 
     public int getTotalMatchByUser(String idTeam) {
         ArrayList<Boothgames> boothgamesArray = new ArrayList<Boothgames>();
-        if(teamService.checkTeam(idTeam)){
-        for (Singlematch singlematch : getAllSinglematches()) {
-            if (singlematch.getTeam().getIdTeam().equals(idTeam) && !boothgamesArray.contains(singlematch.getBoothGames())) {
-                boothgamesArray.add(singlematch.getBoothGames());
+        if (teamService.checkTeam(idTeam)) {
+            for (Singlematch singlematch : getAllSinglematches()) {
+                if (singlematch.getTeam().getIdTeam().equals(idTeam)
+                        && !boothgamesArray.contains(singlematch.getBoothGames())) {
+                    boothgamesArray.add(singlematch.getBoothGames());
+                }
             }
         }
-    }
         return boothgamesArray.size();
     }
 
@@ -367,11 +367,13 @@ public class SinglematchService {
     }
 
     public String getNextMatchID() {
-        List<Singlematch> singlematch = singlematchRepository.findAll(Sort.by(Sort.Direction.ASC, "noMatch"));
-        if (singlematch.size() > 0)
-            return "SINGLEMATCH"
-                    + (Integer.parseInt(singlematch.get(singlematch.size() - 1).getNoMatch().split("SINGLEMATCH")[1])
-                            + 1);
-        return "SINGLEMATCH1";
+        List<Singlematch> singlematches = singlematchRepository.findAll();
+        int highestID = 0;
+        for (Singlematch singlematch : singlematches) {
+            int newID = Integer.parseInt(singlematch.getNoMatch().split("SINGLEMATCH")[1]);
+            if (newID > highestID)
+                highestID = newID;
+        }
+        return "SINGLEMATCH" + (highestID + 1);
     }
 }

@@ -55,8 +55,13 @@ public class CardSkillService {
 
     public String getNextCardSkillID()
     {
-        List<CardSkill> cardskills = cardSkillRepository.findAll();
-        if(cardskills.size() > 0) return "CARD" + (Integer.parseInt(cardskills.get(cardskills.size()-1).getIdCard().split("CARD")[1]) + 1);
-        return "CARD1";
+        List<CardSkill> cardSkills = cardSkillRepository.findAll();
+        int highestID = 0;
+        for (CardSkill cardSkill : cardSkills) {
+            int newID = Integer.parseInt(cardSkill.getIdCard().split("CARD")[1]);
+            if (newID > highestID)
+                highestID = newID;
+        }
+        return "CARD" + (highestID + 1);
     }
 }

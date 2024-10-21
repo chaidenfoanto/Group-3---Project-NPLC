@@ -270,10 +270,13 @@ public class DuelMatchService {
     }
 
     public String getNextMatchID() {
-        List<DuelMatch> duelmatch = duelMatchRepository.findAll();
-        if (duelmatch.size() > 0)
-            return "DUELMATCH"
-                    + (Integer.parseInt(duelmatch.get(duelmatch.size() - 1).getNoMatch().split("DUELMATCH")[1]) + 1);
-        return "DUELMATCH1";
+        List<DuelMatch> duelMatches = duelMatchRepository.findAll();
+        int highestID = 0;
+        for (DuelMatch duelMatch : duelMatches) {
+            int newID = Integer.parseInt(duelMatch.getNoMatch().split("DUELMATCH")[1]);
+            if (newID > highestID)
+                highestID = newID;
+        }
+        return "DUELMATCH" + (highestID + 1);
     }
 }

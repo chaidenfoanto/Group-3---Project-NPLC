@@ -17,8 +17,13 @@ public class PlayersService {
     public String getNextPlayerID()
     {
         List<Players> players = playersRepository.findAll();
-        if(players.size() > 0) return "PLAYER" + (Integer.parseInt(players.get(players.size()-1).getIdPlayer().split("PLAYER")[1]) + 1);
-        return "PLAYER1";
+        int highestID = 0;
+        for (Players player : players) {
+            int newID = Integer.parseInt(player.getIdPlayer().split("PLAYERS")[1]);
+            if (newID > highestID)
+                highestID = newID;
+        }
+        return "PLAYERS" + (highestID + 1);
     }
 
     public List<Players> getPlayersByTeam(String teamID)

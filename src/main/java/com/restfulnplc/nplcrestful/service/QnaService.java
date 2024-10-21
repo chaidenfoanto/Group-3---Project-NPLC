@@ -61,9 +61,14 @@ public class QnaService {
 
     public String getNextQnaID()
     {
-        List<Qna> questions = qnaRepository.findAll();
-        if(questions.size() > 0) return "QNA" + (Integer.parseInt(questions.get(questions.size()-1).getIdPertanyaan().split("QNA")[1]) + 1);
-        return "QNA1";
+        List<Qna> Qnas = qnaRepository.findAll();
+        int highestID = 0;
+        for (Qna qna : Qnas) {
+            int newID = Integer.parseInt(qna.getIdPertanyaan().split("QNA")[1]);
+            if (newID > highestID)
+                highestID = newID;
+        }
+        return "QNA" + (highestID + 1);
     }
     
     public void reset()

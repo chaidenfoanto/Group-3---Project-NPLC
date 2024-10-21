@@ -109,9 +109,13 @@ public class TeamService {
 
     public String getNextTeamID() {
         List<Team> teams = teamRepository.findAll();
-        if (teams.size() > 0)
-            return "TEAM" + (Integer.parseInt(teams.get(teams.size() - 1).getIdTeam().split("TEAM")[1]) + 1);
-        return "TEAM1";
+        int highestID = 0;
+        for (Team team : teams) {
+            int newID = Integer.parseInt(team.getIdTeam().split("TEAM")[1]);
+            if (newID > highestID)
+                highestID = newID;
+        }
+        return "TEAM" + (highestID + 1);
     }
 
     public boolean checkTeam(String id) {
