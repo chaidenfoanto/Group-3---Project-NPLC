@@ -485,7 +485,7 @@ public class BoothgamesController {
                     Long durasiDetik = TimeUnit.MILLISECONDS.toSeconds(boothgame.getDurasiPermainan());
                     response.setMessage("Boothgame Retrieved Successfully");
                     response.setError(false);
-                    response.setHttpCode(HTTPCode.CREATED);
+                    response.setHttpCode(HTTPCode.OK);
                     if (boothgame.getIdPenjaga2() != null) {
                         response.setData(Map.of(
                                 "idBoothGame", boothgame.getIdBooth(),
@@ -498,6 +498,8 @@ public class BoothgamesController {
                                         "IDPanitia", boothgame.getIdPenjaga2().getIdPanitia()),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),
+                                "sopGame", boothgame.getSopGames(),
+                                "fotoBooth", boothgame.getFotoBooth(),
                                 "durasiPermainan", Map.of(
                                         "menit", (durasiDetik / 60),
                                         "detik", (durasiDetik % 60))));
@@ -510,6 +512,8 @@ public class BoothgamesController {
                                         "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
                                 "lokasi", boothgame.getLokasi(),
                                 "tipeGame", boothgame.getTipegame().toString(),
+                                "sopGame", boothgame.getSopGames(),
+                                "fotoBooth", boothgame.getFotoBooth(),
                                 "durasiPermainan", Map.of(
                                         "menit", (durasiDetik / 60),
                                         "detik", (durasiDetik % 60))));
