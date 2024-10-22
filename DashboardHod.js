@@ -1,3 +1,73 @@
+const domain2 = "http://localhost:8080/";
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
+
+function stopTimer() {
+  // Menghentikan timer
+  clearInterval(interval);
+}
+
+function startTimer() {
+  timestart = new Date();
+  var timeArray = timer.split(":");
+  var hours = parseInt(timeArray[0]);
+  var minutes = parseInt(timeArray[1]);
+  var seconds = parseInt(timeArray[2]);
+
+  var totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+  var interval = setInterval(function () {
+    totalSeconds--;
+    var hours = Math.floor(totalSeconds / 3600);
+    var minutes = Math.floor(totalSeconds % 3600 / 60);
+    var seconds = totalSeconds % 60;
+
+    $("span.timeleft").text(
+      pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
+    );
+
+    if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+      clearInterval(interval);
+      stopTimer();
+    }
+  }, 1000);
+}
+
+function getTime() {
+  fetch(domain2 + "api/statusnplc/getNPLCStatus", {
+    method: "GET",
+    headers: {
+      Token: getCookie("Token"),
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.error) {
+        const durasiPermainanElement = $("span.timeleft");
+        var durasiJam = data.data.sisaWaktu.jam.toString();
+        var durasiMenit = data.data.sisaWaktu.menit.toString();
+        var durasiDetik = data.data.sisaWaktu.detik.toString();
+        timer =
+          (durasiJam.length < 2 ? "0" + durasiJam : durasiJam) +
+          ":" +
+          (durasiMenit.length < 2 ? "0" + durasiMenit : durasiMenit) +
+          ":" +
+          (durasiDetik.length < 2 ? "0" + durasiDetik : durasiDetik);
+        durasiPermainanElement.text(timer);
+        if(data.data.statusGame == "In Progress") {
+          startTimer();
+        }
+      }
+    });
+}
+
 $(document).ready(function () {
   $('.sidebar').load('sidebarHod.html', function () {
     const toggleBtn = $('#toggle-btn, #burger-btn');
@@ -71,13 +141,13 @@ $(document).ready(function () {
         //     }
         // });
 
-        
+  getTime();
 
   });
 
-  function showModal() {
-    console.log("Masuk");
-    $(".popup").addClass("open");
+  function showModal(idBoothGame) {
+    window.location.href = "editDataBoothHOD.html?id=" + idBoothGame
+    
   }
 
   //   function adjustMainContent() {

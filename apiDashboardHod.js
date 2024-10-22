@@ -23,9 +23,9 @@ $(document).ready(function () {
                                     <p class="duel" id="typeduel">${booth.tipeGame}</p>
                                 </div>
                             </div>
-                            <p class="penjaga1">Penjaga Booth 1 : <span>${booth.panitia1 || 'Tidak Ada'}</span></p>
-                            <p class="penjaga2">Penjaga Booth 2 : <span>${booth.panitia2 || 'Tidak Ada'}</span></p>
-                            <button id="showPopup" class="edit-btn" onclick="showModal()">Edit</button>
+                            <p class="penjaga1">Penjaga Booth 1 : <span>${(booth.panitia1) ? booth.panitia1.namaPanitia : 'Tidak Ada'}</span></p>
+                            <p class="penjaga2">Penjaga Booth 2 : <span>${(booth.panitia2) ? booth.panitia2.namaPanitia : 'Tidak Ada'}</span></p>
+                            <button id="showPopup" class="edit-btn" onclick="showModal('${booth.idBoothGame}')">Edit</button>
                         </div>
                     </div>
                 `;
@@ -43,9 +43,9 @@ $(document).ready(function () {
                                     <p class="single" id="type">${booth.tipeGame}</p>
                                 </div>
                             </div>
-                            <p class="penjaga1">Penjaga Booth 1 : <span>${booth.panitia1 || 'Tidak Ada'}</span></p>
-                            <p class="penjaga2">Penjaga Booth 2 : <span>${booth.panitia2 || 'Tidak Ada'}</span></p>
-                            <button id="showPopup" class="edit-btn" onclick="showModal()">Edit</button>
+                            <p class="penjaga1">Penjaga Booth 1 : <span>${(booth.panitia1) ? booth.panitia1.namaPanitia : 'Tidak Ada'}</span></p>
+                            <p class="penjaga2">Penjaga Booth 2 : <span>${(booth.panitia2) ? booth.panitia2.namaPanitia : 'Tidak Ada'}</span></p>
+                            <button id="showPopup" class="edit-btn" onclick="showModal('${booth.idBoothGame}')">Edit</button>
                         </div>
                     </div>
                 `;
@@ -72,7 +72,7 @@ $(document).ready(function () {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Response from getAllLantai:', data);
+        console.log("getLantai Success")
         if (!data.error && data.data.dataLantai) {
           populateFloorDropdown(data.data.dataLantai);
         } else {

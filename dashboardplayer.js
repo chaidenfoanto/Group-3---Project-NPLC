@@ -111,7 +111,7 @@ $(document).ready(function () {
     $(".modal-overlay").hide();
   });
 
-  const domain = "http://localhost:8080/";
+  
   var gameData = {};
 
   function getCookie(name) {

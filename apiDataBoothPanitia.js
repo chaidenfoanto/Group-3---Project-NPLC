@@ -42,11 +42,11 @@ window.closePopup = function (id) {
         $('#howtoplay').val(booth.sopGame);
 
         $('#guard1Name').empty();
-        $('#guard1Name').append(new Option(booth.panitia1, booth.panitia1));
+        $('#guard1Name').append(new Option(booth.panitia1.namaPanitia, booth.panitia1.IDPanitia));
 
         $('#guard2Name').empty();
-        if (booth.panitia2 != null) {
-          $('#guard2Name').append(new Option(booth.panitia2, booth.panitia2));
+        if (booth.panitia2) {
+          $('#guard2Name').append(new Option(booth.panitia2.namaPanitia, booth.panitia2.IDPanitia));
         } else {
           $('#guard2Name').append(new Option("Tidak Ada", "Tidak Ada"));
         }
