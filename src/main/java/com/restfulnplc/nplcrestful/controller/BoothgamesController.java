@@ -561,27 +561,33 @@ public class BoothgamesController {
                             response.setData(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getNama(),
-                                    "panitia2", boothgame.getIdPenjaga2().getNama(),
-                                    "sopGame", boothgame.getSopGames(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
+                                    "panitia2", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga2().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga2().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
+                                    "sopGame", boothgame.getSopGames(),
+                                    "fotoBooth", boothgame.getFotoBooth(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60)),
-                                    "fotoBooth", boothgame.getFotoBooth()));
+                                            "detik", (durasiDetik % 60))));
                         } else {
                             response.setData(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getNama(),
-                                    "sopGame", boothgame.getSopGames(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
+                                    "sopGame", boothgame.getSopGames(),
+                                    "fotoBooth", boothgame.getFotoBooth(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60)),
-                                    "fotoBooth", boothgame.getFotoBooth()));
+                                            "detik", (durasiDetik % 60))));
                         }
                     } else {
                         response.setMessage("BoothGame Not Found");
@@ -632,27 +638,33 @@ public class BoothgamesController {
                             response.setData(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
-                                    "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
-                                    "sopGame", boothgame.getSopGames(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
+                                    "panitia2", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga2().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga2().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
+                                    "sopGame", boothgame.getSopGames(),
+                                    "fotoBooth", boothgame.getFotoBooth(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60)),
-                                    "fotoBooth", boothgame.getFotoBooth()));
+                                            "detik", (durasiDetik % 60))));
                         } else {
                             response.setData(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
-                                    "sopGame", boothgame.getSopGames(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
+                                    "sopGame", boothgame.getSopGames(),
+                                    "fotoBooth", boothgame.getFotoBooth(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60)),
-                                    "fotoBooth", boothgame.getFotoBooth()));
+                                            "detik", (durasiDetik % 60))));
                         }
                     } else {
                         response.setMessage("Boothgame Not Found or Invalid Data");
