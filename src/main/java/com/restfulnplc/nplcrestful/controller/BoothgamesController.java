@@ -208,25 +208,29 @@ public class BoothgamesController {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
-                                    "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
+                                    "panitia2", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga2().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga2().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60))
-                                            ));
+                                            "detik", (durasiDetik % 60))));
                         } else {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60))
-                                            ));
+                                            "detik", (durasiDetik % 60))));
                         }
                     }
                     response.setData(listData);
@@ -276,25 +280,29 @@ public class BoothgamesController {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
-                                    "panitia2", boothgame.getIdPenjaga2().getIdPanitia(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
+                                    "panitia2", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga2().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga2().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60))
-                                            ));
+                                            "detik", (durasiDetik % 60))));
                         } else {
                             listData.add(Map.of(
                                     "idBoothGame", boothgame.getIdBooth(),
                                     "namaBoothGame", boothgame.getNama(),
-                                    "panitia1", boothgame.getIdPenjaga1().getIdPanitia(),
+                                    "panitia1", Map.of(
+                                            "namaPanitia", boothgame.getIdPenjaga1().getNama(),
+                                            "IDPanitia", boothgame.getIdPenjaga1().getIdPanitia()),
                                     "lokasi", boothgame.getLokasi(),
                                     "tipeGame", boothgame.getTipegame().toString(),
                                     "durasiPermainan", Map.of(
                                             "menit", (durasiDetik / 60),
-                                            "detik", (durasiDetik % 60))
-                                            ));
+                                            "detik", (durasiDetik % 60))));
                         }
                     }
                     response.setData(listData);
