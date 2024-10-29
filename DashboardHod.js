@@ -1,3 +1,7 @@
+function showModal(idBoothGame) {
+  window.location.href = "editDataBoothHOD.html?id=" + idBoothGame
+  
+}
 $(document).ready(function() {
   $(".sidebar").load("/sidebarHod.html", function() {
       const toggleBtn = $("#toggle-btn, #burger-btn");
@@ -15,6 +19,8 @@ $(document).ready(function() {
           }
       }
   });
+
+  
 
   $('#toggle-btn').on('click', function() {
     $('.sidebar').toggleClass('open');
