@@ -18,7 +18,7 @@
   <body>
     <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="databoothpanitiahod.js"></script>
+    <script src="editDataBoothHOD.js"></script>
 
     <div class="container">
       <div class="sidebar"></div>
@@ -43,42 +43,42 @@
             </div>
             <div class="form-group">
               <div class="input-group">
-                <input type="text" id="boothName" />
+                <input type="text" id="boothName" class="not-empty"/>
                 <label class="placeholder">Nama Booth</label>
                 <span class="error-message" id="boothNameError"></span>
               </div>
               <div class="input-group">
-                <select id="guard1Name" name="guard1Name">
+                <select id="guard1Name" name="guard1Name" class="not-empty">
                   <option value=""></option>
                 </select>
                 <label class="placeholder">Penjaga Booth 1</label>
-                <span class="error-message" id="guard1NameError"></span>
+                <span class="error-message" id="guard1NameError" ></span>
               </div>
               <div class="input-group">
-                <select id="guard2Name" name="guard2Name">
+                <select id="guard2Name" name="guard2Name" class="not-empty">
                   <option value=""></option>
                 </select>
                 <label class="placeholder">Penjaga Booth 2</label>
-                <span class="error-message" id="guard2NameError"></span>
+                <span class="error-message" id="guard2NameError" ></span>
               </div>
             </div>
             <div class="form-group">
               <div class="input-group">
-                <textarea type="text" id="howtoplay"></textarea>
+                <textarea type="text" id="howtoplay" class="not-empty"></textarea>
                 <label class="placeholder">Cara Bermain</label>
                 <span class="error-message" id="howtoplayError"></span>
               </div>
             </div>
             <div class="form-group">
               <div class="input-group">
-                <select id="noRuangan" name="noRuangan">
+                <select id="noRuangan" name="noRuangan" class="not-empty">
                   <option value=""></option>
                 </select>
                 <label class="placeholder">No. Ruangan</label>
                 <span class="error-message" id="noRuanganError"></span>
               </div>
               <div class="input-group">
-                <select id="tipeGame" name="tipeGame">
+                <select id="tipeGame" name="tipeGame" class="not-empty">
                   <option value=""></option>
                   <option value="single">Single</option>
                   <option value="Duel">Duel</option>
@@ -105,6 +105,6 @@
         </div>
       </div>
     </div>
-    <script src="apiBoothHod.js"></script>
+    <script src="apiEditDataBoothHOD.js"></script>
   </body>
 </html>

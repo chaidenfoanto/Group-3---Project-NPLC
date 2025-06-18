@@ -8,8 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="DashboardHod.css">
   <link rel="stylesheet" href="sidebarHod.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="DashboardHod.js"></script>
 </head>
 <body>
     <div class="container">
@@ -17,13 +15,16 @@
         <div class="main-content">
           <header>
             <h1>Welcome Admin!</h1>
-             <div class="timer">
-          <p>Remaining Time:</p>
-          <p class="timeleft">
-            <i class="fa-regular fa-clock" style="color: #000000"></i>
-            00:00
-          </p>
-             </div>
+            <div class="timer">
+              <p style="text-align: center;">Remaining Time: </p>
+              <p class="timeleft">
+                <i
+                  class="fa-regular fa-clock"
+                  style="color: #000000"
+                ></i>
+                <span class = "timeleft">00:00:00</span>
+              </p>
+            </div>
           </header>
           <div class="inner-content">
             <p>List Booth Games</p>
@@ -45,6 +46,8 @@
               <div class="input-group">
                 <select id="gametype" name="gametype">
                   <option value=""></option>
+                  <option value="Single">Single</option>
+                  <option value="Duel">Duel</option>
                 </select>
                 <label class="placeholder" for="gametype">Tipe Game</label>
                 <span class="error-message" id="gametypeError"></span>
@@ -56,90 +59,118 @@
             </div>
           </div>
           <div class="booth-list">
-            <div class="booth-item">
+            <!-- <div class="booth-item">
               <div class="insides-item">
                 <div class="booth-header">
                   <div class="booth-left">
-                    <p>Nama Booth : <span>.............................</span></p>
+                    <p><span></span></p>
                   </div>
                   <div class="booth-right">
-                    <p><i class='bx bx-map'></i> R. 501 - Lantai 5</p>
-                    <p><i class='bx bx-time'></i> 5 min</p>
-                    <p class="type">SINGLE</p>
+                    <p><i class='bx bx-map'></i></p>
+                    <p><i class='bx bx-time'></i></p>
+                    <p class="single"></p>
                   </div>
                 </div>
-                <p>Deskripsi Permainan : <span>.............................</span></p>
-                <p>Penjaga Booth : <span>.............................</span></p>
-                <button class="edit-btn">Edit</button>
+                <p>Penjaga Booth 1 : <span>.............................</span></p>
+                <p>Penjaga Booth 2 : <span>.............................</span></p>
+                <button id="showPopup" class="edit-btn">Edit</button>
               </div>
-            </div>
-            <div class="booth-item">
-              <div class="insides-item">
-                <div class="booth-header">
-                  <div class="booth-left">
-                    <p>Nama Booth : <span>.............................</span></p>
+            </div> -->
+          </div>
+          <div id="popup" class="popup">
+            <div class="popup-content">
+              <span class="close-btn">&times;</span>
+              <h2>Edit Booth Games</h2>
+    
+              <div class="popup-body">
+    
+                <div class="popup-row">
+                  <div class="input-group">
+                    <input type="text" id="boothNamePopup">
+                    <label class="placeholder">Nama Booth</label>
+                    <span class="error-message" id="boothNameErrorPopup"></span>
                   </div>
-                  <div class="booth-right">
-                    <p><i class='bx bx-map'></i> R. 501 - Lantai 5</p>
-                    <p><i class='bx bx-time'></i> 5 min</p>
-                    <p class="type">SINGLE</p>
+                  <div class="input-group">
+                    <input type="text" id="penjaga1boothPopup">
+                    <label class="placeholder">Penjaga Booth</label>
+                    <span class="error-message" id="penjaga1boothErrorPopup"></span>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" id="penjaga2boothPopup">
+                    <label class="placeholder">Penjaga Booth</label>
+                    <span class="error-message" id="penjaga2boothErrorPopup"></span>
+                  </div>
+
+                </div>
+    
+                <div class="input-desc">
+                <div class="input-group">
+                    <input type="text" id="boothDescriptionPopup">
+                    <label class="placeholder">Deskripsi Booth</label>
+                    <span class="error-message" id="boothDescriptionErrorPopup"></span>
+                </div>
+                </div>
+    
+                <div class="popup-row2">
+                  <div class="input-group">
+                    <select id="roomPopup" name="Room">
+                      <option value=""></option>
+                    </select>
+                    <label class="placeholder">Ruangan</label>
+                    <span class="error-message" id="roomErrorPopup"></span>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" id="timePopup">
+                    <label class="placeholder">Waktu</label>
+                    <span class="error-message" id="timeErrorPopup"></span>
                   </div>
                 </div>
-                <p>Deskripsi Permainan : <span>.............................</span></p>
-                <p>Penjaga Booth : <span>.............................</span></p>
-                <button class="edit-btn">Edit</button>
               </div>
+              <button class="edit-popup-btn">Edit</button>
             </div>
           </div>
         </div>
       </div>
     
       <!-- Popup HTML -->
-      <!-- <div id="popup" class="popup">
-        <div class="popup-content">
-          <span class="close-btn">&times;</span>
-          <h2>Edit Booth Games</h2>
-
-          <div class="popup-body">
-
-            <div class="popup-row">
-              <div class="input-popup">
-                <input type="text" id="boothNamePopup">
-                <label class="placeholder">Nama Booth</label>
-                <span class="error-message" id="boothNameErrorPopup"></span>
-              </div>
-              <div class="input-popup">
-                <input type="text" id="penjagaboothPopup">
-                <label class="placeholder">Penjaga Booth</label>
-                <span class="error-message" id="penjagaboothErrorPopup"></span>
-              </div>
-            </div>
-
-            <div class="input-desc">
-            <div class="input-popup">
-                <input type="text" id="boothDescriptionPopup">
-                <label class="placeholder">Deskripsi Booth</label>
-                <span class="error-message" id="boothDescriptionErrorPopup"></span>
-            </div>
-            </div>
-
-            <div class="popup-row2">
-              <div class="input-popup">
-                <select id="roomPopup" name="Room">
-                  <option value=""></option>
-                </select>
-                <label class="placeholder">Ruangan</label>
-                <span class="error-message" id="roomErrorPopup"></span>
-              </div>
-              <div class="input-popup">
-                <input type="text" id="timePopup">
-                <label class="placeholder">Waktu</label>
-                <span class="error-message" id="timeErrorPopup"></span>
-              </div>
-            </div>
-          </div>
-          <button class="edit-popup-btn">Edit</button>
-        </div>
-      </div> -->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="DashboardHod.js"></script>
+      <script src="apiDashboardHod.js"></script>
+      <script>
+        function getCookie(name) {
+          let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
+          for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
+            if (name == cookiePair[0].trim()) {
+              return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
+            }
+          }
+          return null; // Mengembalikan null jika cookie tidak ditemukan
+        }
+      
+        function logout() {
+          window.location.href = 'LoginPanitia.html';
+        }
+      
+        function fetchRole() {
+          fetch ('http://localhost:8080/api/login/check/admin', {
+            method: 'GET',
+            headers: { Token: getCookie('Token') },
+          })
+          .then((response) => response.json())
+          .then((data) => { 
+            if (!data.error) {
+              if(data.data.accessGranted) {
+                console.log('access granted');
+              } else {
+                logout();
+              }
+            } else {
+              logout();
+            }
+          })
+        }
+        fetchRole();
+      </script>
 </body>
 </html>

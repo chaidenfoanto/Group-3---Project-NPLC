@@ -8,7 +8,7 @@ $(document).ready(function() {
         });
   
         function menuBtnChange() {
-            if (sidebar.hasClass("open")) {
+            if ($(".sidebar").hasClass("open")) {
                 logo.hide();
             } else {
                 logo.show();

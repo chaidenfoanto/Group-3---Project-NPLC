@@ -1,49 +1,99 @@
 $(document).ready(function () {
-  const domain = 'http://localhost:8080/';
+  const domain = 'http://localhost:8080/'; 
+  var boothData = {}; 
+  const popup = document.getElementById("popup");
+const popupOverlay = document.getElementById('popup-overlay');
 
   function getCookie(name) {
-    let cookieArr = document.cookie.split(';');
+    let cookieArr = document.cookie.split(';'); 
     for (let i = 0; i < cookieArr.length; i++) {
       let cookiePair = cookieArr[i].split('=');
       if (name == cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1]);
+        return decodeURIComponent(cookiePair[1]); 
       }
     }
-    return null;
+    return null; 
+  }
+  window.openPopup = function (id) {
+    const popup = document.getElementById(id);
+    popup.classList.add("open-popup");
+    popupOverlay.classList.add("active");
+}
+
+window.closePopup = function (id) {
+    const popup = document.getElementById(id);
+    popup.classList.remove("open-popup");
+    popupOverlay.classList.remove("active");
+}
+
+
+  function fetchDataBooth() {
+    fetch(domain + 'api/boothgames/getSelfBooth', {
+      method: 'GET',
+      headers: { Token: getCookie('Token') },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.error) {
+        const booth = data.data;
+
+        $('#cardImage').attr('src', booth.fotoBooth); // Update src attribute of img element
+        $('#boothName').val(booth.namaBoothGame);
+        $('#howtoplay').val(booth.sopGame);
+
+        $('#guard1Name').empty();
+        $('#guard1Name').append(new Option(booth.panitia1.namaPanitia, booth.panitia1.IDPanitia));
+
+        $('#guard2Name').empty();
+        if (booth.panitia2) {
+          $('#guard2Name').append(new Option(booth.panitia2.namaPanitia, booth.panitia2.IDPanitia));
+        } else {
+          $('#guard2Name').append(new Option("Tidak Ada", "Tidak Ada"));
+        }
+
+        $('#noRuangan').empty();
+        $('#noRuangan').append(new Option(booth.lokasi.noRuangan, booth.lokasi.noRuangan));
+
+        $('#tipeGame').empty();
+        $('#tipeGame').append(new Option(booth.tipeGame, booth.tipeGame));
+        $('#tipeGame').val(booth.tipeGame);
+      } else {
+        console.error('Error:', data.message);
+      }
+    })
+    .catch((error) => console.error('Error fetching booth data:', error));
   }
 
-  const addBoothgames = document.getElementById('save');
-
-  addBoothgames.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const fotoBooth = document.getElementById('imageInput').value;
-    const boothName = document.getElementById('boothName').value;
-    const guard1Name = document.getElementById('guard1Name').value;
-    const guard2Name = document.getElementById('guard2Name').value;
-    const howtoplay = document.getElementById('howtoplay').value;
-    const noRuangan = document.getElementById('noRuangan').value;
-    const tipeGame = document.getElementById('tipeGame').value;
-
-    try {
-      const response = await fetch(domain + '/api/boothgames', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Token: getCookie('Token'),
-        },
-        body: JSON.stringify({ fotoBooth, boothName, guard1Name, guard2Name, howtoplay, noRuangan, tipeGame }),
-      });
-
-      const result = await response.json();
-
+  
+  function putSopGames() {
+    const sopGame = $('#howtoplay').val();
+    fetch(domain + 'api/boothgames/updateSOP', {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Token': getCookie('Token')
+      },
+      body: JSON.stringify({ sopGames: sopGame })
+    })
+    .then((response) => response.json())
+    .then((data) => {
       if (!data.error) {
-        console.log('Boothgames Added Successfully');
+        openPopup('popup');
       } else {
-        console.log('Boothgames Failed to Add');
+        console.error('Error:', data.message);
       }
-    } catch (error) {
-      showErrorMessage('Gagal untuk menambahkan boothgames');
-    }
+      popupOverlay.addEventListener('click', function() {
+      closePopup('popup');
+      });
+    })
+    .catch((error) => console.error('Error updating SOP:', error));
+  }
+
+  $('#booth-form').on('submit', function (e) {
+    e.preventDefault();
+    const id = boothData.idBooth;
+    const sopGame = $('#howtoplay').val();
+    putSopGames(id, sopGame);
   });
+  fetchDataBooth();
 });

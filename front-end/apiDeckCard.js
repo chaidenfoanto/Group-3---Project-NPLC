@@ -1,34 +1,37 @@
 $(document).ready(function () {
-  const domain = 'http://localhost:8080/';
+  const domain = 'http://localhost:8080/'; // Basis domain untuk permintaan API
 
+  // Fungsi untuk mendapatkan cookie tertentu berdasarkan nama
   function getCookie(name) {
-    let cookieArr = document.cookie.split(';');
+    let cookieArr = document.cookie.split(';'); // Membagi cookie string menjadi array
     for (let i = 0; i < cookieArr.length; i++) {
-      let cookiePair = cookieArr[i].split('=');
+      let cookiePair = cookieArr[i].split('='); // Membagi setiap pasangan cookie ke nama dan nilai
       if (name == cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1]);
+        return decodeURIComponent(cookiePair[1]); // Mengembalikan nilai cookie jika nama cocok
       }
     }
-    return null;
+    return null; // Mengembalikan null jika cookie tidak ditemukan
   }
 
+  // Fungsi untuk mengambil dan menampilkan jumlah tiket roll
   function fetchRollTicket() {
     fetch(domain + 'api/team/getTeamGeneral', {
       method: 'GET',
-      headers: { Token: getCookie('Token') },
+      headers: { Token: getCookie('Token') }, // Menyertakan token dalam header dari cookie
     })
       .then((response) => response.json())
       .then((data) => {
+        // Menampilkan jumlah chanceRoll di elemen dengan id 'chanceroll'
         document.getElementById('chanceroll').innerHTML = data.data.chanceRoll;
+        // Mengaktifkan atau menonaktifkan tombol roll berdasarkan chanceRoll
         if (data.data.chanceRoll > 0) {
-          $('#rollButton').prop('disabled', false);
+          $('#rollButton').prop('disabled', false); // Mengaktifkan tombol roll jika chanceRoll > 0
         } else {
-          $('#rollButton').prop('disabled', true);
+          $('#rollButton').prop('disabled', true); // Menonaktifkan tombol roll jika chanceRoll <= 0
         }
       });
   }
 
-  // Function to fetch deck cards data
   function fetchDeckCard() {
     const cardsContainer = document.querySelector('.cards-list');
     fetch(domain + 'api/cardskills/getWithUser', {
@@ -73,6 +76,7 @@ $(document).ready(function () {
                     </table>
                 </div>
                     `;
+
             var tempElement = document.createElement('div');
             tempElement.innerHTML = cardList.trim();
             cardsContainer.appendChild(tempElement.firstChild);
@@ -88,8 +92,4 @@ $(document).ready(function () {
 
   fetchDeckCard();
   fetchRollTicket();
-
-  // setInterval(function() {
-  //     fetchSession();
-  // }, 5000);
 });

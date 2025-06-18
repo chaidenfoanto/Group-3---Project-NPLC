@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="PanitiaSingleInput.css">
     <link rel="stylesheet" href="sidebarpanitia.css">
+    </head>
     <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="PanitiaSingleInput.js"></script>
-    
+        
     <div class = "container">    
 <div class="sidebar"></div>
   <div class="main-content">
@@ -21,7 +22,7 @@
           <p>Remaining Time:</p>
           <p class="timefill">
             <i class="fa-regular fa-clock" style="color: #000000"></i>
-            <span class = "timeleft">01:00</span>
+            <span class = "timeleft"></span>
           </p>
         </div>
     </header>
@@ -38,7 +39,7 @@
         </div>
         <div class="card">
           <div class="input-group">
-            <select id="cardskill" name="cardskill">
+            <select id="cardskill">
                 <option value=""></option>
             </select>
             <label class = "placeholder" for = "cardskill">Card Skill</label>
@@ -55,15 +56,16 @@
 
       <div id="gameEndModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <!-- <span class="close">&times;</span> -->
             <h1>Game Has Ended</h1>
             <form id = "gameEndForm">
               <div class="modal-inner-container">
-              <div class = "input-group">
-                  <input type="text" id="teamplayed" disabled>
-                  <label class = "placeholder" for="teamplayed">Nama Tim</label>
-                <span class = "errorteam"></span>
-              </div>
+              
+                <div class = "input-group">
+                  <input type="team" id="teamplayed" disabled>
+                  <label class = "placeholder" for="teamplayed">Team Played</label>
+                </div>
+                
               <div class = "input-group">
                 <select id="starEarned">
                   <option value="0">0</option>
@@ -85,16 +87,16 @@
                         <label class = "placeholder" for="timeFinished">Time Finished</label>
                     </div>
                     <div class = "input-group">
-                        <input type="text" id="duration">
+                        <input type="text" id="duration" disabled>
                         <label class = "placeholder" for="duration">Duration</label>
                     </div>
                 </div>
                 <p id="pointsMessage">0 POINTS WILL BE GIVEN TO ...</p>
-                <button type="submit">Save Changes</button>
+                <button type="submit" class="close">Save Changes</button>
             </form>
         </div>
-    </div>
+      </div>
   </div>
 </div>
-<script src="apiPanitiaSingle.js"></script>
 </body>
+</html>

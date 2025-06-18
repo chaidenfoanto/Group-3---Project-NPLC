@@ -102,6 +102,14 @@
     display: none;
 }
 
+.sidebar.disable li, a{
+    cursor: not-allowed;
+}
+
+.sidebar li, a{
+    cursor:pointer;
+}
+
 .sidebar input {
     font-size: 15px;
     color: var(--color-white);
@@ -290,7 +298,7 @@
     .sidebar.open ~ .main-content {
         transition: all .5s ease;
         left: 0;
-        width: 100%;
+        max-width: 100%;
     }
 
     .sidebar.open {
@@ -339,7 +347,7 @@
     .main-content {
         top: 50px;
         left: 0;
-        width: 100%;
+        max-width: 100%;
         margin-left: 0px;
     }
 
