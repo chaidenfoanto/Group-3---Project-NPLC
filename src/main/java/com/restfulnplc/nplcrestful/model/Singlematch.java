@@ -1,15 +1,21 @@
 package com.restfulnplc.nplcrestful.model;
 
+import java.time.LocalTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalTime;
-
+@Setter
+@Getter
 @Entity
 @Table(name = "singlematch")
 public class Singlematch {
@@ -46,79 +52,7 @@ public class Singlematch {
     @JoinColumn(name = "idbooth", referencedColumnName = "idbooth", nullable = false, foreignKey = @ForeignKey(name = "fk_idboothsingle"))
     private Boothgames boothGames;
 
-
-    public String getNoMatch() {
-        return this.noMatch;
-    }
-
-    public void setNoMatch(String noMatch) {
-        this.noMatch = noMatch;
-    }
-
-    public Team getTeam() {
-        return this.team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public LocalTime getWaktuMulai() {
-        return this.waktuMulai;
-    }
-
-    public void setWaktuMulai(LocalTime waktuMulai) {
-        this.waktuMulai = waktuMulai;
-    }
-
-    public LocalTime getWaktuSelesai() {
-        return this.waktuSelesai;
-    }
-
-    public void setWaktuSelesai(LocalTime waktuSelesai) {
-        this.waktuSelesai = waktuSelesai;
-    }
-
-    public ListKartu getListKartu() {
-        return this.listKartu;
-    }
-
-    public void setListKartu(ListKartu listKartu) {
-        this.listKartu = listKartu;
-    }
-
-    public Panitia getInputBy() {
-        return this.inputBy;
-    }
-
-    public void setInputBy(Panitia inputBy) {
-        this.inputBy = inputBy;
-    }
-
-    public int getTotalPoin() {
-        return this.totalPoin;
-    }
-
-    public void setTotalPoin(int totalPoin) {
-        this.totalPoin = totalPoin;
-    }
-
-    public int getTotalBintang() {
-        return this.totalBintang;
-    }
-
-    public void setTotalBintang(int totalBintang) {
-        this.totalBintang = totalBintang;
-    }
-
-    public Boothgames getBoothGames() {
-        return this.boothGames;
-    }
-
-    public void setBoothGames(Boothgames boothGames) {
-        this.boothGames = boothGames;
-    }
-    
-    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private MatchStatus matchStatus;
 }
-

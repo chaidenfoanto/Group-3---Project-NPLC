@@ -5,8 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.restfulnplc.nplcrestful.dto.LoginDTO;
 import com.restfulnplc.nplcrestful.dto.AccessDTO;
+import com.restfulnplc.nplcrestful.dto.LoginDTO;
+import com.restfulnplc.nplcrestful.model.Boothgames;
 import com.restfulnplc.nplcrestful.model.Divisi;
 import com.restfulnplc.nplcrestful.model.Login;
 import com.restfulnplc.nplcrestful.model.Panitia;
@@ -43,20 +44,15 @@ public class LoginService {
                 if (sessionActive.isPresent()) {
                     deleteSession(sessionActive.get().getToken());
                 }
-                Role role = Role.PANITIA;
-                if(boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).isPresent()) {
-                    role = (boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).get().getTipegame().equals(Tipegame.SINGLE)) ? Role.LOSINGLE : Role.LODUEL;
+                Optional<Role> roleOptional = assignRole(panitia.getIdPanitia());
+                if (roleOptional.isPresent()) {
+                    Role role = roleOptional.get();
+                    Login session = new Login(panitia.getIdPanitia(),
+                            passwordMaker.hashPassword(panitia.getIdPanitia()),
+                            role);
+                    loginRepository.save(session);
+                    return Optional.of(session);
                 }
-                if(panitia.getIsAdmin()) {
-                    role = Role.ADMIN;
-                }
-                if(panitia.getDivisi().equals(Divisi.KETUAACARA)) {
-                    role = Role.KETUA;
-                }
-                Login session = new Login(panitia.getIdPanitia(), passwordMaker.hashPassword(panitia.getIdPanitia()),
-                        role);
-                loginRepository.save(session);
-                return Optional.of(session);
             }
         }
         return Optional.empty();
@@ -71,19 +67,22 @@ public class LoginService {
                 if (sessionActive.isPresent()) {
                     deleteSession(sessionActive.get().getToken());
                 }
-                Login session = new Login(team.getIdTeam(), passwordMaker.hashPassword(team.getIdTeam()), Role.PLAYERS);
-                loginRepository.save(session);
-                return Optional.of(session);
+                Optional<Role> roleOptional = assignRole(team.getIdTeam());
+                if (roleOptional.isPresent()) {
+                    Role role = roleOptional.get();
+                    Login session = new Login(team.getIdTeam(), passwordMaker.hashPassword(team.getIdTeam()), role);
+                    loginRepository.save(session);
+                    return Optional.of(session);
+                }
             }
         }
         return Optional.empty();
     }
 
-    public boolean checkSessionAlive(String token) {
-        if (token != null) {
-            return loginRepository.findById(token).isPresent();
-        }
-        return false;
+    public boolean checkUserExist(String token) {
+        Login session = getLoginSession(token);
+        return (panitiaService.getPanitiaById(session.getIdUser()).isPresent()
+                || teamService.getTeamById(session.getIdUser()).isPresent());
     }
 
     public boolean checkSessionSelf(String token, String idUser) {
@@ -99,9 +98,7 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.PANITIA)) {
-                    return panitiaService.checkPanitia(session.getIdUser());
-                }
+                return panitiaService.checkPanitia(session.getIdUser());
             }
         }
         return false;
@@ -111,8 +108,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.PANITIA)) {
-                    return panitiaService.checkAdmin(session.getIdUser());
+                if (panitiaService.checkPanitia(session.getIdUser())) {
+                    return session.getRole().equals(Role.ADMIN);
                 }
             }
         }
@@ -135,8 +132,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.PANITIA)) {
-                    return panitiaService.checkKetua(session.getIdUser());
+                if (panitiaService.checkPanitia(session.getIdUser())) {
+                    return session.getRole().equals(Role.KETUA);
                 }
             }
         }
@@ -147,9 +144,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.LOSINGLE)) {
-                    return panitiaService.checkKetua(session.getIdUser());
-                }
+                if (panitiaService.checkPanitia(session.getIdUser()))
+                    return session.getRole().equals(Role.LOSINGLE);
             }
         }
         return false;
@@ -159,9 +155,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.LODUEL)) {
-                    return panitiaService.checkKetua(session.getIdUser());
-                }
+                if (panitiaService.checkPanitia(session.getIdUser()))
+                    session.getRole().equals(Role.LODUEL);
             }
         }
         return false;
@@ -171,9 +166,8 @@ public class LoginService {
         if (token != null) {
             if (loginRepository.findById(token).isPresent()) {
                 Login session = loginRepository.findById(token).get();
-                if (session.getRole().equals(Role.LODUEL) || session.getRole().equals(Role.LOSINGLE)) {
-                    return panitiaService.checkKetua(session.getIdUser());
-                }
+                if (panitiaService.checkPanitia(session.getIdUser()))
+                    return (session.getRole().equals(Role.LODUEL) || session.getRole().equals(Role.LOSINGLE));
             }
         }
         return false;
@@ -213,8 +207,97 @@ public class LoginService {
         return accessDetails;
     }
 
-    public void reset()
-    {
+    public void reset() {
         loginRepository.deleteAll();
+    }
+
+    public boolean checkSessionAlive(String token) {
+        if (token != null) {
+            if (loginRepository.findById(token).isPresent()) {
+                Login login = loginRepository.findById(token).get();
+                if (!checkUserExist(token)) {
+                    deleteSession(token);
+                }
+                if (!checkRole(login.getRole(), login.getIdUser())) {
+                    Optional<Role> roleOptional = assignRole(login.getIdUser());
+                    if (roleOptional.isPresent()) {
+                        login.setRole(roleOptional.get());
+                        loginRepository.save(login);
+                    } else {
+                        deleteSession(token);
+                    }
+                }
+            }
+            return loginRepository.findById(token).isPresent();
+        }
+        return false;
+    }
+
+    public Optional<Role> assignRole(String idUser) {
+        Optional<Panitia> panitiaOptional = panitiaService.getPanitiaById(idUser);
+        Optional<Team> teamOptional = teamService.getTeamById(idUser);
+        Role role = null;
+        if (panitiaOptional.isPresent()) {
+            Panitia panitia = panitiaOptional.get();
+            role = Role.PANITIA;
+            if (boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).isPresent()) {
+                role = (boothgamesService.getBoothgameByPanitia(panitia.getIdPanitia()).get().getTipegame()
+                        .equals(Tipegame.SINGLE)) ? Role.LOSINGLE : Role.LODUEL;
+            }
+            if (panitia.getIsAdmin()) {
+                role = Role.ADMIN;
+            }
+            if (panitia.getDivisi().equals(Divisi.KETUAACARA)) {
+                role = Role.KETUA;
+            }
+
+        }
+        if (teamOptional.isPresent()) {
+            role = Role.PLAYERS;
+        }
+        if (role != null)
+            return Optional.of(role);
+        return Optional.empty();
+    }
+
+    public boolean checkRole(Role role, String id) {
+        Optional<Panitia> panitiaOptional = panitiaService.getPanitiaById(id);
+        Optional<Team> teamOptional = teamService.getTeamById(id);
+        Optional<Boothgames> boothgameOptional = boothgamesService.getBoothgameByPanitia(id);
+        boolean isHOD = false;
+        if(panitiaOptional.isPresent()) {
+            isHOD = !panitiaOptional.get().getDivisi().equals(Divisi.KETUAACARA)
+                        || !panitiaOptional.get().getIsAdmin();
+        }
+        switch (role) {
+            case KETUA:
+                if (panitiaOptional.isPresent()) {
+                    if (panitiaOptional.get().getDivisi().equals(Divisi.KETUAACARA))
+                        return true;
+                }
+            case ADMIN:
+                if (panitiaOptional.isPresent()) {
+                    return panitiaOptional.get().getIsAdmin();
+                }
+            case LOSINGLE:
+                if (boothgameOptional.isPresent() && !isHOD) {
+                    if (boothgameOptional.get().getTipegame().equals(Tipegame.SINGLE))
+                        return true;
+                }
+            case LODUEL:
+                if (boothgameOptional.isPresent() && !isHOD) {
+                    if (boothgameOptional.get().getTipegame().equals(Tipegame.DUEL))
+                        return true;
+                }
+            case PANITIA:
+                if (panitiaOptional.isPresent() && !boothgameOptional.isPresent()) {
+                    if (!isHOD) {
+                        return true;
+                    }
+                }
+            case PLAYERS:
+                return teamOptional.isPresent();
+        }
+        return false;
     }
 }

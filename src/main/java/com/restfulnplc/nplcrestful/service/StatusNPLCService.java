@@ -4,6 +4,11 @@ import com.restfulnplc.nplcrestful.dto.TimeDTO;
 import com.restfulnplc.nplcrestful.model.StatusGame;
 import com.restfulnplc.nplcrestful.model.StatusNPLC;
 import com.restfulnplc.nplcrestful.repository.StatusNPLCRepository;
+
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +46,16 @@ public class StatusNPLCService {
     private TeamService teamService;
 
     public StatusNPLC getStatusNPLC() {
-        return statusNPLCRepository.findAll().get(0);
+        StatusNPLC status = statusNPLCRepository.findAll().get(0);
+        Long durationSecond = LocalTime.now().until(status.getWaktuSelesai(),
+                ChronoUnit.SECONDS);
+        if(durationSecond < 1 && status.getStatusGame().equals(StatusGame.INPROGRESS)){
+            status.setStatusGame(StatusGame.DONE);
+        }
+        return statusNPLCRepository.save(status);
     }
 
-    public StatusNPLC updateStatusNPLC(String condition) {
+    public Object updateStatusNPLC(String condition) {
         StatusNPLC statusNPLC = getStatusNPLC();
         switch (condition) {
             case "Start":
@@ -68,7 +79,19 @@ public class StatusNPLCService {
                 break;
         }
         statusNPLCRepository.save(statusNPLC);
-        return statusNPLC;
+        Long durationSecond = LocalTime.now().until(statusNPLC.getWaktuSelesai(),
+                ChronoUnit.SECONDS);
+        if(durationSecond <= 0) durationSecond = Long.valueOf(0);
+        Long durationHour = durationSecond / 3600;
+        Long durationMinute = durationSecond % 3600 / 60;
+        durationSecond = durationSecond % 3600 % 60;
+        return Map.of(
+                "nplcGen", statusNPLC.getNplcGen(),
+                "statusGame", statusNPLC.getStatusGame().toString(),
+                "sisaWaktu", Map.of(
+                        "jam", durationHour,
+                        "menit", durationMinute,
+                        "detik", durationSecond));
     }
 
     public void setNPLCTime(TimeDTO timeDTO) {

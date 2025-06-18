@@ -1,14 +1,21 @@
 package com.restfulnplc.nplcrestful.model;
 
+import java.time.LocalTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.sql.Time;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "duelmatch")
 public class DuelMatch {
@@ -26,10 +33,10 @@ public class DuelMatch {
     private Team team2;
 
     @Column(name = "waktumulai")
-    private Time waktuMulai;
+    private LocalTime waktuMulai;
 
     @Column(name = "waktuselesai")
-    private Time waktuSelesai;
+    private LocalTime waktuSelesai;
 
     @ManyToOne
     @JoinColumn(name = "inputby", referencedColumnName = "idpanitia", foreignKey = @ForeignKey(name = "fk_inputby"), nullable = false)
@@ -43,67 +50,7 @@ public class DuelMatch {
     @JoinColumn(name = "idbooth", referencedColumnName = "idbooth", foreignKey = @ForeignKey(name = "fk_idboothduel"), nullable = false)
     private Boothgames boothGames;
 
-    public String getNoMatch() {
-        return this.noMatch;
-    }
-
-    public void setNoMatch(String noMatch) {
-        this.noMatch = noMatch;
-    }
-
-    public Team getTeam1() {
-        return this.team1;
-    }
-
-    public void setTeam1(Team team1) {
-        this.team1 = team1;
-    }
-
-    public Team getTeam2() {
-        return this.team2;
-    }
-
-    public void setTeam2(Team team2) {
-        this.team2 = team2;
-    }
-
-    public Time getWaktuMulai() {
-        return this.waktuMulai;
-    }
-
-    public void setWaktuMulai(Time waktuMulai) {
-        this.waktuMulai = waktuMulai;
-    }
-
-    public Time getWaktuSelesai() {
-        return this.waktuSelesai;
-    }
-
-    public void setWaktuSelesai(Time waktuSelesai) {
-        this.waktuSelesai = waktuSelesai;
-    }
-
-    public Panitia getInputBy() {
-        return this.inputBy;
-    }
-
-    public void setInputBy(Panitia inputBy) {
-        this.inputBy = inputBy;
-    }
-
-    public Team getTimMenang() {
-        return this.timMenang;
-    }
-
-    public void setTimMenang(Team timMenang) {
-        this.timMenang = timMenang;
-    }
-
-    public Boothgames getBoothGames() {
-        return this.boothGames;
-    }
-
-    public void setBoothGames(Boothgames boothGames) {
-        this.boothGames = boothGames;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private MatchStatus matchStatus;
 }

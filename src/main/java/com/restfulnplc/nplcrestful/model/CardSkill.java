@@ -13,17 +13,14 @@ public class CardSkill {
     @Column(name = "idcard", length = 11, nullable = false)
     private String idCard;
 
-    @Column(name = "namakartu", length = 20, nullable = false)
+    @Column(name = "namakartu", length = 20, nullable = false, unique = true)
     private String namaKartu;
 
     @Column(name = "rules", columnDefinition = "TINYTEXT",nullable = false)
     private String rules;
 
-    @Column(name = "totalkartu", nullable = false)
-    private int totalKartu;
-
-    @Column(name = "gambarkartu",  columnDefinition = "BLOB", nullable = false)
-    private byte[] gambarKartu;
+    @Column(name = "gambarkartu",  columnDefinition = "MEDIUMBLOB", nullable = false)
+    private String gambarKartu;
 
 
     public String getIdCard() {
@@ -50,19 +47,11 @@ public class CardSkill {
         this.rules = rules;
     }
 
-    public int getTotalKartu() {
-        return this.totalKartu;
-    }
-
-    public void setTotalKartu(int totalKartu) {
-        this.totalKartu = totalKartu;
-    }
-
-    public byte[] getGambarKartu() {
+    public String getGambarKartu() {
         return this.gambarKartu;
     }
 
-    public void setGambarKartu(byte[] gambarKartu) {
+    public void setGambarKartu(String gambarKartu) {
         this.gambarKartu = gambarKartu;
     }
     

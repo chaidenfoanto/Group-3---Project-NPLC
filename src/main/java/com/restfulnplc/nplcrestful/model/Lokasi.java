@@ -16,7 +16,6 @@ public class Lokasi {
     @Column(name = "lantai")
     private int lantai;
 
-
     public String getNoRuangan() {
         return this.noRuangan;
     }
@@ -32,5 +31,5 @@ public class Lokasi {
     public void setLantai(int lantai) {
         this.lantai = lantai;
     }
-    
+
 }
